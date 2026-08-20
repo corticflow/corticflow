@@ -1,0 +1,34 @@
+name: CorticFlow Daily Auto-Publisher
+
+on:
+  schedule:
+    - cron: '0 12,20 * * *'
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repositório
+        uses: actions/checkout@v4
+
+      - name: Configurar Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Instalar Dependências
+        run: pip install -r requirements.txt
+
+      - name: Executar Robô CorticFlow
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: python automate.py
+
+      - name: Salvar e Publicar novos artigos no Git
+        run: |
+          git config --global user.name "CorticFlow Bot"
+          git config --global user.email "corticflow@gmail.com"
+          git add content/
+          git commit -m "Auto: Novos artigos gerados por IA [$(date +'%Y-%m-%d')]" || exit 0
+          git push
