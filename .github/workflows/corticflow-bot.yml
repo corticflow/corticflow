@@ -35,4 +35,3 @@ jobs:
           git add content/
           git commit -m "Auto: Novos artigos gerados por IA [$(date +'%Y-%m-%d %H:%M')]" || exit 0
           git push origin main
-          
