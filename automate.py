@@ -6,6 +6,14 @@ import feedparser
 
 API_KEY = os.environ.get("GEMINI_API_KEY")
 
+# Modelos em ordem de tentativa
+MODELS = [
+    "gemini-2.5-flash",
+    "gemini-2.0-flash",
+    "gemini-1.5-flash",
+    "gemini-2.5-pro"
+]
+
 FEEDS = [
     "https://techcrunch.com/feed/",
     "https://www.theverge.com/rss/index.xml",
@@ -28,10 +36,36 @@ def fetch_latest_news():
             print(f"Aviso ao ler feed {url}: {e}")
     return articles[:4]
 
-def generate_bilingual_post(news_item):
+def call_gemini_api(prompt):
     if not API_KEY:
-        raise ValueError("ERRO: GEMINI_API_KEY não foi encontrada nas Secrets do repositório!")
+        raise ValueError("ERRO CRÍTICO: GEMINI_API_KEY não foi configurada nas Secrets!")
 
+    payload = {
+        "contents": [{"parts": [{"text": prompt}]}],
+        "generationConfig": {"responseMimeType": "application/json"}
+    }
+
+    last_error = None
+    for model in MODELS:
+        url = f"https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent?key={API_KEY}"
+        print(f"Tentando gerar com o modelo: {model}...")
+        try:
+            res = requests.post(url, json=payload, timeout=45)
+            if res.status_code == 200:
+                result = res.json()
+                text = result["candidates"][0]["content"]["parts"][0]["text"]
+                print(f" Sucesso com o modelo: {model}")
+                return json.loads(text)
+            else:
+                last_error = f"{model} ({res.status_code}): {res.text}"
+                print(f"Aviso: {model} retornou erro {res.status_code}. Tentando próximo...")
+        except Exception as e:
+            last_error = str(e)
+            print(f"Falha na requisição com {model}: {e}")
+
+    raise Exception(f"Todos os modelos falharam. Último erro: {last_error}")
+
+def generate_bilingual_post(news_item):
     prompt = f"""
     You are the lead tech editor for 'CorticFlow', an authoritative international AI and Tech publication.
     Based on this raw news item:
@@ -50,20 +84,7 @@ def generate_bilingual_post(news_item):
     - "title_pt": "Título atraente em Português"
     - "content_pt": "Artigo completo em Markdown em Português (com subtítulos H2, tópicos, análise prática e link da fonte)"
     """
-
-    url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-3.6-flash:generateContent?key={API_KEY}"
-    payload = {
-        "contents": [{"parts": [{"text": prompt}]}],
-        "generationConfig": {"responseMimeType": "application/json"}
-    }
-
-    res = requests.post(url, json=payload, timeout=60)
-    if res.status_code != 200:
-        raise Exception(f"Erro na API do Gemini ({res.status_code}): {res.text}")
-
-    result = res.json()
-    text = result["candidates"][0]["content"]["parts"][0]["text"]
-    return json.loads(text)
+    return call_gemini_api(prompt)
 
 def save_posts(data):
     today = datetime.datetime.now().strftime("%Y-%m-%d")
@@ -82,14 +103,20 @@ def save_posts(data):
         f.write(f"---\ntitle: \"{data['title_pt']}\"\ndata: \"{today}\"\ncategoria: \"{data['category']}\"\n---\n\n")
         f.write(data["content_pt"])
 
-    print(f"✅ Artigos gerados com sucesso: {en_file} e {pt_file}")
+    print(f"✅ Artigos gerados: {en_file} e {pt_file}")
 
 if __name__ == "__main__":
     print("🚀 CorticFlow Bot: Buscando notícias...")
     news = fetch_latest_news()
+    success_count = 0
     for item in news[:2]:
         try:
             post_data = generate_bilingual_post(item)
             save_posts(post_data)
+            success_count += 1
         except Exception as e:
-            print(f"Erro ao processar notícia: {e}")
+            print(f"Erro ao processar item: {e}")
+
+    if success_count == 0:
+        raise SystemExit("Nenhum artigo pôde ser gerado nesta rodada.")
+    print(f"🎉 Finalizado com sucesso! {success_count} matérias geradas.")
