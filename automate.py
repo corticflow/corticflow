@@ -51,7 +51,7 @@ def generate_bilingual_post(news_item):
     - "content_pt": "Artigo completo em Markdown em Português (com subtítulos H2, tópicos, análise prática e link da fonte)"
     """
 
-    url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key={API_KEY}"
+    url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-3.6-flash:generateContent?key={API_KEY}"
     payload = {
         "contents": [{"parts": [{"text": prompt}]}],
         "generationConfig": {"responseMimeType": "application/json"}
@@ -82,7 +82,7 @@ def save_posts(data):
         f.write(f"---\ntitle: \"{data['title_pt']}\"\ndata: \"{today}\"\ncategoria: \"{data['category']}\"\n---\n\n")
         f.write(data["content_pt"])
 
-    print(f"✅ Artigos gerados: {en_file} e {pt_file}")
+    print(f"✅ Artigos gerados com sucesso: {en_file} e {pt_file}")
 
 if __name__ == "__main__":
     print("🚀 CorticFlow Bot: Buscando notícias...")
