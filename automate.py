@@ -4,14 +4,13 @@ import datetime
 import requests
 import feedparser
 
-API_KEY = os.environ.get("GEMINI_API_KEY")
+API_KEY = os.environ.get("GEMINI_API_KEY", "").strip()
 
-# Modelos em ordem de tentativa
 MODELS = [
-    "gemini-2.5-flash",
-    "gemini-2.0-flash",
+    "gemini-3.6-flash",
     "gemini-1.5-flash",
-    "gemini-2.5-pro"
+    "gemini-2.0-flash",
+    "gemini-1.5-pro"
 ]
 
 FEEDS = [
@@ -38,7 +37,7 @@ def fetch_latest_news():
 
 def call_gemini_api(prompt):
     if not API_KEY:
-        raise ValueError("ERRO CRÍTICO: GEMINI_API_KEY não foi configurada nas Secrets!")
+        raise ValueError("ERRO: GEMINI_API_KEY não foi configurada nas Secrets!")
 
     payload = {
         "contents": [{"parts": [{"text": prompt}]}],
@@ -48,22 +47,22 @@ def call_gemini_api(prompt):
     last_error = None
     for model in MODELS:
         url = f"https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent?key={API_KEY}"
-        print(f"Tentando gerar com o modelo: {model}...")
+        print(f"Tentando com o modelo: {model}...")
         try:
             res = requests.post(url, json=payload, timeout=45)
             if res.status_code == 200:
                 result = res.json()
                 text = result["candidates"][0]["content"]["parts"][0]["text"]
-                print(f" Sucesso com o modelo: {model}")
+                print(f"✅ Sucesso com o modelo: {model}!")
                 return json.loads(text)
             else:
-                last_error = f"{model} ({res.status_code}): {res.text}"
+                last_error = f"{model} (HTTP {res.status_code}): {res.text}"
                 print(f"Aviso: {model} retornou erro {res.status_code}. Tentando próximo...")
         except Exception as e:
             last_error = str(e)
             print(f"Falha na requisição com {model}: {e}")
 
-    raise Exception(f"Todos os modelos falharam. Último erro: {last_error}")
+    raise Exception(f"Falha em todos os modelos. Último retorno: {last_error}")
 
 def generate_bilingual_post(news_item):
     prompt = f"""
@@ -103,9 +102,11 @@ def save_posts(data):
         f.write(f"---\ntitle: \"{data['title_pt']}\"\ndata: \"{today}\"\ncategoria: \"{data['category']}\"\n---\n\n")
         f.write(data["content_pt"])
 
-    print(f"✅ Artigos gerados: {en_file} e {pt_file}")
+    print(f"📁 Arquivos salvos: {en_file} e {pt_file}")
 
 if __name__ == "__main__":
+    os.makedirs("content/en", exist_ok=True)
+    os.makedirs("content/pt", exist_ok=True)
     print("🚀 CorticFlow Bot: Buscando notícias...")
     news = fetch_latest_news()
     success_count = 0
@@ -117,6 +118,4 @@ if __name__ == "__main__":
         except Exception as e:
             print(f"Erro ao processar item: {e}")
 
-    if success_count == 0:
-        raise SystemExit("Nenhum artigo pôde ser gerado nesta rodada.")
-    print(f"🎉 Finalizado com sucesso! {success_count} matérias geradas.")
+    print(f"🎉 Finalizado! {success_count} matérias geradas.")
