@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CorticFlow — The Stream of AI & Tech Intelligence</title>
+  <meta name="description" content="Portal internacional de notícias, análises e tutoriais práticos sobre Inteligência Artificial e Tecnologia.">
+  
+  <!-- Tailwind CSS & Fontes -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            brandDark: '#0B0F19',
+            brandCard: '#111827',
+            brandBorder: '#1E293B',
+            brandCyan: '#00E5FF',
+            brandPurple: '#8B5CF6'
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    body { background-color: #0B0F19; color: #F8FAFC; font-family: system-ui, -apple-system, sans-serif; }
+    .glow-cyan { text-shadow: 0 0 20px rgba(0, 229, 255, 0.4); }
+    .glow-purple { box-shadow: 0 0 25px rgba(139, 92, 246, 0.25); }
+    .glass-nav { background: rgba(11, 15, 25, 0.85); backdrop-filter: blur(12px); border-bottom: 1px solid #1E293B; }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col antialiased">
+
+  <!-- Header / Barra de Navegação -->
+  <header class="sticky top-0 z-50 glass-nav">
+    <div class="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <div class="w-9 h-9 rounded-lg bg-gradient-to-br from-brandCyan to-brandPurple flex items-center justify-center font-bold text-black text-xl shadow-lg">
+          C
+        </div>
+        <a href="#" class="text-2xl font-bold tracking-tight">
+          Cortic<span class="text-brandCyan glow-cyan">Flow</span>
+        </a>
+      </div>
+      
+      <nav class="hidden md:flex items-center gap-6 text-sm text-slate-300">
+        <a href="#feed" class="hover:text-brandCyan transition">Notícias</a>
+        <a href="#tutorials" class="hover:text-brandCyan transition">Tutoriais</a>
+        <a href="#newsletter" class="hover:text-brandCyan transition">Newsletter</a>
+      </nav>
+
+      <!-- Seletor de Idioma -->
+      <div class="flex items-center bg-slate-800/80 rounded-full p-1 border border-brandBorder text-xs font-semibold">
+        <button id="btn-pt" onclick="setLanguage('pt')" class="px-3 py-1 rounded-full bg-brandCyan text-slate-950 font-bold transition">PT</button>
+        <button id="btn-en" onclick="setLanguage('en')" class="px-3 py-1 rounded-full text-slate-400 hover:text-white transition">EN</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="relative py-16 px-4 text-center overflow-hidden border-b border-brandBorder">
+    <div class="max-w-4xl mx-auto relative z-10">
+      <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-800/60 border border-brandCyan/30 text-brandCyan text-xs font-semibold mb-6">
+        <span class="w-2 h-2 rounded-full bg-brandCyan animate-pulse"></span>
+        <span id="hero-badge">Atualizado Diariamente por IA Autônoma</span>
+      </div>
+      <h1 class="text-4xl md:text-6xl font-extrabold tracking-tight mb-4">
+        The Stream of <span class="text-transparent bg-clip-text bg-gradient-to-r from-brandCyan via-cyan-400 to-brandPurple">AI & Tech</span> Intelligence
+      </h1>
+      <p id="hero-sub" class="text-slate-400 text-lg md:text-xl max-w-2xl mx-auto mb-8">
+        Curadoria estratégica, novidades em tempo real e tutoriais práticos de inteligência artificial.
+      </p>
+    </div>
+  </section>
+
+  <!-- Grade de Artigos / Feed Principal -->
+  <main class="max-w-6xl mx-auto px-4 py-12 flex-1 w-full" id="feed">
+    <div class="flex items-center justify-between mb-8">
+      <h2 id="section-title" class="text-2xl font-bold text-slate-100 flex items-center gap-2">
+        ⚡ Últimas Publicações
+      </h2>
+      <div class="flex gap-2">
+        <span class="text-xs px-3 py-1.5 rounded-lg bg-slate-800 text-brandCyan border border-brandBorder font-medium">Todos os Artigos</span>
+      </div>
+    </div>
+
+    <!-- Container dos Artigos -->
+    <div id="articles-grid" class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div class="bg-brandCard border border-brandBorder rounded-xl p-6 hover:border-brandCyan/50 transition">
+        <div class="text-xs text-brandCyan font-semibold mb-2">AI & MODELS</div>
+        <h3 class="text-xl font-bold text-white mb-2">Novidades em Modelos de Linguagem e Raciocínio</h3>
+        <p class="text-slate-400 text-sm mb-4">Análise completa dos últimos lançamentos de inteligência artificial e suas aplicações em escala.</p>
+        <div class="text-xs text-slate-500">CorticFlow Editorial • Hoje</div>
+      </div>
+      <div class="bg-brandCard border border-brandBorder rounded-xl p-6 hover:border-brandPurple/50 transition">
+        <div class="text-xs text-brandPurple font-semibold mb-2">TUTORIALS & GUIDES</div>
+        <h3 class="text-xl font-bold text-white mb-2">Guia Prático: Criando Automações Autônomas</h3>
+        <p class="text-slate-400 text-sm mb-4">Passo a passo didático para estruturar esteiras de curadoria e deploy contínuo com custo zero.</p>
+        <div class="text-xs text-slate-500">CorticFlow Tutorial • Hoje</div>
+      </div>
+      <div class="bg-brandCard border border-brandBorder rounded-xl p-6 hover:border-brandCyan/50 transition">
+        <div class="text-xs text-brandCyan font-semibold mb-2">BUSINESS & STARTUPS</div>
+        <h3 class="text-xl font-bold text-white mb-2">Investimentos e Movimentos das Big Techs</h3>
+        <p class="text-slate-400 text-sm mb-4">Como as grandes empresas e startups de tecnologia estão acelerando o ecossistema global.</p>
+        <div class="text-xs text-slate-500">CorticFlow Business • Hoje</div>
+      </div>
+    </div>
+
+    <!-- Espaço Preparado para Google AdSense -->
+    <div class="my-12 p-4 rounded-xl border border-dashed border-slate-800 text-center text-slate-600 text-xs tracking-widest uppercase">
+      [ Espaço Reservado para Anúncio Google AdSense ]
+    </div>
+
+    <!-- Caixa de Newsletter -->
+    <section id="newsletter" class="my-12 p-8 rounded-2xl bg-gradient-to-br from-slate-900 to-brandCard border border-brandPurple/30 text-center glow-purple">
+      <h3 class="text-2xl font-bold text-white mb-2">Receba a Edição Semanal do CorticFlow</h3>
+      <p class="text-slate-400 text-sm max-w-lg mx-auto mb-6">Todo domingo às 20h, receba o compilado executivo com os principais acontecimentos e o tutorial da semana direto no seu e-mail.</p>
+      <form class="flex flex-col sm:flex-row gap-3 max-w-md mx-auto" onsubmit="event.preventDefault(); alert('Inscrição confirmada no CorticFlow!');">
+        <input type="email" placeholder="Seu melhor e-mail" required class="flex-1 px-4 py-3 rounded-lg bg-slate-800 border border-brandBorder text-white text-sm focus:outline-none focus:border-brandCyan">
+        <button type="submit" class="px-6 py-3 rounded-lg bg-brandCyan hover:bg-cyan-400 text-slate-950 font-bold text-sm transition">Inscrever-se</button>
+      </form>
+    </section>
+  </main>
+
+  <!-- Rodapé Institucional -->
+  <footer class="border-t border-brandBorder py-8 bg-slate-950/50 text-slate-500 text-xs">
+    <div class="max-w-6xl mx-auto px-4 flex flex-col md:flex-row items-center justify-between gap-4">
+      <div>
+        © 2026 <strong>CorticFlow</strong>. Todos os direitos reservados.
+      </div>
+      <div class="flex gap-6">
+        <a href="#" class="hover:text-slate-300 transition">Política de Privacidade</a>
+        <a href="#" class="hover:text-slate-300 transition">Termos de Uso</a>
+        <a href="mailto:corticflow@gmail.com" class="hover:text-slate-300 transition">Contato: corticflow@gmail.com</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    let currentLang = 'pt';
+    function setLanguage(lang) {
+      currentLang = lang;
+      const btnPt = document.getElementById('btn-pt');
+      const btnEn = document.getElementById('btn-en');
+      if(lang === 'pt') {
+        btnPt.className = "px-3 py-1 rounded-full bg-brandCyan text-slate-950 font-bold transition";
+        btnEn.className = "px-3 py-1 rounded-full text-slate-400 hover:text-white transition";
+        document.getElementById('hero-badge').innerText = "Atualizado Diariamente por IA Autônoma";
+        document.getElementById('hero-sub').innerText = "Curadoria estratégica, novidades em tempo real e tutoriais práticos de inteligência artificial.";
+        document.getElementById('section-title').innerText = "⚡ Últimas Publicações";
+      } else {
+        btnEn.className = "px-3 py-1 rounded-full bg-brandCyan text-slate-950 font-bold transition";
+        btnPt.className = "px-3 py-1 rounded-full text-slate-400 hover:text-white transition";
+        document.getElementById('hero-badge').innerText = "Updated Daily by Autonomous AI";
+        document.getElementById('hero-sub').innerText = "Strategic curation, real-time tech news, and practical AI engineering guides.";
+        document.getElementById('section-title').innerText = "⚡ Latest Dispatches";
+      }
+    }
+  </script>
+</body>
+</html>
