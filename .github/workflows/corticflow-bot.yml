@@ -31,6 +31,7 @@ jobs:
       - name: Salvar e Publicar novos artigos no Git
         run: |
           mkdir -p content/en content/pt
+          touch content/en/.gitkeep content/pt/.gitkeep
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git add -A
