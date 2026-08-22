@@ -7,8 +7,9 @@
   <meta name="description" content="Portal internacional de notícias e tutoriais práticos de Inteligência Artificial e Tecnologia.">
   <link rel="icon" type="image/jpeg" href="assets/favicon.jpg">
 
-  <!-- Tailwind CSS -->
+  <!-- Tailwind CSS & Markdown Parser -->
   <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
   <script>
     tailwind.config = {
       darkMode: 'class',
@@ -20,20 +21,6 @@
             brandBorder: '#1E293B',
             brandCyan: '#00E5FF',
             brandPurple: '#8B5CF6'
-          },
-          animation: {
-            'gradient-flow': 'gradient 8s ease infinite',
-            'pulse-glow': 'pulseGlow 3s infinite',
-          },
-          keyframes: {
-            gradient: {
-              '0%, 100%': { 'background-size': '200% 200%', 'background-position': 'left center' },
-              '50%': { 'background-size': '200% 200%', 'background-position': 'right center' },
-            },
-            pulseGlow: {
-              '0%, 100%': { opacity: '0.4' },
-              '50%': { opacity: '0.85', filter: 'drop-shadow(0 0 15px rgba(0, 229, 255, 0.6))' }
-            }
           }
         }
       }
@@ -42,18 +29,22 @@
   <style>
     body { background-color: #0B0F19; color: #F8FAFC; font-family: system-ui, -apple-system, sans-serif; }
     .glow-hover { transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
-    .glow-hover:hover { transform: translateY(-4px); box-shadow: 0 12px 30px -10px rgba(0, 229, 255, 0.25); border-color: rgba(0, 229, 255, 0.5); }
+    .glow-hover:hover { transform: translateY(-3px); box-shadow: 0 10px 25px -10px rgba(0, 229, 255, 0.25); border-color: rgba(0, 229, 255, 0.4); }
     .glass-nav { background: rgba(11, 15, 25, 0.85); backdrop-filter: blur(16px); border-bottom: 1px solid rgba(30, 41, 59, 0.8); }
-    .animated-bg-text { background-size: 200% auto; animation: gradient 6s linear infinite; }
+    .prose-dark { color: #CBD5E1; }
+    .prose-dark h2 { color: #FFFFFF; font-weight: 700; font-size: 1.35rem; margin-top: 1.5rem; margin-bottom: 0.5rem; border-bottom: 1px solid #1E293B; padding-bottom: 0.3rem; }
+    .prose-dark p { margin-bottom: 1rem; line-height: 1.7; }
+    .prose-dark ul { list-style-type: disc; padding-left: 1.25rem; margin-bottom: 1rem; }
+    .prose-dark a { color: #00E5FF; text-decoration: underline; }
   </style>
 </head>
 <body class="min-h-screen flex flex-col antialiased selection:bg-brandCyan selection:text-black">
 
   <!-- Header Fixo -->
-  <header class="sticky top-0 z-50 glass-nav">
+  <header class="sticky top-0 z-40 glass-nav">
     <div class="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between">
-      <a href="#" class="flex items-center gap-3 group">
-        <div class="w-9 h-9 rounded-lg bg-gradient-to-br from-brandCyan to-brandPurple flex items-center justify-center font-bold text-black text-xl shadow-lg transition-transform group-hover:scale-105">
+      <a href="#" class="flex items-center gap-3">
+        <div class="w-9 h-9 rounded-lg bg-gradient-to-br from-brandCyan to-brandPurple flex items-center justify-center font-bold text-black text-xl shadow-lg">
           C
         </div>
         <span class="text-2xl font-bold tracking-tight text-white">
@@ -61,109 +52,82 @@
         </span>
       </a>
 
-      <div class="flex items-center gap-4">
-        <div class="flex items-center bg-slate-800/90 rounded-full p-1 border border-brandBorder text-xs font-semibold">
-          <button id="btn-pt" onclick="setLanguage('pt')" class="px-3 py-1 rounded-full bg-brandCyan text-slate-950 font-bold transition">PT</button>
-          <button id="btn-en" onclick="setLanguage('en')" class="px-3 py-1 rounded-full text-slate-400 hover:text-white transition">EN</button>
-        </div>
+      <!-- Seletor de Idioma -->
+      <div class="flex items-center bg-slate-800/90 rounded-full p-1 border border-brandBorder text-xs font-semibold">
+        <button id="btn-pt" onclick="setLanguage('pt')" class="px-3 py-1 rounded-full bg-brandCyan text-slate-950 font-bold transition">PT</button>
+        <button id="btn-en" onclick="setLanguage('en')" class="px-3 py-1 rounded-full text-slate-400 hover:text-white transition">EN</button>
       </div>
     </div>
   </header>
 
-  <!-- Hero Section com Imagem de Fundo e Gradiente Animado -->
-  <section class="relative py-20 px-4 text-center border-b border-brandBorder overflow-hidden bg-slate-950/40">
-    <div class="absolute inset-0 opacity-15 pointer-events-none bg-center bg-cover" style="background-image: url('assets/hero.jpg');"></div>
+  <!-- Hero Section -->
+  <section class="relative py-16 px-4 text-center border-b border-brandBorder overflow-hidden bg-slate-950/40">
     <div class="max-w-4xl mx-auto relative z-10">
-      
-      <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-slate-900/80 border border-brandCyan/40 text-brandCyan text-xs font-semibold mb-6 shadow-sm">
+      <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-slate-900/80 border border-brandCyan/40 text-brandCyan text-xs font-semibold mb-6">
         <span class="w-2 h-2 rounded-full bg-brandCyan animate-ping"></span>
         <span id="hero-badge">Curadoria Autônoma em Tempo Real</span>
       </div>
 
       <h1 class="text-4xl sm:text-6xl font-black tracking-tight mb-4 leading-tight">
-        The Stream of <span class="text-transparent bg-clip-text bg-gradient-to-r from-brandCyan via-purple-400 to-brandCyan animated-bg-text">AI & Tech</span> Intelligence
+        The Stream of <span class="text-transparent bg-clip-text bg-gradient-to-r from-brandCyan via-purple-400 to-brandCyan">AI & Tech</span> Intelligence
       </h1>
 
-      <p id="hero-sub" class="text-slate-400 text-base sm:text-xl max-w-2xl mx-auto mb-8 leading-relaxed">
-        O fluxo contínuo dos maiores acontecimentos de tecnologia, inteligência artificial e tutoriais de engenharia de prompt.
+      <p id="hero-sub" class="text-slate-400 text-base sm:text-xl max-w-2xl mx-auto mb-6">
+        O fluxo contínuo dos maiores acontecimentos de tecnologia, inteligência artificial e tutoriais práticos.
       </p>
     </div>
   </section>
 
-  <!-- Feed de Artigos -->
+  <!-- Feed Dinâmico de Artigos -->
   <main class="max-w-6xl mx-auto px-4 py-12 flex-1 w-full" id="feed">
     <div class="flex items-center justify-between mb-8">
-      <h2 id="section-title" class="text-2xl font-bold text-slate-100">
+      <h2 id="section-title" class="text-2xl font-bold text-slate-100 flex items-center gap-2">
         ⚡ Últimas Publicações
       </h2>
+      <button onclick="loadArticles()" class="text-xs px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-brandCyan border border-brandBorder font-medium transition">
+        🔄 Atualizar Feed
+      </button>
     </div>
 
-    <!-- Grid de Cards com Hover Animado -->
-    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-      
-      <!-- Card 1: IA & Modelos -->
-      <article class="bg-brandCard border border-brandBorder rounded-2xl overflow-hidden glow-hover flex flex-col group">
-        <div class="h-44 bg-slate-800 bg-cover bg-center overflow-hidden relative" style="background-image: url('assets/cat-ai.jpg');">
-          <div class="absolute inset-0 bg-gradient-to-t from-brandCard via-transparent to-transparent"></div>
-          <span class="absolute top-3 left-3 px-2.5 py-1 rounded-md bg-brandDark/80 backdrop-blur-md border border-brandCyan/30 text-brandCyan text-[10px] font-bold tracking-wider uppercase">AI & Models</span>
-        </div>
-        <div class="p-6 flex-1 flex flex-col justify-between">
-          <div>
-            <h3 class="text-lg font-bold text-white mb-2 group-hover:text-brandCyan transition-colors">Avanços em Modelos de Raciocínio Profundo</h3>
-            <p class="text-slate-400 text-sm leading-relaxed mb-4">Análise técnica dos novos lançamentos de LLMs e arquiteturas multimodais.</p>
-          </div>
-          <div class="text-xs text-slate-500 pt-3 border-t border-brandBorder/50">CorticFlow Editorial • 5 min de leitura</div>
-        </div>
-      </article>
-
-      <!-- Card 2: Tutoriais & Automações -->
-      <article class="bg-brandCard border border-brandBorder rounded-2xl overflow-hidden glow-hover flex flex-col group">
-        <div class="h-44 bg-slate-800 bg-cover bg-center overflow-hidden relative" style="background-image: url('assets/cat-tutorials.jpg');">
-          <div class="absolute inset-0 bg-gradient-to-t from-brandCard via-transparent to-transparent"></div>
-          <span class="absolute top-3 left-3 px-2.5 py-1 rounded-md bg-brandDark/80 backdrop-blur-md border border-brandPurple/30 text-brandPurple text-[10px] font-bold tracking-wider uppercase">Tutorials</span>
-        </div>
-        <div class="p-6 flex-1 flex flex-col justify-between">
-          <div>
-            <h3 class="text-lg font-bold text-white mb-2 group-hover:text-brandPurple transition-colors">Guia de Engenharia de Prompts e Agentes</h3>
-            <p class="text-slate-400 text-sm leading-relaxed mb-4">Como construir pipelines autônomos sem custo de servidor utilizando APIs modernas.</p>
-          </div>
-          <div class="text-xs text-slate-500 pt-3 border-t border-brandBorder/50">CorticFlow Tutorial • 8 min de leitura</div>
-        </div>
-      </article>
-
-      <!-- Card 3: Big Tech & Mercado -->
-      <article class="bg-brandCard border border-brandBorder rounded-2xl overflow-hidden glow-hover flex flex-col group">
-        <div class="h-44 bg-slate-800 bg-cover bg-center overflow-hidden relative" style="background-image: url('assets/cat-business.jpg');">
-          <div class="absolute inset-0 bg-gradient-to-t from-brandCard via-transparent to-transparent"></div>
-          <span class="absolute top-3 left-3 px-2.5 py-1 rounded-md bg-brandDark/80 backdrop-blur-md border border-brandCyan/30 text-brandCyan text-[10px] font-bold tracking-wider uppercase">Business</span>
-        </div>
-        <div class="p-6 flex-1 flex flex-col justify-between">
-          <div>
-            <h3 class="text-lg font-bold text-white mb-2 group-hover:text-brandCyan transition-colors">Movimentos de Mercado das Big Techs</h3>
-            <p class="text-slate-400 text-sm leading-relaxed mb-4">Investimentos bilionários, infraestrutura de data centers e novas rodadas de captação.</p>
-          </div>
-          <div class="text-xs text-slate-500 pt-3 border-t border-brandBorder/50">CorticFlow Business • 4 min de leitura</div>
-        </div>
-      </article>
+    <!-- Grid Dinâmico onde os artigos são inseridos pelo JavaScript -->
+    <div id="articles-grid" class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div class="col-span-full text-center py-12 text-brandCyan animate-pulse">Carregando artigos do CorticFlow...</div>
     </div>
 
-    <!-- Espaço Preparado para Google AdSense -->
+    <!-- Espaço para Google AdSense -->
     <div class="my-12 p-6 rounded-2xl border border-dashed border-slate-800/80 bg-slate-900/20 text-center text-slate-600 text-xs tracking-widest uppercase">
       [ Espaço Reservado para Anúncio Google AdSense ]
     </div>
 
-    <!-- Caixa de Newsletter com Gradiente Suave -->
+    <!-- Caixa de Newsletter -->
     <section class="my-10 p-8 sm:p-12 rounded-3xl bg-gradient-to-br from-slate-900 via-brandCard to-slate-950 border border-brandPurple/30 text-center relative overflow-hidden">
       <div class="max-w-xl mx-auto relative z-10">
         <h3 class="text-2xl sm:text-3xl font-black text-white mb-3">Receba a Edição Semanal do CorticFlow</h3>
         <p class="text-slate-400 text-sm sm:text-base mb-8 leading-relaxed">Todo domingo às 20h, receba a compilação executiva e o tutorial da semana direto no seu e-mail.</p>
         <form class="flex flex-col sm:flex-row gap-3 max-w-md mx-auto" onsubmit="event.preventDefault(); alert('Inscrição confirmada no CorticFlow!');">
           <input type="email" placeholder="Seu melhor e-mail" required class="flex-1 px-4 py-3 rounded-xl bg-slate-800/90 border border-brandBorder text-white text-sm focus:outline-none focus:border-brandCyan transition">
-          <button type="submit" class="px-6 py-3 rounded-xl bg-brandCyan hover:bg-cyan-400 text-slate-950 font-bold text-sm transition-transform active:scale-95">Inscrever-se</button>
+          <button type="submit" class="px-6 py-3 rounded-xl bg-brandCyan hover:bg-cyan-400 text-slate-950 font-bold text-sm transition">Inscrever-se</button>
         </form>
       </div>
     </section>
   </main>
+
+  <!-- Modal de Leitura Completa do Artigo -->
+  <div id="article-modal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm hidden flex items-center justify-center p-4">
+    <div class="bg-brandCard border border-brandBorder rounded-3xl max-w-3xl w-full max-h-[90vh] flex flex-col shadow-2xl overflow-hidden">
+      <div class="p-6 border-b border-brandBorder flex items-center justify-between bg-slate-900/50">
+        <div class="flex items-center gap-3">
+          <span id="modal-cat" class="text-xs font-bold px-2.5 py-1 rounded bg-brandCyan/10 text-brandCyan border border-brandCyan/20 uppercase"></span>
+          <span id="modal-date" class="text-xs text-slate-500"></span>
+        </div>
+        <button onclick="closeModal()" class="w-8 h-8 rounded-full bg-slate-800 hover:bg-slate-700 text-slate-300 flex items-center justify-center text-lg font-bold transition">✕</button>
+      </div>
+      <div class="p-6 sm:p-10 overflow-y-auto flex-1">
+        <h1 id="modal-title" class="text-2xl sm:text-3xl font-extrabold text-white mb-6 leading-tight"></h1>
+        <div id="modal-content" class="prose-dark text-sm sm:text-base"></div>
+      </div>
+    </div>
+  </div>
 
   <!-- Rodapé Institucional -->
   <footer class="border-t border-brandBorder py-8 bg-slate-950 text-slate-500 text-xs">
@@ -177,26 +141,118 @@
     </div>
   </footer>
 
+  <!-- Script Dinâmico que Carrega os Artigos do GitHub -->
   <script>
     let currentLang = 'pt';
+
+    async function loadArticles() {
+      const grid = document.getElementById('articles-grid');
+      grid.innerHTML = '<div class="col-span-full text-center py-12 text-brandCyan animate-pulse">Carregando artigos do CorticFlow...</div>';
+
+      try {
+        const response = await fetch(`https://api.github.com/repos/corticflow/corticflow/contents/content/${currentLang}`);
+        if (!response.ok) throw new Error('Pasta ainda sem artigos');
+        const files = await response.json();
+
+        const mdFiles = files.filter(f => f.name.endsWith('.md') && !f.name.startsWith('.gitkeep'));
+        if (mdFiles.length === 0) throw new Error('Nenhum artigo encontrado');
+
+        grid.innerHTML = '';
+        for (const file of mdFiles) {
+          const fileRes = await fetch(file.download_url);
+          const text = await fileRes.text();
+
+          let title = file.name.replace('.md', '');
+          let category = 'AI & Models';
+          let date = 'Hoje';
+          let body = text;
+
+          if (text.startsWith('---')) {
+            const parts = text.split('---');
+            if (parts.length >= 3) {
+              const frontmatter = parts;
+              body = parts.slice(2).join('---').trim();
+
+              const titleMatch = frontmatter.match(/title:\s*["']?([^"'\n]+)["']?/);
+              if (titleMatch) title = titleMatch;
+
+              const catMatch = frontmatter.match(/category:\s*["']?([^"'\n]+)["']?/) || frontmatter.match(/categoria:\s*["']?([^"'\n]+)["']?/);
+              if (catMatch) category = catMatch;
+
+              const dateMatch = frontmatter.match(/date:\s*["']?([^"'\n]+)["']?/) || frontmatter.match(/data:\s*["']?([^"'\n]+)["']?/);
+              if (dateMatch) date = dateMatch;
+            }
+          }
+
+          const cleanBody = body.replace(/#+/g, '').replace(/\[([^\]]+)\]\([^)]+\)/g, '$1').replace(/[*_`]/g, '');
+          const excerpt = cleanBody.slice(0, 130).trim() + '...';
+
+          const card = document.createElement('article');
+          card.className = "bg-brandCard border border-brandBorder rounded-2xl p-6 glow-hover flex flex-col justify-between cursor-pointer group";
+          card.onclick = () => openArticle(title, category, date, body);
+          card.innerHTML = `
+            <div>
+              <div class="flex items-center justify-between mb-3">
+                <span class="text-[10px] font-bold tracking-wider uppercase px-2.5 py-1 rounded bg-slate-800 text-brandCyan border border-brandCyan/20">${category}</span>
+                <span class="text-xs text-slate-500">${date}</span>
+              </div>
+              <h3 class="text-lg font-bold text-white mb-2 group-hover:text-brandCyan transition-colors leading-snug">${title}</h3>
+              <p class="text-slate-400 text-sm leading-relaxed mb-4">${excerpt}</p>
+            </div>
+            <div class="text-xs text-brandCyan font-semibold flex items-center gap-1 group-hover:underline pt-3 border-t border-brandBorder/50">
+              ${currentLang === 'pt' ? 'Ler matéria completa →' : 'Read full story →'}
+            </div>
+          `;
+          grid.appendChild(card);
+        }
+      } catch (e) {
+        grid.innerHTML = `
+          <div class="col-span-full bg-brandCard border border-brandBorder rounded-2xl p-10 text-center">
+            <div class="text-brandCyan text-3xl mb-3">⚡</div>
+            <h3 class="text-lg font-bold text-white mb-2">${currentLang === 'pt' ? 'Primeiras Publicações a Caminho' : 'First Dispatches Loading'}</h3>
+            <p class="text-slate-400 text-sm max-w-md mx-auto mb-4">${currentLang === 'pt' ? 'O robô autônomo está rastreando notícias para alimentar o feed. Clique no botão abaixo para forçar a busca.' : 'The autonomous bot is curating dispatches to populate the feed. Click below to refresh.'}</p>
+            <button onclick="loadArticles()" class="px-4 py-2 rounded-xl bg-brandCyan text-slate-950 text-xs font-bold hover:bg-cyan-400 transition">Atualizar</button>
+          </div>
+        `;
+      }
+    }
+
+    function openArticle(title, category, date, markdownContent) {
+      document.getElementById('modal-cat').innerText = category;
+      document.getElementById('modal-date').innerText = date;
+      document.getElementById('modal-title').innerText = title;
+      document.getElementById('modal-content').innerHTML = marked.parse(markdownContent);
+      document.getElementById('article-modal').classList.remove('hidden');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeModal() {
+      document.getElementById('article-modal').classList.add('hidden');
+      document.body.style.overflow = 'auto';
+    }
+
     function setLanguage(lang) {
       currentLang = lang;
       const btnPt = document.getElementById('btn-pt');
       const btnEn = document.getElementById('btn-en');
-      if(lang === 'pt') {
+      if (lang === 'pt') {
         btnPt.className = "px-3 py-1 rounded-full bg-brandCyan text-slate-950 font-bold transition";
         btnEn.className = "px-3 py-1 rounded-full text-slate-400 hover:text-white transition";
         document.getElementById('hero-badge').innerText = "Curadoria Autônoma em Tempo Real";
-        document.getElementById('hero-sub').innerText = "O fluxo contínuo dos maiores acontecimentos de tecnologia, inteligência artificial e tutoriais de engenharia de prompt.";
+        document.getElementById('hero-sub').innerText = "O fluxo contínuo dos maiores acontecimentos de tecnologia, inteligência artificial e tutoriais práticos.";
         document.getElementById('section-title').innerText = "⚡ Últimas Publicações";
       } else {
         btnEn.className = "px-3 py-1 rounded-full bg-brandCyan text-slate-950 font-bold transition";
         btnPt.className = "px-3 py-1 rounded-full text-slate-400 hover:text-white transition";
         document.getElementById('hero-badge').innerText = "Autonomous AI Curation in Real-Time";
-        document.getElementById('hero-sub').innerText = "The continuous stream of breakthrough tech news, artificial intelligence models, and prompt engineering guides.";
+        document.getElementById('hero-sub').innerText = "The continuous stream of breakthrough tech news, artificial intelligence models, and practical prompt engineering guides.";
         document.getElementById('section-title').innerText = "⚡ Latest Dispatches";
       }
+      loadArticles();
     }
+
+    // Carrega os artigos ao abrir a página
+    window.addEventListener('DOMContentLoaded', loadArticles);
   </script>
 </body>
 </html>
