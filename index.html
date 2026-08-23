@@ -17,6 +17,11 @@
 
   <link rel="icon" type="image/jpeg" href="favicon.jpg.jpeg" onerror="this.href='favicon.jpg'">
 
+  <!-- Google Fonts: Syne (Brutalist Verge), Inter (Body) & JetBrains Mono (Tech) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700;800&family=Syne:wght@700;800;900&display=swap" rel="stylesheet">
+
   <!-- Tailwind CSS & Markdown Parser -->
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
@@ -25,10 +30,15 @@
       darkMode: 'class',
       theme: {
         extend: {
+          fontFamily: {
+            sans: ['Inter', 'system-ui', 'sans-serif'],
+            display: ['Syne', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace']
+          },
           colors: {
-            brandDark: '#0B0D13',
-            brandCard: '#131620',
-            brandBorder: '#232838',
+            brandDark: '#080A0F',
+            brandCard: '#11141E',
+            brandBorder: '#202636',
             brandCyan: '#00E5FF',
             brandPurple: '#E024C3',
             brandYellow: '#FEE75C',
@@ -41,32 +51,40 @@
     }
   </script>
   <style>
-    body { background-color: #0B0D13; color: #E2E8F0; font-family: system-ui, -apple-system, sans-serif; }
+    body { background-color: #080A0F; color: #E2E8F0; font-family: 'Inter', sans-serif; }
+    .verge-title { font-family: 'Syne', sans-serif; letter-spacing: -0.04em; }
     .glow-verge { transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1); }
-    .glow-verge:hover { transform: translateY(-3px); box-shadow: 0 12px 25px -10px rgba(0, 229, 255, 0.25); border-color: rgba(0, 229, 255, 0.4); }
-    .verge-border { border: 1px solid #232838; }
-    .verge-title { font-family: system-ui, -apple-system, sans-serif; letter-spacing: -0.04em; }
-    .prose-verge { color: #CBD5E1; }
-    .prose-verge h2 { color: #FFFFFF; font-weight: 800; font-size: 1.4rem; margin-top: 1.5rem; margin-bottom: 0.5rem; border-bottom: 2px solid #232838; padding-bottom: 0.4rem; letter-spacing: -0.02em; }
-    .prose-verge h3 { color: #00E5FF; font-weight: 700; font-size: 1.15rem; margin-top: 1.2rem; margin-bottom: 0.4rem; }
-    .prose-verge p { margin-bottom: 1rem; line-height: 1.8; font-size: 0.95rem; }
-    .prose-verge ul { list-style-type: disc; padding-left: 1.25rem; margin-bottom: 1rem; }
-    .prose-verge li { margin-bottom: 0.4rem; }
+    .glow-verge:hover { transform: translateY(-3px); box-shadow: 0 12px 30px -10px rgba(0, 229, 255, 0.25); border-color: rgba(0, 229, 255, 0.45); }
+    .verge-border { border: 1px solid #202636; }
+    
+    /* Long-Form Prose Styling */
+    .prose-verge { color: #CBD5E1; font-size: 1rem; line-height: 1.85; }
+    .prose-verge h2 { font-family: 'Syne', sans-serif; color: #FFFFFF; font-weight: 800; font-size: 1.5rem; margin-top: 2rem; margin-bottom: 0.75rem; border-bottom: 2px solid #202636; padding-bottom: 0.5rem; letter-spacing: -0.03em; }
+    .prose-verge h3 { font-family: 'Syne', sans-serif; color: #00E5FF; font-weight: 700; font-size: 1.2rem; margin-top: 1.5rem; margin-bottom: 0.5rem; }
+    .prose-verge p { margin-bottom: 1.25rem; }
+    .prose-verge ul { list-style-type: disc; padding-left: 1.5rem; margin-bottom: 1.25rem; space-y: 0.5rem; }
+    .prose-verge li { margin-bottom: 0.5rem; }
+    .prose-verge strong { color: #FFFFFF; font-weight: 700; }
     .prose-verge a { color: #00E5FF; text-decoration: underline; font-weight: 700; }
-    .prose-verge blockquote { border-left: 4px solid #E024C3; padding-left: 1rem; color: #94A3B8; font-style: italic; margin: 1rem 0; }
+    .prose-verge blockquote { border-left: 4px solid #E024C3; background: rgba(224, 36, 195, 0.05); padding: 1rem 1.25rem; color: #E2E8F0; font-style: italic; margin: 1.5rem 0; border-radius: 0 1rem 1rem 0; }
+    .prose-verge table { width: 100%; border-collapse: collapse; margin: 1.5rem 0; font-size: 0.875rem; font-family: 'JetBrains Mono', monospace; }
+    .prose-verge th, .prose-verge td { border: 1px solid #202636; padding: 0.75rem 1rem; text-align: left; }
+    .prose-verge th { background: #11141E; color: #00E5FF; font-weight: 700; }
+    .drop-cap::first-letter { float: left; font-family: 'Syne', sans-serif; font-size: 3.75rem; line-height: 0.8; font-weight: 900; margin-right: 0.75rem; color: #00E5FF; }
+
     .ticker-wrap { overflow: hidden; white-space: nowrap; }
-    .ticker-move { display: inline-block; animation: ticker 25s linear infinite; }
+    .ticker-move { display: inline-block; animation: ticker 28s linear infinite; }
     @keyframes ticker { 0% { transform: translate3d(0, 0, 0); } 100% { transform: translate3d(-50%, 0, 0); } }
   </style>
 </head>
 <body class="min-h-screen flex flex-col antialiased selection:bg-brandCyan selection:text-black">
 
-  <!-- Ticker Global -->
+  <!-- Top Wire Ticker -->
   <div class="bg-black border-b border-brandBorder/80 py-1.5 px-4 text-xs font-mono flex items-center justify-between text-slate-400">
     <div class="flex items-center overflow-hidden flex-1 mr-4">
-      <span id="wire-badge" class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded bg-brandPurple/20 text-brandPurple font-black uppercase tracking-widest text-[9px] mr-3 shrink-0 border border-brandPurple/40">
+      <span id="wire-badge" class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded bg-brandPurple/20 text-brandPurple font-black uppercase tracking-widest text-[9px] mr-3 shrink-0 border border-brandPurple/40 font-mono">
         <span class="w-1.5 h-1.5 rounded-full bg-brandPurple animate-ping"></span>
-        RADAR AO VIVO
+        THE WIRE // RADAR
       </span>
       <div class="ticker-wrap flex-1">
         <div id="ticker-text" class="ticker-move text-slate-300 font-medium">
@@ -82,28 +100,28 @@
     </div>
   </div>
 
-  <!-- Header Fixo -->
+  <!-- Header Fixo Brutalista -->
   <header class="sticky top-0 z-50 bg-black/90 backdrop-blur-xl border-b border-brandBorder">
     <div class="max-w-7xl mx-auto px-4 h-20 flex items-center justify-between">
       
       <div class="flex items-center gap-6">
         <a href="#" class="flex items-center gap-3 group">
-          <div class="w-10 h-10 bg-brandCyan text-black font-black text-2xl flex items-center justify-center transform -skew-x-6 shadow-[3px_3px_0px_#E024C3]">
+          <div class="w-11 h-11 bg-brandCyan text-black font-black text-2xl flex items-center justify-center transform -skew-x-6 shadow-[3px_3px_0px_#E024C3] font-display">
             C
           </div>
           <div>
             <span class="text-3xl font-black tracking-tighter text-white uppercase verge-title">
               CORTIC<span class="text-brandCyan font-black">//</span><span class="text-white">FLOW</span>
             </span>
-            <div id="masthead-sub" class="text-[9px] font-mono tracking-widest text-slate-500 uppercase -mt-1">
-              O Fluxo da Tecnologia, Inovação e Inteligência Artificial
+            <div id="masthead-sub" class="text-[9px] font-mono tracking-widest text-slate-500 uppercase -mt-1 font-bold">
+              The Stream of Tech, Innovation and Frontier AI
             </div>
           </div>
         </a>
       </div>
 
       <!-- Menu Desktop -->
-      <nav id="desktop-nav" class="hidden 2xl:flex items-center gap-4 text-xs font-bold uppercase tracking-wider text-slate-300">
+      <nav id="desktop-nav" class="hidden 2xl:flex items-center gap-4 text-xs font-bold uppercase tracking-wider text-slate-300 font-mono">
         <button onclick="selectHub('all', true)" id="dnav-all" class="hover:text-brandCyan transition">Feed Geral</button>
         <button onclick="scrollToSection('leaderboard')" id="dnav-lead" class="hover:text-brandCyan transition text-brandCyan">⚡ Radar LLMs</button>
         <button onclick="selectHub('Windows & PC', true)" id="dnav-win" class="hover:text-brandCyan transition">Windows & PC</button>
@@ -124,51 +142,51 @@
     </div>
 
     <!-- Menu Mobile Dropdown -->
-    <div id="mobile-menu" class="hidden 2xl:hidden bg-slate-950 border-b border-brandBorder px-4 py-4 space-y-2 text-xs font-bold uppercase tracking-wider">
+    <div id="mobile-menu" class="hidden 2xl:hidden bg-slate-950 border-b border-brandBorder px-4 py-4 space-y-2 text-xs font-bold uppercase tracking-wider font-mono">
       <button onclick="selectHub('all', true); toggleMobileMenu();" class="block w-full text-left py-2 px-3 rounded hover:bg-slate-900 text-slate-200">📑 Feed Geral (20)</button>
       <button onclick="scrollToSection('leaderboard'); toggleMobileMenu();" class="block w-full text-left py-2 px-3 rounded hover:bg-slate-900 text-brandCyan">📊 Ranking de LLMs</button>
-      <button onclick="selectHub('Windows & PC', true); toggleMobileMenu();" class="block w-full text-left py-2 px-3 rounded hover:bg-slate-900 text-slate-200">🪟 Windows & PC (2)</button>
-      <button onclick="selectHub('Linux & Open-Source', true); toggleMobileMenu();" class="block w-full text-left py-2 px-3 rounded hover:bg-slate-900 text-slate-200">🐧 Linux & Open-Source (2)</button>
-      <button onclick="selectHub('Apple & iOS', true); toggleMobileMenu();" class="block w-full text-left py-2 px-3 rounded hover:bg-slate-900 text-slate-200">🍏 Apple & iOS (3)</button>
-      <button onclick="selectHub('Android & Gadgets', true); toggleMobileMenu();" class="block w-full text-left py-2 px-3 rounded hover:bg-slate-900 text-slate-200">🤖 Android & Gadgets (3)</button>
-      <button onclick="selectHub('AI & Models', true); toggleMobileMenu();" class="block w-full text-left py-2 px-3 rounded hover:bg-slate-900 text-slate-200">🧠 IA & Modelos (3)</button>
-      <button onclick="selectHub('Business & Startups', true); toggleMobileMenu();" class="block w-full text-left py-2 px-3 rounded hover:bg-slate-900 text-slate-200">🏢 Mercado & Startups (3)</button>
-      <button onclick="selectHub('Science & Space', true); toggleMobileMenu();" class="block w-full text-left py-2 px-3 rounded hover:bg-slate-900 text-slate-200">🔬 Ciência & Futuro (2)</button>
-      <button onclick="selectHub('Tutorials & Guides', true); toggleMobileMenu();" class="block w-full text-left py-2 px-3 rounded hover:bg-slate-900 text-slate-200">🛠️ Tutoriais & Prompts (2)</button>
+      <button onclick="selectHub('Windows & PC', true); toggleMobileMenu();" class="block w-full text-left py-2 px-3 rounded hover:bg-slate-900 text-slate-200">🪟 Windows & PC</button>
+      <button onclick="selectHub('Linux & Open-Source', true); toggleMobileMenu();" class="block w-full text-left py-2 px-3 rounded hover:bg-slate-900 text-slate-200">🐧 Linux & Open-Source</button>
+      <button onclick="selectHub('Apple & iOS', true); toggleMobileMenu();" class="block w-full text-left py-2 px-3 rounded hover:bg-slate-900 text-slate-200">🍏 Apple & iOS</button>
+      <button onclick="selectHub('Android & Gadgets', true); toggleMobileMenu();" class="block w-full text-left py-2 px-3 rounded hover:bg-slate-900 text-slate-200">🤖 Android & Gadgets</button>
+      <button onclick="selectHub('AI & Models', true); toggleMobileMenu();" class="block w-full text-left py-2 px-3 rounded hover:bg-slate-900 text-slate-200">🧠 IA & Modelos</button>
+      <button onclick="selectHub('Business & Startups', true); toggleMobileMenu();" class="block w-full text-left py-2 px-3 rounded hover:bg-slate-900 text-slate-200">🏢 Mercado & Startups</button>
+      <button onclick="selectHub('Science & Space', true); toggleMobileMenu();" class="block w-full text-left py-2 px-3 rounded hover:bg-slate-900 text-slate-200">🔬 Ciência & Futuro</button>
+      <button onclick="selectHub('Tutorials & Guides', true); toggleMobileMenu();" class="block w-full text-left py-2 px-3 rounded hover:bg-slate-900 text-slate-200">🛠️ Tutoriais & Prompts</button>
       <button onclick="selectHub('Newsletter', true); toggleMobileMenu();" class="block w-full text-left py-2 px-3 rounded hover:bg-slate-900 text-brandPurple">📬 Edições de Domingo</button>
     </div>
   </header>
 
-  <!-- Hero Section Modular com Fotos em Todos os Destaques -->
+  <!-- Hero Section Modular Asimétrico (The Verge Bento) -->
   <section class="max-w-7xl mx-auto px-4 pt-8 pb-10 w-full">
     <div class="grid lg:grid-cols-12 gap-6">
       
-      <!-- Matéria 1 de Capa Principal (Esquerda) -->
+      <!-- Matéria 1 de Capa Principal (Esquerda - 7 cols) -->
       <div class="lg:col-span-7 bg-brandCard verge-border rounded-3xl overflow-hidden glow-verge cursor-pointer group flex flex-col justify-between" onclick="openArticleByIndex(0)">
-        <div class="h-72 sm:h-96 relative overflow-hidden bg-slate-900">
+        <div class="h-80 sm:h-[420px] relative overflow-hidden bg-slate-900">
           <img src="https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&w=1200&q=80" alt="Hero Lead" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
-          <div class="absolute inset-0 bg-gradient-to-t from-brandCard via-brandCard/50 to-transparent"></div>
-          <span id="feat-tag" class="absolute top-4 left-4 px-3 py-1 rounded bg-brandPurple text-white text-[10px] font-black uppercase tracking-widest">
+          <div class="absolute inset-0 bg-gradient-to-t from-brandCard via-brandCard/60 to-transparent"></div>
+          <span id="feat-tag" class="absolute top-4 left-4 px-3.5 py-1 rounded bg-brandPurple text-white text-[10px] font-black uppercase tracking-widest font-mono">
             MATÉRIA DE CAPA
           </span>
         </div>
-        <div class="p-6 sm:p-8 -mt-10 relative z-10">
+        <div class="p-6 sm:p-8 -mt-14 relative z-10">
           <div class="text-[11px] font-mono text-brandCyan font-bold uppercase tracking-wider mb-2" id="feat-date">
-            DESTAQUE EDITORIAL • 9 MIN DE LEITURA
+            INVESTIGAÇÃO ESPECIAL • 9 MIN DE LEITURA
           </div>
           <h1 id="feat-title" class="text-2xl sm:text-4xl font-black text-white verge-title leading-tight mb-3 group-hover:text-brandCyan transition-colors">
             A Batalha Energética da IA: Como os Data Centers de 60GW Estão Redesenhando o Mapa Global
           </h1>
-          <p id="feat-excerpt" class="text-slate-400 text-sm sm:text-base leading-relaxed line-clamp-3 mb-4">
-            Uma investigação profunda sobre como o limite de eletricidade e a construção de usinas dedicadas se tornaram o verdadeiro gargalo da tecnologia mundial.
+          <p id="feat-excerpt" class="text-slate-300 text-sm sm:text-base leading-relaxed line-clamp-3 mb-4">
+            Uma investigação profunda sobre como o limite físico de eletricidade e os reatores nucleares modulares se tornaram o verdadeiro gargalo da inteligência artificial.
           </p>
-          <div class="text-xs font-bold text-brandCyan flex items-center gap-1 group-hover:translate-x-1 transition-transform">
-            <span id="feat-btn">Ler Matéria Completa</span> →
+          <div class="text-xs font-bold text-brandCyan flex items-center gap-1 group-hover:translate-x-1 transition-transform font-mono">
+            <span id="feat-btn">Ler Ensaio Completo</span> →
           </div>
         </div>
       </div>
 
-      <!-- Duas Janelas da Direita com Fotos de Fundo -->
+      <!-- Duas Janelas da Direita com Fotos de Fundo (5 cols) -->
       <div class="lg:col-span-5 flex flex-col gap-6">
         
         <!-- Janela 1: Apple & iOS -->
@@ -179,16 +197,16 @@
             <div>
               <div class="flex items-center justify-between mb-2">
                 <span id="hero-right1-cat" class="text-[9px] font-black px-2.5 py-0.5 rounded bg-brandPurple/30 text-white border border-brandPurple/40 uppercase tracking-widest font-mono backdrop-blur-md">🍏 APPLE & IOS</span>
-                <span class="text-[10px] font-mono text-slate-300 font-bold">6 MIN</span>
+                <span class="text-[10px] font-mono text-slate-300 font-bold">7 MIN</span>
               </div>
               <h3 id="hero-right1-title" class="text-lg sm:text-xl font-extrabold text-white verge-title group-hover:text-brandCyan transition-colors leading-snug mb-2">
                 Apple Intelligence e os Novos Chips M-Series: O Futuro do Hardware no iOS e Mac
               </h3>
               <p id="hero-right1-desc" class="text-slate-300 text-xs sm:text-sm line-clamp-2 leading-relaxed">
-                Como a Apple está integrando modelos neurais locais diretamente na NPU dos novos iPhones e Macs para privacidade total e zero latência.
+                Como a Apple integrou memória unificada e arquitetura neural privada de 3B de parâmetros para processamento local com latência zero.
               </p>
             </div>
-            <div id="hero-right1-btn" class="text-xs font-bold text-brandCyan pt-3 border-t border-brandBorder/60 flex items-center gap-1 group-hover:translate-x-1 transition-transform">
+            <div id="hero-right1-btn" class="text-xs font-bold text-brandCyan pt-3 border-t border-brandBorder/60 flex items-center gap-1 group-hover:translate-x-1 transition-transform font-mono">
               Ler Análise Apple →
             </div>
           </div>
@@ -208,10 +226,10 @@
                 Copilot+ PCs e a Transição para Processadores ARM no Windows
               </h3>
               <p id="hero-right2-desc" class="text-slate-300 text-xs sm:text-sm line-clamp-2 leading-relaxed">
-                Como a nova emulação Prism e os chips de 45+ TOPS NPU transformaram a autonomia e a eficiência dos notebooks Windows.
+                A evolução da emulação Prism, chips Snapdragon X Elite e NPUs de 45+ TOPS entregando mais de 20 horas de autonomia real.
               </p>
             </div>
-            <div id="hero-right2-btn" class="text-xs font-bold text-brandCyan pt-3 border-t border-brandBorder/60 flex items-center gap-1 group-hover:translate-x-1 transition-transform">
+            <div id="hero-right2-btn" class="text-xs font-bold text-brandCyan pt-3 border-t border-brandBorder/60 flex items-center gap-1 group-hover:translate-x-1 transition-transform font-mono">
               Ler Análise PC →
             </div>
           </div>
@@ -222,7 +240,7 @@
     </div>
   </section>
 
-  <!-- LLM Benchmark Arena com Logos & Watermarks -->
+  <!-- LLM Benchmark Arena com Logos das Big Techs -->
   <section id="leaderboard" class="border-y border-brandBorder bg-black/70 py-12 px-4 scroll-mt-20">
     <div class="max-w-7xl mx-auto">
       <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-8">
@@ -236,7 +254,7 @@
           </h2>
         </div>
         
-        <div class="flex items-center gap-2 text-xs font-bold uppercase tracking-wider">
+        <div class="flex items-center gap-2 text-xs font-bold uppercase tracking-wider font-mono">
           <button onclick="renderLeaderboard('all')" id="lbtn-all" class="px-3.5 py-1.5 rounded-lg bg-brandCyan text-slate-950 font-black transition">GERAL</button>
           <button onclick="renderLeaderboard('reasoning')" id="lbtn-rea" class="px-3.5 py-1.5 rounded-lg bg-slate-900 text-slate-400 hover:text-white border border-brandBorder transition">RACIOCÍNIO & CÓDIGO</button>
           <button onclick="renderLeaderboard('open')" id="lbtn-opn" class="px-3.5 py-1.5 rounded-lg bg-slate-900 text-slate-400 hover:text-white border border-brandBorder transition">OPEN-SOURCE</button>
@@ -247,7 +265,7 @@
     </div>
   </section>
 
-  <!-- Feed Principal de Matérias (Transição Direta e Limpa) -->
+  <!-- Feed Principal de Matérias (Transição Direta sem Barra Duplicada) -->
   <div class="max-w-7xl mx-auto px-4 py-10 w-full grid lg:grid-cols-12 gap-8" id="feed-container">
     
     <main class="lg:col-span-8 space-y-8 scroll-mt-24" id="feed">
@@ -260,14 +278,14 @@
           <p id="cat-banner-desc" class="text-slate-400 text-xs mt-1">Acervo completo com 20 análises aprofundadas, tutoriais e benchmarks.</p>
         </div>
 
-        <!-- Busca Elegante Integrada -->
+        <!-- Busca Integrada -->
         <div class="relative w-full sm:w-60 shrink-0">
           <input id="search-input" oninput="handleSearch()" type="text" placeholder="Filtrar matérias..." class="w-full pl-8 pr-3 py-2 rounded-xl bg-slate-900 border border-brandBorder text-xs text-white focus:outline-none focus:border-brandCyan transition font-mono">
           <span class="absolute left-3 top-2.5 text-slate-500 text-xs">⚡</span>
         </div>
       </div>
 
-      <!-- Grid com os Artigos Clicáveis com Imagens Únicas -->
+      <!-- Grid com os Artigos Clicáveis com 20 Imagens Exclusivas -->
       <div id="articles-grid" class="grid sm:grid-cols-2 gap-6"></div>
 
       <!-- Bloco de Anúncio Google AdSense Responsivo -->
@@ -284,9 +302,10 @@
       </div>
     </main>
 
-    <!-- Sidebar -->
+    <!-- Sidebar Estilo The Verge -->
     <aside class="lg:col-span-4 space-y-6">
       
+      <!-- Newsletter -->
       <div class="p-6 rounded-3xl bg-brandCard verge-border relative overflow-hidden">
         <div id="sidebar-news-tag" class="flex items-center gap-2 mb-2 text-brandPurple font-mono font-bold text-[10px] tracking-widest uppercase">
           <span>📬</span> DISPARO DIRETO NA CAIXA DE ENTRADA
@@ -295,27 +314,29 @@
         <p id="newsletter-sub" class="text-slate-400 text-xs mb-4 leading-relaxed">Todo domingo às 20h, receba a compilação executiva e o tutorial da semana no seu e-mail.</p>
         <form class="space-y-3" onsubmit="event.preventDefault(); alert(currentLang === 'pt' ? 'Inscrição confirmada no CorticFlow!' : 'Subscription confirmed on CorticFlow!');">
           <input id="newsletter-input" type="email" placeholder="Seu melhor e-mail" required class="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-brandBorder text-white text-xs focus:outline-none focus:border-brandCyan transition font-mono">
-          <button id="newsletter-btn" type="submit" class="w-full py-2.5 rounded-xl bg-brandCyan hover:bg-cyan-300 text-black font-black text-xs uppercase tracking-wider transition">Inscrever-se Grátis</button>
+          <button id="newsletter-btn" type="submit" class="w-full py-2.5 rounded-xl bg-brandCyan hover:bg-cyan-300 text-black font-black text-xs uppercase tracking-wider transition font-mono">Inscrever-se Grátis</button>
         </form>
       </div>
 
+      <!-- Prompt da Semana -->
       <div class="p-6 rounded-3xl bg-brandCard verge-border">
         <div class="flex items-center justify-between mb-3">
-          <span id="prompt-tag" class="text-[9px] font-black px-2 py-0.5 rounded bg-brandPurple/20 text-brandPurple uppercase tracking-widest border border-brandPurple/30">PROMPT DA SEMANA</span>
+          <span id="prompt-tag" class="text-[9px] font-black px-2 py-0.5 rounded bg-brandPurple/20 text-brandPurple uppercase tracking-widest border border-brandPurple/30 font-mono">PROMPT DA SEMANA</span>
           <span id="prompt-cat-label" class="text-[10px] font-mono text-slate-500">PRODUTIVIDADE</span>
         </div>
-        <h4 id="prompt-card-title" class="text-sm font-bold text-white mb-2">Auditoria e Refatoração de Código</h4>
-        <p id="prompt-card-desc" class="text-slate-400 text-xs mb-3">Prompt calibrado para analisar segurança, complexidade ciclomática e latência.</p>
+        <h4 id="prompt-card-title" class="text-sm font-bold text-white mb-2 font-display">Auditoria e Refatoração de Código</h4>
+        <p id="prompt-card-desc" class="text-slate-400 text-xs mb-3">Prompt calibrado para analisar vulnerabilidades de injeção, memory leaks e latência.</p>
         <div class="bg-black p-3.5 rounded-xl border border-brandBorder text-[11px] font-mono text-slate-300 mb-3 max-h-28 overflow-y-auto leading-relaxed" id="prompt-code">
           "Atue como Engenheiro Sênior de QA e Segurança. Analise o código a seguir procurando vulnerabilidades de injeção, memory leaks e gargalos de latência. Forneça a versão corrigida acompanhada da justificativa técnica."
         </div>
-        <button onclick="copyPrompt()" id="btn-copy-prompt" class="w-full py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-brandCyan text-xs font-bold border border-brandBorder transition uppercase tracking-wider">
+        <button onclick="copyPrompt()" id="btn-copy-prompt" class="w-full py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-brandCyan text-xs font-bold border border-brandBorder transition uppercase tracking-wider font-mono">
           📋 Copiar Prompt
         </button>
       </div>
 
+      <!-- Mais Lidas -->
       <div class="p-6 rounded-3xl bg-brandCard verge-border">
-        <h3 id="top-title" class="text-xs font-black text-white uppercase tracking-widest mb-4 flex items-center gap-2 border-b border-brandBorder pb-3">
+        <h3 id="top-title" class="text-xs font-black text-white uppercase tracking-widest mb-4 flex items-center gap-2 border-b border-brandBorder pb-3 font-mono">
           🔥 MAIS LIDAS DA SEMANA
         </h3>
         <div class="space-y-4" id="top-list">
@@ -330,7 +351,7 @@
             <span class="text-2xl font-black text-brandPurple font-mono">02</span>
             <div>
               <h5 class="text-xs font-bold text-slate-200 group-hover:text-brandCyan transition leading-snug">Apple Intelligence e a Nova Linha M-Series</h5>
-              <span class="text-[10px] font-mono text-slate-500">6 min • Apple & iOS</span>
+              <span class="text-[10px] font-mono text-slate-500">7 min • Apple & iOS</span>
             </div>
           </div>
           <div class="flex items-start gap-3 cursor-pointer group" onclick="openArticleByIndex(6)">
@@ -344,7 +365,7 @@
             <span class="text-2xl font-black text-brandOrange font-mono">04</span>
             <div>
               <h5 class="text-xs font-bold text-slate-200 group-hover:text-brandCyan transition leading-snug">A Ascensão do Linux em Servidores de IA</h5>
-              <span class="text-[10px] font-mono text-slate-500">7 min • Linux</span>
+              <span class="text-[10px] font-mono text-slate-500">8 min • Linux</span>
             </div>
           </div>
         </div>
@@ -353,9 +374,11 @@
     </aside>
   </div>
 
-  <!-- Modal de Leitura Integral -->
+  <!-- Modal de Leitura Long-Form Estilo The Verge -->
   <div id="article-modal" style="display: none;" class="fixed inset-0 z-[100] bg-black/90 backdrop-blur-xl items-center justify-center p-3 sm:p-6" onclick="if(event.target === this) closeModal();">
     <div class="bg-brandCard verge-border rounded-3xl max-w-3xl w-full max-h-[92vh] flex flex-col shadow-[0_20px_60px_rgba(0,0,0,0.9)] overflow-hidden relative">
+      
+      <!-- Topo do Modal -->
       <div class="p-5 sm:p-6 border-b border-brandBorder flex items-center justify-between bg-black/80">
         <div class="flex items-center gap-3">
           <span id="modal-cat" class="text-[10px] font-black px-2.5 py-1 rounded bg-brandCyan/20 text-brandCyan border border-brandCyan/30 uppercase tracking-widest font-mono"></span>
@@ -363,9 +386,18 @@
         </div>
         <button onclick="closeModal()" class="w-8 h-8 rounded-full bg-slate-900 hover:bg-slate-800 text-slate-200 flex items-center justify-center text-base font-bold transition">✕</button>
       </div>
+
+      <!-- Corpo da Matéria Long-Form -->
       <div class="p-6 sm:p-10 overflow-y-auto flex-1">
-        <h1 id="modal-title" class="text-2xl sm:text-4xl font-black text-white verge-title mb-6 leading-tight"></h1>
-        <div id="modal-content" class="prose-verge text-sm sm:text-base"></div>
+        <div class="mb-6 pb-6 border-b border-brandBorder">
+          <h1 id="modal-title" class="text-2xl sm:text-4xl font-black text-white verge-title mb-4 leading-tight"></h1>
+          <div class="flex items-center gap-4 text-xs font-mono text-slate-400">
+            <span class="text-brandCyan font-bold">Por Equipe CorticFlow</span>
+            <span>•</span>
+            <span id="modal-readtime" class="bg-slate-900 px-2 py-0.5 rounded border border-brandBorder"></span>
+          </div>
+        </div>
+        <div id="modal-content" class="prose-verge drop-cap"></div>
       </div>
     </div>
   </div>
@@ -381,7 +413,7 @@
         <p id="footer-about" class="text-slate-400 text-xs leading-relaxed">O fluxo da tecnologia, inovação e inteligência artificial. Portal independente de notícias, análises de produtos e tutoriais autônomos.</p>
       </div>
       <div>
-        <h4 id="footer-cat-title" class="text-white font-black mb-3 uppercase tracking-widest text-[10px]">EDITORIAS</h4>
+        <h4 id="footer-cat-title" class="text-white font-black mb-3 uppercase tracking-widest text-[10px] font-mono">EDITORIAS</h4>
         <ul class="space-y-2">
           <li><button onclick="selectHub('Windows & PC', true)" class="hover:text-brandCyan transition">Windows & PC</button></li>
           <li><button onclick="selectHub('Linux & Open-Source', true)" class="hover:text-brandCyan transition">Linux & Open-Source</button></li>
@@ -391,7 +423,7 @@
         </ul>
       </div>
       <div>
-        <h4 id="footer-inst-title" class="text-white font-black mb-3 uppercase tracking-widest text-[10px]">INSTITUCIONAL</h4>
+        <h4 id="footer-inst-title" class="text-white font-black mb-3 uppercase tracking-widest text-[10px] font-mono">INSTITUCIONAL</h4>
         <ul class="space-y-2">
           <li><a href="privacy.html" id="fnav-priv" class="hover:text-brandCyan transition">Política de Privacidade</a></li>
           <li><a href="terms.html" id="fnav-terms" class="hover:text-slate-300 transition">Termos de Uso</a></li>
@@ -400,7 +432,7 @@
         </ul>
       </div>
       <div>
-        <h4 id="footer-sun-title" class="text-white font-black mb-3 uppercase tracking-widest text-[10px]">EDIÇÃO DE DOMINGO</h4>
+        <h4 id="footer-sun-title" class="text-white font-black mb-3 uppercase tracking-widest text-[10px] font-mono">EDIÇÃO DE DOMINGO</h4>
         <p id="footer-sun-desc" class="text-slate-400 text-xs mb-2">Entregue todo domingo às 20h pelo pipeline autônomo do Gemini.</p>
         <span class="inline-block px-2 py-0.5 rounded bg-slate-900 text-brandCyan border border-brandCyan/20 text-[10px] font-mono">100% Serverless Architecture</span>
       </div>
@@ -512,324 +544,425 @@
         {
           title: "A Batalha Energética da IA: Como os Data Centers de 60GW Estão Redesenhando o Mapa Global",
           category: "Business & Startups",
-          date: "Destaque",
+          date: "9 min de leitura",
+          readTime: "9 min de leitura",
           image: "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&w=800&q=80",
-          excerpt: "Uma investigação profunda sobre como o limite de eletricidade e a construção de usinas dedicadas se tornaram o verdadeiro gargalo da inteligência artificial global.",
-          content: "## O Gargalo Físico da Revolução Digital\n\nA fronteira da inteligência artificial não é mais delimitada apenas pelo avanço algorítmico, mas sim pela disponibilidade física de megawatts de energia elétrica. O surgimento de data centers de hiperescala exigindo até **2GW a 5GW por cluster** está redefinindo as prioridades das maiores empresas do planeta.\n\n### 1. A Escala da Demanda Energética\n* **Capacidade Projetada:** A previsão global aponta que a capacidade de data centers dedicados a IA dobrará para mais de **60GW até 2030**.\n* **Reatores Nucleares Modulares (SMRs):** Big Techs como Microsoft, Google e Amazon estão assinando acordos de compra de energia direta de usinas nucleares para alimentar racks de chips Nvidia B200 e ASICs proprietários.\n* **Geopolítica da Computação:** Regiões com matriz elétrica estável e barata estão se tornando os novos pólos de atração de capital de risco."
+          excerpt: "Uma investigação profunda sobre como o limite físico de eletricidade e os reatores nucleares modulares se tornaram o verdadeiro gargalo da inteligência artificial global.",
+          content: `## O Gargalo Físico da Revolução Digital
+
+A fronteira da inteligência artificial não é mais delimitada apenas pela quantidade de parâmetros matemáticos ou pela elegância dos algoritmos neurais. O verdadeiro limite de escala que as grandes companhias de tecnologia enfrentam hoje é puramente **físico e elétrico: megawatts de potência estável** entregues na rede de transmissão.
+
+Com o surgimento de clusters de treinamento que exigem de **2GW a 5GW por instalação**, a demanda energética dos data centers globais está crescendo a uma taxa sem precedentes na história corporativa moderna.
+
+> "A computação moderna encontrou seu limite mais antigo e impiedoso: a termodinâmica e a capacidade física da rede de alta tensão."
+
+---
+
+### 1. A Escala da Demanda Energética
+
+A projeção de consumo das principais consultorias de energia aponta que a capacidade de data centers dedicados exclusivamente a cargas de inteligência artificial atingirá mais de **60GW até 2030**. Para efeito de comparação:
+
+* **Equivalência Nacional:** 60GW é equivalente ao consumo elétrico total de um país de médio porte como a Itália ou a soma de 4 usinas hidrelétricas de Itaipu operando na potência máxima.
+* **Consumo por Rack de Servidores:** Um rack de servidores de alta densidade equipado com chips Nvidia Blackwell B200 consome entre **100kW e 130kW**, exigindo refrigeração líquida direta no silício (*Direct-to-Chip Liquid Cooling*).
+* **Gargalo de Subestações:** O tempo de espera para concessionárias de energia construírem novas subestações de alta tensão nos Estados Unidos e na Europa saltou de 18 meses para mais de **4 a 7 anos**.
+
+---
+
+### 2. A Renascença Nuclear das Big Techs
+
+Para contornar o colapso das redes públicas e cumprir metas de emissão líquida zero de carbono, as gigantes de tecnologia estão fechando contratos bilionários de energia direta (*Power Purchase Agreements - PPAs*) com operadoras de energia nuclear e startups de **Reatores Nucleares Modulares (SMRs)**:
+
+| Empresa | Parceiro Energético | Capacidade Prevista | Tecnologia |
+| :--- | :--- | :--- | :--- |
+| **Microsoft** | Constellation Energy | 835 MW (Three Mile Island Unit 1) | Reativação de Usina Nuclear |
+| **Amazon (AWS)** | Talen Energy | 960 MW (Cumulus Data Center) | Energia Nuclear Direta Dedicada |
+| **Google** | Kairos Power | 500 MW (Múltiplos SMRs) | Reator Nuclear de Sal Fundido |
+
+---
+
+### 3. Geopolítica e a Nova Cartografia dos Data Centers
+
+A busca incessante por energia barata e abundante está redesenhando o mapa global dos investimentos em infraestrutura. Países e regiões com excesso de geração renovável e redes robustas — como o Norte da Europa, o interior dos Estados Unidos e o Brasil — estão se transformando em pólos estratégicos para a construção de novas instalações de hiperescala.
+
+### Conclusão e Perspectivas
+
+O vencedor da corrida de inteligência artificial não será necessariamente quem possuir o modelo com mais parâmetros, mas quem dominar a logística de fornecimento de eletricidade e infraestrutura de resfriamento em escala de gigawatts.`
         },
         {
           title: "O Paradoxo da Produtividade: Por Que a IA Não Está Destruindo os Empregos de Escritório",
           category: "Business & Startups",
-          date: "Economia",
+          date: "8 min de leitura",
+          readTime: "8 min de leitura",
           image: "https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=800&q=80",
           excerpt: "Análise dos dados do mercado de trabalho revelando como os agentes de IA expandem o escopo de trabalho em vez de causar desemprego em massa.",
-          content: "## A Reavaliação do Impacto no Trabalho Cognitivo\n\nAo contrário das previsões apocalípticas de substituição em massa de trabalhadores de colarinho branco, dados recentes do mercado de trabalho mostram que a inteligência artificial generativa está agindo como um **amplificador de escopo** em vez de uma ferramenta de demissão em massa.\n\n### Principais Destaques:\n* **Engenharia de Software:** Programadores passam de redatores de código para arquitetos de sistemas que gerenciam múltiplos bots.\n* **Análise Financeira e Jurídica:** Redução de 80% no tempo de auditoria de contratos extensos."
-        },
-        {
-          title: "Os $1.4 Trilhões em Jogo no S&P 500: As Big Techs Vão Conseguir Monetizar o Boom de IA?",
-          category: "Business & Startups",
-          date: "Mercado",
-          image: "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?auto=format&fit=crop&w=800&q=80",
-          excerpt: "Mais de 50% das 20 maiores empresas americanas agora dependem diretamente dos retornos de inteligência artificial.",
-          content: "## A Maior Aposta de Capex da História Corporativa\n\nMais de 50% do valor de mercado das 20 maiores companhias do índice S&P 500 está diretamente exposto à tese de crescimento da IA. O desafio das gigantes de tecnologia migrou da construção de modelos para a demonstração tangível de receita recorrente de software e serviços empresariais."
+          content: `## A Reavaliação do Impacto no Trabalho Cognitivo
+
+Ao contrário das previsões apocalípticas de substituição em massa de trabalhadores de colarinho branco, os relatórios empíricos mais recentes sobre o mercado de trabalho global revelam um fenômeno muito mais sutil e produtivo: a inteligência artificial generativa está agindo como um **amplificador de escopo** em vez de uma ferramenta de demissão generalizada.
+
+Esse fenômeno, conhecido na teoria econômica como o *Paradoxo de Jevons*, postula que quando o custo de executar uma tarefa cai drasticamente, a demanda total por essa atividade não diminui — ela cresce exponencialmente.
+
+> "A inteligência artificial barateia o custo de produzir análises e código, fazendo com que as empresas demandem 10 vezes mais projetos e produtos digitais."
+
+---
+
+### 1. Engenharia de Software: A Mudança de Paradigma
+
+Na área de desenvolvimento de software, a introdução de copilotos e agentes autônomos alterou a função do programador:
+
+* **Do Código para a Arquitetura:** Em vez de gastar horas escrevendo sintaxe repetitiva e código boilerplate, engenheiros agora passam a maior parte do tempo desenhando sistemas distribuídos e auditando a lógica gerada pelos modelos.
+* **Volume de Features Entregues:** Times que utilizam pipelines de IA relatam um aumento de até **55% na velocidade de entrega**, permitindo lançar funcionalidades que antes ficavam congeladas no backlog por falta de orçamento.
+
+---
+
+### 2. Setor Financeiro e Jurídico
+
+Em auditorias financeiras, análise de balanços e contratos legais complexos, a IA reduziu o tempo gasto em checagens preliminares de 2 semanas para menos de 4 horas:
+
+* **Auditoria Contínua:** Contratos de fusões e aquisições (M&A) com centenas de páginas são processados em segundos, permitindo que advogados foquem em estratégias de negociação e mitigação de risco.
+* **Prevenção de Fraudes:** Modelos preditivos cruzam milhões de transações bancárias em tempo real, identificando anomalias fiscais com precisão matemática superior à humana.
+
+### Síntese Final
+
+A automação cognitiva redefine a produtividade corporativa ao eliminar tarefas burocráticas e liberar capacidade analítica para tomada de decisões estratégicas de alto valor.`
         },
         {
           title: "Apple Intelligence e os Novos Chips M-Series: O Futuro do Hardware no iOS e Mac",
           category: "Apple & iOS",
-          date: "Apple & Tech",
+          date: "7 min de leitura",
+          readTime: "7 min de leitura",
           image: "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?auto=format&fit=crop&w=800&q=80",
-          excerpt: "Como a Apple está integrando modelos neurais locais diretamente na NPU dos novos iPhones e Macs para privacidade total e zero latência.",
-          content: "## A Estratégia de IA Local da Apple\n\nA Apple adotou uma abordagem única no mercado de tecnologia: em vez de depender exclusivamente da nuvem, a empresa arquitetou o **Apple Intelligence** para processar 90% das tarefas diárias diretamente no silício dos iPhones e Macs com chips M-Series.\n\n### Inovações Técnicas:\n* **Memória Unificada:** A arquitetura de memória compartilhada permite que a GPU e a NPU acessem pesos de modelos de até 3B de parâmetros sem gargalo de barramento.\n* **Private Cloud Compute:** Quando uma tarefa exige um modelo maior, a requisição é enviada a servidores dedicados com chips de silício da Apple, sem armazenamento de logs ou dados do usuário."
-        },
-        {
-          title: "iOS e VisionOS: A Evolução da Interface Espacial e Computação Vestível",
-          category: "Apple & iOS",
-          date: "Review",
-          image: "https://images.unsplash.com/photo-1593508512255-86ab42a8e620?auto=format&fit=crop&w=800&q=80",
-          excerpt: "Análise profunda sobre a convergência entre sistemas operacionais móveis e a computação espacial imersiva da Apple.",
-          content: "## A Próxima Fronteira das Interfaces Digitais\n\nCom o avanço do VisionOS e sua integração nativa com o ecossistema iOS e macOS, a computação espacial deixa de ser um experimento e passa a integrar fluxos reais de trabalho multitelas e design 3D."
-        },
-        {
-          title: "Guia de Bateria e Desempenho: Como Otimizar Dispositivos Apple para Uso Intenso",
-          category: "Apple & iOS",
-          date: "Guia",
-          image: "https://images.unsplash.com/photo-1510519138197-06b8628cbf4f?auto=format&fit=crop&w=800&q=80",
-          excerpt: "Dicas avançadas de gerenciamento térmico, ciclos de recarga e ajustes de sistema para extrair a máxima autonomia de Macs e iPhones.",
-          content: "## Maximizando a Eficiência do Silício Apple\n\nConfigurações de gerenciamento de energia, monitoramento de processos em segundo plano e boas práticas de ciclos de carga preservam a saúde da bateria por anos de uso profissional intenso."
+          excerpt: "Como a Apple integrou memória unificada e arquitetura neural privada de 3B de parâmetros para processamento local com latência zero.",
+          content: `## A Estratégia de IA no Silício da Apple
+
+A Apple adotou uma filosofia arquitetural radicalmente diferente de seus concorrentes na corrida da inteligência artificial: em vez de terceirizar 100% da computação neural para centros de dados em nuvem, Cupertino projetou o **Apple Intelligence** para operar prioritariamente de forma local (*On-Device Silicon*).
+
+A base dessa estratégia repousa sobre a arquitetura de **Memória Unificada (Unified Memory Architecture - UMA)** dos processadores M-Series e chips da linha A-Pro.
+
+---
+
+### 1. A Vantagem da Memória Unificada
+
+Em computadores tradicionais, os pesos de um modelo de linguagem precisam ser transferidos da memória RAM principal para a VRAM da GPU dedicada através do barramento PCIe, criando latência térmica e atraso de transferência.
+
+* **Acesso Instantâneo:** Nos chips Apple Silicon, a CPU, a GPU e a Neural Engine (NPU) compartilham um único pool físico de memória ultrarrápida (com largura de banda de até **400GB/s a 800GB/s** nos chips Max/Ultra).
+* **Modelos de 3 Bilhões de Parâmetros:** A Apple compactou modelos de linguagem especializados com quantização de 3.5 bits, permitindo que rodem continuamente em segundo plano consumindo menos de 1.5GB de RAM.
+
+---
+
+### 2. O Protocolo Private Cloud Compute (PCC)
+
+Para tarefas que ultrapassam a capacidade física do silício local, a Apple desenvolveu o **Private Cloud Compute**:
+
+1. **Isolamento Criptográfico:** A requisição é transmitida para servidores dedicados equipados com nós de silício Apple M-Series.
+2. **Zero Retenção de Dados:** Os nós de PCC rodam sistemas operacionais stateless sem discos de armazenamento persistente; nenhum log ou histórico do usuário é salvo.
+3. **Auditoria Aberta:** Pesquisadores independentes de segurança podem inspecionar o código criptográfico de cada imagem de software do PCC para validar que a privacidade é absoluta.
+
+### O Veredito de Hardware
+
+A integração vertical entre hardware proprietário, sistema operacional e modelos locais consolida o iOS e o macOS como as plataformas mais seguras e eficientes para produtividade orientada por IA.`
         },
         {
           title: "Copilot+ PCs e a Transição para Processadores ARM no Windows",
           category: "Windows & PC",
-          date: "Windows",
+          date: "6 min de leitura",
+          readTime: "6 min de leitura",
           image: "https://images.unsplash.com/photo-1588872657578-7efd1f1555ed?auto=format&fit=crop&w=800&q=80",
-          excerpt: "Como a nova emulação Prism e os chips de 45+ TOPS NPU transformaram a autonomia e a eficiência dos notebooks Windows.",
-          content: "## A Nova Era dos Computadores Pessoais Windows\n\nA arquitetura Windows on ARM alcançou sua maturidade definitiva com os **Copilot+ PCs**. Equipados com processadores Snapdragon X Elite e as mais recentes soluções Intel e AMD com NPUs dedicadas, os novos computadores entregam mais de 20 horas de bateria com desempenho comparável ao silício da Apple.\n\n### Principais Avanços Técnicos:\n* **Emulação Prism:** Camada de tradução de instruções x86 para ARM64 com perda de desempenho inferior a 5%.\n* **Execução Neural Local:** Recursos avançados de busca semântica, legendas em tempo real e geração de imagens processados diretamente no chip local sem conexão à internet.\n* **Eficiência Térmica:** Laptops ultrafinos e silenciosos sem superaquecimento mesmo sob carga prolongada."
-        },
-        {
-          title: "Windows 11 e 12: Otimizações de Sistema, DirectStorage e Desempenho em Gaming",
-          category: "Windows & PC",
-          date: "Hardware",
-          image: "https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&w=800&q=80",
-          excerpt: "Guia técnico de configurações de registro, drivers de GPU e recursos de DirectStorage para extrair o máximo de FPS e velocidade de renderização.",
-          content: "## Otimizando o Windows para Cargas Pesadas\n\nCom a integração do DirectStorage para descompressão de assets diretamente na GPU e o isolamento de processos de IA, o sistema operacional da Microsoft atinge tempos de carregamento instantâneos em softwares de engenharia e jogos modernos."
+          excerpt: "A evolução da emulação Prism, chips Snapdragon X Elite e NPUs de 45+ TOPS entregando mais de 20 horas de autonomia real no Windows.",
+          content: `## A Revolução da Eficiência Energética no Windows
+
+A transição da plataforma Windows para a arquitetura **ARM64** finalmente atingiu sua maturidade com o lançamento do ecossistema de computadores **Copilot+ PCs**.
+
+Equipados com processadores Qualcomm Snapdragon X Elite/Plus e chips x86 de última geração com NPUs integradas de mais de **45 TOPS (Trilhões de Operações por Segundo)**, os novos notebooks Windows superaram a histórica barreira de consumo de energia dos chips x86 tradicionais.
+
+---
+
+### 1. A Nova Camada de Emulação Prism
+
+O grande calcanhar de aquiles das tentativas anteriores do Windows on ARM era a perda de desempenho ao executar aplicativos legados compilados em x86/x64.
+
+* **Tradução Dinâmica:** O motor de emulação **Prism** do Windows 11 analisa os blocos de instruções x86 em tempo de execução e os converte diretamente para microcódigo ARM64 com menos de **5% de perda de desempenho**.
+* **Suporte Nativo das Grandes Engines:** Softwares pesados como Adobe Photoshop, DaVinci Resolve, Office 365 e navegadores modernos agora rodam nativamente compilados em binários ARM64 puros.
+
+---
+
+### 2. Autonomia de Bateria Real de 20+ Horas
+
+O benefício mais impactante para o usuário final é o perfil térmico e a autonomia:
+
+* **Zero Aquecimento Excessivo:** Laptops ultrafinos conseguem manter cargas de trabalho de escritório sem acionar ventoinhas de resfriamento.
+* **NPUs Dedicadas:** Funções neurais de transcrição de áudio em tempo real, redução de ruído de câmera e busca semântica no disco não consom ciclos da CPU principal, preservando a carga da bateria por dias de trabalho intenso.`
         },
         {
           title: "A Ascensão do Linux em Servidores de IA e Ambientes de Nuvem",
           category: "Linux & Open-Source",
-          date: "Linux",
+          date: "8 min de leitura",
+          readTime: "8 min de leitura",
           image: "https://images.unsplash.com/photo-1629654297299-c8506221ca97?auto=format&fit=crop&w=800&q=80",
-          excerpt: "Por que o ecossistema de kernels Linux em tempo real e orquestração Docker se tornou a espinha dorsal de todo treinamento de IA.",
-          content: "## O Sistema Operacional que Alimenta a Nuvem Global\n\nMais de 95% das cargas de trabalho de Inteligência Artificial em nuvem rodam sobre distribuições Linux (como Ubuntu Server, Debian e RHEL). A eficiência no gerenciamento de memória virtual e o suporte nativo a drivers de GPU tornam o Linux insubstituível na infraestrutura moderna.\n\n### Pilares do Ecossistema Linux na IA:\n* **Kernels com Baixa Latência:** Agendamento de processos otimizado para clusters de computação paralela.\n* **Isolamento em Contêineres:** Deploy determinístico de pipelines de treinamento e inferência via Docker e Kubernetes.\n* **Drivers Open-Source:** O avanço de drivers de código aberto para aceleradores e placas gráficas."
+          excerpt: "Por que o ecossistema de kernels Linux em tempo real e orquestração Docker se tornou a espinha dorsal de todo treinamento de IA global.",
+          content: `## A Infraestrutura Aberta que Alimenta a Inteligência Artificial
+
+Mais de 98% das cargas de trabalho de Inteligência Artificial em nuvem rodam sobre distribuições Linux enterprise, como **Ubuntu Server, Debian e Red Hat Enterprise Linux (RHEL)**.
+
+A estabilidade do kernel do Linux, o gerenciamento de memória virtual de baixa latência e a maturidade dos drivers open-source tornam o sistema operacional aberto o alicerce insubstituível de qualquer cluster de supercomputação moderno.
+
+---
+
+### 1. Kernels de Baixa Latência e Agendamento de Tarefas
+
+O treinamento distribuído de modelos de linguagem de fronteira (como Llama, DeepSeek e GPT) exige a sincronização de milhares de GPUs interconectadas via redes InfiniBand de **800Gbps**.
+
+* **Preempt RT (Real-Time):** Recursos nativos do kernel Linux garantem que interrupções de hardware e transferências de memória entre nós ocorram com latência determinística no nível de microssegundos.
+* **Gerenciamento de HugePages:** O Linux permite alocar blocos contíguos de memória de 2MB e 1GB, reduzindo a sobrecarga da tabela de páginas em servidores com terabytes de RAM.
+
+---
+
+### 2. Orquestração e Deploy com Docker e Kubernetes
+
+A padronização de contêineres Docker e orquestradores Kubernetes no Linux viabilizou o ciclo de vida moderno do MLOps:
+
+* **Ambientes Reprodutíveis:** Cientistas de dados conseguem empacotar versões exatas de bibliotecas CUDA, PyTorch e Hugging Face em imagens de contêiner imutáveis.
+* **Escalabilidade Serverless:** Nós de inferência são iniciados e desligados em segundos de acordo com a demanda de tráfego, otimizando o custo computacional de grandes operações corporativas.`
+        },
+        {
+          title: "Os $1.4 Trilhões em Jogo no S&P 500: As Big Techs Vão Conseguir Monetizar o Boom de IA?",
+          category: "Business & Startups",
+          date: "7 min de leitura",
+          readTime: "7 min de leitura",
+          image: "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?auto=format&fit=crop&w=800&q=80",
+          excerpt: "Mais de 50% das 20 maiores empresas americanas agora dependem diretamente dos retornos de inteligência artificial.",
+          content: `## A Maior Aposta de Capex da História Corporativa
+
+Mais de metade do valor de mercado das 20 maiores companhias do índice S&P 500 está diretamente exposto à tese de expansão e monetização da inteligência artificial.
+
+Com os investimentos em bens de capital (*Capex*) das Big Techs superando a marca histórica de **$200 bilhões por ano**, Wall Street começou a exigir provas tangíveis de receita recorrente gerada por essas tecnologias.
+
+---
+
+### 1. A Transição da Infraestrutura para o Software
+
+A primeira fase do boom de IA beneficiou majoritariamente os fabricantes de chips e servidores (como Nvidia e TSMC). A segunda fase exige que as empresas de software demonstrem que clientes corporativos estão dispostos a pagar por licenças e consumo de API de forma sustentável:
+
+* **Geração de Valor Real:** Softwares corporativos que apenas agregam chatbots simples estão enfrentando altas taxas de cancelamento (*churn*).
+* **Soluções Verticais:** As ferramentas que conquistam contratos corporativos de longo prazo são aquelas que automatizam fluxos de trabalho completos em saúde, finanças, logística e engenharia de software.`
+        },
+        {
+          title: "iOS e VisionOS: A Evolução da Interface Espacial e Computação Vestível",
+          category: "Apple & iOS",
+          date: "6 min de leitura",
+          readTime: "6 min de leitura",
+          image: "https://images.unsplash.com/photo-1593508512255-86ab42a8e620?auto=format&fit=crop&w=800&q=80",
+          excerpt: "Análise profunda sobre a convergência entre sistemas operacionais móveis e a computação espacial imersiva da Apple.",
+          content: `## A Próxima Fronteira das Interfaces Digitais
+
+Com a evolução do **VisionOS** e sua integração nativa com o ecossistema iOS e macOS, a computação espacial deixou de ser uma demonstração de laboratório para se tornar um ambiente funcional de trabalho e design tridimensional.
+
+A combinação de rastreamento ocular de alta precisão (*Eye Tracking*) e gestos manuais intuitivos estabeleceu o novo padrão de interação humana com máquinas.`
+        },
+        {
+          title: "Guia de Bateria e Desempenho: Como Otimizar Dispositivos Apple para Uso Intenso",
+          category: "Apple & iOS",
+          date: "6 min de leitura",
+          readTime: "6 min de leitura",
+          image: "https://images.unsplash.com/photo-1510519138197-06b8628cbf4f?auto=format&fit=crop&w=800&q=80",
+          excerpt: "Dicas avançadas de gerenciamento térmico, ciclos de recarga e ajustes de sistema para extrair a máxima autonomia de Macs e iPhones.",
+          content: `## Maximizando a Eficiência do Silício Apple
+
+Configurações avançadas de gerenciamento de energia, monitoramento de processos em segundo plano e boas práticas de ciclos de carga preservam a saúde da bateria por anos de uso profissional intenso.
+
+Ajustes finos no macOS e iOS permitem reduzir o consumo em repouso e manter o processador operando na sua curva de eficiência ideal sob cargas pesadas.`
+        },
+        {
+          title: "Windows 11 e 12: Otimizações de Sistema, DirectStorage e Desempenho em Gaming",
+          category: "Windows & PC",
+          date: "6 min de leitura",
+          readTime: "6 min de leitura",
+          image: "https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&w=800&q=80",
+          excerpt: "Guia técnico de configurações de registro, drivers de GPU e recursos de DirectStorage para extrair o máximo de FPS e velocidade de renderização.",
+          content: `## Otimizando o Windows para Cargas Pesadas
+
+Com a integração do **DirectStorage** para descompressão de assets diretamente na memória da placa de vídeo (GPU) e o isolamento de processos de IA, o sistema operacional da Microsoft atinge tempos de carregamento instantâneos em softwares de engenharia 3D e jogos modernos.`
         },
         {
           title: "Distribuições Linux Leves para Rodar Modelos de Linguagem Localmente",
           category: "Linux & Open-Source",
-          date: "Open-Source",
+          date: "7 min de leitura",
+          readTime: "7 min de leitura",
           image: "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?auto=format&fit=crop&w=800&q=80",
           excerpt: "Como configurar um ambiente Linux minimalista para executar LLMs locais usando Ollama, vLLM e quantização GGUF.",
-          content: "## Montando seu Servidor Doméstico de IA com Linux\n\nCom distribuições Linux enxutas, você consegue alocar até 98% da memória RAM e da VRAM exclusivamente para os pesos do modelo de IA, sem o overhead de processos pesados em segundo plano de sistemas proprietários."
+          content: `## Montando seu Servidor Doméstico de IA com Linux
+
+Com distribuições Linux enxutas, você consegue alocar até **98% da memória RAM e da VRAM** exclusivamente para os pesos do modelo de IA, sem o overhead de processos gráficos pesados de sistemas proprietários.
+
+A utilização de ferramentas como **vLLM** e **Ollama** em servidores headless Linux permite taxas de inferência de mais de 80 tokens por segundo em computadores pessoais.`
         },
         {
           title: "A Revolução dos Smartphones Dobráveis e o Avanço dos Processadores Móveis",
           category: "Android & Gadgets",
-          date: "Hardware",
+          date: "6 min de leitura",
+          readTime: "6 min de leitura",
           image: "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?auto=format&fit=crop&w=800&q=80",
           excerpt: "Análise comparativa das inovações em telas flexíveis, câmeras periscópio e novos chips Snapdragon e Dimensity.",
-          content: "## O Amadurecimento dos Dobráveis\n\nOs dobráveis (*foldables*) superaram os desafios mecânicos iniciais de vincos e dobradiças. Processadores modernos de 3nm trazem NPUs dedicadas capazes de executar modelos de visão computacional em tempo real na câmera."
+          content: `## O Amadurecimento dos Dobráveis
+
+Os smartphones dobráveis (*foldables*) superaram os desafios mecânicos iniciais de vincos e dobradiças frágeis.
+
+Processadores modernos de 3nm trazem NPUs dedicadas capazes de executar modelos de visão computacional em tempo real na câmera, com baterias de silício-carbono que entregam autonomia para o dia inteiro.`
         },
         {
           title: "Top Smartphones e Gadgets de 2026: Análise de Custo-Benefício e Desempenho",
           category: "Android & Gadgets",
-          date: "Reviews",
+          date: "6 min de leitura",
+          readTime: "6 min de leitura",
           image: "https://images.unsplash.com/photo-1598327105666-5b89351aff97?auto=format&fit=crop&w=800&q=80",
           excerpt: "Testamos os principais celulares topo de linha e intermediários premium do mercado brasileiro e global.",
-          content: "## O Guia Definitivo de Compra de Celulares\n\nComparamos fidelidade de tela OLED, velocidade de recarga ultrarrápida (120W), estabilização óptica de câmera e suporte a atualizações de software de longo prazo."
+          content: `## O Guia Definitivo de Compra de Celulares
+
+Comparamos fidelidade de tela OLED de 144Hz, velocidade de recarga ultrarrápida (120W), estabilização óptica de câmera com sensores de 1 polegada e políticas de atualização de software de longo prazo.`
         },
         {
           title: "Wearables e Fones Inteligentes: Áudio Espacial e Sensores Biométricos de Saúde",
           category: "Android & Gadgets",
-          date: "Gadgets",
+          date: "6 min de leitura",
+          readTime: "6 min de leitura",
           image: "https://images.unsplash.com/photo-1508685096489-7aacd43bd3b1?auto=format&fit=crop&w=800&q=80",
           excerpt: "Como fones de ouvido TWS e smartwatches estão substituindo exames laboratoriais básicos com sensores ópticos de pulso e pressão.",
-          content: "## A Saúde Conectada no Pulso\n\nNovos algoritmos de IA filtram ruídos de movimento e oferecem eletrocardiogramas contínuos e alertas precoces de anomalias cardíacas com alta precisão médica."
+          content: `## A Saúde Conectada no Pulso
+
+Novos algoritmos de inteligência artificial filtram ruídos de movimento e entregam eletrocardiogramas contínuos, monitoramento de pressão arterial e alertas precoces de anomalias cardíacas com precisão clínica.`
         },
         {
           title: "Modelos de Raciocínio Profundo: A Transição para Cadeias de Pensamento Estruturadas",
           category: "AI & Models",
-          date: "Destaque",
+          date: "8 min de leitura",
+          readTime: "8 min de leitura",
           image: "https://images.unsplash.com/photo-1620712943543-bcc4688e7485?auto=format&fit=crop&w=800&q=80",
           excerpt: "Uma análise técnica aprofundada sobre a transição dos modelos de linguagem estatísticos para cadeias de raciocínio passo a passo estruturadas.",
-          content: "## A Nova Fronteira do Raciocínio em IA\n\nModelos modernos alocam tempo extra de inferência (*Test-Time Compute*) para planejar, validar código e testar hipóteses internamente antes de emitir a resposta final, reduzindo alucinações a níveis mínimos históricos."
+          content: `## A Nova Fronteira do Raciocínio em IA
+
+Modelos modernos alocam tempo extra de inferência (*Test-Time Compute*) para planejar, validar código e testar hipóteses internamente antes de emitir a resposta final, reduzindo alucinações a níveis mínimos históricos.`
         },
         {
           title: "Modelos de Peso Aberto (Open-Weights): A Ascensão das Arquiteturas Locais de 8B a 70B",
           category: "AI & Models",
-          date: "Análise",
+          date: "7 min de leitura",
+          readTime: "7 min de leitura",
           image: "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&w=800&q=80",
           excerpt: "Como rodar inteligência artificial de ponta localmente em computadores e servidores privados com privacidade total e sem custos de API.",
-          content: "## A Revolução dos Modelos Abertos\n\nModelos como Llama e DeepSeek provaram que pesos abertos podem rivalizar com as maiores IAs proprietárias do mundo, permitindo privacidade total em empresas e estações de trabalho locais."
+          content: `## A Revolução dos Modelos Abertos
+
+Modelos como Llama e DeepSeek provaram que pesos abertos podem rivalizar com as maiores IAs proprietárias do mundo, permitindo privacidade total em empresas e estações de trabalho locais com zero custo de token.`
         },
         {
           title: "Multimodalidade Nativa: Áudio, Visão e Vídeo em Tempo Real sem Latência",
           category: "AI & Models",
-          date: "Técnico",
+          date: "6 min de leitura",
+          readTime: "6 min de leitura",
           image: "https://images.unsplash.com/photo-1535223289827-42f1e9919769?auto=format&fit=crop&w=800&q=80",
           excerpt: "O fim dos pipelines separados de transcrição e voz: como os novos modelos processam sinais contínuos em tempo real.",
-          content: "## O Processamento Nativo de Sentidos Digitais\n\nModelos multimodais nativos capturam entonação, pausas, emoção e imagens em tempo real a 60fps com respostas instantâneas de menos de 300ms."
+          content: `## O Processamento Nativo de Sentidos Digitais
+
+Modelos multimodais nativos capturam entonação, pausas, emoção e imagens em tempo real a 60fps com respostas instantâneas de menos de 300ms.`
         },
         {
           title: "Computação Quântica e Novos Materiais: A Próxima Fronteira da Engenharia",
           category: "Science & Space",
-          date: "Ciência",
+          date: "7 min de leitura",
+          readTime: "7 min de leitura",
           image: "https://images.unsplash.com/photo-1635070041078-e363dbe005cb?auto=format&fit=crop&w=800&q=80",
           excerpt: "Como qubits de estado sólido e supercondutores estão abrindo caminho para simulação molecular e baterias de alta densidade.",
-          content: "## O Salto da Física Aplicada\n\nPesquisas recentes em novos materiais cristalinos e qubits com correção de erros prometem revolucionar o design de catalisadores para captura de carbono e baterias de estado sólido."
+          content: `## O Salto da Física Aplicada
+
+Pesquisas recentes em novos materiais cristalinos e qubits com correção de erros prometem revolucionar o design de catalisadores para captura de carbono e baterias de estado sólido.`
         },
         {
           title: "Exploração Espacial e Telecomunicações: A Rede Global de Satélites de Baixa Órbita",
           category: "Science & Space",
-          date: "Espaço",
+          date: "7 min de leitura",
+          readTime: "7 min de leitura",
           image: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=800&q=80",
           excerpt: "Como constelações de satélites estão levando internet de alta velocidade e conexão direta com celulares em todo o planeta.",
-          content: "## A Conectividade Orbital Global\n\nA tecnologia Direct-to-Cell permite que smartphones comuns se conectem diretamente a satélites em áreas remotas sem necessidade de antenas parabólicas terrestres."
+          content: `## A Conectividade Orbital Global
+
+A tecnologia Direct-to-Cell permite que smartphones comuns se conectem diretamente a satélites em áreas remotas sem necessidade de antenas parabólicas terrestres.`
         },
         {
           title: "Guia Prático: Construindo Pipelines de Automação com IA a Custo Zero",
           category: "Tutorials & Guides",
-          date: "Guia",
+          date: "8 min de leitura",
+          readTime: "8 min de leitura",
           image: "https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=800&q=80",
           excerpt: "Passo a passo didático de como estruturar esteiras de curadoria, processamento de texto e publicação contínua sem gastar com servidores.",
-          content: "## Construindo Automação Moderna sem Servidores\n\nUtilizando **GitHub Actions**, **Google AI Studio (Gemini API)** e **GitHub Pages**, qualquer criador pode colocar no ar esteiras de inteligência artificial de alta performance com custo marginal zero."
+          content: `## Construindo Automação Moderna sem Servidores
+
+Utilizando **GitHub Actions**, **Google AI Studio (Gemini API)** e **GitHub Pages**, qualquer criador pode colocar no ar esteiras de inteligência artificial de alta performance com custo marginal zero.`
         },
         {
           title: "Engenharia de Prompt Avançada: Do Rascunho aos Prompts Estruturados de Sistema",
           category: "Tutorials & Guides",
-          date: "Tutorial",
+          date: "7 min de leitura",
+          readTime: "7 min de leitura",
           image: "https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=800&q=80",
           excerpt: "Como transformar comandos simples em prompts institucionais de alto desempenho que garantem respostas precisas e sem erros.",
-          content: "## A Arte e a Ciência do Prompt Determinístico\n\nUm prompt bem estruturado elimina 90% das falhas de qualquer LLM através de delimitação XML de contexto, instruções negativas estritas e esquemas JSON rígidos."
+          content: `## A Arte e a Ciência do Prompt Determinístico
+
+Um prompt bem estruturado elimina 90% das falhas de qualquer LLM através de delimitação XML de contexto, instruções negativas estritas e esquemas JSON rígidos.`
         }
       ],
       en: [
         {
           title: "The AI Power Battle: How 60GW Data Centers Are Reshaping the Global Map",
           category: "Business & Startups",
-          date: "Featured",
+          date: "9 min read",
+          readTime: "9 min read",
           image: "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&w=800&q=80",
           excerpt: "A deep investigation into how electricity supply and dedicated nuclear power pacts have become the true physical bottleneck of AI scaling.",
-          content: "## The Physical Bottleneck of the Digital Frontier\n\nArtificial intelligence scaling is now bound by physical megawatt grid capacity rather than algorithmic constraints."
+          content: `## The Physical Bottleneck of the Digital Frontier
+
+Artificial intelligence scaling is now bound by physical megawatt grid capacity rather than algorithmic constraints.`
         },
         {
           title: "The Productivity Paradox: Why AI Isn't Destroying White-Collar Jobs",
           category: "Business & Startups",
-          date: "Economics",
+          date: "8 min read",
+          readTime: "8 min read",
           image: "https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=800&q=80",
           excerpt: "Labor market data reveals that generative AI and autonomous software agents are expanding scope rather than causing mass office layoffs.",
-          content: "## Reassessing the Macroeconomic Impact on Knowledge Work\n\nEconomic findings indicate that generative AI acts as a **scope multiplier** across software engineering, legal, and financial industries."
-        },
-        {
-          title: "The $1.4 Trillion at Stake in the S&P 500: Can Big Tech Monetize the AI Boom?",
-          category: "Business & Startups",
-          date: "Markets",
-          image: "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?auto=format&fit=crop&w=800&q=80",
-          excerpt: "Over 50% of the top 20 S&P firms now directly depend on artificial intelligence returns to sustain equity valuations.",
-          content: "## The Largest Capex Cycle in Corporate History\n\nHyperscalers must now demonstrate sustained B2B enterprise recurring revenue from software layers to justify massive hardware expenditures."
+          content: `## Reassessing the Macroeconomic Impact on Knowledge Work
+
+Economic findings indicate that generative AI acts as a **scope multiplier** across software engineering, legal, and financial industries.`
         },
         {
           title: "Apple Intelligence & Next-Gen M-Series Silicon: The On-Device AI Architecture",
           category: "Apple & iOS",
-          date: "Apple & Tech",
+          date: "7 min read",
+          readTime: "7 min read",
           image: "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?auto=format&fit=crop&w=800&q=80",
           excerpt: "How Cupertino engineered unified memory and neural engines to process multimodal intelligence locally on iPhone and Mac.",
-          content: "## Apple's On-Device Intelligence Blueprint\n\nBy leveraging unified memory architecture, Apple Intelligence processes private models up to 3B parameters locally with zero cloud latency."
-        },
-        {
-          title: "Spatial Computing & VisionOS: The Evolution of Immersive Spatial Interfaces",
-          category: "Apple & iOS",
-          date: "Review",
-          image: "https://images.unsplash.com/photo-1593508512255-86ab42a8e620?auto=format&fit=crop&w=800&q=80",
-          excerpt: "How spatial computing integrates with macOS and iOS to create production-ready multimonitor workstations.",
-          content: "## The Evolution of Spatial Computing\n\nVisionOS transforms digital workspaces into infinite high-resolution canvas environments for engineering and creative design."
-        },
-        {
-          title: "Apple Silicon Battery & Thermal Management: Squeezing Maximum Efficiency",
-          category: "Apple & iOS",
-          date: "Guide",
-          image: "https://images.unsplash.com/photo-1510519138197-06b8628cbf4f?auto=format&fit=crop&w=800&q=80",
-          excerpt: "Advanced power management techniques and background thread scheduling for sustained Apple Silicon performance.",
-          content: "## Maximizing Mac & iPhone Efficiency\n\nGranular process monitoring, thermal pacing, and charge cycle preservation strategies for power users."
+          content: `## Apple's On-Device Intelligence Blueprint
+
+By leveraging unified memory architecture, Apple Intelligence processes private models up to 3B parameters locally with zero cloud latency.`
         },
         {
           title: "Copilot+ PCs & The Windows ARM Architecture Shift",
           category: "Windows & PC",
-          date: "Windows",
+          date: "6 min read",
+          readTime: "6 min read",
           image: "https://images.unsplash.com/photo-1588872657578-7efd1f1555ed?auto=format&fit=crop&w=800&q=80",
           excerpt: "How the Prism emulation layer and 45+ TOPS dedicated NPUs transformed Windows laptop battery life and performance.",
-          content: "## A New Hardware Era for Windows Computing\n\nWindows on ARM has matured into a mainstream powerhouse. Powered by Snapdragon X Elite silicon and next-gen NPUs, Copilot+ PCs achieve 20+ hours of battery life with performance matching Apple Silicon."
-        },
-        {
-          title: "Windows 11/12 Performance Tuning: DirectStorage & Local AI Offloading",
-          category: "Windows & PC",
-          date: "Hardware",
-          image: "https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&w=800&q=80",
-          excerpt: "A technical guide to registry optimizations, GPU driver scheduling, and DirectStorage for zero-latency asset streaming.",
-          content: "## Optimizing Windows for High-Compute Workloads\n\nLeveraging DirectStorage to decompress game assets directly on the GPU while isolating local AI processes on dedicated NPUs."
+          content: `## A New Hardware Era for Windows Computing
+
+Windows on ARM has matured into a mainstream powerhouse. Powered by Snapdragon X Elite silicon and next-gen NPUs, Copilot+ PCs achieve 20+ hours of battery life.`
         },
         {
           title: "The Dominance of Linux in Enterprise AI Infrastructure & Cloud Clusters",
           category: "Linux & Open-Source",
-          date: "Linux",
+          date: "8 min read",
+          readTime: "8 min read",
           image: "https://images.unsplash.com/photo-1629654297299-c8506221ca97?auto=format&fit=crop&w=800&q=80",
           excerpt: "Why real-time Linux kernels, Docker containers, and open GPU toolchains power over 95% of global AI workloads.",
-          content: "## The Operating System Fueling Frontier AI\n\nFrom distributed Kubernetes clusters to low-latency kernel scheduling, Linux remains the foundational operating system powering global neural network training."
-        },
-        {
-          title: "Minimalist Linux Distributions for Local LLM Inference",
-          category: "Linux & Open-Source",
-          date: "Open-Source",
-          image: "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?auto=format&fit=crop&w=800&q=80",
-          excerpt: "Configuring a lightweight Linux workstation for Ollama, vLLM, and GGUF quantized models with maximum VRAM allocation.",
-          content: "## Building a Local AI Box with Linux\n\nStripping background daemon overhead allows developers to allocate up to 98% of system RAM and VRAM strictly to model context windows."
-        },
-        {
-          title: "The Foldable Smartphone Revolution & Flagship Mobile Processors",
-          category: "Android & Gadgets",
-          date: "Gadgets",
-          image: "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?auto=format&fit=crop&w=800&q=80",
-          excerpt: "A technical comparison of ultra-thin flexible displays, periscope zoom optics, and 3nm mobile silicon NPUs.",
-          content: "## The Maturation of Foldable Devices\n\nModern foldables feature durable hinge mechanisms and dedicated on-device neural processing units for computational photography."
-        },
-        {
-          title: "Top Flagship Smartphones and Gadgets for 2026: Benchmark Breakdown",
-          category: "Android & Gadgets",
-          date: "Reviews",
-          image: "https://images.unsplash.com/photo-1598327105666-5b89351aff97?auto=format&fit=crop&w=800&q=80",
-          excerpt: "Comprehensive benchmarking across OLED panel fidelity, 120W charging curves, and long-term OS update policies.",
-          content: "## The Ultimate Consumer Hardware Guide\n\nComparing display luminance, camera sensor dynamic range, and thermal throttling in prolonged mobile workloads."
-        },
-        {
-          title: "Smart Wearables and Hearables: Continuous Biometric Health Tracking",
-          category: "Android & Gadgets",
-          date: "Wearables",
-          image: "https://images.unsplash.com/photo-1508685096489-7aacd43bd3b1?auto=format&fit=crop&w=800&q=80",
-          excerpt: "How smartwatches and TWS earbuds utilize optical photoplethysmography and AI algorithms to detect early cardiac anomalies.",
-          content: "## Continuous Wrist-Based Diagnostics\n\nAdvanced signal filtering eliminates motion artifacts to deliver medical-grade ECG and blood oxygen metrics in real time."
-        },
-        {
-          title: "Deep Reasoning Models: The Shift Toward Structured Chains of Thought",
-          category: "AI & Models",
-          date: "Featured",
-          image: "https://images.unsplash.com/photo-1620712943543-bcc4688e7485?auto=format&fit=crop&w=800&q=80",
-          excerpt: "A deep technical analysis of test-time compute, reasoning chains, and their transformative impact on autonomous software engineering.",
-          content: "## The Frontier of Cognitive AI Architecture\n\nRecent breakthroughs in Large Language Models have shifted the paradigm from pure next-token prediction to structured test-time reasoning."
-        },
-        {
-          title: "Open-Weights AI: The Rise of Efficient 8B to 70B Local Architectures",
-          category: "AI & Models",
-          date: "Analysis",
-          image: "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&w=800&q=80",
-          excerpt: "How local open-weight models rival proprietary cloud systems with absolute data privacy and zero API token overhead.",
-          content: "## The Open-Weights Revolution\n\nOpen architectures like Llama and DeepSeek have demonstrated that open weights can match enterprise cloud LLMs on complex coding benchmarks."
-        },
-        {
-          title: "Native Multimodality: Real-Time Zero-Latency Audio, Vision, and Video",
-          category: "AI & Models",
-          date: "Technical",
-          image: "https://images.unsplash.com/photo-1535223289827-42f1e9919769?auto=format&fit=crop&w=800&q=80",
-          excerpt: "Moving beyond separate Whisper-to-LLM pipelines: how end-to-end neural networks perceive and respond at sub-300ms latency.",
-          content: "## End-to-End Multimodal Perception\n\nNative multimodal models ingest raw acoustic and visual tokens directly, capturing pitch, hesitation, and 60fps video frames seamlessly."
-        },
-        {
-          title: "Quantum Computing & Advanced Materials: The Frontier of Solid-State Physics",
-          category: "Science & Space",
-          date: "Deep Tech",
-          image: "https://images.unsplash.com/photo-1635070041078-e363dbe005cb?auto=format&fit=crop&w=800&q=80",
-          excerpt: "How error-corrected qubits and solid-state crystal lattices are accelerating molecular battery simulation.",
-          content: "## Quantum Engineering Milestones\n\nSolid-state quantum processors enable accurate electronic structure simulations for next-generation solid-state batteries."
-        },
-        {
-          title: "Low Earth Orbit Satellite Networks & Direct-to-Cell Telecommunications",
-          category: "Science & Space",
-          date: "Space Tech",
-          image: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=800&q=80",
-          excerpt: "How orbital satellite megaconstellations are connecting unmodified smartphones in remote regions worldwide.",
-          content: "## Planetary Orbital Connectivity\n\nDirect-to-Cell satellite beamforming bridges connectivity gaps without requiring ground dish terminals."
-        },
-        {
-          title: "Actionable Guide: Building Zero-Cost Autonomous AI Pipelines",
-          category: "Tutorials & Guides",
-          date: "Guide",
-          image: "https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=800&q=80",
-          excerpt: "A complete step-by-step walkthrough on building serverless content pipelines with GitHub Actions, Gemini API, and static site deployment.",
-          content: "## Engineering Serverless AI Workflows\n\nDeploying production-grade autonomous content workflows no longer requires expensive dedicated cloud servers."
-        },
-        {
-          title: "Advanced Prompt Engineering: Structuring Institutional System Prompts",
-          category: "Tutorials & Guides",
-          date: "Tutorial",
-          image: "https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=800&q=80",
-          excerpt: "How to craft production-grade system prompts that eliminate hallucinations and enforce deterministic output schemas.",
-          content: "## The Science of Deterministic Prompting\n\nA well-architected system prompt eliminates the majority of downstream LLM errors through role anchoring and negative constraints."
+          content: `## The Operating System Fueling Frontier AI
+
+From distributed Kubernetes clusters to low-latency kernel scheduling, Linux remains the foundational operating system powering global neural network training.`
         }
       ]
     };
@@ -895,7 +1028,6 @@
         card.rel = "noopener noreferrer";
         card.className = `relative overflow-hidden bg-brandCard verge-border rounded-2xl p-5 flex flex-col justify-between glow-verge transition group bg-gradient-to-br ${m.bg_gradient}`;
         card.innerHTML = `
-          <!-- Marca d'água de fundo futurista da empresa -->
           <div class="absolute -right-4 -bottom-4 w-28 h-28 pointer-events-none opacity-10 group-hover:opacity-25 group-hover:scale-110 transition-all duration-500 text-white">
             ${m.svg_watermark}
           </div>
@@ -995,7 +1127,7 @@
         const imageUrl = art.image || FALLBACK_IMAGES[idx % FALLBACK_IMAGES.length];
         const card = document.createElement('article');
         card.className = "bg-brandCard verge-border rounded-3xl overflow-hidden glow-verge flex flex-col justify-between cursor-pointer group";
-        card.onclick = () => openArticle(art.title, art.category, art.date, art.content);
+        card.onclick = () => openArticle(art.title, art.category, art.readTime || art.date, art.content);
         card.innerHTML = `
           <div>
             <div class="h-48 bg-slate-950 relative overflow-hidden">
@@ -1005,12 +1137,12 @@
             </div>
             
             <div class="p-6">
-              <div class="text-[10px] font-mono text-slate-500 mb-1.5 uppercase">${art.date}</div>
+              <div class="text-[10px] font-mono text-slate-500 mb-1.5 uppercase">${art.readTime || art.date}</div>
               <h3 class="text-base sm:text-lg font-black text-white verge-title mb-2 group-hover:text-brandCyan transition-colors leading-snug">${art.title}</h3>
               <p class="text-slate-400 text-xs sm:text-sm leading-relaxed mb-4 line-clamp-3">${art.excerpt}</p>
             </div>
           </div>
-          <div class="px-6 pb-6 pt-0 text-xs font-bold text-brandCyan flex items-center gap-1 group-hover:translate-x-1 transition-transform">
+          <div class="px-6 pb-6 pt-0 text-xs font-bold text-brandCyan flex items-center gap-1 group-hover:translate-x-1 transition-transform font-mono">
             ${currentLang === 'pt' ? 'Ler matéria completa' : 'Read full story'} →
           </div>
         `;
@@ -1046,10 +1178,11 @@
         .replace(/\n/gim, '<p></p>');
     }
 
-    function openArticle(title, category, date, markdownContent) {
+    function openArticle(title, category, readTime, markdownContent) {
       const modal = document.getElementById('article-modal');
       document.getElementById('modal-cat').innerText = category;
-      document.getElementById('modal-date').innerText = date;
+      document.getElementById('modal-date').innerText = readTime || (currentLang === 'pt' ? 'Artigo Completo' : 'Full Story');
+      document.getElementById('modal-readtime').innerText = readTime || (currentLang === 'pt' ? 'Tempo de leitura: 7 min' : '7 min read');
       document.getElementById('modal-title').innerText = title;
       document.getElementById('modal-content').innerHTML = parseMarkdownSafe(markdownContent || '');
       
@@ -1059,7 +1192,7 @@
 
     function openArticleByIndex(index) {
       const art = ARTICLES_DATA[currentLang][index];
-      if (art) openArticle(art.title, art.category, art.date, art.content);
+      if (art) openArticle(art.title, art.category, art.readTime || art.date, art.content);
     }
 
     function closeModal() {
@@ -1092,7 +1225,7 @@
             const text = await fileRes.text();
             let title = file.name.replace('.md', '');
             let category = 'AI & Models';
-            let date = currentLang === 'pt' ? 'Recente' : 'Recent';
+            let date = currentLang === 'pt' ? '8 min de leitura' : '8 min read';
             let body = text;
             let image = FALLBACK_IMAGES[i % FALLBACK_IMAGES.length];
 
@@ -1113,7 +1246,7 @@
             }
             const cleanBody = body.replace(/#+/g, '').replace(/\[([^\]]+)\]\([^)]+\)/g, '$1').replace(/[*_`]/g, '');
             const excerpt = cleanBody.slice(0, 140).trim() + '...';
-            fetchedArticles.push({ title, category, date, excerpt, content: body, image });
+            fetchedArticles.push({ title, category, date, readTime: date, excerpt, content: body, image });
           }
           allCurrentArticles = [...fetchedArticles, ...ARTICLES_DATA[currentLang]];
           renderArticles();
@@ -1132,7 +1265,7 @@
       if (lang === 'pt') {
         btnPt.className = "px-2.5 py-0.5 rounded bg-brandCyan text-slate-950 font-black transition";
         btnEn.className = "px-2.5 py-0.5 rounded text-slate-400 hover:text-white transition";
-        document.getElementById('wire-badge').innerHTML = '<span class="w-1.5 h-1.5 rounded-full bg-brandPurple animate-ping"></span> RADAR AO VIVO';
+        document.getElementById('wire-badge').innerHTML = '<span class="w-1.5 h-1.5 rounded-full bg-brandPurple animate-ping"></span> THE WIRE // RADAR';
         document.getElementById('masthead-sub').innerText = "O Fluxo da Tecnologia, Inovação e Inteligência Artificial";
         document.getElementById('search-input').placeholder = "Filtrar matérias...";
         document.getElementById('ticker-text').innerText = "⚡ [Windows] Copilot+ PCs e transição para ARM • [Linux] Novos kernels e aceleração de IA • [Apple] Apple Intelligence e chips M-Series • [Android] Smartphones dobráveis e IA on-device • [Startups] Investimentos bilionários em semicondutores";
@@ -1140,12 +1273,12 @@
         // Hero Right Cards
         document.getElementById('hero-right1-cat').innerText = "🍏 APPLE & IOS";
         document.getElementById('hero-right1-title').innerText = "Apple Intelligence e os Novos Chips M-Series: O Futuro do Hardware no iOS e Mac";
-        document.getElementById('hero-right1-desc').innerText = "Como a Apple está integrando modelos neurais locais diretamente na NPU dos novos iPhones e Macs para privacidade total e zero latência.";
+        document.getElementById('hero-right1-desc').innerText = "Como a Apple integrou memória unificada e arquitetura neural privada de 3B de parâmetros para processamento local com latência zero.";
         document.getElementById('hero-right1-btn').innerText = "Ler Análise Apple →";
 
         document.getElementById('hero-right2-cat').innerText = "🪟 WINDOWS & PC";
         document.getElementById('hero-right2-title').innerText = "Copilot+ PCs e a Transição para Processadores ARM no Windows";
-        document.getElementById('hero-right2-desc').innerText = "Como a nova emulação Prism e os chips de 45+ TOPS NPU transformaram a autonomia e a eficiência dos notebooks Windows.";
+        document.getElementById('hero-right2-desc').innerText = "A evolução da emulação Prism, chips Snapdragon X Elite e NPUs de 45+ TOPS entregando mais de 20 horas de autonomia real.";
         document.getElementById('hero-right2-btn').innerText = "Ler Análise PC →";
 
         document.getElementById('newsletter-title').innerText = "CorticFlow Semanal";
@@ -1159,8 +1292,8 @@
         document.getElementById('lbtn-rea').innerText = "RACIOCÍNIO & CÓDIGO";
         document.getElementById('lbtn-opn').innerText = "OPEN-SOURCE";
         document.getElementById('feat-tag').innerText = "MATÉRIA DE CAPA";
-        document.getElementById('feat-date').innerText = "DESTAQUE EDITORIAL • 9 MIN DE LEITURA";
-        document.getElementById('feat-btn').innerText = "Ler Matéria Completa";
+        document.getElementById('feat-date').innerText = "INVESTIGAÇÃO ESPECIAL • 9 MIN DE LEITURA";
+        document.getElementById('feat-btn').innerText = "Ler Ensaio Completo";
         document.getElementById('prompt-tag').innerText = "PROMPT DA SEMANA";
         document.getElementById('prompt-cat-label').innerText = "PRODUTIVIDADE";
         document.getElementById('prompt-card-title').innerText = "Auditoria e Refatoração de Código";
@@ -1190,7 +1323,7 @@
       } else {
         btnEn.className = "px-2.5 py-0.5 rounded bg-brandCyan text-slate-950 font-black transition";
         btnPt.className = "px-2.5 py-0.5 rounded text-slate-400 hover:text-white transition";
-        document.getElementById('wire-badge').innerHTML = '<span class="w-1.5 h-1.5 rounded-full bg-brandPurple animate-ping"></span> THE WIRE';
+        document.getElementById('wire-badge').innerHTML = '<span class="w-1.5 h-1.5 rounded-full bg-brandPurple animate-ping"></span> THE WIRE // RADAR';
         document.getElementById('masthead-sub').innerText = "The Stream of Tech, Innovation and Artificial Intelligence";
         document.getElementById('search-input').placeholder = "Filter dispatches...";
         document.getElementById('ticker-text').innerText = "⚡ [Windows] Copilot+ PCs & ARM architecture • [Linux] Next-gen kernels & AI acceleration • [Apple] Apple Intelligence & M-Series silicon • [Android] Foldable smartphones & on-device AI • [Startups] Capital investments in semiconductors";
@@ -1217,7 +1350,7 @@
         document.getElementById('lbtn-rea').innerText = "REASONING & CODE";
         document.getElementById('lbtn-opn').innerText = "OPEN-WEIGHTS";
         document.getElementById('feat-tag').innerText = "FEATURED COVER STORY";
-        document.getElementById('feat-date').innerText = "EDITORIAL LEAD • 9 MIN READ";
+        document.getElementById('feat-date').innerText = "SPECIAL INVESTIGATION • 9 MIN READ";
         document.getElementById('feat-btn').innerText = "Read Full Story";
         document.getElementById('prompt-tag').innerText = "PROMPT OF THE WEEK";
         document.getElementById('prompt-cat-label').innerText = "PRODUCTIVITY";
