@@ -94,17 +94,17 @@
 
       <!-- Menu Desktop -->
       <nav id="desktop-nav" class="hidden 2xl:flex items-center gap-4 text-xs font-bold uppercase tracking-wider text-slate-300">
-        <button onclick="selectHub('all')" id="dnav-all" class="hover:text-brandCyan transition">Feed Geral</button>
+        <button onclick="selectHub('all', true)" id="dnav-all" class="hover:text-brandCyan transition">Feed Geral</button>
         <button onclick="scrollToSection('leaderboard')" id="dnav-lead" class="hover:text-brandCyan transition text-brandCyan">⚡ Radar LLMs</button>
-        <button onclick="selectHub('Windows & PC')" id="dnav-win" class="hover:text-brandCyan transition">Windows & PC</button>
-        <button onclick="selectHub('Linux & Open-Source')" id="dnav-lin" class="hover:text-brandCyan transition">Linux</button>
-        <button onclick="selectHub('Apple & iOS')" id="dnav-app" class="hover:text-brandCyan transition">Apple & iOS</button>
-        <button onclick="selectHub('Android & Gadgets')" id="dnav-and" class="hover:text-brandCyan transition">Android</button>
-        <button onclick="selectHub('AI & Models')" id="dnav-ai" class="hover:text-brandCyan transition">IA</button>
-        <button onclick="selectHub('Business & Startups')" id="dnav-biz" class="hover:text-brandCyan transition">Negócios</button>
-        <button onclick="selectHub('Science & Space')" id="dnav-sci" class="hover:text-brandCyan transition">Ciência</button>
-        <button onclick="selectHub('Tutorials & Guides')" id="dnav-tut" class="hover:text-brandCyan transition">Tutoriais</button>
-        <button onclick="selectHub('Newsletter')" id="dnav-news" class="px-3 py-1 rounded bg-brandPurple/20 text-brandPurple border border-brandPurple/40 hover:bg-brandPurple hover:text-black transition">Edição de Domingo</button>
+        <button onclick="selectHub('Windows & PC', true)" id="dnav-win" class="hover:text-brandCyan transition">Windows & PC</button>
+        <button onclick="selectHub('Linux & Open-Source', true)" id="dnav-lin" class="hover:text-brandCyan transition">Linux</button>
+        <button onclick="selectHub('Apple & iOS', true)" id="dnav-app" class="hover:text-brandCyan transition">Apple & iOS</button>
+        <button onclick="selectHub('Android & Gadgets', true)" id="dnav-and" class="hover:text-brandCyan transition">Android</button>
+        <button onclick="selectHub('AI & Models', true)" id="dnav-ai" class="hover:text-brandCyan transition">IA</button>
+        <button onclick="selectHub('Business & Startups', true)" id="dnav-biz" class="hover:text-brandCyan transition">Negócios</button>
+        <button onclick="selectHub('Science & Space', true)" id="dnav-sci" class="hover:text-brandCyan transition">Ciência</button>
+        <button onclick="selectHub('Tutorials & Guides', true)" id="dnav-tut" class="hover:text-brandCyan transition">Tutoriais</button>
+        <button onclick="selectHub('Newsletter', true)" id="dnav-news" class="px-3 py-1 rounded bg-brandPurple/20 text-brandPurple border border-brandPurple/40 hover:bg-brandPurple hover:text-black transition">Edição de Domingo</button>
       </nav>
 
       <!-- Botão Mobile -->
@@ -115,17 +115,17 @@
 
     <!-- Menu Mobile Dropdown -->
     <div id="mobile-menu" class="hidden 2xl:hidden bg-slate-950 border-b border-brandBorder px-4 py-4 space-y-2 text-xs font-bold uppercase tracking-wider">
-      <button onclick="selectHub('all'); toggleMobileMenu();" class="block w-full text-left py-2 px-3 rounded hover:bg-slate-900 text-slate-200">📑 Feed Geral (20)</button>
+      <button onclick="selectHub('all', true); toggleMobileMenu();" class="block w-full text-left py-2 px-3 rounded hover:bg-slate-900 text-slate-200">📑 Feed Geral (20)</button>
       <button onclick="scrollToSection('leaderboard'); toggleMobileMenu();" class="block w-full text-left py-2 px-3 rounded hover:bg-slate-900 text-brandCyan">📊 Ranking de LLMs</button>
-      <button onclick="selectHub('Windows & PC'); toggleMobileMenu();" class="block w-full text-left py-2 px-3 rounded hover:bg-slate-900 text-slate-200">🪟 Windows & PC (2)</button>
-      <button onclick="selectHub('Linux & Open-Source'); toggleMobileMenu();" class="block w-full text-left py-2 px-3 rounded hover:bg-slate-900 text-slate-200">🐧 Linux & Open-Source (2)</button>
-      <button onclick="selectHub('Apple & iOS'); toggleMobileMenu();" class="block w-full text-left py-2 px-3 rounded hover:bg-slate-900 text-slate-200">🍏 Apple & iOS (3)</button>
-      <button onclick="selectHub('Android & Gadgets'); toggleMobileMenu();" class="block w-full text-left py-2 px-3 rounded hover:bg-slate-900 text-slate-200">🤖 Android & Gadgets (3)</button>
-      <button onclick="selectHub('AI & Models'); toggleMobileMenu();" class="block w-full text-left py-2 px-3 rounded hover:bg-slate-900 text-slate-200">🧠 IA & Modelos (3)</button>
-      <button onclick="selectHub('Business & Startups'); toggleMobileMenu();" class="block w-full text-left py-2 px-3 rounded hover:bg-slate-900 text-slate-200">🏢 Mercado & Startups (3)</button>
-      <button onclick="selectHub('Science & Space'); toggleMobileMenu();" class="block w-full text-left py-2 px-3 rounded hover:bg-slate-900 text-slate-200">🔬 Ciência & Futuro (2)</button>
-      <button onclick="selectHub('Tutorials & Guides'); toggleMobileMenu();" class="block w-full text-left py-2 px-3 rounded hover:bg-slate-900 text-slate-200">🛠️ Tutoriais & Prompts (2)</button>
-      <button onclick="selectHub('Newsletter'); toggleMobileMenu();" class="block w-full text-left py-2 px-3 rounded hover:bg-slate-900 text-brandPurple">📬 Edições de Domingo</button>
+      <button onclick="selectHub('Windows & PC', true); toggleMobileMenu();" class="block w-full text-left py-2 px-3 rounded hover:bg-slate-900 text-slate-200">🪟 Windows & PC (2)</button>
+      <button onclick="selectHub('Linux & Open-Source', true); toggleMobileMenu();" class="block w-full text-left py-2 px-3 rounded hover:bg-slate-900 text-slate-200">🐧 Linux & Open-Source (2)</button>
+      <button onclick="selectHub('Apple & iOS', true); toggleMobileMenu();" class="block w-full text-left py-2 px-3 rounded hover:bg-slate-900 text-slate-200">🍏 Apple & iOS (3)</button>
+      <button onclick="selectHub('Android & Gadgets', true); toggleMobileMenu();" class="block w-full text-left py-2 px-3 rounded hover:bg-slate-900 text-slate-200">🤖 Android & Gadgets (3)</button>
+      <button onclick="selectHub('AI & Models', true); toggleMobileMenu();" class="block w-full text-left py-2 px-3 rounded hover:bg-slate-900 text-slate-200">🧠 IA & Modelos (3)</button>
+      <button onclick="selectHub('Business & Startups', true); toggleMobileMenu();" class="block w-full text-left py-2 px-3 rounded hover:bg-slate-900 text-slate-200">🏢 Mercado & Startups (3)</button>
+      <button onclick="selectHub('Science & Space', true); toggleMobileMenu();" class="block w-full text-left py-2 px-3 rounded hover:bg-slate-900 text-slate-200">🔬 Ciência & Futuro (2)</button>
+      <button onclick="selectHub('Tutorials & Guides', true); toggleMobileMenu();" class="block w-full text-left py-2 px-3 rounded hover:bg-slate-900 text-slate-200">🛠️ Tutoriais & Prompts (2)</button>
+      <button onclick="selectHub('Newsletter', true); toggleMobileMenu();" class="block w-full text-left py-2 px-3 rounded hover:bg-slate-900 text-brandPurple">📬 Edições de Domingo</button>
     </div>
   </header>
 
@@ -226,16 +226,16 @@
     <div class="max-w-7xl mx-auto flex flex-col sm:flex-row sm:items-center justify-between gap-4">
       
       <div class="flex items-center gap-1.5 overflow-x-auto no-scrollbar py-1 text-[11px] font-bold uppercase tracking-wider">
-        <button onclick="selectHub('all')" id="hub-all" class="px-3 py-1.5 rounded-md bg-brandCyan text-black font-black transition shrink-0">TODOS (20)</button>
-        <button onclick="selectHub('Windows & PC')" id="hub-win" class="px-3 py-1.5 rounded-md bg-slate-900 text-slate-300 hover:text-white border border-brandBorder transition shrink-0">🪟 WINDOWS & PC (2)</button>
-        <button onclick="selectHub('Linux & Open-Source')" id="hub-lin" class="px-3 py-1.5 rounded-md bg-slate-900 text-slate-300 hover:text-white border border-brandBorder transition shrink-0">🐧 LINUX & OPEN-SOURCE (2)</button>
-        <button onclick="selectHub('Apple & iOS')" id="hub-app" class="px-3 py-1.5 rounded-md bg-slate-900 text-slate-300 hover:text-white border border-brandBorder transition shrink-0">🍏 APPLE & IOS (3)</button>
-        <button onclick="selectHub('Android & Gadgets')" id="hub-and" class="px-3 py-1.5 rounded-md bg-slate-900 text-slate-300 hover:text-white border border-brandBorder transition shrink-0">🤖 ANDROID (3)</button>
-        <button onclick="selectHub('AI & Models')" id="hub-ai" class="px-3 py-1.5 rounded-md bg-slate-900 text-slate-300 hover:text-white border border-brandBorder transition shrink-0">🧠 IA & MODELOS (3)</button>
-        <button onclick="selectHub('Business & Startups')" id="hub-biz" class="px-3 py-1.5 rounded-md bg-slate-900 text-slate-300 hover:text-white border border-brandBorder transition shrink-0">🏢 NEGÓCIOS (3)</button>
-        <button onclick="selectHub('Science & Space')" id="hub-sci" class="px-3 py-1.5 rounded-md bg-slate-900 text-slate-300 hover:text-white border border-brandBorder transition shrink-0">🔬 CIÊNCIA (2)</button>
-        <button onclick="selectHub('Tutorials & Guides')" id="hub-tut" class="px-3 py-1.5 rounded-md bg-slate-900 text-slate-300 hover:text-white border border-brandBorder transition shrink-0">🛠️ TUTORIAIS (2)</button>
-        <button onclick="selectHub('Newsletter')" id="hub-news" class="px-3 py-1.5 rounded-md bg-brandPurple/20 text-brandPurple hover:bg-brandPurple hover:text-black border border-brandPurple/40 transition shrink-0">📬 DOMINGO</button>
+        <button onclick="selectHub('all', true)" id="hub-all" class="px-3 py-1.5 rounded-md bg-brandCyan text-black font-black transition shrink-0">TODOS (20)</button>
+        <button onclick="selectHub('Windows & PC', true)" id="hub-win" class="px-3 py-1.5 rounded-md bg-slate-900 text-slate-300 hover:text-white border border-brandBorder transition shrink-0">🪟 WINDOWS & PC (2)</button>
+        <button onclick="selectHub('Linux & Open-Source', true)" id="hub-lin" class="px-3 py-1.5 rounded-md bg-slate-900 text-slate-300 hover:text-white border border-brandBorder transition shrink-0">🐧 LINUX & OPEN-SOURCE (2)</button>
+        <button onclick="selectHub('Apple & iOS', true)" id="hub-app" class="px-3 py-1.5 rounded-md bg-slate-900 text-slate-300 hover:text-white border border-brandBorder transition shrink-0">🍏 APPLE & IOS (3)</button>
+        <button onclick="selectHub('Android & Gadgets', true)" id="hub-and" class="px-3 py-1.5 rounded-md bg-slate-900 text-slate-300 hover:text-white border border-brandBorder transition shrink-0">🤖 ANDROID (3)</button>
+        <button onclick="selectHub('AI & Models', true)" id="hub-ai" class="px-3 py-1.5 rounded-md bg-slate-900 text-slate-300 hover:text-white border border-brandBorder transition shrink-0">🧠 IA & MODELOS (3)</button>
+        <button onclick="selectHub('Business & Startups', true)" id="hub-biz" class="px-3 py-1.5 rounded-md bg-slate-900 text-slate-300 hover:text-white border border-brandBorder transition shrink-0">🏢 NEGÓCIOS (3)</button>
+        <button onclick="selectHub('Science & Space', true)" id="hub-sci" class="px-3 py-1.5 rounded-md bg-slate-900 text-slate-300 hover:text-white border border-brandBorder transition shrink-0">🔬 CIÊNCIA (2)</button>
+        <button onclick="selectHub('Tutorials & Guides', true)" id="hub-tut" class="px-3 py-1.5 rounded-md bg-slate-900 text-slate-300 hover:text-white border border-brandBorder transition shrink-0">🛠️ TUTORIAIS (2)</button>
+        <button onclick="selectHub('Newsletter', true)" id="hub-news" class="px-3 py-1.5 rounded-md bg-brandPurple/20 text-brandPurple hover:bg-brandPurple hover:text-black border border-brandPurple/40 transition shrink-0">📬 DOMINGO</button>
       </div>
 
       <div class="relative w-full sm:w-64">
@@ -354,7 +354,7 @@
     </div>
   </div>
 
-  <!-- Rodapé 100% Autônomo e Proprietário -->
+  <!-- Rodapé -->
   <footer class="border-t border-brandBorder py-14 bg-black text-slate-500 text-xs mt-auto">
     <div class="max-w-7xl mx-auto px-4 grid sm:grid-cols-2 md:grid-cols-4 gap-8 mb-10">
       <div>
@@ -367,11 +367,11 @@
       <div>
         <h4 id="footer-cat-title" class="text-white font-black mb-3 uppercase tracking-widest text-[10px]">EDITORIAS</h4>
         <ul class="space-y-2">
-          <li><button onclick="selectHub('Windows & PC')" class="hover:text-brandCyan transition">Windows & PC</button></li>
-          <li><button onclick="selectHub('Linux & Open-Source')" class="hover:text-brandCyan transition">Linux & Open-Source</button></li>
-          <li><button onclick="selectHub('Apple & iOS')" class="hover:text-brandCyan transition">Apple & iOS</button></li>
-          <li><button onclick="selectHub('Android & Gadgets')" class="hover:text-brandCyan transition">Android & Gadgets</button></li>
-          <li><button onclick="selectHub('AI & Models')" class="hover:text-brandCyan transition">IA & Modelos</button></li>
+          <li><button onclick="selectHub('Windows & PC', true)" class="hover:text-brandCyan transition">Windows & PC</button></li>
+          <li><button onclick="selectHub('Linux & Open-Source', true)" class="hover:text-brandCyan transition">Linux & Open-Source</button></li>
+          <li><button onclick="selectHub('Apple & iOS', true)" class="hover:text-brandCyan transition">Apple & iOS</button></li>
+          <li><button onclick="selectHub('Android & Gadgets', true)" class="hover:text-brandCyan transition">Android & Gadgets</button></li>
+          <li><button onclick="selectHub('AI & Models', true)" class="hover:text-brandCyan transition">IA & Modelos</button></li>
         </ul>
       </div>
       <div>
@@ -399,7 +399,6 @@
   <script>
     let currentLang = 'pt';
     let currentHub = 'all';
-    let allCurrentArticles = [];
 
     const LEADERBOARD_DATA = [
       { name: "Gemini 2.5 / 3.6 Flash", provider: "Google", score: 96, reasoning: "98%", coding: "96%", type: "proprietary", context: "1M tokens", cost: "$0.075 / 1M", url: "https://aistudio.google.com" },
@@ -571,7 +570,7 @@
           category: "Business & Startups",
           date: "Featured",
           excerpt: "A deep investigation into how electricity supply and dedicated nuclear power pacts have become the true physical bottleneck of AI scaling.",
-          content: "## The Physical Bottleneck of the Digital Frontier\n\nArtificial intelligence scaling is now bound by physical megawatt grid capacity rather than algorithmic constraints. Hyperscalers are securing direct nuclear and clean energy agreements to fuel gigawatt-scale data center campuses."
+          content: "## The Physical Bottleneck of the Digital Frontier\n\nArtificial intelligence scaling is now bound by physical megawatt grid capacity rather than algorithmic constraints."
         },
         {
           title: "The Productivity Paradox: Why AI Isn't Destroying White-Collar Jobs",
@@ -697,7 +696,7 @@
           category: "Tutorials & Guides",
           date: "Guide",
           excerpt: "A complete step-by-step walkthrough on building serverless content pipelines with GitHub Actions, Gemini API, and static site deployment.",
-          content: "## Engineering Serverless AI Workflows\n\nDeploying production-grade autonomous content workflows no longer requires expensive dedicated cloud servers."
+          content: "## Engineering Serverless AI Workflows\n\nDeploying production-grade autonomous content workflows no longer requires dedicated cloud servers."
         },
         {
           title: "Advanced Prompt Engineering: Structuring Institutional System Prompts",
@@ -708,6 +707,9 @@
         }
       ]
     };
+
+    // Inicializa o banco imediatamente
+    allCurrentArticles = ARTICLES_DATA['pt'];
 
     function getCategoryBanner(category) {
       if (category.includes('Windows') || category.includes('PC')) return 'cat-tools.jpeg';
@@ -785,7 +787,7 @@
       });
     }
 
-    function selectHub(hubKey) {
+    function selectHub(hubKey, shouldScroll = false) {
       currentHub = hubKey;
       
       const hubButtons = ['all', 'win', 'lin', 'app', 'and', 'ai', 'biz', 'sci', 'tut', 'news'];
@@ -814,26 +816,49 @@
       document.getElementById('cat-banner-title').innerText = currentLang === 'pt' ? conf.title_pt : conf.title_en;
       document.getElementById('cat-banner-desc').innerText = currentLang === 'pt' ? conf.desc_pt : conf.desc_en;
 
-      renderArticles(allCurrentArticles);
+      renderArticles();
 
-      const feedEl = document.getElementById('feed-container');
-      if (feedEl) {
-        feedEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      // Só rola se o usuário tiver clicado propositalmente em um botão de menu
+      if (shouldScroll) {
+        const feedEl = document.getElementById('feed-container');
+        if (feedEl) feedEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
       }
     }
 
-    function renderArticles(articles) {
+    function getFilteredList() {
+      let list = allCurrentArticles && allCurrentArticles.length > 0 ? allCurrentArticles : ARTICLES_DATA[currentLang];
+      
+      if (currentHub !== 'all') {
+        const hub = currentHub.toLowerCase();
+        list = list.filter(a => {
+          const cat = (a.category || '').toLowerCase();
+          if (hub.includes('windows') && (cat.includes('windows') || cat.includes('pc'))) return true;
+          if (hub.includes('linux') && (cat.includes('linux') || cat.includes('open'))) return true;
+          if (hub.includes('apple') && (cat.includes('apple') || cat.includes('ios'))) return true;
+          if (hub.includes('android') && (cat.includes('android') || cat.includes('gadget'))) return true;
+          if (hub.includes('ai') && (cat.includes('ai') || cat.includes('model') || cat.includes('ia'))) return true;
+          if (hub.includes('business') && (cat.includes('business') || cat.includes('startup') || cat.includes('mercado') || cat.includes('the economist'))) return true;
+          if (hub.includes('science') && (cat.includes('science') || cat.includes('space') || cat.includes('ciência'))) return true;
+          if (hub.includes('tutorial') && (cat.includes('tutorial') || cat.includes('guide') || cat.includes('prompt'))) return true;
+          if (hub.includes('news') && (cat.includes('destaque') || cat.includes('editorial') || cat.includes('the economist'))) return true;
+          return cat.includes(hub);
+        });
+      }
+
+      const searchInput = document.getElementById('search-input');
+      const searchVal = searchInput ? searchInput.value.toLowerCase().trim() : '';
+      if (searchVal) {
+        list = list.filter(a => (a.title || '').toLowerCase().includes(searchVal) || (a.excerpt || '').toLowerCase().includes(searchVal));
+      }
+
+      return list;
+    }
+
+    function renderArticles() {
       const grid = document.getElementById('articles-grid');
       grid.innerHTML = '';
 
-      let filtered = currentHub === 'all' 
-        ? articles 
-        : articles.filter(a => a.category.toLowerCase().includes(currentHub.toLowerCase()) || (currentHub === 'Newsletter' && a.category.includes('Tutorial')));
-
-      const searchVal = document.getElementById('search-input').value.toLowerCase().trim();
-      if (searchVal) {
-        filtered = filtered.filter(a => a.title.toLowerCase().includes(searchVal) || a.excerpt.toLowerCase().includes(searchVal));
-      }
+      const filtered = getFilteredList();
 
       if (filtered.length === 0) {
         grid.innerHTML = `<div class="col-span-full py-12 text-center text-slate-500 text-xs font-mono uppercase">${currentLang === 'pt' ? 'Nenhuma matéria encontrada para este filtro.' : 'No dispatches found for this filter.'}</div>`;
@@ -868,7 +893,7 @@
     }
 
     function handleSearch() {
-      renderArticles(allCurrentArticles);
+      renderArticles();
     }
 
     function copyPrompt() {
@@ -923,7 +948,7 @@
 
     async function loadArticles() {
       allCurrentArticles = ARTICLES_DATA[currentLang];
-      renderArticles(allCurrentArticles);
+      renderArticles();
       renderLeaderboard('all');
 
       try {
@@ -960,7 +985,7 @@
             fetchedArticles.push({ title, category, date, excerpt, content: body });
           }
           allCurrentArticles = [...fetchedArticles, ...ARTICLES_DATA[currentLang]];
-          renderArticles(allCurrentArticles);
+          renderArticles();
         }
       } catch (e) {
         console.log("Catálogo ativo.");
@@ -969,6 +994,7 @@
 
     function setLanguage(lang) {
       currentLang = lang;
+      allCurrentArticles = ARTICLES_DATA[lang];
       const btnPt = document.getElementById('btn-pt');
       const btnEn = document.getElementById('btn-en');
 
@@ -1090,7 +1116,7 @@
       document.getElementById('feat-title').innerText = feat.title;
       document.getElementById('feat-excerpt').innerText = feat.excerpt;
 
-      selectHub(currentHub);
+      selectHub(currentHub, false);
     }
 
     window.addEventListener('DOMContentLoaded', () => {
