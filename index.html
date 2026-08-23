@@ -92,7 +92,7 @@
       </button>
     </div>
 
-    <!-- Grid de Artigos -->
+    <!-- Grid onde as matérias aparecem -->
     <div id="articles-grid" class="grid md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
 
     <!-- Espaço para Google AdSense -->
@@ -142,9 +142,57 @@
     </div>
   </footer>
 
-  <!-- Script com Leitor Markdown Corrigido -->
   <script>
     let currentLang = 'pt';
+
+    const ARTICLES_DATA = {
+      pt: [
+        {
+          title: "Modelos de Raciocínio Profundo: Como a IA está redefinindo a resolução de problemas complexos",
+          category: "AI & Models",
+          date: "Hoje",
+          excerpt: "Uma análise técnica aprofundada sobre a transição dos modelos de linguagem estatísticos para cadeias de raciocínio passo a passo estruturadas.",
+          content: "## A Nova Fronteira do Raciocínio em Inteligência Artificial\n\nA evolução recente dos modelos de linguagem (*LLMs*) ultrapassou a simples previsão probabilística de palavras. Com a introdução de cadeias de raciocínio profundo (*Chain-of-Thought* estruturado), os modelos agora são capazes de planejar, testar hipóteses, depurar erros internamente e validar código antes de emitir a resposta final ao usuário.\n\n### 1. O Que Muda na Arquitetura Técnica\n* **Verificação Lógica Contínua:** O modelo audita as etapas anteriores de seu próprio pensamento, reduzindo drasticamente a taxa de alucinações factuais.\n* **Uso Dinâmico de Tempo de Inferência (*Test-Time Compute*):** Para problemas triviais, o modelo responde instantaneamente; para equações matemáticas ou códigos complexos, ele aloca segundos extras de processamento interno.\n* **Autonomia Supervisionada:** Agentes autônomos agora conseguem navegar por repositórios de software e orquestrar múltiplos microsserviços com precisão matemática.\n\n### 2. Casos de Uso Práticos e Aplicação em Negócios\nEmpresas de desenvolvimento de software e análise financeira estão substituindo tarefas manuais por pipelines de raciocínio guiado. Na prática, isso permite que contratos jurídicos extensos sejam revisados com detecção de cláusulas de risco em frações de minuto.\n\n> *\"O raciocínio profundo marca o fim da IA como mero assistente de texto e o início da IA como mecanismo de engenharia e resolução lógica.\"*\n\n### 3. Conclusão Editorial CorticFlow\nAcompanhe as próximas atualizações de benchmarks e testes práticos no nosso compilado semanal de domingo."
+        },
+        {
+          title: "Guia Prático: Construindo Pipelines de Automação com IA a Custo Zero",
+          category: "Tutorials & Guides",
+          date: "Hoje",
+          excerpt: "Passo a passo didático de como estruturar esteiras de curadoria, processamento de texto e publicação contínua sem gastar com servidores caros.",
+          content: "## Construindo Automação Moderna sem Servidores (*Serverless Architecture*)\n\nCriar sistemas autônomos de publicação e curadoria na web não exige mais a contratação de servidores VPS caros ou bancos de dados pesados. Utilizando ferramentas modernas gratuitas como **GitHub Actions**, **Google AI Studio (Gemini API)** e **GitHub Pages**, qualquer desenvolvedor ou criador pode colocar no ar esteiras de inteligência artificial de alta performance.\n\n### A Arquitetura em 3 Etapas:\n\n1. **Ingestão Inteligente:** Rastreamento periódico de feeds RSS de portais especializados de tecnologia via scripts Python agendados por cron.\n2. **Processamento e Redação por IA:** Utilização de modelos de última geração via chamadas REST com resposta formatada em JSON estruturado.\n3. **Deploy Contínuo:** Commit direto dos arquivos Markdown no repositório Git, disparando a atualização imediata das páginas públicas com certificado SSL gratuito.\n\n### Vantagens do Modelo Serverless:\n* **Custo Marginal Zero:** Manutenção gratuita permanente dentro das cotas dos provedores.\n* **Escalabilidade Extrema:** Suporta picos de tráfego de milhares de leitores simultâneos sem lentidão.\n* **Segurança Nativa:** Sem portas de servidores abertas ou risco de invasão de banco de dados.\n\n*Acompanhe nossos tutoriais semanais todo domingo aqui no CorticFlow.*"
+        },
+        {
+          title: "Infraestrutura Global de IA: A Corrida dos Novos Data Centers e Chips Especializados",
+          category: "Business & Startups",
+          date: "Hoje",
+          excerpt: "Como os investimentos em semicondutores próprios e energia limpa estão moldando a nova economia das Big Techs e startups de tecnologia.",
+          content: "## O Peso da Infraestrutura Física na Era Digital\n\nA corrida pela liderança em inteligência artificial depende fundamentalmente de capacidade de processamento em silício e eficiência energética. As maiores empresas de tecnologia do mundo estão reorientando centenas de bilhões de dólares para a construção de data centers de última geração e parcerias estratégicas com o setor de energia renovável.\n\n### 1. O Avanço de Silício Próprio (*Custom ASICs*)\nPara diminuir a dependência de fornecedores de GPUs e baratear o custo de treinamento e inferência, as Big Techs estão desenvolvendo seus próprios chips aceleradores de IA. Isso permite otimizar o consumo por watt e acelerar o processamento de modelos multimodais.\n\n### 2. O Desafio Energético e Sustentabilidade\n* **Resfriamento Líquido:** Substituição do ar condicionado tradicional por sistemas de imersão e circuitos de água de ciclo fechado.\n* **Energia Renovável Direta:** Parcerias de longo prazo com usinas nucleares modulares, parques solares e eólicos para garantir operação 24/7.\n* **Eficiência de Rede:** Conexões ópticas de terabits por segundo integrando clusters de computação em diferentes regiões geográficas.\n\n### 3. Panorama para Startups\nNovas empresas que conseguirem otimizar o uso de tokens e reduzir o tamanho dos modelos (*quantização e destilação*) dominarão o mercado de aplicações corporativas de alta velocidade."
+        }
+      ],
+      en: [
+        {
+          title: "Deep Reasoning Models: How AI is Redefining Complex Problem Solving",
+          category: "AI & Models",
+          date: "Today",
+          excerpt: "A deep technical analysis of test-time compute, reasoning chains, and their transformative impact on autonomous software engineering.",
+          content: "## The Frontier of Cognitive AI Architecture\n\nRecent breakthroughs in Large Language Models have shifted the industry paradigm from pure probabilistic token prediction to structured, test-time reasoning. By utilizing internal chains of thought, modern AI architectures can formulate hypotheses, backtrack upon discovering logical contradictions, and verify algorithmic code before delivering answers.\n\n### 1. Key Architectural Transformations\n* **Continuous Verification:** Multi-step logical self-auditing significantly reduces factual hallucinations.\n* **Dynamic Inference Scaling:** The model dynamically adjusts compute time based on problem difficulty.\n* **Autonomous Agents:** Engineering agents can now traverse complex software codebases with mathematical certainty.\n\n### 2. Enterprise Impact & Practical Utility\nFrom software engineering pipelines to quantitative financial analysis, organizations are replacing brittle heuristics with verified reasoning pipelines.\n\n> *\"Deep reasoning marks the transition of AI from conversational assistants into deterministic engineering engines.\"*\n\n*Original technical breakdown by the CorticFlow editorial team.*"
+        },
+        {
+          title: "Actionable Guide: Building Zero-Cost Autonomous AI Pipelines",
+          category: "Tutorials & Guides",
+          date: "Today",
+          excerpt: "A complete step-by-step walkthrough on building serverless content pipelines with GitHub Actions, Gemini API, and static site deployment.",
+          content: "## Engineering Serverless AI Workflows\n\nDeploying production-grade autonomous content workflows no longer requires expensive dedicated cloud servers. By combining **GitHub Actions**, **Google AI Studio (Gemini API)**, and **GitHub Pages**, engineers and creators can run resilient, end-to-end automated pipelines at zero marginal infrastructure cost.\n\n### 3-Step Core Architecture:\n1. **Automated Ingestion:** Periodic polling of authoritative RSS news feeds.\n2. **Synthesis & Translation:** Structured prompt engineering generating bilingual markdown dispatches.\n3. **Continuous Deployment:** Git commits triggering instantaneous static frontend rebuilds with global CDN caching.\n\n*Follow our weekly technical tutorials every Sunday on CorticFlow.*"
+        },
+        {
+          title: "Global AI Infrastructure: The Scale of Next-Gen Data Centers & Specialized Silicon",
+          category: "Business & Startups",
+          date: "Today",
+          excerpt: "How hyperscale capital expenditures in custom chips and clean energy are reshaping the enterprise technology economy.",
+          content: "## The Physical Foundation of Artificial Intelligence\n\nThe frontier of artificial intelligence is bound by silicon supply chains and power grid capacity. Global technology leaders are committing hundreds of billions of dollars toward custom accelerators and clean energy partnerships to fuel next-generation AI workloads.\n\n### Strategic Highlights:\n* **Custom Silicon:** In-house ASIC development to optimize compute cost and latency.\n* **Clean Energy Integration:** Direct power purchase agreements with nuclear, solar, and wind providers.\n* **Startup Ecosystem:** Emerging software layers dedicated to token efficiency and model distillation."
+        }
+      ]
+    };
 
     function renderArticles(articles) {
       const grid = document.getElementById('articles-grid');
@@ -172,58 +220,47 @@
     }
 
     async function loadArticles() {
-      const grid = document.getElementById('articles-grid');
-      grid.innerHTML = '<div class="col-span-full text-center py-12 text-brandCyan animate-pulse">Carregando artigos do CorticFlow...</div>';
+      // 1. Carrega imediatamente as matérias completas
+      renderArticles(ARTICLES_DATA[currentLang]);
 
+      // 2. Tenta mesclar novos artigos que o robô tenha gravado no GitHub
       try {
         const response = await fetch(`https://api.github.com/repos/corticflow/corticflow/contents/content/${currentLang}`);
-        if (!response.ok) throw new Error('Sem artigos gravados');
+        if (!response.ok) return;
         const files = await response.json();
         const mdFiles = files.filter(f => f.name.endsWith('.md') && !f.name.startsWith('.gitkeep'));
 
-        if (mdFiles.length === 0) throw new Error('Pasta vazia');
+        if (mdFiles.length > 0) {
+          const fetchedArticles = [];
+          for (const file of mdFiles) {
+            const fileRes = await fetch(file.download_url);
+            const text = await fileRes.text();
+            let title = file.name.replace('.md', '');
+            let category = 'AI & Models';
+            let date = 'Recente';
+            let body = text;
 
-        const fetchedArticles = [];
-        for (const file of mdFiles) {
-          const fileRes = await fetch(file.download_url);
-          const text = await fileRes.text();
-
-          let title = file.name.replace('.md', '');
-          let category = 'AI & Models';
-          let date = 'Hoje';
-          let body = text;
-
-          if (text.startsWith('---')) {
-            const parts = text.split('---');
-            if (parts.length >= 3) {
-              const frontmatter = parts; // Correção: pegar o texto do frontmatter
-              body = parts.slice(2).join('---').trim();
-
-              const titleMatch = frontmatter.match(/title:\s*["']?([^"'\n\r]+)["']?/);
-              if (titleMatch && titleMatch) title = titleMatch;
-
-              const catMatch = frontmatter.match(/category:\s*["']?([^"'\n\r]+)["']?/) || frontmatter.match(/categoria:\s*["']?([^"'\n\r]+)["']?/);
-              if (catMatch && catMatch) category = catMatch;
-
-              const dateMatch = frontmatter.match(/date:\s*["']?([^"'\n\r]+)["']?/) || frontmatter.match(/data:\s*["']?([^"'\n\r]+)["']?/);
-              if (dateMatch && dateMatch) date = dateMatch;
+            if (text.startsWith('---')) {
+              const parts = text.split('---');
+              if (parts.length >= 3) {
+                const frontmatter = parts;
+                body = parts.slice(2).join('---').trim();
+                const titleMatch = frontmatter.match(/title:\s*["']?([^"'\n\r]+)["']?/);
+                if (titleMatch && titleMatch) title = titleMatch;
+                const catMatch = frontmatter.match(/category:\s*["']?([^"'\n\r]+)["']?/) || frontmatter.match(/categoria:\s*["']?([^"'\n\r]+)["']?/);
+                if (catMatch && catMatch) category = catMatch;
+                const dateMatch = frontmatter.match(/date:\s*["']?([^"'\n\r]+)["']?/) || frontmatter.match(/data:\s*["']?([^"'\n\r]+)["']?/);
+                if (dateMatch && dateMatch) date = dateMatch;
+              }
             }
+            const cleanBody = body.replace(/#+/g, '').replace(/\[([^\]]+)\]\([^)]+\)/g, '$1').replace(/[*_`]/g, '');
+            const excerpt = cleanBody.slice(0, 140).trim() + '...';
+            fetchedArticles.push({ title, category, date, excerpt, content: body });
           }
-
-          const cleanBody = body.replace(/#+/g, '').replace(/\[([^\]]+)\]\([^)]+\)/g, '$1').replace(/[*_`]/g, '');
-          const excerpt = cleanBody.slice(0, 140).trim() + '...';
-          fetchedArticles.push({ title, category, date, excerpt, content: body });
+          renderArticles([...fetchedArticles, ...ARTICLES_DATA[currentLang]]);
         }
-
-        renderArticles(fetchedArticles);
       } catch (e) {
-        grid.innerHTML = `
-          <div class="col-span-full bg-brandCard border border-brandBorder rounded-2xl p-10 text-center">
-            <div class="text-brandCyan text-3xl mb-3">⚡</div>
-            <h3 class="text-lg font-bold text-white mb-2">${currentLang === 'pt' ? 'Nenhuma publicação encontrada' : 'No dispatches found'}</h3>
-            <p class="text-slate-400 text-sm max-w-md mx-auto mb-4">${currentLang === 'pt' ? 'O robô ainda não gravou artigos nesta pasta. Execute o robô no GitHub Actions.' : 'No articles generated yet. Trigger the bot in GitHub Actions.'}</p>
-          </div>
-        `;
+        console.log("Exibindo matérias ativas.");
       }
     }
 
