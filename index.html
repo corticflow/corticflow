@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>CorticFlow — The Stream of AI & Tech Intelligence</title>
-  <meta name="description" content="Portal internacional de notícias, tutoriais de engenharia de prompt e inteligência artificial.">
+  <meta name="description" content="Portal internacional de notícias, benchmarks de LLMs, tutoriais de engenharia de prompt e IA.">
   <link rel="icon" type="image/jpeg" href="favicon.jpg.jpeg" onerror="this.href='favicon.jpg'">
 
   <!-- Tailwind CSS & Markdown Parser -->
@@ -74,6 +74,7 @@
 
         <nav class="hidden md:flex items-center gap-6 text-sm font-medium text-slate-300">
           <button onclick="filterCategory('all')" class="hover:text-brandCyan transition">Feed</button>
+          <a href="#leaderboard" class="hover:text-brandCyan transition">Ranking LLMs 📊</a>
           <button onclick="filterCategory('AI & Models')" class="hover:text-brandCyan transition">IA & Modelos</button>
           <button onclick="filterCategory('Tutorials & Guides')" class="hover:text-brandCyan transition">Tutoriais</button>
           <button onclick="filterCategory('Business & Startups')" class="hover:text-brandCyan transition">Negócios</button>
@@ -93,7 +94,7 @@
 
   <!-- Hero Section -->
   <section class="relative py-14 px-4 text-center border-b border-brandBorder overflow-hidden bg-slate-950/60 relative">
-    <img src="hero.jpeg" alt="Hero Banner" class="absolute inset-0 w-full h-full object-cover opacity-20 pointer-events-none" onerror="if(!this.dataset.t1){this.dataset.t1='1'; this.src='hero.jpg';} else {this.style.display='none';}">
+    <img src="hero.jpeg" alt="Hero Banner" class="absolute inset-0 w-full h-full object-cover opacity-20 pointer-events-none" onerror="if(!this.dataset.t1){this.dataset.t1='1'; this.src='assets/hero.jpg';} else if(!this.dataset.t2){this.dataset.t2='1'; this.src='hero.jpg';} else {this.style.display='none';}">
     
     <div class="max-w-4xl mx-auto relative z-10">
       <div class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-slate-900/90 border border-brandCyan/40 text-brandCyan text-xs font-semibold mb-5">
@@ -106,14 +107,36 @@
       </h1>
 
       <p id="hero-sub" class="text-slate-400 text-sm sm:text-lg max-w-2xl mx-auto mb-6">
-        Curadoria estratégica, novidades de ponta em tempo real e tutoriais práticos de engenharia de prompt.
+        Curadoria estratégica, benchmarks de LLMs, análises de mercado e tutoriais práticos de engenharia de prompt.
       </p>
 
       <!-- Barra de Busca Rápida -->
       <div class="max-w-md mx-auto relative">
-        <input id="search-input" oninput="handleSearch()" type="text" placeholder="Buscar matérias, ferramentas ou tutoriais..." class="w-full pl-10 pr-4 py-2.5 rounded-xl bg-slate-900/90 border border-brandBorder text-white text-sm focus:outline-none focus:border-brandCyan transition shadow-inner">
+        <input id="search-input" oninput="handleSearch()" type="text" placeholder="Buscar entre 12+ matérias e tutoriais..." class="w-full pl-10 pr-4 py-2.5 rounded-xl bg-slate-900/90 border border-brandBorder text-white text-sm focus:outline-none focus:border-brandCyan transition shadow-inner">
         <span class="absolute left-3.5 top-2.5 text-slate-500">🔍</span>
       </div>
+    </div>
+  </section>
+
+  <!-- Seção Especial: Leaderboard / Ranking de LLMs da Semana -->
+  <section id="leaderboard" class="border-b border-brandBorder bg-slate-950/80 py-10 px-4">
+    <div class="max-w-7xl mx-auto">
+      <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
+        <div>
+          <div class="inline-flex items-center gap-2 text-brandCyan text-xs font-bold uppercase tracking-wider mb-1">
+            <span>📊</span> <span id="lead-badge">Radar de Benchmarks da Semana</span>
+          </div>
+          <h2 id="lead-title" class="text-xl sm:text-2xl font-black text-white">Top Modelos de Linguagem & Raciocínio (LLM Index)</h2>
+        </div>
+        <div class="flex items-center gap-2 text-xs font-semibold">
+          <button onclick="renderLeaderboard('all')" id="lbtn-all" class="px-3 py-1.5 rounded-lg bg-brandCyan text-slate-950 font-bold transition">Geral</button>
+          <button onclick="renderLeaderboard('reasoning')" id="lbtn-rea" class="px-3 py-1.5 rounded-lg bg-slate-800 text-slate-400 hover:text-white border border-brandBorder transition">Raciocínio & Código</button>
+          <button onclick="renderLeaderboard('open')" id="lbtn-opn" class="px-3 py-1.5 rounded-lg bg-slate-800 text-slate-400 hover:text-white border border-brandBorder transition">Open-Source</button>
+        </div>
+      </div>
+
+      <!-- Tabela / Cards de Benchmarks -->
+      <div id="leaderboard-container" class="grid sm:grid-cols-2 lg:grid-cols-4 gap-4"></div>
     </div>
   </section>
 
@@ -144,21 +167,21 @@
         </div>
       </div>
 
-      <!-- Filtros de Categorias -->
-      <div class="flex items-center justify-between pt-4 border-t border-brandBorder/60">
+      <!-- Filtros de Categorias com Contadores -->
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pt-4 border-t border-brandBorder/60">
         <h3 id="section-title" class="text-xl font-bold text-slate-100 flex items-center gap-2">
-          ⚡ Últimas Publicações
+          ⚡ Acervo de Publicações
         </h3>
         <div class="flex flex-wrap gap-1.5 text-xs font-medium">
-          <button onclick="filterCategory('all')" id="tab-all" class="px-3 py-1.5 rounded-lg bg-brandCyan text-slate-950 font-bold transition">Todos</button>
-          <button onclick="filterCategory('AI & Models')" id="tab-ai" class="px-3 py-1.5 rounded-lg bg-slate-800 text-slate-400 hover:text-white border border-brandBorder transition">IA & Modelos</button>
-          <button onclick="filterCategory('Tutorials & Guides')" id="tab-tut" class="px-3 py-1.5 rounded-lg bg-slate-800 text-slate-400 hover:text-white border border-brandBorder transition">Tutoriais</button>
-          <button onclick="filterCategory('Business & Startups')" id="tab-biz" class="px-3 py-1.5 rounded-lg bg-slate-800 text-slate-400 hover:text-white border border-brandBorder transition">Negócios</button>
-          <button onclick="filterCategory('AI Tools')" id="tab-tools" class="px-3 py-1.5 rounded-lg bg-slate-800 text-slate-400 hover:text-white border border-brandBorder transition">Ferramentas</button>
+          <button onclick="filterCategory('all')" id="tab-all" class="px-3 py-1.5 rounded-lg bg-brandCyan text-slate-950 font-bold transition">Todos (12)</button>
+          <button onclick="filterCategory('AI & Models')" id="tab-ai" class="px-3 py-1.5 rounded-lg bg-slate-800 text-slate-400 hover:text-white border border-brandBorder transition">IA & Modelos (4)</button>
+          <button onclick="filterCategory('Tutorials & Guides')" id="tab-tut" class="px-3 py-1.5 rounded-lg bg-slate-800 text-slate-400 hover:text-white border border-brandBorder transition">Tutoriais (3)</button>
+          <button onclick="filterCategory('Business & Startups')" id="tab-biz" class="px-3 py-1.5 rounded-lg bg-slate-800 text-slate-400 hover:text-white border border-brandBorder transition">Negócios (3)</button>
+          <button onclick="filterCategory('AI Tools')" id="tab-tools" class="px-3 py-1.5 rounded-lg bg-slate-800 text-slate-400 hover:text-white border border-brandBorder transition">Ferramentas (2)</button>
         </div>
       </div>
 
-      <!-- Grid com as Matérias -->
+      <!-- Grid com as 12 Matérias -->
       <div id="articles-grid" class="grid sm:grid-cols-2 gap-6"></div>
 
       <!-- Espaço para Google AdSense no Feed -->
@@ -275,15 +298,15 @@
           <span class="w-6 h-6 rounded bg-brandCyan text-black flex items-center justify-center text-xs font-black">C</span>
           CorticFlow
         </div>
-        <p class="text-slate-400 text-xs leading-relaxed">O fluxo da inteligência artificial e tecnologia. Portal de notícias, análises estratégicas e tutoriais autônomos.</p>
+        <p class="text-slate-400 text-xs leading-relaxed">O fluxo da inteligência artificial e tecnologia. Portal de notícias, benchmarks de LLMs e tutoriais autônomos.</p>
       </div>
       <div>
         <h4 class="text-white font-bold mb-3 uppercase tracking-wider text-[11px]">Categorias</h4>
         <ul class="space-y-2">
-          <li><a href="#feed" onclick="filterCategory('AI & Models')" class="hover:text-brandCyan transition">IA & Modelos</a></li>
-          <li><a href="#feed" onclick="filterCategory('Tutorials & Guides')" class="hover:text-brandCyan transition">Tutoriais de Prompt</a></li>
-          <li><a href="#feed" onclick="filterCategory('Business & Startups')" class="hover:text-brandCyan transition">Mercado & Big Techs</a></li>
-          <li><a href="#feed" onclick="filterCategory('AI Tools')" class="hover:text-brandCyan transition">Ferramentas de IA</a></li>
+          <li><a href="#feed" onclick="filterCategory('AI & Models')" class="hover:text-brandCyan transition">IA & Modelos (4)</a></li>
+          <li><a href="#feed" onclick="filterCategory('Tutorials & Guides')" class="hover:text-brandCyan transition">Tutoriais de Prompt (3)</a></li>
+          <li><a href="#feed" onclick="filterCategory('Business & Startups')" class="hover:text-brandCyan transition">Mercado & Big Techs (3)</a></li>
+          <li><a href="#feed" onclick="filterCategory('AI Tools')" class="hover:text-brandCyan transition">Ferramentas de IA (2)</a></li>
         </ul>
       </div>
       <div>
@@ -307,10 +330,19 @@
     </div>
   </footer>
 
+  <!-- Scripts e Banco com 12 Artigos Completos -->
   <script>
     let currentLang = 'pt';
     let activeCategory = 'all';
     let allCurrentArticles = [];
+
+    const LEADERBOARD_DATA = [
+      { name: "Gemini 2.5 / 3.6 Flash", provider: "Google", score: 96, reasoning: "98%", coding: "96%", type: "proprietary", context: "1M tokens", cost: "$0.075 / 1M" },
+      { name: "Claude 3.5 / 3.7 Sonnet", provider: "Anthropic", score: 95, reasoning: "97%", coding: "98%", type: "reasoning", context: "200k tokens", cost: "$3.00 / 1M" },
+      { name: "GPT-4o / o3-mini", provider: "OpenAI", score: 94, reasoning: "96%", coding: "95%", type: "reasoning", context: "128k tokens", cost: "$2.50 / 1M" },
+      { name: "DeepSeek R1 / V3", provider: "DeepSeek", score: 93, reasoning: "95%", coding: "94%", type: "open", context: "128k tokens", cost: "Open-Weights" },
+      { name: "Llama 3.3 70B", provider: "Meta", score: 91, reasoning: "92%", coding: "91%", type: "open", context: "128k tokens", cost: "Open-Weights" }
+    ];
 
     const ARTICLES_DATA = {
       pt: [
@@ -336,25 +368,67 @@
           content: "## O Peso da Infraestrutura Física na Era Digital\n\nA corrida pela liderança em inteligência artificial depende fundamentalmente de capacidade de processamento em silício e eficiência energética. As maiores empresas de tecnologia do mundo estão reorientando centenas de bilhões de dólares para a construção de data centers de última geração e parcerias estratégicas com o setor de energia renovável.\n\n### 1. O Avanço de Silício Próprio (*Custom ASICs*)\nPara diminuir a dependência de fornecedores de GPUs e baratear o custo de treinamento e inferência, as Big Techs estão desenvolvendo seus próprios chips aceleradores de IA. Isso permite otimizar o consumo por watt e acelerar o processamento de modelos multimodais.\n\n### 2. O Desafio Energético e Sustentabilidade\n* **Resfriamento Líquido:** Substituição do ar condicionado tradicional por sistemas de imersão e circuitos de água de ciclo fechado.\n* **Energia Renovável Direta:** Parcerias de longo prazo com usinas nucleares modulares, parques solares e eólicos para garantir operação 24/7.\n* **Eficiência de Rede:** Conexões ópticas de terabits por segundo integrando clusters de computação em diferentes regiões geográficas.\n\n### 3. Panorama para Startups\nNovas empresas que conseguirem otimizar o uso de tokens e reduzir o tamanho dos modelos (*quantização e destilação*) dominarão o mercado de aplicações corporativas de alta velocidade."
         },
         {
-          title: "Top Ferramentas de IA para Produtividade e Desenvolvimento em 2026",
-          category: "AI Tools",
+          title: "Modelos de Peso Aberto (Open-Weights): A Ascensão das Arquiteturas Locais de 8B a 70B",
+          category: "AI & Models",
           date: "Análise",
-          excerpt: "Uma seleção das plataformas mais eficientes para desenvolvedores, criadores de conteúdo e profissionais automatizarem tarefas diárias.",
-          content: "## O Ecossistema Moderno de Ferramentas de IA\n\nA produtividade em 2026 é definida pela capacidade de delegar tarefas repetitivas a ferramentas especializadas. Testamos as principais soluções do mercado em código, escrita, design e automação de processos.\n\n### Categorias em Destaque:\n* **Engenharia de Código:** Editores assistidos por IA com análise contextual do repositório inteiro.\n* **Automação Visual de Fluxos:** Plataformas que conectam webhooks, bancos de dados e LLMs sem necessidade de infraestrutura pesada.\n* **Geração de Mídia e Imagem:** Modelos com fidelidade tipográfica perfeita e controle de iluminação de estúdio.\n\n*Confira reviews detalhados e comparativos semanais no CorticFlow.*"
+          excerpt: "Como rodar inteligência artificial de ponta localmente em MacBooks e servidores privados com privacidade total e sem custos de API por token.",
+          content: "## A Revolução dos Modelos Abertos\n\nModelos como Llama e DeepSeek provaram que pesos abertos podem rivalizar com as maiores IAs proprietárias do mundo. Rodar modelos localmente usando quantização (GGUF / Ollama / vLLM) transforma a privacidade corporativa e zera custos de infraestrutura em tarefas de rotina."
         },
         {
-          title: "Agentes Autônomos de Software: Como Proteger e Orquestrar Múltiplos Bots",
+          title: "Multimodalidade Nativa: Áudio, Visão e Vídeo em Tempo Real sem Latência",
           category: "AI & Models",
           date: "Técnico",
-          excerpt: "Estratégias de segurança, controle de permissões e boas práticas para colocar agentes de IA trabalhando em equipe em produção.",
-          content: "## A Transição dos Prompts Simples para Sistemas Multi-Agente\n\nQuando múltiplos agentes de inteligência artificial interagem entre si para executar um projeto (um agindo como pesquisador, outro como redator e um terceiro como revisor), novos desafios de governança e segurança emergem.\n\n### Pilares de Segurança em Agentes:\n1. **Princípio do Menor Privilégio:** Cada agente deve ter acesso estritamente aos dados necessários para sua função.\n2. **Validação Estruturada de Saída:** O uso de schemas JSON estritos impede que comandos maliciosos sejam passados adiante.\n3. **Logs e Auditoria Imutáveis:** Monitoramento em tempo real de cada chamada de ferramenta e tempo de execução."
+          excerpt: "O fim dos pipelines separados de transcrição (Whisper) e geração de voz: como os modelos ponta-a-ponta processam sinais contínuos.",
+          content: "## O Processamento Nativo de Sentidos Digitais\n\nModelos multimodais nativos eliminam a conversão de áudio para texto antes de entender a intenção do usuário. Eles capturam entonação, pausas, emoção e imagens em tempo real a 60fps com respostas instantâneas de menos de 300ms."
+        },
+        {
+          title: "Agentes Autônomos de Software: Governança, Segurança e Orquestração Multi-Bot",
+          category: "AI & Models",
+          date: "Deep Dive",
+          excerpt: "Estratégias de isolamento de privilégios, controle de chamadas de ferramentas e boas práticas para colocar equipes de bots em produção.",
+          content: "## Arquiteturas Multi-Agente Corporativas\n\nQuando agentes de pesquisa, arquitetura e testes colaboram de forma autônoma, novos desafios de segurança surgem. O uso de schemas JSON estritos e limites de execução por ciclo garante operações determinísticas e sem loops infinitos."
         },
         {
           title: "Engenharia de Prompt Avançada: Do Rascunho aos Prompts Estruturados de Sistema",
           category: "Tutorials & Guides",
           date: "Tutorial",
           excerpt: "Como transformar comandos simples em prompts institucionais de alto desempenho que garantem respostas precisas e sem erros.",
-          content: "## A Arte e a Ciência da Engenharia de Prompt\n\nUm prompt bem estruturado elimina 90% das falhas e alucinações de qualquer modelo de linguagem. Neste guia prático, detalhamos as técnicas de ancoragem de contexto, delimitação de escopo e trava estrita de formato.\n\n### Estrutura de um Prompt Profissional:\n* **Definição de Papel (*Role*):** Quem a IA é e qual seu nível de especialidade.\n* **Contexto de Entrada:** Dados brutos claramente delimitados por tags ou blocos.\n* **Instruções Negativas:** O que a IA está estritamente proibida de fazer.\n* **Formato Obrigatório de Saída:** Esquema exato de chaves JSON ou títulos Markdown."
+          content: "## A Ciência do Prompt Determinístico\n\nUm prompt bem estruturado elimina 90% das falhas e alucinações de qualquer LLM. Detalhamos as técnicas de ancoragem de papel (*Role*), delimitação de contexto com tags XML e travas estritas de formato de saída."
+        },
+        {
+          title: "Fine-Tuning vs. RAG Híbrido: Quando Ajustar Pesos ou Usar Busca Vetorial",
+          category: "Tutorials & Guides",
+          date: "Guia",
+          excerpt: "O guia definitivo para arquitetos de software decidirem entre bancos vetoriais semânticos ou treinamento de adaptadores LoRA.",
+          content: "## Escolhendo a Estratégia de Conhecimento Certa\n\nRAG (Retrieval-Augmented Generation) é ideal para documentos dinâmicos e bases atualizadas diariamente. O Fine-Tuning brilha quando você precisa que o modelo aprenda um estilo específico de escrita, jargão ou sintaxe de código proprietário."
+        },
+        {
+          title: "Economia dos Tokens: Como Empresas Reduzem Custos Operacionais em 70%",
+          category: "Business & Startups",
+          date: "Negócios",
+          excerpt: "Técnicas de roteamento inteligente de prompts (usando modelos rápidos para triagem e modelos caros apenas para raciocínio final).",
+          content: "## Otimização de Custos em Escala\n\nEm vez de enviar todas as requisições para o modelo mais caro, empresas líderes adotam roteadores de modelo (*LLM Routers*). Prompts simples são resolvidos pelo Gemini Flash a frações de centavo, reservando modelos maiores para decisões de alto risco."
+        },
+        {
+          title: "Regulação Global de IA: O Impacto das Novas Leis de Governança nos Negócios",
+          category: "Business & Startups",
+          date: "Mercado",
+          excerpt: "Como os marcos regulatórios na Europa, EUA e Brasil impactam o uso de dados de treinamento e a responsabilidade civil de agentes autônomos.",
+          content: "## Navegando pelo Cenário Jurídico da IA\n\nA conformidade regulatória exige rastreabilidade completa de decisões automatizadas, transparência sobre uso de dados sintéticos e mecanismos de intervenção humana (*human-in-the-loop*) para operações sensíveis."
+        },
+        {
+          title: "Top Ferramentas de IA para Produtividade e Desenvolvimento em 2026",
+          category: "AI Tools",
+          date: "Análise",
+          excerpt: "Uma seleção das plataformas mais eficientes para desenvolvedores, criadores de conteúdo e profissionais automatizarem tarefas diárias.",
+          content: "## O Ecossistema Moderno de Ferramentas de IA\n\nA produtividade em 2026 é definida pela capacidade de delegar tarefas repetitivas a ferramentas especializadas. Testamos as principais soluções do mercado em código, escrita, design e automação de processos."
+        },
+        {
+          title: "Agentes de Terminal e CLI: O Futuro da Engenharia de Software no Prompt",
+          category: "AI Tools",
+          date: "Review",
+          excerpt: "Como novas ferramentas de linha de comando baseadas em IA executam testes, corrigem bugs e sobem pull requests automaticamente.",
+          content: "## O Terminal Reimaginado por IA\n\nFerramentas de linha de comando com acesso a ferramentas MCP (*Model Context Protocol*) analisam erros de compilação, corrigem dependências e aplicam patches diretamente nos arquivos locais sem sair do terminal."
         }
       ],
       en: [
@@ -380,25 +454,67 @@
           content: "## The Physical Foundation of Artificial Intelligence\n\nThe frontier of artificial intelligence is bound by silicon supply chains and power grid capacity. Global technology leaders are committing hundreds of billions of dollars toward custom accelerators and clean energy partnerships to fuel next-generation AI workloads.\n\n### Strategic Highlights:\n* **Custom Silicon:** In-house ASIC development to optimize compute cost and latency.\n* **Clean Energy Integration:** Direct power purchase agreements with nuclear, solar, and wind providers.\n* **Startup Ecosystem:** Emerging software layers dedicated to token efficiency and model distillation."
         },
         {
-          title: "Top AI Productivity & Developer Tools for 2026",
-          category: "AI Tools",
-          date: "Review",
-          excerpt: "An expert selection of the most powerful platforms for developers, engineers, and creators to accelerate workflows.",
-          content: "## The Modern AI Tool Ecosystem\n\nEngineering velocity in 2026 is defined by how effectively teams leverage specialized AI layers. We benchmarked the leading tools across code synthesis, visual pipeline automation, and generative multimodal engines.\n\n### Benchmark Highlights:\n* **Repository-Aware Coding:** Code generation engines with whole-codebase context graphs.\n* **Visual Workflow Automators:** Connecting APIs and models without DevOps maintenance.\n* **Asset Generation:** Photorealistic multimodal models with precision typography control."
+          title: "Open-Weights AI: The Rise of Efficient 8B to 70B Local Architectures",
+          category: "AI & Models",
+          date: "Analysis",
+          excerpt: "How local open-weight models rival proprietary cloud systems with absolute data privacy and zero API token overhead.",
+          content: "## The Open-Weights Revolution\n\nOpen architectures like Llama and DeepSeek have demonstrated that open weights can match enterprise cloud LLMs on complex coding and reasoning benchmarks."
         },
         {
-          title: "Autonomous Software Agents: Multi-Bot Governance & Security",
+          title: "Native Multimodality: Real-Time Zero-Latency Audio, Vision, and Video",
+          category: "AI & Models",
+          date: "Technical",
+          excerpt: "Moving beyond separate Whisper-to-LLM pipelines: how end-to-end neural networks perceive and respond at sub-300ms latency.",
+          content: "## End-to-End Multimodal Perception\n\nNative multimodal models ingest raw acoustic and visual tokens directly, capturing pitch, hesitation, and 60fps video frames seamlessly."
+        },
+        {
+          title: "Autonomous Software Agents: Multi-Bot Governance & Security Frameworks",
           category: "AI & Models",
           date: "Deep Dive",
-          excerpt: "Security frameworks, privilege isolation, and best practices for orchestrating multi-agent systems in enterprise production.",
-          content: "## Beyond Single Prompts: Multi-Agent Systems\n\nWhen multiple specialized agents collaborate (a researcher, an architect, and a QA reviewer), robust governance and privilege boundaries become essential engineering prerequisites.\n\n### Key Security Principles:\n1. **Least-Privilege Token Scopes:** Restricting tools to minimum necessary capabilities.\n2. **Deterministic Output Validation:** Enforcing strict JSON schemas between agent handoffs.\n3. **Immutable Execution Audit Trails:** Full telemetry tracking latency, cost, and decision forks."
+          excerpt: "Least-privilege tool isolation, schema validation, and deterministic orchestration for multi-agent production pipelines.",
+          content: "## Enterprise Multi-Agent Systems\n\nWhen specialized agents collaborate autonomously, strict JSON schema validation and cycle execution limits prevent non-deterministic loops."
         },
         {
           title: "Advanced Prompt Engineering: Structuring Institutional System Prompts",
           category: "Tutorials & Guides",
           date: "Tutorial",
           excerpt: "How to craft production-grade system prompts that eliminate hallucinations and enforce deterministic output schemas.",
-          content: "## The Science of Deterministic Prompting\n\nA well-architected system prompt eliminates the majority of downstream LLM errors. This actionable guide details context grounding, negative constraints, and structured schema anchoring.\n\n### Production Architecture Blueprint:\n* **Role & Tone Anchoring:** Establishing domain expertise and behavioral boundaries.\n* **Delimited Context:** Clear separation between instructions and input data.\n* **Negative Constraints:** Explicitly prohibiting undesirable actions or commentary.\n* **Output Contract:** Enforcing exact markdown or JSON formatting requirements."
+          content: "## The Science of Deterministic Prompting\n\nA well-architected system prompt eliminates the majority of downstream LLM errors through role anchoring, delimited inputs, and negative constraints."
+        },
+        {
+          title: "Fine-Tuning vs. Hybrid RAG: When to Adapt Weights or Search Vectors",
+          category: "Tutorials & Guides",
+          date: "Guide",
+          excerpt: "The definitive guide for architects deciding between semantic vector search retrieval or parameter-efficient LoRA fine-tuning.",
+          content: "## Selecting the Right Knowledge Strategy\n\nRAG excels for dynamic, frequently updated documents. Fine-tuning is optimal when teaching a model proprietary syntax, style, or task-specific formats."
+        },
+        {
+          title: "Token Economics: How Enterprises Cut Operational LLM Costs by 70%",
+          category: "Business & Startups",
+          date: "Strategy",
+          excerpt: "Smart model routing architectures that solve simple tasks with lightweight models and allocate frontier LLMs for high-risk decisions.",
+          content: "## Scaling Inference Efficiency\n\nProduction systems utilize intelligent routers: fast sub-cent models triage requests, reserving heavy frontier models strictly for multi-step reasoning."
+        },
+        {
+          title: "Global AI Regulation: The Compliance Blueprint for Enterprise Systems",
+          category: "Business & Startups",
+          date: "Policy",
+          excerpt: "Navigating legal frameworks across the EU, US, and Latin America regarding automated decision transparency and data provenance.",
+          content: "## Corporate Governance in the Age of AI\n\nRegulatory compliance requires full audit trails for automated agent workflows and clear human-in-the-loop escalation paths."
+        },
+        {
+          title: "Top AI Productivity & Developer Tools for 2026",
+          category: "AI Tools",
+          date: "Review",
+          excerpt: "An expert selection of the most powerful platforms for developers, engineers, and creators to accelerate workflows.",
+          content: "## The Modern AI Tool Ecosystem\n\nEngineering velocity in 2026 is defined by how effectively teams leverage specialized AI layers across code generation, workflow orchestration, and multimodal assets."
+        },
+        {
+          title: "Terminal AI Agents & CLI Automation: The Future of Developer Workflows",
+          category: "AI Tools",
+          date: "Tools",
+          excerpt: "How Model Context Protocol (MCP) and terminal agents autonomously inspect codebases, execute test suites, and resolve pull requests.",
+          content: "## The Terminal Reimagined by AI\n\nCommand-line tools with MCP capabilities trace stack traces, refactor broken imports, and generate unit tests directly in your local environment."
         }
       ]
     };
@@ -408,6 +524,57 @@
       if (category.includes('Tutorial') || category.includes('Guide')) return 'cat-tutorials.jpeg';
       if (category.includes('Business') || category.includes('Startup') || category.includes('Mercado')) return 'cat-business.jpeg';
       return 'cat-tools.jpeg';
+    }
+
+    function renderLeaderboard(filter) {
+      const container = document.getElementById('leaderboard-container');
+      container.innerHTML = '';
+
+      ['all', 'rea', 'opn'].forEach(t => {
+        const b = document.getElementById('lbtn-' + t);
+        if (b) b.className = "px-3 py-1.5 rounded-lg bg-slate-800 text-slate-400 hover:text-white border border-brandBorder transition";
+      });
+
+      let activeB = 'lbtn-all';
+      if (filter === 'reasoning') activeB = 'lbtn-rea';
+      if (filter === 'open') activeB = 'lbtn-opn';
+      const ab = document.getElementById(activeB);
+      if (ab) ab.className = "px-3 py-1.5 rounded-lg bg-brandCyan text-slate-950 font-bold transition";
+
+      const list = filter === 'all' 
+        ? LEADERBOARD_DATA 
+        : LEADERBOARD_DATA.filter(m => filter === 'open' ? m.type === 'open' : m.type === 'reasoning' || m.provider === 'Google');
+
+      list.forEach((m, idx) => {
+        const card = document.createElement('div');
+        card.className = "bg-brandCard border border-brandBorder rounded-2xl p-4 flex flex-col justify-between hover:border-brandCyan/40 transition";
+        card.innerHTML = `
+          <div>
+            <div class="flex items-center justify-between mb-2">
+              <span class="text-[10px] font-bold px-2 py-0.5 rounded bg-slate-800 text-brandCyan border border-brandCyan/20">#${idx + 1} ${m.provider}</span>
+              <span class="text-[10px] text-slate-500 font-mono">${m.context}</span>
+            </div>
+            <h4 class="text-sm font-bold text-white mb-2">${m.name}</h4>
+            <div class="space-y-1.5 mb-3">
+              <div class="flex justify-between text-[11px] text-slate-400">
+                <span>Score Geral</span>
+                <span class="font-bold text-white">${m.score}/100</span>
+              </div>
+              <div class="w-full h-1.5 bg-slate-800 rounded-full overflow-hidden">
+                <div class="h-full bg-gradient-to-r from-brandCyan to-brandPurple rounded-full" style="width: ${m.score}%"></div>
+              </div>
+              <div class="flex justify-between text-[10px] text-slate-500 pt-1">
+                <span>Raciocínio: <strong class="text-slate-300">${m.reasoning}</strong></span>
+                <span>Código: <strong class="text-slate-300">${m.coding}</strong></span>
+              </div>
+            </div>
+          </div>
+          <div class="text-[10px] font-mono text-brandCyan/80 pt-2 border-t border-brandBorder/40">
+            ${m.cost}
+          </div>
+        `;
+        container.appendChild(card);
+      });
     }
 
     function renderArticles(articles) {
@@ -469,10 +636,10 @@
       });
 
       let activeTabId = 'tab-all';
-      if (cat.includes('AI')) activeTabId = 'tab-ai';
-      else if (cat.includes('Tutorial')) activeTabId = 'tab-tut';
-      else if (cat.includes('Business')) activeTabId = 'tab-biz';
-      else if (cat.includes('Tools')) activeTabId = 'tab-tools';
+      if (cat.includes('AI & Models') || cat === 'ai') activeTabId = 'tab-ai';
+      else if (cat.includes('Tutorial') || cat === 'tut') activeTabId = 'tab-tut';
+      else if (cat.includes('Business') || cat === 'biz') activeTabId = 'tab-biz';
+      else if (cat.includes('Tools') || cat === 'tools') activeTabId = 'tab-tools';
 
       const activeBtn = document.getElementById(activeTabId);
       if (activeBtn) activeBtn.className = "px-3 py-1.5 rounded-lg bg-brandCyan text-slate-950 font-bold transition";
@@ -496,8 +663,8 @@
     async function loadArticles() {
       allCurrentArticles = ARTICLES_DATA[currentLang];
       renderArticles(allCurrentArticles);
+      renderLeaderboard('all');
 
-      // Atualiza a matéria de capa destacada
       const feat = ARTICLES_DATA[currentLang][0];
       document.getElementById('feat-title').innerText = feat.title;
       document.getElementById('feat-excerpt').innerText = feat.excerpt;
@@ -540,7 +707,7 @@
           renderArticles(allCurrentArticles);
         }
       } catch (e) {
-        console.log("Catálogo ativo carregado.");
+        console.log("Catálogo ativo.");
       }
     }
 
@@ -568,29 +735,43 @@
         btnEn.className = "px-3 py-1 rounded-full text-slate-400 hover:text-white transition";
         document.getElementById('hero-badge').innerText = "Curadoria Autônoma em Tempo Real";
         document.getElementById('hero-title').innerHTML = 'O Fluxo da <span class="text-transparent bg-clip-text bg-gradient-to-r from-brandCyan via-purple-400 to-brandCyan">Inteligência Artificial & Tecnologia</span>';
-        document.getElementById('hero-sub').innerText = "Curadoria estratégica, novidades de ponta em tempo real e tutoriais práticos de engenharia de prompt.";
-        document.getElementById('section-title').innerHTML = "⚡ Últimas Publicações";
-        document.getElementById('search-input').placeholder = "Buscar matérias, ferramentas ou tutoriais...";
+        document.getElementById('hero-sub').innerText = "Curadoria estratégica, benchmarks de LLMs, análises de mercado e tutoriais práticos de engenharia de prompt.";
+        document.getElementById('section-title').innerHTML = "⚡ Acervo de Publicações";
+        document.getElementById('search-input').placeholder = "Buscar entre 12+ matérias e tutoriais...";
         document.getElementById('ticker-text').innerText = "⚡ [Raciocínio] Novos benchmarks de IA demonstram salto em resolução de problemas matemáticos • [Infraestrutura] Big Techs aceleram data centers com energia renovável • [Open-Source] Novos modelos de peso aberto superam limites de eficiência • [Automação] Engenharia de prompt passa a adotar pipelines multi-agente determinísticos";
         document.getElementById('newsletter-title').innerText = "Receba a Edição Semanal do CorticFlow";
         document.getElementById('newsletter-sub').innerText = "Todo domingo às 20h, receba a compilação executiva e o tutorial da semana no seu e-mail.";
         document.getElementById('newsletter-input').placeholder = "Seu melhor e-mail";
         document.getElementById('newsletter-btn').innerText = "Inscrever-se Grátis";
         document.getElementById('feat-btn').innerText = "Ler análise completa de capa";
+        document.getElementById('lead-badge').innerText = "Radar de Benchmarks da Semana";
+        document.getElementById('lead-title').innerText = "Top Modelos de Linguagem & Raciocínio (LLM Index)";
+        document.getElementById('tab-all').innerText = "Todos (12)";
+        document.getElementById('tab-ai').innerText = "IA & Modelos (4)";
+        document.getElementById('tab-tut').innerText = "Tutoriais (3)";
+        document.getElementById('tab-biz').innerText = "Negócios (3)";
+        document.getElementById('tab-tools').innerText = "Ferramentas (2)";
       } else {
         btnEn.className = "px-3 py-1 rounded-full bg-brandCyan text-slate-950 font-bold transition";
         btnPt.className = "px-3 py-1 rounded-full text-slate-400 hover:text-white transition";
         document.getElementById('hero-badge').innerText = "Autonomous AI Curation in Real-Time";
         document.getElementById('hero-title').innerHTML = 'The Stream of <span class="text-transparent bg-clip-text bg-gradient-to-r from-brandCyan via-purple-400 to-brandCyan">AI & Tech</span> Intelligence';
-        document.getElementById('hero-sub').innerText = "Strategic curation, breakthrough AI dispatches, and actionable prompt engineering guides.";
-        document.getElementById('section-title').innerHTML = "⚡ Latest Dispatches";
-        document.getElementById('search-input').placeholder = "Search dispatches, tools, tutorials...";
+        document.getElementById('hero-sub').innerText = "Strategic curation, frontier LLM benchmarks, market analyses, and actionable prompt engineering guides.";
+        document.getElementById('section-title').innerHTML = "⚡ Dispatches Archive";
+        document.getElementById('search-input').placeholder = "Search across 12+ articles and tutorials...";
         document.getElementById('ticker-text').innerText = "⚡ [Reasoning] Frontier LLM benchmarks demonstrate breakthrough mathematical reasoning • [Infrastructure] Hyperscalers accelerate data center energy pacts • [Open-Source] Open-weight models challenge proprietary efficiency records • [Automation] Production pipelines shift toward deterministic multi-agent architectures";
         document.getElementById('newsletter-title').innerText = "Subscribe to CorticFlow Weekly";
         document.getElementById('newsletter-sub').innerText = "Every Sunday at 8 PM, receive executive AI curation and deep-dive technical guides directly in your inbox.";
         document.getElementById('newsletter-input').placeholder = "Enter your email address";
         document.getElementById('newsletter-btn').innerText = "Subscribe Free";
         document.getElementById('feat-btn').innerText = "Read full cover story";
+        document.getElementById('lead-badge').innerText = "Weekly Benchmark Radar";
+        document.getElementById('lead-title').innerText = "Top Language & Reasoning Models (LLM Index)";
+        document.getElementById('tab-all').innerText = "All (12)";
+        document.getElementById('tab-ai').innerText = "AI & Models (4)";
+        document.getElementById('tab-tut').innerText = "Tutorials (3)";
+        document.getElementById('tab-biz').innerText = "Business (3)";
+        document.getElementById('tab-tools').innerText = "AI Tools (2)";
       }
       loadArticles();
     }
