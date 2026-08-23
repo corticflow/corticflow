@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>CorticFlow — The Stream of AI & Tech Intelligence</title>
-  <meta name="description" content="Portal internacional de notícias, benchmarks de LLMs, tutoriais de engenharia de prompt e IA.">
+  <meta name="description" content="Portal internacional no estilo The Verge: notícias de tecnologia, benchmarks de LLMs e tutoriais de IA.">
   <link rel="icon" type="image/jpeg" href="favicon.jpg.jpeg" onerror="this.href='favicon.jpg'">
 
   <!-- Tailwind CSS & Markdown Parser -->
@@ -16,29 +16,34 @@
       theme: {
         extend: {
           colors: {
-            brandDark: '#0B0F19',
-            brandCard: '#111827',
-            brandBorder: '#1E293B',
+            brandDark: '#0B0D13',
+            brandCard: '#131620',
+            brandBorder: '#232838',
             brandCyan: '#00E5FF',
-            brandPurple: '#8B5CF6'
+            brandPurple: '#E024C3',
+            brandYellow: '#FEE75C'
+          },
+          fontFamily: {
+            mono: ['ui-monospace', 'SFMono-Regular', 'Menlo', 'monospace']
           }
         }
       }
     }
   </script>
   <style>
-    body { background-color: #0B0F19; color: #F8FAFC; font-family: system-ui, -apple-system, sans-serif; }
-    .glow-hover { transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1); }
-    .glow-hover:hover { transform: translateY(-3px); box-shadow: 0 12px 25px -10px rgba(0, 229, 255, 0.25); border-color: rgba(0, 229, 255, 0.4); }
-    .glass-nav { background: rgba(11, 15, 25, 0.9); backdrop-filter: blur(16px); border-bottom: 1px solid rgba(30, 41, 59, 0.8); }
-    .prose-dark { color: #CBD5E1; }
-    .prose-dark h2 { color: #FFFFFF; font-weight: 700; font-size: 1.35rem; margin-top: 1.5rem; margin-bottom: 0.5rem; border-bottom: 1px solid #1E293B; padding-bottom: 0.3rem; }
-    .prose-dark h3 { color: #00E5FF; font-weight: 600; font-size: 1.15rem; margin-top: 1.2rem; margin-bottom: 0.4rem; }
-    .prose-dark p { margin-bottom: 1rem; line-height: 1.75; font-size: 0.95rem; }
-    .prose-dark ul { list-style-type: disc; padding-left: 1.25rem; margin-bottom: 1rem; }
-    .prose-dark li { margin-bottom: 0.4rem; }
-    .prose-dark a { color: #00E5FF; text-decoration: underline; font-weight: 600; }
-    .prose-dark blockquote { border-left: 4px solid #8B5CF6; padding-left: 1rem; color: #94A3B8; font-style: italic; margin: 1rem 0; }
+    body { background-color: #0B0D13; color: #E2E8F0; font-family: system-ui, -apple-system, sans-serif; }
+    .glow-verge { transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); }
+    .glow-verge:hover { transform: translateY(-2px); border-color: #00E5FF; box-shadow: 0 8px 25px -8px rgba(0, 229, 255, 0.35); }
+    .verge-border { border: 1px solid #232838; }
+    .verge-title { font-family: system-ui, -apple-system, sans-serif; letter-spacing: -0.04em; }
+    .prose-verge { color: #CBD5E1; }
+    .prose-verge h2 { color: #FFFFFF; font-weight: 800; font-size: 1.4rem; margin-top: 1.5rem; margin-bottom: 0.5rem; border-bottom: 2px solid #232838; padding-bottom: 0.4rem; letter-spacing: -0.02em; }
+    .prose-verge h3 { color: #00E5FF; font-weight: 700; font-size: 1.15rem; margin-top: 1.2rem; margin-bottom: 0.4rem; }
+    .prose-verge p { margin-bottom: 1rem; line-height: 1.8; font-size: 0.95rem; }
+    .prose-verge ul { list-style-type: disc; padding-left: 1.25rem; margin-bottom: 1rem; }
+    .prose-verge li { margin-bottom: 0.4rem; }
+    .prose-verge a { color: #00E5FF; text-decoration: underline; font-weight: 700; }
+    .prose-verge blockquote { border-left: 4px solid #E024C3; padding-left: 1rem; color: #94A3B8; font-style: italic; margin: 1rem 0; }
     .ticker-wrap { overflow: hidden; white-space: nowrap; }
     .ticker-move { display: inline-block; animation: ticker 25s linear infinite; }
     @keyframes ticker { 0% { transform: translate3d(0, 0, 0); } 100% { transform: translate3d(-50%, 0, 0); } }
@@ -46,110 +51,172 @@
 </head>
 <body class="min-h-screen flex flex-col antialiased selection:bg-brandCyan selection:text-black">
 
-  <!-- Ticker de Notícias em Tempo Real -->
-  <div class="bg-slate-950 border-b border-brandBorder/80 py-1.5 px-4 text-xs font-mono flex items-center text-slate-400 overflow-hidden">
-    <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded bg-brandCyan/10 text-brandCyan font-bold uppercase tracking-wider text-[10px] mr-3 shrink-0 border border-brandCyan/30">
-      <span class="w-1.5 h-1.5 rounded-full bg-brandCyan animate-pulse"></span>
-      LIVE
-    </span>
-    <div class="ticker-wrap flex-1">
-      <div id="ticker-text" class="ticker-move text-slate-300">
-        ⚡ [Raciocínio] Novos benchmarks de IA demonstram salto em resolução de problemas matemáticos • [Infraestrutura] Big Techs aceleram data centers com energia renovável • [Open-Source] Novos modelos de peso aberto superam limites de eficiência • [Automação] Engenharia de prompt passa a adotar pipelines multi-agente determinísticos
+  <!-- Top Live Bar (Estilo The Verge) -->
+  <div class="bg-black border-b border-brandBorder/80 py-1.5 px-4 text-xs font-mono flex items-center justify-between text-slate-400">
+    <div class="flex items-center overflow-hidden flex-1 mr-4">
+      <span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded bg-brandPurple/20 text-brandPurple font-black uppercase tracking-widest text-[9px] mr-3 shrink-0 border border-brandPurple/40">
+        <span class="w-1.5 h-1.5 rounded-full bg-brandPurple animate-ping"></span>
+        THE WIRE
+      </span>
+      <div class="ticker-wrap flex-1">
+        <div id="ticker-text" class="ticker-move text-slate-300 font-medium">
+          ⚡ [Raciocínio] Novos benchmarks de IA demonstram salto em resolução de problemas matemáticos • [Infraestrutura] Big Techs aceleram data centers com energia limpa • [Open-Source] Modelos abertos rivalizam com arquiteturas proprietárias • [Automação] Engenharia de prompt passa a adotar pipelines multi-agente determinísticos
+        </div>
       </div>
+    </div>
+
+    <!-- Seletor de Idioma -->
+    <div class="flex items-center bg-slate-900 rounded-lg p-0.5 border border-brandBorder text-[10px] font-bold shrink-0">
+      <button id="btn-pt" onclick="setLanguage('pt')" class="px-2.5 py-0.5 rounded bg-brandCyan text-slate-950 font-black transition">PT</button>
+      <button id="btn-en" onclick="setLanguage('en')" class="px-2.5 py-0.5 rounded text-slate-400 hover:text-white transition">EN</button>
     </div>
   </div>
 
-  <!-- Header Fixo com Menu Responsivo -->
-  <header class="sticky top-0 z-40 glass-nav">
-    <div class="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
-      <div class="flex items-center gap-8">
-        <a href="#" class="flex items-center gap-3">
-          <div class="w-9 h-9 rounded-lg bg-gradient-to-br from-brandCyan to-brandPurple flex items-center justify-center font-bold text-black text-xl shadow-lg">
+  <!-- Header / Mastro Principal (The Verge Signature) -->
+  <header class="sticky top-0 z-50 bg-black/90 backdrop-blur-xl border-b border-brandBorder">
+    <div class="max-w-7xl mx-auto px-4 h-20 flex items-center justify-between">
+      
+      <!-- Logo Principal Brutalista -->
+      <div class="flex items-center gap-6">
+        <a href="#" class="flex items-center gap-3 group">
+          <div class="w-10 h-10 bg-brandCyan text-black font-black text-2xl flex items-center justify-center transform -skew-x-6 shadow-[3px_3px_0px_#E024C3]">
             C
           </div>
-          <span class="text-2xl font-bold tracking-tight text-white">
-            Cortic<span class="text-brandCyan">Flow</span>
-          </span>
+          <div>
+            <span class="text-3xl font-black tracking-tighter text-white uppercase verge-title">
+              CORTIC<span class="text-brandCyan font-black">//</span><span class="text-white">FLOW</span>
+            </span>
+            <div class="text-[9px] font-mono tracking-widest text-slate-500 uppercase -mt-1">
+              The Stream of AI & Tech Intelligence
+            </div>
+          </div>
         </a>
-
-        <!-- Menu Desktop -->
-        <nav class="hidden md:flex items-center gap-6 text-sm font-medium text-slate-300">
-          <button onclick="selectHub('all')" class="hover:text-brandCyan transition">Feed</button>
-          <button onclick="scrollToSection('leaderboard')" class="hover:text-brandCyan transition">Ranking LLMs 📊</button>
-          <button onclick="selectHub('AI & Models')" class="hover:text-brandCyan transition">IA & Modelos</button>
-          <button onclick="selectHub('Tutorials & Guides')" class="hover:text-brandCyan transition">Tutoriais</button>
-          <button onclick="selectHub('Business & Startups')" class="hover:text-brandCyan transition">Negócios</button>
-          <button onclick="selectHub('AI Tools')" class="hover:text-brandCyan transition">Ferramentas</button>
-          <button onclick="selectHub('Newsletter')" class="text-brandCyan font-semibold hover:underline">Newsletter 📬</button>
-        </nav>
       </div>
 
-      <!-- Seletor de Idioma e Botão Hamburger Mobile -->
-      <div class="flex items-center gap-3">
-        <div class="flex items-center bg-slate-800/90 rounded-full p-1 border border-brandBorder text-xs font-semibold">
-          <button id="btn-pt" onclick="setLanguage('pt')" class="px-3 py-1 rounded-full bg-brandCyan text-slate-950 font-bold transition">PT</button>
-          <button id="btn-en" onclick="setLanguage('en')" class="px-3 py-1 rounded-full text-slate-400 hover:text-white transition">EN</button>
-        </div>
-
-        <!-- Botão Menu Mobile (☰) -->
-        <button onclick="toggleMobileMenu()" class="md:hidden p-2 rounded-xl bg-slate-800 text-slate-200 border border-brandBorder hover:text-brandCyan transition">
-          <span class="text-lg">☰</span>
+      <!-- Navegação Desktop -->
+      <nav class="hidden lg:flex items-center gap-7 text-xs font-bold uppercase tracking-wider text-slate-300">
+        <button onclick="selectHub('all')" class="hover:text-brandCyan transition">Dispatches</button>
+        <button onclick="scrollToSection('leaderboard')" class="hover:text-brandCyan transition flex items-center gap-1.5 text-brandCyan">
+          <span>⚡ LLM Radar</span>
         </button>
-      </div>
+        <button onclick="selectHub('AI & Models')" class="hover:text-brandCyan transition">AI & Models</button>
+        <button onclick="selectHub('Tutorials & Guides')" class="hover:text-brandCyan transition">Tutorials</button>
+        <button onclick="selectHub('Business & Startups')" class="hover:text-brandCyan transition">Business</button>
+        <button onclick="selectHub('AI Tools')" class="hover:text-brandCyan transition">Tools</button>
+        <button onclick="selectHub('Newsletter')" class="px-3 py-1 rounded bg-brandPurple/20 text-brandPurple border border-brandPurple/40 hover:bg-brandPurple hover:text-black transition">Sunday Edition</button>
+      </nav>
+
+      <!-- Botão Menu Mobile -->
+      <button onclick="toggleMobileMenu()" class="lg:hidden p-2.5 rounded-xl bg-slate-900 text-slate-200 border border-brandBorder hover:text-brandCyan transition">
+        <span class="text-lg font-bold">☰</span>
+      </button>
     </div>
 
-    <!-- Gaveta do Menu Mobile -->
-    <div id="mobile-menu" class="hidden md:hidden bg-slate-950/95 border-b border-brandBorder px-4 py-4 space-y-3 text-sm font-semibold">
-      <button onclick="selectHub('all'); toggleMobileMenu();" class="block w-full text-left py-2 px-3 rounded-lg hover:bg-slate-900 text-slate-200">📑 Feed Principal</button>
-      <button onclick="scrollToSection('leaderboard'); toggleMobileMenu();" class="block w-full text-left py-2 px-3 rounded-lg hover:bg-slate-900 text-brandCyan">📊 Ranking LLMs da Semana</button>
-      <button onclick="selectHub('AI & Models'); toggleMobileMenu();" class="block w-full text-left py-2 px-3 rounded-lg hover:bg-slate-900 text-slate-200">🧠 IA & Modelos</button>
-      <button onclick="selectHub('Tutorials & Guides'); toggleMobileMenu();" class="block w-full text-left py-2 px-3 rounded-lg hover:bg-slate-900 text-slate-200">🛠️ Tutoriais & Prompts</button>
-      <button onclick="selectHub('Business & Startups'); toggleMobileMenu();" class="block w-full text-left py-2 px-3 rounded-lg hover:bg-slate-900 text-slate-200">🏢 Mercado & Big Techs</button>
-      <button onclick="selectHub('AI Tools'); toggleMobileMenu();" class="block w-full text-left py-2 px-3 rounded-lg hover:bg-slate-900 text-slate-200">⚙️ Ferramentas de IA</button>
-      <button onclick="selectHub('Newsletter'); toggleMobileMenu();" class="block w-full text-left py-2 px-3 rounded-lg hover:bg-slate-900 text-purple-400">📬 Newsletter Semanal</button>
+    <!-- Menu Dropdown Mobile -->
+    <div id="mobile-menu" class="hidden lg:hidden bg-slate-950 border-b border-brandBorder px-4 py-4 space-y-2 text-xs font-bold uppercase tracking-wider">
+      <button onclick="selectHub('all'); toggleMobileMenu();" class="block w-full text-left py-2 px-3 rounded hover:bg-slate-900 text-slate-200">📑 All Dispatches</button>
+      <button onclick="scrollToSection('leaderboard'); toggleMobileMenu();" class="block w-full text-left py-2 px-3 rounded hover:bg-slate-900 text-brandCyan">📊 LLM Benchmark Arena</button>
+      <button onclick="selectHub('AI & Models'); toggleMobileMenu();" class="block w-full text-left py-2 px-3 rounded hover:bg-slate-900 text-slate-200">🧠 AI & Models</button>
+      <button onclick="selectHub('Tutorials & Guides'); toggleMobileMenu();" class="block w-full text-left py-2 px-3 rounded hover:bg-slate-900 text-slate-200">🛠️ Tutorials & Prompts</button>
+      <button onclick="selectHub('Business & Startups'); toggleMobileMenu();" class="block w-full text-left py-2 px-3 rounded hover:bg-slate-900 text-slate-200">🏢 Business & Startups</button>
+      <button onclick="selectHub('AI Tools'); toggleMobileMenu();" class="block w-full text-left py-2 px-3 rounded hover:bg-slate-900 text-slate-200">⚙️ AI Tools</button>
+      <button onclick="selectHub('Newsletter'); toggleMobileMenu();" class="block w-full text-left py-2 px-3 rounded hover:bg-slate-900 text-brandPurple">📬 Sunday Newsletter</button>
     </div>
   </header>
 
-  <!-- Hero Section -->
-  <section class="relative py-14 px-4 text-center border-b border-brandBorder overflow-hidden bg-slate-950/60 relative">
-    <img src="hero.jpeg" alt="Hero Banner" class="absolute inset-0 w-full h-full object-cover opacity-20 pointer-events-none" onerror="if(!this.dataset.t1){this.dataset.t1='1'; this.src='assets/hero.jpg';} else if(!this.dataset.t2){this.dataset.t2='1'; this.src='hero.jpg';} else {this.style.display='none';}">
-    
-    <div class="max-w-4xl mx-auto relative z-10">
-      <div class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-slate-900/90 border border-brandCyan/40 text-brandCyan text-xs font-semibold mb-5">
-        <span class="w-2 h-2 rounded-full bg-brandCyan animate-ping"></span>
-        <span id="hero-badge">Curadoria Autônoma em Tempo Real</span>
+  <!-- The Verge Storystream Grid (Hero Modular Assimétrico) -->
+  <section class="max-w-7xl mx-auto px-4 pt-8 pb-10 w-full">
+    <div class="grid lg:grid-cols-12 gap-6">
+      
+      <!-- Matéria Principal Gigante (7 Colunas) -->
+      <div class="lg:col-span-7 bg-brandCard verge-border rounded-3xl overflow-hidden glow-verge cursor-pointer group flex flex-col justify-between" onclick="openArticleByIndex(0)">
+        <div class="h-72 sm:h-96 relative overflow-hidden bg-slate-900">
+          <img src="hero.jpeg" alt="Hero Lead" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" onerror="if(!this.dataset.t1){this.dataset.t1='1'; this.src='cat-ai.jpeg';}">
+          <div class="absolute inset-0 bg-gradient-to-t from-brandCard via-brandCard/50 to-transparent"></div>
+          <span id="feat-tag" class="absolute top-4 left-4 px-3 py-1 rounded bg-brandPurple text-white text-[10px] font-black uppercase tracking-widest">
+            FEATURED STORY
+          </span>
+        </div>
+        <div class="p-6 sm:p-8 -mt-10 relative z-10">
+          <div class="text-[11px] font-mono text-brandCyan font-bold uppercase tracking-wider mb-2" id="feat-date">
+            EDITORIAL LEAD • 8 MIN READ
+          </div>
+          <h1 id="feat-title" class="text-2xl sm:text-4xl font-black text-white verge-title leading-tight mb-3 group-hover:text-brandCyan transition-colors">
+            Modelos de Raciocínio Profundo: Como a IA está redefinindo a resolução de problemas complexos
+          </h1>
+          <p id="feat-excerpt" class="text-slate-400 text-sm sm:text-base leading-relaxed line-clamp-3 mb-4">
+            Uma análise técnica aprofundada sobre a transição dos modelos de linguagem estatísticos para cadeias de raciocínio passo a passo estruturadas.
+          </p>
+          <div class="text-xs font-bold text-brandCyan flex items-center gap-1 group-hover:translate-x-1 transition-transform">
+            <span id="feat-btn">Ler Matéria Completa</span> →
+          </div>
+        </div>
       </div>
 
-      <h1 id="hero-title" class="text-3xl sm:text-5xl font-black tracking-tight mb-4 leading-tight">
-        O Fluxo da <span class="text-transparent bg-clip-text bg-gradient-to-r from-brandCyan via-purple-400 to-brandCyan">Inteligência Artificial & Tecnologia</span>
-      </h1>
+      <!-- Duas Matérias Secundárias Empilhadas (5 Colunas) -->
+      <div class="lg:col-span-5 flex flex-col gap-6">
+        
+        <!-- Secundária 1 -->
+        <div class="bg-brandCard verge-border rounded-3xl p-6 glow-verge cursor-pointer group flex-1 flex flex-col justify-between" onclick="openArticleByIndex(1)">
+          <div>
+            <div class="flex items-center justify-between mb-2">
+              <span class="text-[9px] font-black px-2 py-0.5 rounded bg-brandCyan/10 text-brandCyan border border-brandCyan/20 uppercase tracking-widest">TUTORIALS</span>
+              <span class="text-[10px] font-mono text-slate-500">6 MIN READ</span>
+            </div>
+            <h3 class="text-lg sm:text-xl font-extrabold text-white verge-title group-hover:text-brandCyan transition-colors leading-snug mb-2">
+              Guia Prático: Construindo Pipelines de Automação com IA a Custo Zero
+            </h3>
+            <p class="text-slate-400 text-xs sm:text-sm line-clamp-2 leading-relaxed">
+              Passo a passo didático de como estruturar esteiras de curadoria e publicação contínua sem servidores caros.
+            </p>
+          </div>
+          <div class="text-xs font-bold text-brandCyan pt-3 border-t border-brandBorder/60 flex items-center gap-1">
+            Ler Guia →
+          </div>
+        </div>
 
-      <p id="hero-sub" class="text-slate-400 text-sm sm:text-lg max-w-2xl mx-auto mb-6">
-        Curadoria estratégica, benchmarks de LLMs, análises de mercado e tutoriais práticos de engenharia de prompt.
-      </p>
+        <!-- Secundária 2 -->
+        <div class="bg-brandCard verge-border rounded-3xl p-6 glow-verge cursor-pointer group flex-1 flex flex-col justify-between" onclick="openArticleByIndex(2)">
+          <div>
+            <div class="flex items-center justify-between mb-2">
+              <span class="text-[9px] font-black px-2 py-0.5 rounded bg-brandYellow/10 text-brandYellow border border-brandYellow/20 uppercase tracking-widest">ENTERPRISE</span>
+              <span class="text-[10px] font-mono text-slate-500">5 MIN READ</span>
+            </div>
+            <h3 class="text-lg sm:text-xl font-extrabold text-white verge-title group-hover:text-brandCyan transition-colors leading-snug mb-2">
+              Infraestrutura Global de IA: A Corrida dos Novos Data Centers e ASICs
+            </h3>
+            <p class="text-slate-400 text-xs sm:text-sm line-clamp-2 leading-relaxed">
+              Como os investimentos em silício próprio e energia limpa estão moldando a nova economia de tecnologia.
+            </p>
+          </div>
+          <div class="text-xs font-bold text-brandCyan pt-3 border-t border-brandBorder/60 flex items-center gap-1">
+            Ler Análise →
+          </div>
+        </div>
 
-      <!-- Barra de Busca Rápida -->
-      <div class="max-w-md mx-auto relative">
-        <input id="search-input" oninput="handleSearch()" type="text" placeholder="Buscar entre 12+ matérias e tutoriais..." class="w-full pl-10 pr-4 py-2.5 rounded-xl bg-slate-900/90 border border-brandBorder text-white text-sm focus:outline-none focus:border-brandCyan transition shadow-inner">
-        <span class="absolute left-3.5 top-2.5 text-slate-500">🔍</span>
       </div>
     </div>
   </section>
 
-  <!-- Seção: Leaderboard de LLMs -->
-  <section id="leaderboard" class="border-b border-brandBorder bg-slate-950/80 py-10 px-4 scroll-mt-20">
+  <!-- LLM Benchmark Arena (Estilo Especificações / The Verge Specs) -->
+  <section id="leaderboard" class="border-y border-brandBorder bg-black/70 py-12 px-4 scroll-mt-20">
     <div class="max-w-7xl mx-auto">
-      <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
+      <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-8">
         <div>
-          <div class="inline-flex items-center gap-2 text-brandCyan text-xs font-bold uppercase tracking-wider mb-1">
-            <span>📊</span> <span id="lead-badge">Radar de Benchmarks da Semana</span>
+          <div class="inline-flex items-center gap-2 text-brandCyan text-[11px] font-mono font-bold uppercase tracking-widest mb-1.5">
+            <span class="w-2 h-2 bg-brandCyan rounded-full"></span>
+            <span id="lead-badge">LLM PERFORMANCE MATRIX • WEEKLY INDEX</span>
           </div>
-          <h2 id="lead-title" class="text-xl sm:text-2xl font-black text-white">Top Modelos de Linguagem & Raciocínio (Clique para Testar)</h2>
+          <h2 id="lead-title" class="text-2xl sm:text-3xl font-black text-white verge-title">
+            Arena de Benchmarks de IA (Clique no Modelo para Testar)
+          </h2>
         </div>
-        <div class="flex items-center gap-2 text-xs font-semibold">
-          <button onclick="renderLeaderboard('all')" id="lbtn-all" class="px-3 py-1.5 rounded-lg bg-brandCyan text-slate-950 font-bold transition">Geral</button>
-          <button onclick="renderLeaderboard('reasoning')" id="lbtn-rea" class="px-3 py-1.5 rounded-lg bg-slate-800 text-slate-400 hover:text-white border border-brandBorder transition">Raciocínio & Código</button>
-          <button onclick="renderLeaderboard('open')" id="lbtn-opn" class="px-3 py-1.5 rounded-lg bg-slate-800 text-slate-400 hover:text-white border border-brandBorder transition">Open-Source</button>
+        
+        <!-- Filtros do Gráfico -->
+        <div class="flex items-center gap-2 text-xs font-bold uppercase tracking-wider">
+          <button onclick="renderLeaderboard('all')" id="lbtn-all" class="px-3.5 py-1.5 rounded-lg bg-brandCyan text-slate-950 font-black transition">OVERALL</button>
+          <button onclick="renderLeaderboard('reasoning')" id="lbtn-rea" class="px-3.5 py-1.5 rounded-lg bg-slate-900 text-slate-400 hover:text-white border border-brandBorder transition">REASONING & CODE</button>
+          <button onclick="renderLeaderboard('open')" id="lbtn-opn" class="px-3.5 py-1.5 rounded-lg bg-slate-900 text-slate-400 hover:text-white border border-brandBorder transition">OPEN-WEIGHTS</button>
         </div>
       </div>
 
@@ -158,108 +225,119 @@
     </div>
   </section>
 
-  <!-- Navegação por Abas de Categorias (Hubs) -->
-  <section class="bg-brandDark border-b border-brandBorder/60 py-4 px-4 sticky top-16 z-30 glass-nav">
-    <div class="max-w-7xl mx-auto flex items-center justify-between overflow-x-auto gap-2 text-xs font-semibold no-scrollbar">
-      <div class="flex gap-2 shrink-0">
-        <button onclick="selectHub('all')" id="hub-all" class="px-4 py-2 rounded-xl bg-brandCyan text-slate-950 font-bold transition">📑 Todos os Artigos</button>
-        <button onclick="selectHub('AI & Models')" id="hub-ai" class="px-4 py-2 rounded-xl bg-slate-800/80 text-slate-300 hover:text-white border border-brandBorder transition">🧠 IA & Modelos (4)</button>
-        <button onclick="selectHub('Tutorials & Guides')" id="hub-tut" class="px-4 py-2 rounded-xl bg-slate-800/80 text-slate-300 hover:text-white border border-brandBorder transition">🛠️ Tutoriais & Prompts (3)</button>
-        <button onclick="selectHub('Business & Startups')" id="hub-biz" class="px-4 py-2 rounded-xl bg-slate-800/80 text-slate-300 hover:text-white border border-brandBorder transition">🏢 Mercado & Big Techs (3)</button>
-        <button onclick="selectHub('AI Tools')" id="hub-tools" class="px-4 py-2 rounded-xl bg-slate-800/80 text-slate-300 hover:text-white border border-brandBorder transition">⚙️ Ferramentas (2)</button>
-        <button onclick="selectHub('Newsletter')" id="hub-news" class="px-4 py-2 rounded-xl bg-brandPurple/20 text-purple-300 hover:text-white border border-brandPurple/40 transition">📬 Edições Semanais</button>
+  <!-- Barra de Filtros de Tópicos e Busca -->
+  <section class="bg-black/90 border-b border-brandBorder py-4 px-4 sticky top-20 z-30 backdrop-blur-xl">
+    <div class="max-w-7xl mx-auto flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      
+      <!-- Pílulas de Editorias (The Verge Style) -->
+      <div class="flex items-center gap-1.5 overflow-x-auto no-scrollbar py-1">
+        <button onclick="selectHub('all')" id="hub-all" class="px-3.5 py-1.5 rounded-md bg-brandCyan text-black font-black text-[11px] uppercase tracking-wider transition shrink-0">ALL DISPATCHES</button>
+        <button onclick="selectHub('AI & Models')" id="hub-ai" class="px-3.5 py-1.5 rounded-md bg-slate-900 text-slate-300 hover:text-white border border-brandBorder font-bold text-[11px] uppercase tracking-wider transition shrink-0">AI & MODELS</button>
+        <button onclick="selectHub('Tutorials & Guides')" id="hub-tut" class="px-3.5 py-1.5 rounded-md bg-slate-900 text-slate-300 hover:text-white border border-brandBorder font-bold text-[11px] uppercase tracking-wider transition shrink-0">TUTORIALS</button>
+        <button onclick="selectHub('Business & Startups')" id="hub-biz" class="px-3.5 py-1.5 rounded-md bg-slate-900 text-slate-300 hover:text-white border border-brandBorder font-bold text-[11px] uppercase tracking-wider transition shrink-0">BUSINESS</button>
+        <button onclick="selectHub('AI Tools')" id="hub-tools" class="px-3.5 py-1.5 rounded-md bg-slate-900 text-slate-300 hover:text-white border border-brandBorder font-bold text-[11px] uppercase tracking-wider transition shrink-0">AI TOOLS</button>
+        <button onclick="selectHub('Newsletter')" id="hub-news" class="px-3.5 py-1.5 rounded-md bg-brandPurple/20 text-brandPurple hover:bg-brandPurple hover:text-black border border-brandPurple/40 font-bold text-[11px] uppercase tracking-wider transition shrink-0">SUNDAY WIRE</button>
       </div>
+
+      <!-- Campo de Busca -->
+      <div class="relative w-full sm:w-64">
+        <input id="search-input" oninput="handleSearch()" type="text" placeholder="Filtrar matérias..." class="w-full pl-8 pr-3 py-1.5 rounded-lg bg-slate-900 border border-brandBorder text-xs text-white focus:outline-none focus:border-brandCyan transition font-mono">
+        <span class="absolute left-2.5 top-2 text-slate-500 text-xs">⚡</span>
+      </div>
+
     </div>
   </section>
 
-  <!-- Container Principal (2 Colunas: Feed + Sidebar) -->
+  <!-- Feed Principal de Matérias (2 Colunas: Feed + Sidebar) -->
   <div class="max-w-7xl mx-auto px-4 py-10 w-full grid lg:grid-cols-12 gap-8" id="feed-container">
     
     <!-- Coluna da Esquerda: Feed de Artigos (8 Colunas) -->
-    <main class="lg:col-span-8 space-y-8 scroll-mt-36" id="feed">
+    <main class="lg:col-span-8 space-y-8 scroll-mt-40" id="feed">
       
       <!-- Banner Temático da Categoria Selecionada -->
-      <div id="category-banner-card" class="bg-brandCard border border-brandBorder rounded-3xl overflow-hidden relative p-6 sm:p-8 flex flex-col justify-end min-h-[160px]">
+      <div id="category-banner-card" class="bg-brandCard verge-border rounded-3xl overflow-hidden relative p-6 sm:p-8 flex flex-col justify-end min-h-[160px]">
         <img id="cat-banner-bg" src="hero.jpeg" class="absolute inset-0 w-full h-full object-cover opacity-25" onerror="if(!this.dataset.t1){this.dataset.t1='1'; this.src='cat-ai.jpeg';}">
-        <div class="absolute inset-0 bg-gradient-to-r from-brandCard via-brandCard/70 to-transparent"></div>
+        <div class="absolute inset-0 bg-gradient-to-r from-brandCard via-brandCard/80 to-transparent"></div>
         <div class="relative z-10">
-          <span id="cat-banner-tag" class="px-2.5 py-1 rounded bg-brandCyan/20 text-brandCyan text-[10px] font-bold uppercase tracking-wider border border-brandCyan/30">HUB EDITORIAL</span>
-          <h2 id="cat-banner-title" class="text-2xl font-black text-white mt-2">Explorando Todas as Publicações</h2>
-          <p id="cat-banner-desc" class="text-slate-400 text-xs sm:text-sm mt-1 max-w-xl">Acompanhe análises técnicas, tutoriais de engenharia de prompt e movimentos de mercado atualizados diariamente.</p>
+          <span id="cat-banner-tag" class="px-2 py-0.5 rounded bg-brandCyan/20 text-brandCyan text-[9px] font-black uppercase tracking-widest border border-brandCyan/30">SECTION HUB</span>
+          <h2 id="cat-banner-title" class="text-2xl sm:text-3xl font-black text-white verge-title mt-2">Todas as Publicações</h2>
+          <p id="cat-banner-desc" class="text-slate-400 text-xs sm:text-sm mt-1 max-w-xl">Acervo completo com análises técnicas, tutoriais de engenharia de prompt e benchmarks atualizados.</p>
         </div>
       </div>
 
-      <!-- Grid com as Matérias da Categoria -->
+      <!-- Grid com os Artigos -->
       <div id="articles-grid" class="grid sm:grid-cols-2 gap-6"></div>
 
-      <!-- Espaço para Google AdSense no Feed -->
-      <div class="p-6 rounded-2xl border border-dashed border-slate-800/80 bg-slate-900/20 text-center text-slate-600 text-xs tracking-widest uppercase">
-        [ Espaço Reservado para Anúncio Google AdSense ]
+      <!-- Espaço para Google AdSense -->
+      <div class="p-6 rounded-2xl border border-dashed border-slate-800 bg-slate-950/40 text-center text-slate-600 text-xs font-mono tracking-widest uppercase">
+        [ ESPAÇO RESERVADO PARA ANÚNCIO GOOGLE ADSENSE ]
       </div>
     </main>
 
-    <!-- Coluna da Direita: Sidebar Rica (4 Colunas) -->
+    <!-- Coluna da Direita: Sidebar The Verge (4 Colunas) -->
     <aside class="lg:col-span-4 space-y-6">
       
-      <!-- Caixa de Newsletter -->
-      <div class="p-6 rounded-3xl bg-gradient-to-br from-slate-900 via-brandCard to-slate-950 border border-brandPurple/30 text-center relative overflow-hidden" id="newsletter-box">
-        <div class="text-2xl mb-2">📬</div>
-        <h3 id="newsletter-title" class="text-lg font-bold text-white mb-2">Newsletter CorticFlow</h3>
+      <!-- Caixa de Newsletter Verge Style -->
+      <div class="p-6 rounded-3xl bg-brandCard verge-border relative overflow-hidden">
+        <div class="flex items-center gap-2 mb-2 text-brandPurple font-mono font-bold text-[10px] tracking-widest uppercase">
+          <span>📬</span> DIRECT INBOX DISPATCH
+        </div>
+        <h3 id="newsletter-title" class="text-xl font-black text-white verge-title mb-2">CorticFlow Weekly</h3>
         <p id="newsletter-sub" class="text-slate-400 text-xs mb-4 leading-relaxed">Todo domingo às 20h, receba a compilação executiva e o tutorial da semana no seu e-mail.</p>
         <form class="space-y-3" onsubmit="event.preventDefault(); alert(currentLang === 'pt' ? 'Inscrição confirmada no CorticFlow!' : 'Subscription confirmed on CorticFlow!');">
-          <input id="newsletter-input" type="email" placeholder="Seu melhor e-mail" required class="w-full px-3.5 py-2.5 rounded-xl bg-slate-800/90 border border-brandBorder text-white text-xs focus:outline-none focus:border-brandCyan transition">
-          <button id="newsletter-btn" type="submit" class="w-full py-2.5 rounded-xl bg-brandCyan hover:bg-cyan-400 text-slate-950 font-bold text-xs transition">Inscrever-se Grátis</button>
+          <input id="newsletter-input" type="email" placeholder="Seu melhor e-mail" required class="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-brandBorder text-white text-xs focus:outline-none focus:border-brandCyan transition font-mono">
+          <button id="newsletter-btn" type="submit" class="w-full py-2.5 rounded-xl bg-brandCyan hover:bg-cyan-300 text-black font-black text-xs uppercase tracking-wider transition">Inscrever-se Grátis</button>
         </form>
       </div>
 
-      <!-- Card: Prompt da Semana (Copy-Paste) -->
-      <div class="p-6 rounded-3xl bg-brandCard border border-brandBorder">
+      <!-- Prompt da Semana -->
+      <div class="p-6 rounded-3xl bg-brandCard verge-border">
         <div class="flex items-center justify-between mb-3">
-          <span class="text-xs font-bold text-brandPurple uppercase tracking-wider">💡 Prompt da Semana</span>
-          <span class="text-[10px] text-slate-500">Engenharia de Prompt</span>
+          <span class="text-[9px] font-black px-2 py-0.5 rounded bg-brandPurple/20 text-brandPurple uppercase tracking-widest border border-brandPurple/30">PROMPT OF THE WEEK</span>
+          <span class="text-[10px] font-mono text-slate-500">QA & CODE</span>
         </div>
         <h4 id="prompt-card-title" class="text-sm font-bold text-white mb-2">Auditoria e Refatoração de Código</h4>
-        <p id="prompt-card-desc" class="text-slate-400 text-xs mb-3">Prompt testado para analisar segurança e complexidade ciclomática em funções críticas.</p>
-        <div class="bg-slate-950 p-3 rounded-xl border border-brandBorder text-[11px] font-mono text-slate-300 mb-3 max-h-24 overflow-y-auto" id="prompt-code">
+        <p id="prompt-card-desc" class="text-slate-400 text-xs mb-3">Prompt testado para analisar vulnerabilidades de injeção, memory leaks e gargalos de latência.</p>
+        <div class="bg-black p-3.5 rounded-xl border border-brandBorder text-[11px] font-mono text-slate-300 mb-3 max-h-28 overflow-y-auto leading-relaxed" id="prompt-code">
           "Atue como Engenheiro Sênior de QA e Segurança. Analise o código a seguir procurando vulnerabilidades de injeção, memory leaks e gargalos de latência. Forneça a versão corrigida acompanhada da justificativa técnica."
         </div>
-        <button onclick="copyPrompt()" id="btn-copy-prompt" class="w-full py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-brandCyan text-xs font-semibold border border-brandBorder transition">
+        <button onclick="copyPrompt()" id="btn-copy-prompt" class="w-full py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-brandCyan text-xs font-bold border border-brandBorder transition uppercase tracking-wider">
           📋 Copiar Prompt
         </button>
       </div>
 
-      <!-- Card: Mais Lidos da Semana (Top 4) -->
-      <div class="p-6 rounded-3xl bg-brandCard border border-brandBorder">
-        <h3 id="top-title" class="text-sm font-bold text-white uppercase tracking-wider mb-4 flex items-center gap-2">
-          🔥 Mais Lidos da Semana
+      <!-- Top Mais Lidos (The Verge Most Popular List) -->
+      <div class="p-6 rounded-3xl bg-brandCard verge-border">
+        <h3 id="top-title" class="text-xs font-black text-white uppercase tracking-widest mb-4 flex items-center gap-2 border-b border-brandBorder pb-3">
+          🔥 TOP DISPATCHES
         </h3>
         <div class="space-y-4" id="top-list">
-          <div class="flex items-start gap-3 cursor-pointer group" onclick="selectHub('AI & Models')">
-            <span class="text-lg font-extrabold text-brandCyan">01</span>
+          <div class="flex items-start gap-3 cursor-pointer group" onclick="openArticleByIndex(0)">
+            <span class="text-2xl font-black text-brandCyan font-mono">01</span>
             <div>
-              <h5 class="text-xs font-bold text-slate-200 group-hover:text-brandCyan transition">Avanços em Modelos de Raciocínio e Test-Time Compute</h5>
-              <span class="text-[10px] text-slate-500">5 min • AI & Models</span>
+              <h5 class="text-xs font-bold text-slate-200 group-hover:text-brandCyan transition leading-snug">Modelos de Raciocínio Profundo: Como a IA resolve problemas complexos</h5>
+              <span class="text-[10px] font-mono text-slate-500">8 min • AI & Models</span>
             </div>
           </div>
-          <div class="flex items-start gap-3 cursor-pointer group" onclick="selectHub('Tutorials & Guides')">
-            <span class="text-lg font-extrabold text-brandPurple">02</span>
+          <div class="flex items-start gap-3 cursor-pointer group" onclick="openArticleByIndex(1)">
+            <span class="text-2xl font-black text-brandPurple font-mono">02</span>
             <div>
-              <h5 class="text-xs font-bold text-slate-200 group-hover:text-brandCyan transition">Como Estruturar Pipelines com Custo Zero</h5>
-              <span class="text-[10px] text-slate-500">8 min • Tutoriais</span>
+              <h5 class="text-xs font-bold text-slate-200 group-hover:text-brandCyan transition leading-snug">Como Construir Pipelines de Automação a Custo Zero</h5>
+              <span class="text-[10px] font-mono text-slate-500">6 min • Tutorials</span>
             </div>
           </div>
-          <div class="flex items-start gap-3 cursor-pointer group" onclick="selectHub('Business & Startups')">
-            <span class="text-lg font-extrabold text-slate-400">03</span>
+          <div class="flex items-start gap-3 cursor-pointer group" onclick="openArticleByIndex(2)">
+            <span class="text-2xl font-black text-brandYellow font-mono">03</span>
             <div>
-              <h5 class="text-xs font-bold text-slate-200 group-hover:text-brandCyan transition">A Corrida Global dos Novos Data Centers e ASICs</h5>
-              <span class="text-[10px] text-slate-500">6 min • Negócios</span>
+              <h5 class="text-xs font-bold text-slate-200 group-hover:text-brandCyan transition leading-snug">A Corrida Global dos Novos Data Centers e Chips</h5>
+              <span class="text-[10px] font-mono text-slate-500">5 min • Business</span>
             </div>
           </div>
-          <div class="flex items-start gap-3 cursor-pointer group" onclick="selectHub('AI Tools')">
-            <span class="text-lg font-extrabold text-slate-400">04</span>
+          <div class="flex items-start gap-3 cursor-pointer group" onclick="openArticleByIndex(10)">
+            <span class="text-2xl font-black text-slate-500 font-mono">04</span>
             <div>
-              <h5 class="text-xs font-bold text-slate-200 group-hover:text-brandCyan transition">Top Ferramentas de Produtividade para 2026</h5>
-              <span class="text-[10px] text-slate-500">4 min • Ferramentas</span>
+              <h5 class="text-xs font-bold text-slate-200 group-hover:text-brandCyan transition leading-snug">Top Ferramentas de IA para Produtividade em 2026</h5>
+              <span class="text-[10px] font-mono text-slate-500">4 min • Tools</span>
             </div>
           </div>
         </div>
@@ -268,60 +346,60 @@
     </aside>
   </div>
 
-  <!-- Modal de Leitura Completa do Artigo (Controle 100% Nativo) -->
-  <div id="article-modal" style="display: none;" class="fixed inset-0 z-[100] bg-black/85 backdrop-blur-md items-center justify-center p-4" onclick="if(event.target === this) closeModal();">
-    <div class="bg-brandCard border border-brandBorder rounded-3xl max-w-3xl w-full max-h-[90vh] flex flex-col shadow-2xl overflow-hidden relative">
-      <div class="p-6 border-b border-brandBorder flex items-center justify-between bg-slate-900/80">
+  <!-- Modal de Leitura Completa do Artigo (The Verge Longform Reader) -->
+  <div id="article-modal" style="display: none;" class="fixed inset-0 z-[100] bg-black/90 backdrop-blur-xl items-center justify-center p-3 sm:p-6" onclick="if(event.target === this) closeModal();">
+    <div class="bg-brandCard verge-border rounded-3xl max-w-3xl w-full max-h-[92vh] flex flex-col shadow-[0_20px_60px_rgba(0,0,0,0.9)] overflow-hidden relative">
+      <div class="p-5 sm:p-6 border-b border-brandBorder flex items-center justify-between bg-black/80">
         <div class="flex items-center gap-3">
-          <span id="modal-cat" class="text-xs font-bold px-2.5 py-1 rounded bg-brandCyan/10 text-brandCyan border border-brandCyan/20 uppercase"></span>
-          <span id="modal-date" class="text-xs text-slate-500"></span>
+          <span id="modal-cat" class="text-[10px] font-black px-2.5 py-1 rounded bg-brandCyan/20 text-brandCyan border border-brandCyan/30 uppercase tracking-widest"></span>
+          <span id="modal-date" class="text-xs font-mono text-slate-400"></span>
         </div>
-        <button onclick="closeModal()" class="w-9 h-9 rounded-full bg-slate-800 hover:bg-slate-700 text-slate-200 flex items-center justify-center text-lg font-bold transition">✕</button>
+        <button onclick="closeModal()" class="w-8 h-8 rounded-full bg-slate-900 hover:bg-slate-800 text-slate-200 flex items-center justify-center text-base font-bold transition">✕</button>
       </div>
       <div class="p-6 sm:p-10 overflow-y-auto flex-1">
-        <h1 id="modal-title" class="text-2xl sm:text-3xl font-extrabold text-white mb-6 leading-tight"></h1>
-        <div id="modal-content" class="prose-dark text-sm sm:text-base"></div>
+        <h1 id="modal-title" class="text-2xl sm:text-4xl font-black text-white verge-title mb-6 leading-tight"></h1>
+        <div id="modal-content" class="prose-verge text-sm sm:text-base"></div>
       </div>
     </div>
   </div>
 
-  <!-- Rodapé Institucional -->
-  <footer class="border-t border-brandBorder py-12 bg-slate-950 text-slate-500 text-xs mt-auto">
-    <div class="max-w-7xl mx-auto px-4 grid sm:grid-cols-2 md:grid-cols-4 gap-8 mb-8">
+  <!-- Rodapé The Verge Style -->
+  <footer class="border-t border-brandBorder py-14 bg-black text-slate-500 text-xs mt-auto">
+    <div class="max-w-7xl mx-auto px-4 grid sm:grid-cols-2 md:grid-cols-4 gap-8 mb-10">
       <div>
-        <div class="flex items-center gap-2 mb-3 text-white font-bold text-base">
-          <span class="w-6 h-6 rounded bg-brandCyan text-black flex items-center justify-center text-xs font-black">C</span>
-          CorticFlow
+        <div class="flex items-center gap-2 mb-3 text-white font-black text-lg verge-title">
+          <span class="w-6 h-6 bg-brandCyan text-black flex items-center justify-center text-xs font-black transform -skew-x-6">C</span>
+          CORTIC//FLOW
         </div>
-        <p class="text-slate-400 text-xs leading-relaxed">O fluxo da inteligência artificial e tecnologia. Portal de notícias, benchmarks de LLMs e tutoriais autônomos.</p>
+        <p class="text-slate-400 text-xs leading-relaxed">The stream of AI & Tech intelligence. Autonomous bilingual news curation, prompt engineering, and deep-dive technical dispatches.</p>
       </div>
       <div>
-        <h4 class="text-white font-bold mb-3 uppercase tracking-wider text-[11px]">Categorias</h4>
+        <h4 class="text-white font-black mb-3 uppercase tracking-widest text-[10px]">SECTIONS</h4>
         <ul class="space-y-2">
-          <li><button onclick="selectHub('AI & Models')" class="hover:text-brandCyan transition">IA & Modelos (4)</button></li>
-          <li><button onclick="selectHub('Tutorials & Guides')" class="hover:text-brandCyan transition">Tutoriais de Prompt (3)</button></li>
-          <li><button onclick="selectHub('Business & Startups')" class="hover:text-brandCyan transition">Mercado & Big Techs (3)</button></li>
-          <li><button onclick="selectHub('AI Tools')" class="hover:text-brandCyan transition">Ferramentas de IA (2)</button></li>
+          <li><button onclick="selectHub('AI & Models')" class="hover:text-brandCyan transition">AI & Models</button></li>
+          <li><button onclick="selectHub('Tutorials & Guides')" class="hover:text-brandCyan transition">Prompt Engineering</button></li>
+          <li><button onclick="selectHub('Business & Startups')" class="hover:text-brandCyan transition">Market & Silicon</button></li>
+          <li><button onclick="selectHub('AI Tools')" class="hover:text-brandCyan transition">Developer Tools</button></li>
         </ul>
       </div>
       <div>
-        <h4 class="text-white font-bold mb-3 uppercase tracking-wider text-[11px]">Institucional</h4>
+        <h4 class="text-white font-black mb-3 uppercase tracking-widest text-[10px]">VERGE NETWORK</h4>
         <ul class="space-y-2">
-          <li><a href="#" class="hover:text-brandCyan transition">Política de Privacidade</a></li>
-          <li><a href="#" class="hover:text-slate-300 transition">Termos de Uso</a></li>
-          <li><a href="mailto:corticflow@gmail.com" class="hover:text-slate-300 transition">Contato: corticflow@gmail.com</a></li>
-          <li><a href="https://github.com/corticflow/corticflow" target="_blank" class="hover:text-slate-300 transition">Repositório GitHub ↗</a></li>
+          <li><a href="#" class="hover:text-brandCyan transition">Privacy Policy</a></li>
+          <li><a href="#" class="hover:text-slate-300 transition">Terms of Service</a></li>
+          <li><a href="mailto:corticflow@gmail.com" class="hover:text-slate-300 transition">Contact: corticflow@gmail.com</a></li>
+          <li><a href="https://github.com/corticflow/corticflow" target="_blank" class="hover:text-slate-300 transition">GitHub Repo ↗</a></li>
         </ul>
       </div>
       <div>
-        <h4 class="text-white font-bold mb-3 uppercase tracking-wider text-[11px]">Edição Semanal</h4>
-        <p class="text-slate-400 text-xs mb-2">Todo domingo às 20h (horário de Brasília) no chat e Google Drive.</p>
-        <span class="inline-block px-2.5 py-1 rounded bg-slate-900 text-brandCyan border border-brandCyan/20 text-[10px] font-mono">100% Serverless</span>
+        <h4 class="text-white font-black mb-3 uppercase tracking-widest text-[10px]">SUNDAY DISPATCH</h4>
+        <p class="text-slate-400 text-xs mb-2">Delivered every Sunday at 8:00 PM BRT via Gemini autonomous pipeline.</p>
+        <span class="inline-block px-2 py-0.5 rounded bg-slate-900 text-brandCyan border border-brandCyan/20 text-[10px] font-mono">100% Serverless Architecture</span>
       </div>
     </div>
-    <div class="max-w-7xl mx-auto px-4 pt-6 border-t border-slate-900 flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-left">
-      <div>© 2026 <strong>CorticFlow</strong>. Todos os direitos reservados.</div>
-      <div class="text-slate-600">Built with Autonomous AI & Serverless Architecture</div>
+    <div class="max-w-7xl mx-auto px-4 pt-6 border-t border-slate-900 flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-left text-slate-600">
+      <div>© 2026 <strong>CorticFlow</strong>. All rights reserved.</div>
+      <div class="font-mono text-[10px]">Designed in Vox & The Verge Editorial Aesthetics</div>
     </div>
   </footer>
 
@@ -339,12 +417,12 @@
     ];
 
     const HUB_CONFIG = {
-      all: { banner: "hero.jpeg", tag: "HUB EDITORIAL", title_pt: "Explorando Todas as Publicações", title_en: "Exploring All Dispatches", desc_pt: "Acervo completo com 12+ matérias aprofundadas, tutoriais e análises de mercado.", desc_en: "Full archive featuring 12+ deep-dive technical articles, tutorials, and market reports." },
-      "AI & Models": { banner: "cat-ai.jpeg", tag: "IA & MODELOS", title_pt: "Modelos de Linguagem, Raciocínio e Pesos Abertos", title_en: "Frontier LLMs, Reasoning & Open-Weights", desc_pt: "Análises técnicas sobre as arquiteturas neurais que estão redefinindo a inteligência artificial.", desc_en: "Technical breakthroughs on neural architectures shaping the future of autonomous systems." },
-      "Tutorials & Guides": { banner: "cat-tutorials.jpeg", tag: "TUTORIAIS & GUIAS", title_pt: "Engenharia de Prompt e Automações Práticas", title_en: "Prompt Engineering & Actionable Automation", desc_pt: "Passo a passo didático para construir agentes, pipelines serverless e prompts estruturados.", desc_en: "Hands-on engineering blueprints for deploying production-ready serverless AI agents." },
-      "Business & Startups": { banner: "cat-business.jpeg", tag: "MERCADO & BIG TECHS", title_pt: "Economia de IA, Data Centers e Estratégia", title_en: "AI Economy, Infrastructure & Enterprise Strategy", desc_pt: "Investimentos em semicondutores, energia limpa e o impacto corporativo dos novos modelos.", desc_en: "Silicon investments, clean energy pacts, and the macroeconomic impact of AI scaling." },
-      "AI Tools": { banner: "cat-tools.jpeg", tag: "FERRAMENTAS & CLI", title_pt: "Ecossistema de Ferramentas e Produtividade", title_en: "Productivity Tools, Code Assistants & CLI", desc_pt: "Reviews e testes práticos das melhores ferramentas de IA para acelerar o fluxo diário de trabalho.", desc_en: "Curated reviews and benchmarks of the fastest developer tools and visual automation platforms." },
-      Newsletter: { banner: "hero.jpeg", tag: "NEWSLETTER SEMANAL", title_pt: "Edições Semanais de Domingo", title_en: "Sunday Executive Newsletters", desc_pt: "Compilados consolidados de fim de semana gerados autonomamente todo domingo às 20h.", desc_en: "Weekly executive digests and actionable evergreen tutorials delivered every Sunday at 8 PM." }
+      all: { banner: "hero.jpeg", tag: "THE VERGE STREAM", title_pt: "Todas as Publicações", title_en: "All Dispatches", desc_pt: "Acervo completo com 12+ matérias aprofundadas, tutoriais de engenharia de prompt e benchmarks.", desc_en: "Full archive featuring 12+ deep-dive technical dispatches, prompt frameworks, and market reports." },
+      "AI & Models": { banner: "cat-ai.jpeg", tag: "AI & MODELS", title_pt: "Modelos de Linguagem, Raciocínio e Pesos Abertos", title_en: "Frontier LLMs, Reasoning & Open-Weights", desc_pt: "Análises técnicas sobre as arquiteturas neurais que estão redefinindo a inteligência artificial.", desc_en: "Technical breakthroughs on neural architectures shaping the future of autonomous systems." },
+      "Tutorials & Guides": { banner: "cat-tutorials.jpeg", tag: "TUTORIALS & GUIDES", title_pt: "Engenharia de Prompt e Automações Práticas", title_en: "Prompt Engineering & Actionable Automation", desc_pt: "Passo a passo didático para construir agentes, pipelines serverless e prompts estruturados.", desc_en: "Hands-on engineering blueprints for deploying production-ready serverless AI agents." },
+      "Business & Startups": { banner: "cat-business.jpeg", tag: "ENTERPRISE & MARKET", title_pt: "Economia de IA, Data Centers e Estratégia", title_en: "AI Economy, Infrastructure & Enterprise Strategy", desc_pt: "Investimentos em semicondutores, energia limpa e o impacto corporativo dos novos modelos.", desc_en: "Silicon investments, clean energy pacts, and the macroeconomic impact of AI scaling." },
+      "AI Tools": { banner: "cat-tools.jpeg", tag: "AI TOOLS & CLI", title_pt: "Ecossistema de Ferramentas e Produtividade", title_en: "Productivity Tools, Code Assistants & CLI", desc_pt: "Reviews e testes práticos das melhores ferramentas de IA para acelerar o fluxo diário de trabalho.", desc_en: "Curated reviews and benchmarks of the fastest developer tools and visual automation platforms." },
+      Newsletter: { banner: "hero.jpeg", tag: "SUNDAY DISPATCH", title_pt: "Edições Semanais de Domingo", title_en: "Sunday Executive Newsletters", desc_pt: "Compilados consolidados de fim de semana gerados autonomamente todo domingo às 20h.", desc_en: "Weekly executive digests and actionable evergreen tutorials delivered every Sunday at 8 PM." }
     };
 
     const ARTICLES_DATA = {
@@ -545,14 +623,14 @@
 
       ['all', 'rea', 'opn'].forEach(t => {
         const b = document.getElementById('lbtn-' + t);
-        if (b) b.className = "px-3 py-1.5 rounded-lg bg-slate-800 text-slate-400 hover:text-white border border-brandBorder transition";
+        if (b) b.className = "px-3.5 py-1.5 rounded-lg bg-slate-900 text-slate-400 hover:text-white border border-brandBorder transition";
       });
 
       let activeB = 'lbtn-all';
       if (filter === 'reasoning') activeB = 'lbtn-rea';
       if (filter === 'open') activeB = 'lbtn-opn';
       const ab = document.getElementById(activeB);
-      if (ab) ab.className = "px-3 py-1.5 rounded-lg bg-brandCyan text-slate-950 font-bold transition";
+      if (ab) ab.className = "px-3.5 py-1.5 rounded-lg bg-brandCyan text-slate-950 font-black transition";
 
       const list = filter === 'all' 
         ? LEADERBOARD_DATA 
@@ -563,31 +641,31 @@
         card.href = m.url;
         card.target = "_blank";
         card.rel = "noopener noreferrer";
-        card.className = "bg-brandCard border border-brandBorder rounded-2xl p-4 flex flex-col justify-between hover:border-brandCyan transition group";
+        card.className = "bg-brandCard verge-border rounded-2xl p-4 flex flex-col justify-between glow-verge transition group";
         card.innerHTML = `
           <div>
             <div class="flex items-center justify-between mb-2">
-              <span class="text-[10px] font-bold px-2 py-0.5 rounded bg-slate-800 text-brandCyan border border-brandCyan/20">#${idx + 1} ${m.provider}</span>
-              <span class="text-xs text-slate-500 group-hover:text-brandCyan transition">↗</span>
+              <span class="text-[9px] font-black px-2 py-0.5 rounded bg-slate-900 text-brandCyan border border-brandCyan/30 uppercase font-mono">#${idx + 1} ${m.provider}</span>
+              <span class="text-xs text-slate-500 group-hover:text-brandCyan transition font-bold">↗</span>
             </div>
-            <h4 class="text-sm font-bold text-white mb-2 group-hover:text-brandCyan transition">${m.name}</h4>
+            <h4 class="text-sm font-black text-white mb-2 group-hover:text-brandCyan transition verge-title">${m.name}</h4>
             <div class="space-y-1.5 mb-3">
-              <div class="flex justify-between text-[11px] text-slate-400">
-                <span>Score Geral</span>
-                <span class="font-bold text-white">${m.score}/100</span>
+              <div class="flex justify-between text-[11px] font-mono text-slate-400">
+                <span>SCORE</span>
+                <span class="font-bold text-brandCyan">${m.score}/100</span>
               </div>
-              <div class="w-full h-1.5 bg-slate-800 rounded-full overflow-hidden">
+              <div class="w-full h-1.5 bg-slate-950 rounded-full overflow-hidden border border-slate-800">
                 <div class="h-full bg-gradient-to-r from-brandCyan to-brandPurple rounded-full" style="width: ${m.score}%"></div>
               </div>
-              <div class="flex justify-between text-[10px] text-slate-500 pt-1">
-                <span>Raciocínio: <strong class="text-slate-300">${m.reasoning}</strong></span>
-                <span>Código: <strong class="text-slate-300">${m.coding}</strong></span>
+              <div class="flex justify-between text-[10px] font-mono text-slate-400 pt-1">
+                <span>Raciocínio: <strong class="text-white">${m.reasoning}</strong></span>
+                <span>Código: <strong class="text-white">${m.coding}</strong></span>
               </div>
             </div>
           </div>
-          <div class="text-[10px] font-mono text-brandCyan/80 pt-2 border-t border-brandBorder/40 flex justify-between">
+          <div class="text-[10px] font-mono text-slate-400 pt-2 border-t border-brandBorder/60 flex justify-between">
             <span>${m.context}</span>
-            <span class="font-bold">${m.cost}</span>
+            <span class="font-bold text-brandCyan">${m.cost}</span>
           </div>
         `;
         container.appendChild(card);
@@ -600,7 +678,7 @@
       const hubButtons = ['all', 'ai', 'tut', 'biz', 'tools', 'news'];
       hubButtons.forEach(h => {
         const btn = document.getElementById('hub-' + h);
-        if (btn) btn.className = "px-4 py-2 rounded-xl bg-slate-800/80 text-slate-300 hover:text-white border border-brandBorder transition";
+        if (btn) btn.className = "px-3.5 py-1.5 rounded-md bg-slate-900 text-slate-300 hover:text-white border border-brandBorder font-bold text-[11px] uppercase tracking-wider transition shrink-0";
       });
 
       let activeHubId = 'hub-all';
@@ -611,7 +689,7 @@
       else if (hubKey === 'Newsletter') activeHubId = 'hub-news';
 
       const activeBtn = document.getElementById(activeHubId);
-      if (activeBtn) activeBtn.className = "px-4 py-2 rounded-xl bg-brandCyan text-slate-950 font-bold transition";
+      if (activeBtn) activeBtn.className = "px-3.5 py-1.5 rounded-md bg-brandCyan text-black font-black text-[11px] uppercase tracking-wider transition shrink-0";
 
       const conf = HUB_CONFIG[hubKey] || HUB_CONFIG.all;
       document.getElementById('cat-banner-bg').src = conf.banner;
@@ -641,31 +719,31 @@
       }
 
       if (filtered.length === 0) {
-        grid.innerHTML = '<div class="col-span-full py-12 text-center text-slate-500 text-sm">Nenhuma matéria encontrada para esta seção.</div>';
+        grid.innerHTML = '<div class="col-span-full py-12 text-center text-slate-500 text-xs font-mono uppercase">Nenhuma matéria encontrada para este filtro.</div>';
         return;
       }
 
       filtered.forEach(art => {
         const bannerFilename = getCategoryBanner(art.category);
         const card = document.createElement('article');
-        card.className = "bg-brandCard border border-brandBorder rounded-2xl overflow-hidden glow-hover flex flex-col justify-between cursor-pointer group";
+        card.className = "bg-brandCard verge-border rounded-3xl overflow-hidden glow-verge flex flex-col justify-between cursor-pointer group";
         card.onclick = () => openArticle(art.title, art.category, art.date, art.content);
         card.innerHTML = `
           <div>
-            <div class="h-40 bg-slate-800 relative overflow-hidden">
-              <img src="${bannerFilename}" alt="${art.category}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" onerror="if(!this.dataset.t1){this.dataset.t1='1'; this.src='assets/${bannerFilename}';} else {this.style.display='none'; this.parentElement.classList.add('bg-gradient-to-br','from-slate-800','to-brandCard');}">
+            <div class="h-44 bg-slate-950 relative overflow-hidden">
+              <img src="${bannerFilename}" alt="${art.category}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" onerror="if(!this.dataset.t1){this.dataset.t1='1'; this.src='assets/${bannerFilename}';} else {this.style.display='none'; this.parentElement.classList.add('bg-gradient-to-br','from-slate-900','to-brandCard');}">
               <div class="absolute inset-0 bg-gradient-to-t from-brandCard via-transparent to-transparent"></div>
-              <span class="absolute top-3 left-3 px-2.5 py-1 rounded bg-brandDark/85 backdrop-blur-md border border-brandCyan/30 text-brandCyan text-[10px] font-bold tracking-wider uppercase">${art.category}</span>
+              <span class="absolute top-3 left-3 px-2 py-0.5 rounded bg-black/90 backdrop-blur-md border border-brandBorder text-brandCyan text-[9px] font-black tracking-widest uppercase font-mono">${art.category}</span>
             </div>
             
-            <div class="p-5">
-              <div class="text-[11px] text-slate-500 mb-1.5">${art.date}</div>
-              <h3 class="text-base font-bold text-white mb-2 group-hover:text-brandCyan transition-colors leading-snug">${art.title}</h3>
-              <p class="text-slate-400 text-xs leading-relaxed mb-4 line-clamp-3">${art.excerpt}</p>
+            <div class="p-6">
+              <div class="text-[10px] font-mono text-slate-500 mb-1.5 uppercase">${art.date}</div>
+              <h3 class="text-base sm:text-lg font-black text-white verge-title mb-2 group-hover:text-brandCyan transition-colors leading-snug">${art.title}</h3>
+              <p class="text-slate-400 text-xs sm:text-sm leading-relaxed mb-4 line-clamp-3">${art.excerpt}</p>
             </div>
           </div>
-          <div class="px-5 pb-5 pt-0 text-xs text-brandCyan font-semibold flex items-center gap-1 group-hover:underline">
-            ${currentLang === 'pt' ? 'Ler matéria completa →' : 'Read full story →'}
+          <div class="px-6 pb-6 pt-0 text-xs font-bold text-brandCyan flex items-center gap-1 group-hover:translate-x-1 transition-transform">
+            ${currentLang === 'pt' ? 'Ler matéria completa' : 'Read full story'} →
           </div>
         `;
         grid.appendChild(card);
@@ -680,8 +758,8 @@
       const text = document.getElementById('prompt-code').innerText;
       navigator.clipboard.writeText(text).then(() => {
         const btn = document.getElementById('btn-copy-prompt');
-        btn.innerText = "✅ Prompt Copiado!";
-        setTimeout(() => btn.innerText = "📋 Copiar Prompt", 2000);
+        btn.innerText = "✅ COPIADO!";
+        setTimeout(() => btn.innerText = "📋 COPIAR PROMPT", 2000);
       });
     }
 
@@ -709,6 +787,11 @@
       
       modal.style.display = 'flex';
       document.body.style.overflow = 'hidden';
+    }
+
+    function openArticleByIndex(index) {
+      const art = ARTICLES_DATA[currentLang][index];
+      if (art) openArticle(art.title, art.category, art.date, art.content);
     }
 
     function closeModal() {
@@ -773,46 +856,44 @@
       const btnEn = document.getElementById('btn-en');
 
       if (lang === 'pt') {
-        btnPt.className = "px-3 py-1 rounded-full bg-brandCyan text-slate-950 font-bold transition";
-        btnEn.className = "px-3 py-1 rounded-full text-slate-400 hover:text-white transition";
+        btnPt.className = "px-2.5 py-0.5 rounded bg-brandCyan text-slate-950 font-black transition";
+        btnEn.className = "px-2.5 py-0.5 rounded text-slate-400 hover:text-white transition";
         document.getElementById('hero-badge').innerText = "Curadoria Autônoma em Tempo Real";
         document.getElementById('hero-title').innerHTML = 'O Fluxo da <span class="text-transparent bg-clip-text bg-gradient-to-r from-brandCyan via-purple-400 to-brandCyan">Inteligência Artificial & Tecnologia</span>';
         document.getElementById('hero-sub').innerText = "Curadoria estratégica, benchmarks de LLMs, análises de mercado e tutoriais práticos de engenharia de prompt.";
-        document.getElementById('search-input').placeholder = "Buscar entre 12+ matérias e tutoriais...";
-        document.getElementById('ticker-text').innerText = "⚡ [Raciocínio] Novos benchmarks de IA demonstram salto em resolução de problemas matemáticos • [Infraestrutura] Big Techs aceleram data centers com energia renovável • [Open-Source] Novos modelos de peso aberto superam limites de eficiência • [Automação] Engenharia de prompt passa a adotar pipelines multi-agente determinísticos";
-        document.getElementById('newsletter-title').innerText = "Receba a Edição Semanal do CorticFlow";
+        document.getElementById('search-input').placeholder = "Filtrar matérias...";
+        document.getElementById('ticker-text').innerText = "⚡ [Raciocínio] Novos benchmarks de IA demonstram salto em resolução de problemas matemáticos • [Infraestrutura] Big Techs aceleram data centers com energia limpa • [Open-Source] Modelos abertos rivalizam com arquiteturas proprietárias • [Automação] Engenharia de prompt passa a adotar pipelines multi-agente determinísticos";
+        document.getElementById('newsletter-title').innerText = "CorticFlow Weekly";
         document.getElementById('newsletter-sub').innerText = "Todo domingo às 20h, receba a compilação executiva e o tutorial da semana no seu e-mail.";
         document.getElementById('newsletter-input').placeholder = "Seu melhor e-mail";
         document.getElementById('newsletter-btn').innerText = "Inscrever-se Grátis";
-        document.getElementById('lead-badge').innerText = "Radar de Benchmarks da Semana";
-        document.getElementById('lead-title').innerText = "Top Modelos de Linguagem & Raciocínio (Clique para Testar)";
-        document.getElementById('hub-all').innerText = "📑 Todos os Artigos";
-        document.getElementById('hub-ai').innerText = "🧠 IA & Modelos (4)";
-        document.getElementById('hub-tut').innerText = "🛠️ Tutoriais & Prompts (3)";
-        document.getElementById('hub-biz').innerText = "🏢 Mercado & Big Techs (3)";
-        document.getElementById('hub-tools').innerText = "⚙️ Ferramentas (2)";
-        document.getElementById('hub-news').innerText = "📬 Edições Semanais";
+        document.getElementById('lead-badge').innerText = "LLM PERFORMANCE MATRIX • WEEKLY INDEX";
+        document.getElementById('lead-title').innerText = "Arena de Benchmarks de IA (Clique no Modelo para Testar)";
+        document.getElementById('feat-tag').innerText = "MATÉRIA DE CAPA";
+        document.getElementById('feat-btn').innerText = "Ler Matéria Completa";
       } else {
-        btnEn.className = "px-3 py-1 rounded-full bg-brandCyan text-slate-950 font-bold transition";
-        btnPt.className = "px-3 py-1 rounded-full text-slate-400 hover:text-white transition";
+        btnEn.className = "px-2.5 py-0.5 rounded bg-brandCyan text-slate-950 font-black transition";
+        btnPt.className = "px-2.5 py-0.5 rounded text-slate-400 hover:text-white transition";
         document.getElementById('hero-badge').innerText = "Autonomous AI Curation in Real-Time";
         document.getElementById('hero-title').innerHTML = 'The Stream of <span class="text-transparent bg-clip-text bg-gradient-to-r from-brandCyan via-purple-400 to-brandCyan">AI & Tech</span> Intelligence';
         document.getElementById('hero-sub').innerText = "Strategic curation, frontier LLM benchmarks, market analyses, and actionable prompt engineering guides.";
-        document.getElementById('search-input').placeholder = "Search across 12+ articles and tutorials...";
-        document.getElementById('ticker-text').innerText = "⚡ [Reasoning] Frontier LLM benchmarks demonstrate breakthrough mathematical reasoning • [Infrastructure] Hyperscalers accelerate data center energy pacts • [Open-Source] Open-weight models challenge proprietary efficiency records • [Automation] Production pipelines shift toward deterministic multi-agent architectures";
-        document.getElementById('newsletter-title').innerText = "Subscribe to CorticFlow Weekly";
+        document.getElementById('search-input').placeholder = "Filter dispatches...";
+        document.getElementById('ticker-text').innerText = "⚡ [Reasoning] Frontier LLM benchmarks demonstrate breakthrough mathematical reasoning • [Infrastructure] Hyperscalers accelerate data center clean energy pacts • [Open-Source] Open weights challenge proprietary records • [Automation] Production pipelines shift toward deterministic multi-agent architectures";
+        document.getElementById('newsletter-title').innerText = "CorticFlow Weekly";
         document.getElementById('newsletter-sub').innerText = "Every Sunday at 8 PM, receive executive AI curation and deep-dive technical guides directly in your inbox.";
         document.getElementById('newsletter-input').placeholder = "Enter your email address";
         document.getElementById('newsletter-btn').innerText = "Subscribe Free";
-        document.getElementById('lead-badge').innerText = "Weekly Benchmark Radar";
-        document.getElementById('lead-title').innerText = "Top Language & Reasoning Models (Click to Launch)";
-        document.getElementById('hub-all').innerText = "📑 All Dispatches";
-        document.getElementById('hub-ai').innerText = "🧠 AI & Models (4)";
-        document.getElementById('hub-tut').innerText = "🛠️ Tutorials & Prompts (3)";
-        document.getElementById('hub-biz').innerText = "🏢 Business & Startups (3)";
-        document.getElementById('hub-tools').innerText = "⚙️ AI Tools (2)";
-        document.getElementById('hub-news').innerText = "📬 Weekly Digests";
+        document.getElementById('lead-badge').innerText = "LLM PERFORMANCE MATRIX • WEEKLY INDEX";
+        document.getElementById('lead-title').innerText = "AI Benchmark Arena (Click Model to Launch)";
+        document.getElementById('feat-tag').innerText = "FEATURED COVER STORY";
+        document.getElementById('feat-btn').innerText = "Read Full Story";
       }
+
+      // Atualiza os textos da matéria de capa
+      const feat = ARTICLES_DATA[currentLang][0];
+      document.getElementById('feat-title').innerText = feat.title;
+      document.getElementById('feat-excerpt').innerText = feat.excerpt;
+
       selectHub(currentHub);
     }
 
