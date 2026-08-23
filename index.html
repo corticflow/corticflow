@@ -206,7 +206,7 @@
     </div>
   </section>
 
-  <!-- LLM Benchmark Arena -->
+  <!-- LLM Benchmark Arena com Logos & Watermarks -->
   <section id="leaderboard" class="border-y border-brandBorder bg-black/70 py-12 px-4 scroll-mt-20">
     <div class="max-w-7xl mx-auto">
       <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-8">
@@ -420,11 +420,81 @@
     let currentHub = 'all';
 
     const LEADERBOARD_DATA = [
-      { name: "Gemini 2.5 / 3.6 Flash", provider: "Google", score: 96, reasoning: "98%", coding: "96%", type: "proprietary", context: "1M tokens", cost: "$0.075 / 1M", url: "https://aistudio.google.com" },
-      { name: "Claude 3.5 / 3.7 Sonnet", provider: "Anthropic", score: 95, reasoning: "97%", coding: "98%", type: "reasoning", context: "200k tokens", cost: "$3.00 / 1M", url: "https://claude.ai" },
-      { name: "GPT-4o / o3-mini", provider: "OpenAI", score: 94, reasoning: "96%", coding: "95%", type: "reasoning", context: "128k tokens", cost: "$2.50 / 1M", url: "https://chatgpt.com" },
-      { name: "DeepSeek R1 / V3", provider: "DeepSeek", score: 93, reasoning: "95%", coding: "94%", type: "open", context: "128k tokens", cost: "Open-Weights", url: "https://chat.deepseek.com" },
-      { name: "Llama 3.3 70B", provider: "Meta", score: 91, reasoning: "92%", coding: "91%", type: "open", context: "128k tokens", cost: "Open-Weights", url: "https://www.llama.com" }
+      { 
+        name: "Gemini 2.5 / 3.6 Flash", 
+        provider: "Google", 
+        score: 96, 
+        reasoning: "98%", 
+        coding: "96%", 
+        type: "proprietary", 
+        context: "1M tokens", 
+        cost: "$0.075 / 1M", 
+        url: "https://aistudio.google.com",
+        bg_gradient: "from-blue-950/40 via-brandCard to-brandCard",
+        badge_style: "text-blue-400 border border-blue-500/30",
+        dot_color: "bg-blue-400",
+        svg_watermark: `<svg viewBox="0 0 100 100" fill="currentColor" class="w-full h-full"><path d="M50 0 C50 27.6 27.6 50 0 50 C27.6 50 50 72.4 50 100 C50 72.4 72.4 50 100 50 C72.4 50 50 27.6 50 0 Z" fill="url(#g-gemini)"/><defs><linearGradient id="g-gemini" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#3B82F6"/><stop offset="100%" stop-color="#E024C3"/></linearGradient></defs></svg>`
+      },
+      { 
+        name: "Claude 3.5 / 3.7 Sonnet", 
+        provider: "Anthropic", 
+        score: 95, 
+        reasoning: "97%", 
+        coding: "98%", 
+        type: "reasoning", 
+        context: "200k tokens", 
+        cost: "$3.00 / 1M", 
+        url: "https://claude.ai",
+        bg_gradient: "from-amber-950/40 via-brandCard to-brandCard",
+        badge_style: "text-amber-400 border border-amber-500/30",
+        dot_color: "bg-amber-400",
+        svg_watermark: `<svg viewBox="0 0 100 100" fill="currentColor" class="w-full h-full"><rect x="42" y="10" width="16" height="80" rx="8" fill="#D97706"/><rect x="10" y="42" width="80" height="16" rx="8" fill="#D97706"/><rect x="19" y="19" width="62" height="16" rx="8" transform="rotate(45 50 50)" fill="#D97706"/><rect x="19" y="19" width="62" height="16" rx="8" transform="rotate(-45 50 50)" fill="#D97706"/></svg>`
+      },
+      { 
+        name: "GPT-4o / o3-mini", 
+        provider: "OpenAI", 
+        score: 94, 
+        reasoning: "96%", 
+        coding: "95%", 
+        type: "reasoning", 
+        context: "128k tokens", 
+        cost: "$2.50 / 1M", 
+        url: "https://chatgpt.com",
+        bg_gradient: "from-emerald-950/40 via-brandCard to-brandCard",
+        badge_style: "text-emerald-400 border border-emerald-500/30",
+        dot_color: "bg-emerald-400",
+        svg_watermark: `<svg viewBox="0 0 100 100" fill="none" stroke="#10B981" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" class="w-full h-full"><path d="M50 15 L78 31 L78 69 L50 85 L22 69 L22 31 Z"/><path d="M50 15 L50 50 L78 69"/><path d="M78 31 L50 50 L22 69"/><path d="M22 31 L50 50 L50 85"/></svg>`
+      },
+      { 
+        name: "DeepSeek R1 / V3", 
+        provider: "DeepSeek", 
+        score: 93, 
+        reasoning: "95%", 
+        coding: "94%", 
+        type: "open", 
+        context: "128k tokens", 
+        cost: "Open-Weights", 
+        url: "https://chat.deepseek.com",
+        bg_gradient: "from-cyan-950/40 via-brandCard to-brandCard",
+        badge_style: "text-cyan-400 border border-cyan-500/30",
+        dot_color: "bg-cyan-400",
+        svg_watermark: `<svg viewBox="0 0 100 100" fill="currentColor" class="w-full h-full"><path d="M20 65 Q45 20 80 35 Q90 60 65 75 Q40 85 20 65 Z" fill="#06B6D4"/><circle cx="70" cy="45" r="4" fill="#0B0D13"/><path d="M15 70 Q30 65 35 80 Q20 85 15 70 Z" fill="#06B6D4"/></svg>`
+      },
+      { 
+        name: "Llama 3.3 70B", 
+        provider: "Meta", 
+        score: 91, 
+        reasoning: "92%", 
+        coding: "91%", 
+        type: "open", 
+        context: "128k tokens", 
+        cost: "Open-Weights", 
+        url: "https://www.llama.com",
+        bg_gradient: "from-indigo-950/40 via-brandCard to-brandCard",
+        badge_style: "text-indigo-400 border border-indigo-500/30",
+        dot_color: "bg-indigo-400",
+        svg_watermark: `<svg viewBox="0 0 100 100" fill="none" stroke="#6366F1" stroke-width="8" class="w-full h-full"><path d="M30 50 C15 35 15 65 30 50 C45 35 55 65 70 50 C85 35 85 65 70 50 C55 35 45 65 30 50 Z"/></svg>`
+      }
     ];
 
     const HUB_CONFIG = {
@@ -826,20 +896,28 @@
         card.href = m.url;
         card.target = "_blank";
         card.rel = "noopener noreferrer";
-        card.className = "bg-brandCard verge-border rounded-2xl p-4 flex flex-col justify-between glow-verge transition group";
+        card.className = `relative overflow-hidden bg-brandCard verge-border rounded-2xl p-5 flex flex-col justify-between glow-verge transition group bg-gradient-to-br ${m.bg_gradient}`;
         card.innerHTML = `
-          <div>
-            <div class="flex items-center justify-between mb-2">
-              <span class="text-[9px] font-black px-2 py-0.5 rounded bg-slate-900 text-brandCyan border border-brandCyan/30 uppercase font-mono">#${idx + 1} ${m.provider}</span>
-              <span class="text-xs text-slate-500 group-hover:text-brandCyan transition font-bold">↗</span>
+          <!-- Marca d'água de fundo futurista da empresa -->
+          <div class="absolute -right-4 -bottom-4 w-28 h-28 pointer-events-none opacity-10 group-hover:opacity-25 group-hover:scale-110 transition-all duration-500 text-white">
+            ${m.svg_watermark}
+          </div>
+
+          <div class="relative z-10">
+            <div class="flex items-center justify-between mb-3">
+              <span class="text-[9px] font-black px-2.5 py-0.5 rounded bg-slate-950/80 ${m.badge_style} uppercase font-mono tracking-wider flex items-center gap-1.5 shadow-sm">
+                <span class="w-1.5 h-1.5 rounded-full ${m.dot_color}"></span>
+                #${idx + 1} ${m.provider}
+              </span>
+              <span class="text-xs text-slate-400 group-hover:text-brandCyan group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform font-bold">↗</span>
             </div>
-            <h4 class="text-sm font-black text-white mb-2 group-hover:text-brandCyan transition verge-title">${m.name}</h4>
+            <h4 class="text-sm sm:text-base font-black text-white mb-2.5 group-hover:text-brandCyan transition verge-title">${m.name}</h4>
             <div class="space-y-1.5 mb-3">
               <div class="flex justify-between text-[11px] font-mono text-slate-400">
-                <span>${currentLang === 'pt' ? 'PONTUAÇÃO' : 'SCORE'}</span>
+                <span>${currentLang === 'pt' ? 'PONTUAÇÃO GERAL' : 'OVERALL SCORE'}</span>
                 <span class="font-bold text-brandCyan">${m.score}/100</span>
               </div>
-              <div class="w-full h-1.5 bg-slate-950 rounded-full overflow-hidden border border-slate-800">
+              <div class="w-full h-1.5 bg-slate-950/80 rounded-full overflow-hidden border border-slate-800">
                 <div class="h-full bg-gradient-to-r from-brandCyan to-brandPurple rounded-full" style="width: ${m.score}%"></div>
               </div>
               <div class="flex justify-between text-[10px] font-mono text-slate-400 pt-1">
@@ -848,7 +926,7 @@
               </div>
             </div>
           </div>
-          <div class="text-[10px] font-mono text-slate-400 pt-2 border-t border-brandBorder/60 flex justify-between">
+          <div class="relative z-10 text-[10px] font-mono text-slate-400 pt-2.5 border-t border-brandBorder/60 flex justify-between">
             <span>${m.context}</span>
             <span class="font-bold text-brandCyan">${m.cost}</span>
           </div>
@@ -1190,6 +1268,7 @@
       document.getElementById('feat-excerpt').innerText = feat.excerpt;
 
       selectHub(currentHub, false);
+      renderLeaderboard('all');
     }
 
     window.addEventListener('DOMContentLoaded', () => {
