@@ -9,7 +9,7 @@
   <!-- Verificação Google Search Console -->
   <meta name="google-site-verification" content="43zcGSljLsHVe02k10h5cw8RD1YOL_NODxaqsoRaT28" />
   
-  <!-- Meta Tag Oficial da Conta Google AdSense -->
+  <!-- Meta Tag Oficial Google AdSense -->
   <meta name="google-adsense-account" content="ca-pub-6428908869375108" />
 
   <!-- Script Oficial Google AdSense -->
@@ -261,16 +261,16 @@
     
     <main class="lg:col-span-8 space-y-8 scroll-mt-40" id="feed">
       
-      <div id="category-banner-card" class="bg-brandCard verge-border rounded-3xl overflow-hidden relative p-6 sm:p-8 flex flex-col justify-end min-h-[160px]">
-        <img id="cat-banner-bg" src="hero.jpeg" class="absolute inset-0 w-full h-full object-cover opacity-25" onerror="if(!this.dataset.t1){this.dataset.t1='1'; this.src='cat-ai.jpeg';}">
-        <div class="absolute inset-0 bg-gradient-to-r from-brandCard via-brandCard/80 to-transparent"></div>
-        <div class="relative z-10">
-          <span id="cat-banner-tag" class="px-2 py-0.5 rounded bg-brandCyan/20 text-brandCyan text-[9px] font-black uppercase tracking-widest border border-brandCyan/30">HUB EDITORIAL</span>
-          <h2 id="cat-banner-title" class="text-2xl sm:text-3xl font-black text-white verge-title mt-2">Todas as Publicações</h2>
-          <p id="cat-banner-desc" class="text-slate-400 text-xs sm:text-sm mt-1 max-w-xl">Acervo completo com análises aprofundadas de Windows, Linux, Apple, Android, startups, tutoriais de engenharia de prompt e benchmarks.</p>
+      <!-- Cabeçalho da Seção Ativa -->
+      <div id="category-banner-card" class="border-b border-brandBorder pb-4 flex flex-col sm:flex-row sm:items-end justify-between gap-2">
+        <div>
+          <span id="cat-banner-tag" class="px-2 py-0.5 rounded bg-brandCyan/20 text-brandCyan text-[9px] font-black uppercase tracking-widest border border-brandCyan/30 font-mono">HUB EDITORIAL</span>
+          <h2 id="cat-banner-title" class="text-2xl sm:text-3xl font-black text-white verge-title mt-1.5">Todas as Publicações</h2>
         </div>
+        <p id="cat-banner-desc" class="text-slate-400 text-xs max-w-md">Acervo completo com análises aprofundadas, tutoriais e benchmarks.</p>
       </div>
 
+      <!-- Grid com os Artigos Clicáveis -->
       <div id="articles-grid" class="grid sm:grid-cols-2 gap-6"></div>
 
       <!-- Bloco de Anúncio Google AdSense Responsivo -->
@@ -356,7 +356,7 @@
     </aside>
   </div>
 
-  <!-- Modal de Leitura -->
+  <!-- Modal de Leitura Integral -->
   <div id="article-modal" style="display: none;" class="fixed inset-0 z-[100] bg-black/90 backdrop-blur-xl items-center justify-center p-3 sm:p-6" onclick="if(event.target === this) closeModal();">
     <div class="bg-brandCard verge-border rounded-3xl max-w-3xl w-full max-h-[92vh] flex flex-col shadow-[0_20px_60px_rgba(0,0,0,0.9)] overflow-hidden relative">
       <div class="p-5 sm:p-6 border-b border-brandBorder flex items-center justify-between bg-black/80">
@@ -428,16 +428,16 @@
     ];
 
     const HUB_CONFIG = {
-      all: { banner: "hero.jpeg", tag_pt: "HUB EDITORIAL", tag_en: "EDITORIAL STREAM", title_pt: "Todas as Publicações", title_en: "All Dispatches", desc_pt: "Acervo completo com 20 matérias em Windows, Linux, Apple, Android, startups, ciência e IA.", desc_en: "Full archive featuring 20 deep-dive dispatches across Windows, Linux, Apple, Android, startups, and AI." },
-      "Windows & PC": { banner: "cat-tools.jpeg", tag_pt: "WINDOWS & PC", tag_en: "WINDOWS & PC", title_pt: "Ecossistema Windows, Copilot+ PCs e Hardware", title_en: "Windows Ecosystem, Copilot+ PCs & PC Hardware", desc_pt: "Cobertura completa sobre Windows on ARM, processadores x86/Snapdragon, laptops e hardware.", desc_en: "Granular coverage of Windows on ARM, Snapdragon silicon, desktop hardware, and PC gaming." },
-      "Linux & Open-Source": { banner: "cat-ai.jpeg", tag_pt: "LINUX & OPEN-SOURCE", tag_en: "LINUX & OPEN-SOURCE", title_pt: "Distribuições Linux, Servidores de IA e Código Aberto", title_en: "Linux Distros, AI Infrastructure & Open-Source", desc_pt: "Análises técnicas sobre kernels, Docker, servidores em nuvem e ferramentas abertas de IA.", desc_en: "Deep-dive technical guides on real-time kernels, Docker orchestration, and local AI stacks." },
-      "Apple & iOS": { banner: "cat-ai.jpeg", tag_pt: "APPLE & IOS", tag_en: "APPLE & IOS", title_pt: "Ecossistema Apple: iPhone, Mac e Apple Intelligence", title_en: "Apple Ecosystem: iPhone, Mac & Apple Intelligence", desc_pt: "Cobertura completa sobre novos lançamentos, processadores M-Series, iOS e hardware de Cupertino.", desc_en: "Granular coverage of Cupertino hardware, M-series silicon, iOS architecture, and Vision Pro." },
-      "Android & Gadgets": { banner: "cat-tools.jpeg", tag_pt: "ANDROID & GADGETS", tag_en: "ANDROID & GADGETS", title_pt: "Smartphones, Dobráveis, Chips Móveis e Reviews", title_en: "Smartphones, Foldables, Silicon & Hardware Reviews", desc_pt: "Testes práticos de produtos, celulares topo de linha, wearables e novas tecnologias de consumo.", desc_en: "Hands-on reviews of flagship smartphones, foldable displays, wearable gadgets, and consumer tech." },
-      "Business & Startups": { banner: "cat-business.jpeg", tag_pt: "NEGÓCIOS & STARTUPS", tag_en: "BUSINESS & STARTUPS", title_pt: "Economia de Tecnologia, Startups e Big Techs", title_en: "Tech Economy, Startups & Venture Capital", desc_pt: "Investimentos de risco, data centers de hiperescala e o impacto financeiro das inovações.", desc_en: "Venture capital cycles, hyperscale data center infrastructure, and macroeconomic market shifts." },
-      "Science & Space": { banner: "hero.jpeg", tag_pt: "CIÊNCIA & ESPAÇO", tag_en: "SCIENCE & SPACE", title_pt: "Inovação Tecnológica, Física, Espaço e Energia", title_en: "Deep Tech, Physics, Space Exploration & Energy", desc_pt: "Descobertas científicas, semicondutores neuromórficos, computação quântica e novas engenharias.", desc_en: "Breakthrough physics discoveries, neuromorphic chips, quantum computing, and aerospace engineering." },
-      "AI & Models": { banner: "cat-ai.jpeg", tag_pt: "IA & MODELOS", tag_en: "AI & MODELS", title_pt: "Modelos de Linguagem, Raciocínio e Pesos Abertos", title_en: "Frontier LLMs, Reasoning & Open-Weights", desc_pt: "Análises técnicas sobre as arquiteturas neurais que estão redefinindo a inteligência artificial.", desc_en: "Technical breakthroughs on neural architectures shaping the future of autonomous systems." },
-      "Tutorials & Guides": { banner: "cat-tutorials.jpeg", tag_pt: "TUTORIAIS & GUIAS", tag_en: "TUTORIALS & GUIDES", title_pt: "Engenharia de Prompt e Automações Práticas", title_en: "Prompt Engineering & Actionable Automation", desc_pt: "Passo a passo didático para construir agentes, pipelines serverless e prompts estruturados.", desc_en: "Hands-on engineering blueprints for deploying production-ready serverless AI agents." },
-      Newsletter: { banner: "hero.jpeg", tag_pt: "EDIÇÃO DE DOMINGO", tag_en: "SUNDAY DISPATCH", title_pt: "Edições Semanais de Domingo", title_en: "Sunday Executive Newsletters", desc_pt: "Compilados consolidados de fim de semana gerados autonomamente todo domingo às 20h.", desc_en: "Weekly executive digests and actionable evergreen tutorials delivered every Sunday at 8 PM." }
+      all: { tag_pt: "HUB EDITORIAL", tag_en: "EDITORIAL STREAM", title_pt: "Todas as Publicações", title_en: "All Dispatches", desc_pt: "Acervo completo com 20 matérias em Windows, Linux, Apple, Android, startups, ciência e IA.", desc_en: "Full archive featuring 20 deep-dive dispatches across Windows, Linux, Apple, Android, startups, and AI." },
+      "Windows & PC": { tag_pt: "WINDOWS & PC", tag_en: "WINDOWS & PC", title_pt: "Ecossistema Windows, Copilot+ PCs e Hardware", title_en: "Windows Ecosystem, Copilot+ PCs & PC Hardware", desc_pt: "Cobertura completa sobre Windows on ARM, processadores x86/Snapdragon, laptops e hardware.", desc_en: "Granular coverage of Windows on ARM, Snapdragon silicon, desktop hardware, and PC gaming." },
+      "Linux & Open-Source": { tag_pt: "LINUX & OPEN-SOURCE", tag_en: "LINUX & OPEN-SOURCE", title_pt: "Distribuições Linux, Servidores de IA e Código Aberto", title_en: "Linux Distros, AI Infrastructure & Open-Source", desc_pt: "Análises técnicas sobre kernels, Docker, servidores em nuvem e ferramentas abertas de IA.", desc_en: "Deep-dive technical guides on real-time kernels, Docker orchestration, and local AI stacks." },
+      "Apple & iOS": { tag_pt: "APPLE & IOS", tag_en: "APPLE & IOS", title_pt: "Ecossistema Apple: iPhone, Mac e Apple Intelligence", title_en: "Apple Ecosystem: iPhone, Mac & Apple Intelligence", desc_pt: "Cobertura completa sobre novos lançamentos, processadores M-Series, iOS e hardware de Cupertino.", desc_en: "Granular coverage of Cupertino hardware, M-series silicon, iOS architecture, and Vision Pro." },
+      "Android & Gadgets": { tag_pt: "ANDROID & GADGETS", tag_en: "ANDROID & GADGETS", title_pt: "Smartphones, Dobráveis, Chips Móveis e Reviews", title_en: "Smartphones, Foldables, Silicon & Hardware Reviews", desc_pt: "Testes práticos de produtos, celulares topo de linha, wearables e novas tecnologias de consumo.", desc_en: "Hands-on reviews of flagship smartphones, foldable displays, wearable gadgets, and consumer tech." },
+      "Business & Startups": { tag_pt: "NEGÓCIOS & STARTUPS", tag_en: "BUSINESS & STARTUPS", title_pt: "Economia de Tecnologia, Startups e Big Techs", title_en: "Tech Economy, Startups & Venture Capital", desc_pt: "Investimentos de risco, data centers de hiperescala e o impacto financeiro das inovações.", desc_en: "Venture capital cycles, hyperscale data center infrastructure, and macroeconomic market shifts." },
+      "Science & Space": { tag_pt: "CIÊNCIA & ESPAÇO", tag_en: "SCIENCE & SPACE", title_pt: "Inovação Tecnológica, Física, Espaço e Energia", title_en: "Deep Tech, Physics, Space Exploration & Energy", desc_pt: "Descobertas científicas, semicondutores neuromórficos, computação quântica e novas engenharias.", desc_en: "Breakthrough physics discoveries, neuromorphic chips, quantum computing, and aerospace engineering." },
+      "AI & Models": { tag_pt: "IA & MODELOS", tag_en: "AI & MODELS", title_pt: "Modelos de Linguagem, Raciocínio e Pesos Abertos", title_en: "Frontier LLMs, Reasoning & Open-Weights", desc_pt: "Análises técnicas sobre as arquiteturas neurais que estão redefinindo a inteligência artificial.", desc_en: "Technical breakthroughs on neural architectures shaping the future of autonomous systems." },
+      "Tutorials & Guides": { tag_pt: "TUTORIAIS & GUIAS", tag_en: "TUTORIALS & GUIDES", title_pt: "Engenharia de Prompt e Automações Práticas", title_en: "Prompt Engineering & Actionable Automation", desc_pt: "Passo a passo didático para construir agentes, pipelines serverless e prompts estruturados.", desc_en: "Hands-on engineering blueprints for deploying production-ready serverless AI agents." },
+      Newsletter: { tag_pt: "EDIÇÃO DE DOMINGO", tag_en: "SUNDAY DISPATCH", title_pt: "Edições Semanais de Domingo", title_en: "Sunday Executive Newsletters", desc_pt: "Compilados consolidados de fim de semana gerados autonomamente todo domingo às 20h.", desc_en: "Weekly executive digests and actionable evergreen tutorials delivered every Sunday at 8 PM." }
     };
 
     const ARTICLES_DATA = {
@@ -829,7 +829,6 @@
       if (activeBtn) activeBtn.className = "px-3 py-1.5 rounded-md bg-brandCyan text-black font-black text-[11px] uppercase tracking-wider transition shrink-0";
 
       const conf = HUB_CONFIG[hubKey] || HUB_CONFIG.all;
-      document.getElementById('cat-banner-bg').src = conf.banner;
       document.getElementById('cat-banner-tag').innerText = currentLang === 'pt' ? conf.tag_pt : conf.tag_en;
       document.getElementById('cat-banner-title').innerText = currentLang === 'pt' ? conf.title_pt : conf.title_en;
       document.getElementById('cat-banner-desc').innerText = currentLang === 'pt' ? conf.desc_pt : conf.desc_en;
