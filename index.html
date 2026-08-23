@@ -63,9 +63,9 @@
     </div>
   </header>
 
-  <!-- Hero Section com Imagem hero.jpeg -->
+  <!-- Hero Section -->
   <section class="relative py-16 px-4 text-center border-b border-brandBorder overflow-hidden bg-slate-950/60 relative">
-    <img src="hero.jpeg" alt="Hero Banner" class="absolute inset-0 w-full h-full object-cover opacity-25 pointer-events-none" onerror="if(!this.dataset.t1){this.dataset.t1='1'; this.src='hero.jpg';} else {this.style.display='none';}">
+    <img src="hero.jpeg" alt="Hero Banner" class="absolute inset-0 w-full h-full object-cover opacity-25 pointer-events-none" onerror="if(!this.dataset.t1){this.dataset.t1='1'; this.src='assets/hero.jpg';} else if(!this.dataset.t2){this.dataset.t2='1'; this.src='hero.jpg';} else {this.style.display='none';}">
     
     <div class="max-w-4xl mx-auto relative z-10">
       <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-slate-900/80 border border-brandCyan/40 text-brandCyan text-xs font-semibold mb-6">
@@ -85,16 +85,24 @@
 
   <!-- Feed de Artigos -->
   <main class="max-w-6xl mx-auto px-4 py-12 flex-1 w-full" id="feed">
-    <div class="flex items-center justify-between mb-8">
+    
+    <!-- Cabeçalho do Feed e Filtros por Categoria -->
+    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
       <h2 id="section-title" class="text-2xl font-bold text-slate-100 flex items-center gap-2">
         ⚡ Últimas Publicações
       </h2>
-      <button id="feed-refresh-btn" onclick="loadArticles()" class="text-xs px-3.5 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-brandCyan border border-brandBorder font-medium transition">
-        🔄 Atualizar Feed
-      </button>
+
+      <!-- Filtros de Categorias -->
+      <div class="flex flex-wrap gap-2 text-xs font-medium">
+        <button onclick="filterCategory('all')" id="tab-all" class="px-3 py-1.5 rounded-lg bg-brandCyan text-slate-950 font-bold transition">Todos</button>
+        <button onclick="filterCategory('AI & Models')" id="tab-ai" class="px-3 py-1.5 rounded-lg bg-slate-800 text-slate-400 hover:text-white border border-brandBorder transition">IA & Modelos</button>
+        <button onclick="filterCategory('Tutorials & Guides')" id="tab-tut" class="px-3 py-1.5 rounded-lg bg-slate-800 text-slate-400 hover:text-white border border-brandBorder transition">Tutoriais</button>
+        <button onclick="filterCategory('Business & Startups')" id="tab-biz" class="px-3 py-1.5 rounded-lg bg-slate-800 text-slate-400 hover:text-white border border-brandBorder transition">Negócios</button>
+        <button onclick="filterCategory('AI Tools')" id="tab-tools" class="px-3 py-1.5 rounded-lg bg-slate-800 text-slate-400 hover:text-white border border-brandBorder transition">Ferramentas</button>
+      </div>
     </div>
 
-    <!-- Grid onde as matérias aparecem -->
+    <!-- Grid com os 6 Artigos -->
     <div id="articles-grid" class="grid md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
 
     <!-- Espaço para Google AdSense -->
@@ -144,54 +152,99 @@
     </div>
   </footer>
 
+  <!-- Biblioteca com 6 Artigos Completos e Sincronização Dinâmica -->
   <script>
     let currentLang = 'pt';
+    let activeCategory = 'all';
+    let allCurrentArticles = [];
 
     const ARTICLES_DATA = {
       pt: [
         {
           title: "Modelos de Raciocínio Profundo: Como a IA está redefinindo a resolução de problemas complexos",
           category: "AI & Models",
-          date: "Hoje",
+          date: "Destaque",
           excerpt: "Uma análise técnica aprofundada sobre a transição dos modelos de linguagem estatísticos para cadeias de raciocínio passo a passo estruturadas.",
           content: "## A Nova Fronteira do Raciocínio em Inteligência Artificial\n\nA evolução recente dos modelos de linguagem (*LLMs*) ultrapassou a simples previsão probabilística de palavras. Com a introdução de cadeias de raciocínio profundo (*Chain-of-Thought* estruturado), os modelos agora são capazes de planejar, testar hipóteses, depurar erros internamente e validar código antes de emitir a resposta final ao usuário.\n\n### 1. O Que Muda na Arquitetura Técnica\n* **Verificação Lógica Contínua:** O modelo audita as etapas anteriores de seu próprio pensamento, reduzindo drasticamente a taxa de alucinações factuais.\n* **Uso Dinâmico de Tempo de Inferência (*Test-Time Compute*):** Para problemas triviais, o modelo responde instantaneamente; para equações matemáticas ou códigos complexos, ele aloca segundos extras de processamento interno.\n* **Autonomia Supervisionada:** Agentes autônomos agora conseguem navegar por repositórios de software e orquestrar múltiplos microsserviços com precisão matemática.\n\n### 2. Casos de Uso Práticos e Aplicação em Negócios\nEmpresas de desenvolvimento de software e análise financeira estão substituindo tarefas manuais por pipelines de raciocínio guiado. Na prática, isso permite que contratos jurídicos extensos sejam revisados com detecção de cláusulas de risco em frações de minuto.\n\n> *\"O raciocínio profundo marca o fim da IA como mero assistente de texto e o início da IA como mecanismo de engenharia e resolução lógica.\"*\n\n### 3. Conclusão Editorial CorticFlow\nAcompanhe as próximas atualizações de benchmarks e testes práticos no nosso compilado semanal de domingo."
         },
         {
           title: "Guia Prático: Construindo Pipelines de Automação com IA a Custo Zero",
           category: "Tutorials & Guides",
-          date: "Hoje",
+          date: "Guia",
           excerpt: "Passo a passo didático de como estruturar esteiras de curadoria, processamento de texto e publicação contínua sem gastar com servidores caros.",
           content: "## Construindo Automação Moderna sem Servidores (*Serverless Architecture*)\n\nCriar sistemas autônomos de publicação e curadoria na web não exige mais a contratação de servidores VPS caros ou bancos de dados pesados. Utilizando ferramentas modernas gratuitas como **GitHub Actions**, **Google AI Studio (Gemini API)** e **GitHub Pages**, qualquer desenvolvedor ou criador pode colocar no ar esteiras de inteligência artificial de alta performance.\n\n### A Arquitetura em 3 Etapas:\n\n1. **Ingestão Inteligente:** Rastreamento periódico de feeds RSS de portais especializados de tecnologia via scripts Python agendados por cron.\n2. **Processamento e Redação por IA:** Utilização de modelos de última geração via chamadas REST com resposta formatada em JSON estruturado.\n3. **Deploy Contínuo:** Commit direto dos arquivos Markdown no repositório Git, disparando a atualização imediata das páginas públicas com certificado SSL gratuito.\n\n### Vantagens do Modelo Serverless:\n* **Custo Marginal Zero:** Manutenção gratuita permanente dentro das cotas dos provedores.\n* **Escalabilidade Extrema:** Suporta picos de tráfego de milhares de leitores simultâneos sem lentidão.\n* **Segurança Nativa:** Sem portas de servidores abertas ou risco de invasão de banco de dados.\n\n*Acompanhe nossos tutoriais semanais todo domingo aqui no CorticFlow.*"
         },
         {
           title: "Infraestrutura Global de IA: A Corrida dos Novos Data Centers e Chips Especializados",
           category: "Business & Startups",
-          date: "Hoje",
+          date: "Mercado",
           excerpt: "Como os investimentos em semicondutores próprios e energia limpa estão moldando a nova economia das Big Techs e startups de tecnologia.",
           content: "## O Peso da Infraestrutura Física na Era Digital\n\nA corrida pela liderança em inteligência artificial depende fundamentalmente de capacidade de processamento em silício e eficiência energética. As maiores empresas de tecnologia do mundo estão reorientando centenas de bilhões de dólares para a construção de data centers de última geração e parcerias estratégicas com o setor de energia renovável.\n\n### 1. O Avanço de Silício Próprio (*Custom ASICs*)\nPara diminuir a dependência de fornecedores de GPUs e baratear o custo de treinamento e inferência, as Big Techs estão desenvolvendo seus próprios chips aceleradores de IA. Isso permite otimizar o consumo por watt e acelerar o processamento de modelos multimodais.\n\n### 2. O Desafio Energético e Sustentabilidade\n* **Resfriamento Líquido:** Substituição do ar condicionado tradicional por sistemas de imersão e circuitos de água de ciclo fechado.\n* **Energia Renovável Direta:** Parcerias de longo prazo com usinas nucleares modulares, parques solares e eólicos para garantir operação 24/7.\n* **Eficiência de Rede:** Conexões ópticas de terabits por segundo integrando clusters de computação em diferentes regiões geográficas.\n\n### 3. Panorama para Startups\nNovas empresas que conseguirem otimizar o uso de tokens e reduzir o tamanho dos modelos (*quantização e destilação*) dominarão o mercado de aplicações corporativas de alta velocidade."
+        },
+        {
+          title: "Top Ferramentas de IA para Produtividade e Desenvolvimento em 2026",
+          category: "AI Tools",
+          date: "Análise",
+          excerpt: "Uma seleção das plataformas mais eficientes para desenvolvedores, criadores de conteúdo e profissionais automatizarem tarefas diárias.",
+          content: "## O Ecossistema Moderno de Ferramentas de IA\n\nA produtividade em 2026 é definida pela capacidade de delegar tarefas repetitivas a ferramentas especializadas. Testamos as principais soluções do mercado em código, escrita, design e automação de processos.\n\n### Categorias em Destaque:\n* **Engenharia de Código:** Editores assistidos por IA com análise contextual do repositório inteiro.\n* **Automação Visual de Fluxos:** Plataformas que conectam webhooks, bancos de dados e LLMs sem necessidade de infraestrutura pesada.\n* **Geração de Mídia e Imagem:** Modelos com fidelidade tipográfica perfeita e controle de iluminação de estúdio.\n\n*Confira reviews detalhados e comparativos semanais no CorticFlow.*"
+        },
+        {
+          title: "Agentes Autônomos de Software: Como Proteger e Orquestrar Múltiplos Bots",
+          category: "AI & Models",
+          date: "Técnico",
+          excerpt: "Estratégias de segurança, controle de permissões e boas práticas para colocar agentes de IA trabalhando em equipe em produção.",
+          content: "## A Transição dos Prompts Simples para Sistemas Multi-Agente\n\nQuando múltiplos agentes de inteligência artificial interagem entre si para executar um projeto (um agindo como pesquisador, outro como redator e um terceiro como revisor), novos desafios de governança e segurança emergem.\n\n### Pilares de Segurança em Agentes:\n1. **Princípio do Menor Privilégio:** Cada agente deve ter acesso estritamente aos dados necessários para sua função.\n2. **Validação Estruturada de Saída:** O uso de schemas JSON estritos impede que comandos maliciosos sejam passados adiante.\n3. **Logs e Auditoria Imutáveis:** Monitoramento em tempo real de cada chamada de ferramenta e tempo de execução."
+        },
+        {
+          title: "Engenharia de Prompt Avançada: Do Rascunho aos Prompts Estruturados de Sistema",
+          category: "Tutorials & Guides",
+          date: "Tutorial",
+          excerpt: "Como transformar comandos simples em prompts institucionais de alto desempenho que garantem respostas precisas e sem erros.",
+          content: "## A Arte e a Ciência da Engenharia de Prompt\n\nUm prompt bem estruturado elimina 90% das falhas e alucinações de qualquer modelo de linguagem. Neste guia prático, detalhamos as técnicas de ancoragem de contexto, delimitação de escopo e trava estrita de formato.\n\n### Estrutura de um Prompt Profissional:\n* **Definição de Papel (*Role*):** Quem a IA é e qual seu nível de especialidade.\n* **Contexto de Entrada:** Dados brutos claramente delimitados por tags ou blocos.\n* **Instruções Negativas:** O que a IA está estritamente proibida de fazer.\n* **Formato Obrigatório de Saída:** Esquema exato de chaves JSON ou títulos Markdown."
         }
       ],
       en: [
         {
           title: "Deep Reasoning Models: How AI is Redefining Complex Problem Solving",
           category: "AI & Models",
-          date: "Today",
+          date: "Featured",
           excerpt: "A deep technical analysis of test-time compute, reasoning chains, and their transformative impact on autonomous software engineering.",
           content: "## The Frontier of Cognitive AI Architecture\n\nRecent breakthroughs in Large Language Models have shifted the industry paradigm from pure probabilistic token prediction to structured, test-time reasoning. By utilizing internal chains of thought, modern AI architectures can formulate hypotheses, backtrack upon discovering logical contradictions, and verify algorithmic code before delivering answers.\n\n### 1. Key Architectural Transformations\n* **Continuous Verification:** Multi-step logical self-auditing significantly reduces factual hallucinations.\n* **Dynamic Inference Scaling:** The model dynamically adjusts compute time based on problem difficulty.\n* **Autonomous Agents:** Engineering agents can now traverse complex software codebases with mathematical certainty.\n\n### 2. Enterprise Impact & Practical Utility\nFrom software engineering pipelines to quantitative financial analysis, organizations are replacing brittle heuristics with verified reasoning pipelines.\n\n> *\"Deep reasoning marks the transition of AI from conversational assistants into deterministic engineering engines.\"*\n\n*Original technical breakdown by the CorticFlow editorial team.*"
         },
         {
           title: "Actionable Guide: Building Zero-Cost Autonomous AI Pipelines",
           category: "Tutorials & Guides",
-          date: "Today",
+          date: "Guide",
           excerpt: "A complete step-by-step walkthrough on building serverless content pipelines with GitHub Actions, Gemini API, and static site deployment.",
           content: "## Engineering Serverless AI Workflows\n\nDeploying production-grade autonomous content workflows no longer requires expensive dedicated cloud servers. By combining **GitHub Actions**, **Google AI Studio (Gemini API)**, and **GitHub Pages**, engineers and creators can run resilient, end-to-end automated pipelines at zero marginal infrastructure cost.\n\n### 3-Step Core Architecture:\n1. **Automated Ingestion:** Periodic polling of authoritative RSS news feeds.\n2. **Synthesis & Translation:** Structured prompt engineering generating bilingual markdown dispatches.\n3. **Continuous Deployment:** Git commits triggering instantaneous static frontend rebuilds with global CDN caching.\n\n*Follow our weekly technical tutorials every Sunday on CorticFlow.*"
         },
         {
           title: "Global AI Infrastructure: The Scale of Next-Gen Data Centers & Specialized Silicon",
           category: "Business & Startups",
-          date: "Today",
+          date: "Business",
           excerpt: "How hyperscale capital expenditures in custom chips and clean energy are reshaping the enterprise technology economy.",
           content: "## The Physical Foundation of Artificial Intelligence\n\nThe frontier of artificial intelligence is bound by silicon supply chains and power grid capacity. Global technology leaders are committing hundreds of billions of dollars toward custom accelerators and clean energy partnerships to fuel next-generation AI workloads.\n\n### Strategic Highlights:\n* **Custom Silicon:** In-house ASIC development to optimize compute cost and latency.\n* **Clean Energy Integration:** Direct power purchase agreements with nuclear, solar, and wind providers.\n* **Startup Ecosystem:** Emerging software layers dedicated to token efficiency and model distillation."
+        },
+        {
+          title: "Top AI Productivity & Developer Tools for 2026",
+          category: "AI Tools",
+          date: "Review",
+          excerpt: "An expert selection of the most powerful platforms for developers, engineers, and creators to accelerate workflows.",
+          content: "## The Modern AI Tool Ecosystem\n\nEngineering velocity in 2026 is defined by how effectively teams leverage specialized AI layers. We benchmarked the leading tools across code synthesis, visual pipeline automation, and generative multimodal engines.\n\n### Benchmark Highlights:\n* **Repository-Aware Coding:** Code generation engines with whole-codebase context graphs.\n* **Visual Workflow Automators:** Connecting APIs and models without DevOps maintenance.\n* **Asset Generation:** Photorealistic multimodal models with precision typography control."
+        },
+        {
+          title: "Autonomous Software Agents: Multi-Bot Governance & Security",
+          category: "AI & Models",
+          date: "Deep Dive",
+          excerpt: "Security frameworks, privilege isolation, and best practices for orchestrating multi-agent systems in enterprise production.",
+          content: "## Beyond Single Prompts: Multi-Agent Systems\n\nWhen multiple specialized agents collaborate (a researcher, an architect, and a QA reviewer), robust governance and privilege boundaries become essential engineering prerequisites.\n\n### Key Security Principles:\n1. **Least-Privilege Token Scopes:** Restricting tools to minimum necessary capabilities.\n2. **Deterministic Output Validation:** Enforcing strict JSON schemas between agent handoffs.\n3. **Immutable Execution Audit Trails:** Full telemetry tracking latency, cost, and decision forks."
+        },
+        {
+          title: "Advanced Prompt Engineering: Structuring Institutional System Prompts",
+          category: "Tutorials & Guides",
+          date: "Tutorial",
+          excerpt: "How to craft production-grade system prompts that eliminate hallucinations and enforce deterministic output schemas.",
+          content: "## The Science of Deterministic Prompting\n\nA well-architected system prompt eliminates the majority of downstream LLM errors. This actionable guide details context grounding, negative constraints, and structured schema anchoring.\n\n### Production Architecture Blueprint:\n* **Role & Tone Anchoring:** Establishing domain expertise and behavioral boundaries.\n* **Delimited Context:** Clear separation between instructions and input data.\n* **Negative Constraints:** Explicitly prohibiting undesirable actions or commentary.\n* **Output Contract:** Enforcing exact markdown or JSON formatting requirements."
         }
       ]
     };
@@ -207,16 +260,19 @@
       const grid = document.getElementById('articles-grid');
       grid.innerHTML = '';
 
-      articles.forEach(art => {
+      const filtered = activeCategory === 'all' 
+        ? articles 
+        : articles.filter(a => a.category.toLowerCase().includes(activeCategory.toLowerCase()));
+
+      filtered.forEach(art => {
         const bannerFilename = getCategoryBanner(art.category);
         const card = document.createElement('article');
         card.className = "bg-brandCard border border-brandBorder rounded-2xl overflow-hidden glow-hover flex flex-col justify-between cursor-pointer group";
         card.onclick = () => openArticle(art.title, art.category, art.date, art.content);
         card.innerHTML = `
           <div>
-            <!-- Imagem com o nome e formato exato do seu repositório -->
             <div class="h-44 bg-slate-800 relative overflow-hidden">
-              <img src="${bannerFilename}" alt="${art.category}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" onerror="if(!this.dataset.t1){this.dataset.t1='1'; this.src='assets/${bannerFilename}';} else {this.style.display='none'; this.parentElement.classList.add('bg-gradient-to-br','from-slate-800','to-brandCard');}">
+              <img src="${bannerFilename}" alt="${art.category}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" onerror="if(!this.dataset.t1){this.dataset.t1='1'; this.src='assets/${bannerFilename}';} else if(!this.dataset.t2){this.dataset.t2='1'; this.src='assets/cat-ai.jpeg';} else {this.style.display='none'; this.parentElement.classList.add('bg-gradient-to-br','from-slate-800','to-brandCard');}">
               <div class="absolute inset-0 bg-gradient-to-t from-brandCard via-transparent to-transparent"></div>
               <span class="absolute top-3 left-3 px-2.5 py-1 rounded bg-brandDark/85 backdrop-blur-md border border-brandCyan/30 text-brandCyan text-[10px] font-bold tracking-wider uppercase">${art.category}</span>
             </div>
@@ -235,8 +291,31 @@
       });
     }
 
+    function filterCategory(cat) {
+      activeCategory = cat;
+      const tabs = ['all', 'ai', 'tut', 'biz', 'tools'];
+      tabs.forEach(t => {
+        const btn = document.getElementById('tab-' + t);
+        if (btn) {
+          btn.className = "px-3 py-1.5 rounded-lg bg-slate-800 text-slate-400 hover:text-white border border-brandBorder transition";
+        }
+      });
+
+      let activeTabId = 'tab-all';
+      if (cat.includes('AI')) activeTabId = 'tab-ai';
+      else if (cat.includes('Tutorial')) activeTabId = 'tab-tut';
+      else if (cat.includes('Business')) activeTabId = 'tab-biz';
+      else if (cat.includes('Tools')) activeTabId = 'tab-tools';
+
+      const activeBtn = document.getElementById(activeTabId);
+      if (activeBtn) activeBtn.className = "px-3 py-1.5 rounded-lg bg-brandCyan text-slate-950 font-bold transition";
+
+      renderArticles(allCurrentArticles);
+    }
+
     async function loadArticles() {
-      renderArticles(ARTICLES_DATA[currentLang]);
+      allCurrentArticles = ARTICLES_DATA[currentLang];
+      renderArticles(allCurrentArticles);
 
       try {
         const response = await fetch(`https://api.github.com/repos/corticflow/corticflow/contents/content/${currentLang}`);
@@ -271,10 +350,11 @@
             const excerpt = cleanBody.slice(0, 140).trim() + '...';
             fetchedArticles.push({ title, category, date, excerpt, content: body });
           }
-          renderArticles([...fetchedArticles, ...ARTICLES_DATA[currentLang]]);
+          allCurrentArticles = [...fetchedArticles, ...ARTICLES_DATA[currentLang]];
+          renderArticles(allCurrentArticles);
         }
       } catch (e) {
-        console.log("Exibindo matérias ativas.");
+        console.log("Exibindo catálogo completo.");
       }
     }
 
@@ -304,7 +384,6 @@
         document.getElementById('hero-title').innerHTML = 'O Fluxo da <span class="text-transparent bg-clip-text bg-gradient-to-r from-brandCyan via-purple-400 to-brandCyan">Inteligência Artificial & Tecnologia</span>';
         document.getElementById('hero-sub').innerText = "O fluxo contínuo dos maiores acontecimentos de tecnologia, inteligência artificial e tutoriais práticos.";
         document.getElementById('section-title').innerHTML = "⚡ Últimas Publicações";
-        document.getElementById('feed-refresh-btn').innerText = "🔄 Atualizar Feed";
         document.getElementById('newsletter-title').innerText = "Receba a Edição Semanal do CorticFlow";
         document.getElementById('newsletter-sub').innerText = "Todo domingo às 20h, receba a compilação executiva e o tutorial da semana direto no seu e-mail.";
         document.getElementById('newsletter-input').placeholder = "Seu melhor e-mail";
@@ -316,7 +395,6 @@
         document.getElementById('hero-title').innerHTML = 'The Stream of <span class="text-transparent bg-clip-text bg-gradient-to-r from-brandCyan via-purple-400 to-brandCyan">AI & Tech</span> Intelligence';
         document.getElementById('hero-sub').innerText = "The continuous stream of breakthrough tech news, artificial intelligence models, and practical prompt engineering guides.";
         document.getElementById('section-title').innerHTML = "⚡ Latest Dispatches";
-        document.getElementById('feed-refresh-btn').innerText = "🔄 Refresh Feed";
         document.getElementById('newsletter-title').innerText = "Subscribe to the CorticFlow Weekly";
         document.getElementById('newsletter-sub').innerText = "Every Sunday at 8 PM, receive executive AI curation and deep-dive technical guides directly in your inbox.";
         document.getElementById('newsletter-input').placeholder = "Enter your email address";
