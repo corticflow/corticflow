@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CorticFlow — O Fluxo da Inteligência Artificial e Tecnologia</title>
-  <meta name="description" content="Portal internacional de tecnologia, inovação, Apple, Android, startups, ciência e tutoriais.">
+  <title>CorticFlow — O Fluxo da Tecnologia, Inovação e Inteligência Artificial</title>
+  <meta name="description" content="Portal internacional de tecnologia, inovação, Apple, Android, startups, ciência, benchmarks de LLMs e tutoriais.">
   <link rel="icon" type="image/jpeg" href="favicon.jpg.jpeg" onerror="this.href='favicon.jpg'">
 
   <!-- Tailwind CSS & Markdown Parser -->
@@ -23,6 +23,9 @@
             brandPurple: '#E024C3',
             brandYellow: '#FEE75C',
             brandGreen: '#22C55E'
+          },
+          fontFamily: {
+            mono: ['ui-monospace', 'SFMono-Regular', 'Menlo', 'monospace']
           }
         }
       }
@@ -30,8 +33,8 @@
   </script>
   <style>
     body { background-color: #0B0D13; color: #E2E8F0; font-family: system-ui, -apple-system, sans-serif; }
-    .glow-verge { transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); }
-    .glow-verge:hover { transform: translateY(-2px); border-color: #00E5FF; box-shadow: 0 8px 25px -8px rgba(0, 229, 255, 0.35); }
+    .glow-verge { transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1); }
+    .glow-verge:hover { transform: translateY(-3px); box-shadow: 0 12px 25px -10px rgba(0, 229, 255, 0.25); border-color: rgba(0, 229, 255, 0.4); }
     .verge-border { border: 1px solid #232838; }
     .verge-title { font-family: system-ui, -apple-system, sans-serif; letter-spacing: -0.04em; }
     .prose-verge { color: #CBD5E1; }
@@ -123,7 +126,7 @@
     </div>
   </header>
 
-  <!-- Storystream Hero (The Verge Style) -->
+  <!-- Hero Section Modular -->
   <section class="max-w-7xl mx-auto px-4 pt-8 pb-10 w-full">
     <div class="grid lg:grid-cols-12 gap-6">
       
@@ -249,7 +252,7 @@
         <div class="relative z-10">
           <span id="cat-banner-tag" class="px-2 py-0.5 rounded bg-brandCyan/20 text-brandCyan text-[9px] font-black uppercase tracking-widest border border-brandCyan/30">HUB EDITORIAL</span>
           <h2 id="cat-banner-title" class="text-2xl sm:text-3xl font-black text-white verge-title mt-2">Todas as Publicações</h2>
-          <p id="cat-banner-desc" class="text-slate-400 text-xs sm:text-sm mt-1 max-w-xl">Acervo completo com análises macroeconômicas, tutoriais de engenharia de prompt e benchmarks atualizados.</p>
+          <p id="cat-banner-desc" class="text-slate-400 text-xs sm:text-sm mt-1 max-w-xl">Acervo completo com análises aprofundadas de tecnologia, produtos, tutoriais de engenharia de prompt e benchmarks.</p>
         </div>
       </div>
 
@@ -299,7 +302,7 @@
             <span class="text-2xl font-black text-brandCyan font-mono">01</span>
             <div>
               <h5 class="text-xs font-bold text-slate-200 group-hover:text-brandCyan transition leading-snug">A Batalha Energética da IA e os Data Centers de 60GW</h5>
-              <span class="text-[10px] font-mono text-slate-500">9 min • The Economist</span>
+              <span class="text-[10px] font-mono text-slate-500">9 min • Infraestrutura</span>
             </div>
           </div>
           <div class="flex items-start gap-3 cursor-pointer group" onclick="openArticleByIndex(3)">
@@ -346,7 +349,7 @@
     </div>
   </div>
 
-  <!-- Rodapé The Verge -->
+  <!-- Rodapé 100% Autônomo e Proprietário -->
   <footer class="border-t border-brandBorder py-14 bg-black text-slate-500 text-xs mt-auto">
     <div class="max-w-7xl mx-auto px-4 grid sm:grid-cols-2 md:grid-cols-4 gap-8 mb-10">
       <div>
@@ -354,7 +357,7 @@
           <span class="w-6 h-6 bg-brandCyan text-black flex items-center justify-center text-xs font-black transform -skew-x-6">C</span>
           CORTIC//FLOW
         </div>
-        <p id="footer-about" class="text-slate-400 text-xs leading-relaxed">O fluxo da tecnologia, inovação e inteligência artificial. Inspirado no rigor do The Economist e no design do The Verge.</p>
+        <p id="footer-about" class="text-slate-400 text-xs leading-relaxed">O fluxo da tecnologia, inovação e inteligência artificial. Portal independente de notícias, análises de produtos e tutoriais autônomos.</p>
       </div>
       <div>
         <h4 id="footer-cat-title" class="text-white font-black mb-3 uppercase tracking-widest text-[10px]">EDITORIAS</h4>
@@ -383,11 +386,11 @@
     </div>
     <div class="max-w-7xl mx-auto px-4 pt-6 border-t border-slate-900 flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-left text-slate-600">
       <div id="footer-copy">© 2026 <strong>CorticFlow</strong>. Todos os direitos reservados.</div>
-      <div class="font-mono text-[10px]">Total Tech & Innovation Media Portal</div>
+      <div class="font-mono text-[10px]">Plataforma Independente de Tecnologia & Inovação</div>
     </div>
   </footer>
 
-  <!-- Banco com 18 Matérias Completas e Dados -->
+  <!-- Scripts -->
   <script>
     let currentLang = 'pt';
     let currentHub = 'all';
@@ -402,7 +405,7 @@
     ];
 
     const HUB_CONFIG = {
-      all: { banner: "hero.jpeg", tag_pt: "THE VERGE STREAM", tag_en: "THE VERGE STREAM", title_pt: "Todas as Publicações", title_en: "All Dispatches", desc_pt: "Acervo completo com 18 matérias em tecnologia, Apple, Android, startups, ciência e IA.", desc_en: "Full archive featuring 18 deep-dive dispatches across Apple, Android, startups, science, and AI." },
+      all: { banner: "hero.jpeg", tag_pt: "HUB EDITORIAL", tag_en: "EDITORIAL STREAM", title_pt: "Todas as Publicações", title_en: "All Dispatches", desc_pt: "Acervo completo com 18 matérias em tecnologia, Apple, Android, startups, ciência e IA.", desc_en: "Full archive featuring 18 deep-dive dispatches across Apple, Android, startups, science, and AI." },
       "Apple & iOS": { banner: "cat-ai.jpeg", tag_pt: "APPLE & IOS", tag_en: "APPLE & IOS", title_pt: "Ecossistema Apple: iPhone, Mac e Apple Intelligence", title_en: "Apple Ecosystem: iPhone, Mac & Apple Intelligence", desc_pt: "Cobertura completa sobre novos lançamentos, processadores M-Series, iOS e hardware de Cupertino.", desc_en: "Granular coverage of Cupertino hardware, M-series silicon, iOS architecture, and Vision Pro." },
       "Android & Gadgets": { banner: "cat-tools.jpeg", tag_pt: "ANDROID & GADGETS", tag_en: "ANDROID & GADGETS", title_pt: "Smartphones, Dobráveis, Chips Móveis e Reviews", title_en: "Smartphones, Foldables, Silicon & Hardware Reviews", desc_pt: "Testes práticos de produtos, celulares topo de linha, wearables e novas tecnologias de consumo.", desc_en: "Hands-on reviews of flagship smartphones, foldable displays, wearable gadgets, and consumer tech." },
       "Business & Startups": { banner: "cat-business.jpeg", tag_pt: "NEGÓCIOS & STARTUPS", tag_en: "BUSINESS & STARTUPS", title_pt: "Economia de Tecnologia, Startups e Big Techs", title_en: "Tech Economy, Startups & Venture Capital", desc_pt: "Investimentos de risco, data centers de hiperescala e o impacto financeiro das inovações.", desc_en: "Venture capital cycles, hyperscale data center infrastructure, and macroeconomic market shifts." },
@@ -417,28 +420,28 @@
         {
           title: "A Batalha Energética da IA: Como os Data Centers de 60GW Estão Redesenhando o Mapa Global",
           category: "Business & Startups",
-          date: "The Economist",
+          date: "Destaque",
           excerpt: "Uma investigação profunda sobre como o limite de eletricidade e a construção de usinas dedicadas se tornaram o verdadeiro gargalo da inteligência artificial global.",
-          content: "## O Gargalo Físico da Revolução Digital\n\nConforme destacado pelo [The Economist](https://www.economist.com/), a fronteira da inteligência artificial não é mais delimitada apenas pelo avanço algorítmico, mas sim pela disponibilidade física de megawatts de energia elétrica. O surgimento de data centers de hiperescala exigindo até **2GW a 5GW por cluster** está redefinindo as prioridades das maiores empresas do planeta.\n\n### 1. A Escala da Demanda Energética\n* **Capacidade Projetada:** A previsão global aponta que a capacidade de data centers dedicados a IA dobrará para mais de **60GW até 2030**.\n* **Reatores Nucleares Modulares (SMRs):** Big Techs como Microsoft, Google e Amazon estão assinando acordos de compra de energia direta de usinas nucleares para alimentar racks de chips Nvidia B200 e ASICs proprietários.\n* **Geopolítica da Computação:** Regiões com matriz elétrica estável e barata estão se tornando os novos pólos de atração de capital de risco.\n\n*Fonte e dados complementares baseados no [The Economist](https://www.economist.com/topics/artificial-intelligence).*"
+          content: "## O Gargalo Físico da Revolução Digital\n\nA fronteira da inteligência artificial não é mais delimitada apenas pelo avanço algorítmico, mas sim pela disponibilidade física de megawatts de energia elétrica. O surgimento de data centers de hiperescala exigindo até **2GW a 5GW por cluster** está redefinindo as prioridades das maiores empresas do planeta.\n\n### 1. A Escala da Demanda Energética\n* **Capacidade Projetada:** A previsão global aponta que a capacidade de data centers dedicados a IA dobrará para mais de **60GW até 2030**.\n* **Reatores Nucleares Modulares (SMRs):** Big Techs como Microsoft, Google e Amazon estão assinando acordos de compra de energia direta de usinas nucleares para alimentar racks de chips Nvidia B200 e ASICs proprietários.\n* **Geopolítica da Computação:** Regiões com matriz elétrica estável e barata estão se tornando os novos pólos de atração de capital de risco.\n\n### 2. O Impacto na Rede e o Risco de Inflação Energética\nComunidades locais nos EUA e na Europa começam a pressionar governos contra o aumento das tarifas residenciais de energia decorrentes do consumo voraz dos clusters de IA. Isso está acelerando a transição para **resfriamento líquido direto no chip** e semicondutores neuromórficos analógicos.\n\n> *\"O poder computacional em 2026 é medido em gigawatts-hora e proximidade com fontes de energia limpa.\" — CorticFlow Editorial\"*"
         },
         {
           title: "O Paradoxo da Produtividade: Por Que a IA Não Está Destruindo os Empregos de Escritório",
           category: "Business & Startups",
           date: "Economia",
           excerpt: "Análise dos dados do mercado de trabalho revelando como os agentes de IA expandem o escopo de trabalho em vez de causar desemprego em massa.",
-          content: "## A Reavaliação do Impacto no Trabalho Cognitivo\n\nAo contrário das previsões apocalípticas de substituição em massa de trabalhadores de colarinho branco, dados recentes analisados pelo [The Economist](https://www.economist.com/) mostram que a inteligência artificial generativa está agindo como um **amplificador de escopo** em vez de uma ferramenta de demissão em massa.\n\n### Principais Destaques:\n* **Engenharia de Software:** Programadores passam de redatores de código para arquitetos de sistemas que gerenciam múltiplos bots.\n* **Análise Financeira e Jurídica:** Redução de 80% no tempo de auditoria de contratos extensos."
+          content: "## A Reavaliação do Impacto no Trabalho Cognitivo\n\nAo contrário das previsões apocalípticas de substituição em massa de trabalhadores de colarinho branco, dados recentes do mercado de trabalho mostram que a inteligência artificial generativa está agindo como um **amplificador de escopo** em vez de uma ferramenta de demissão em massa.\n\n### Principais Destaques:\n* **Engenharia de Software:** Programadores passam de redatores de código para arquitetos de sistemas que gerenciam múltiplos bots.\n* **Análise Financeira e Jurídica:** Redução de 80% no tempo de auditoria de contratos extensos."
         },
         {
           title: "Os $1.4 Trilhões em Jogo no S&P 500: As Big Techs Vão Conseguir Monetizar o Boom de IA?",
           category: "Business & Startups",
           date: "Mercado",
           excerpt: "Mais de 50% das 20 maiores empresas americanas agora dependem diretamente dos retornos de inteligência artificial.",
-          content: "## A Maior Aposta de Capex da História Corporativa\n\nMais de 50% do valor de mercado das 20 maiores companhias do índice S&P 500 está diretamente exposto à tese de crescimento da IA. Como alerta o [The Economist](https://www.economist.com/), o desafio das gigantes de tecnologia migrou da construção de modelos para a demonstração tangível de receita recorrente de software e serviços empresariais."
+          content: "## A Maior Aposta de Capex da História Corporativa\n\nMais de 50% do valor de mercado das 20 maiores companhias do índice S&P 500 está diretamente exposto à tese de crescimento da IA. O desafio das gigantes de tecnologia migrou da construção de modelos para a demonstração tangível de receita recorrente de software e serviços empresariais."
         },
         {
           title: "Apple Intelligence e os Novos Chips M-Series: O Futuro do Hardware no iOS e Mac",
           category: "Apple & iOS",
-          date: "Canaltech & Verge",
+          date: "Apple & Tech",
           excerpt: "Como a Apple está integrando modelos neurais locais diretamente na NPU dos novos iPhones e Macs para privacidade total e zero latência.",
           content: "## A Estratégia de IA Local da Apple\n\nA Apple adotou uma abordagem única no mercado de tecnologia: em vez de depender exclusivamente da nuvem, a empresa arquitetou o **Apple Intelligence** para processar 90% das tarefas diárias diretamente no silício dos iPhones e Macs com chips M-Series.\n\n### Inovações Técnicas:\n* **Memória Unificada:** A arquitetura de memória compartilhada permite que a GPU e a NPU acessem pesos de modelos de até 3B de parâmetros sem gargalo de barramento.\n* **Private Cloud Compute:** Quando uma tarefa exige um modelo maior, a requisição é enviada a servidores dedicados com chips de silício da Apple, sem armazenamento de logs ou dados do usuário."
         },
@@ -459,7 +462,7 @@
         {
           title: "A Revolução dos Smartphones Dobráveis e o Avanço dos Processadores Móveis",
           category: "Android & Gadgets",
-          date: "Tecnoblog",
+          date: "Hardware",
           excerpt: "Análise comparativa das inovações em telas flexíveis, câmeras periscópio e novos chips Snapdragon e Dimensity.",
           content: "## O Amadurecimento dos Dobráveis\n\nOs dobráveis (*foldables*) superaram os desafios mecânicos iniciais de vincos e dobradiças. Processadores modernos de 3nm trazem NPUs dedicadas capazes de executar modelos de visão computacional em tempo real na câmera."
         },
@@ -501,21 +504,21 @@
         {
           title: "Computação Quântica e Novos Materiais: A Próxima Fronteira da Engenharia",
           category: "Science & Space",
-          date: "Inovação Tecnológica",
+          date: "Ciência",
           excerpt: "Como qubits de estado sólido e supercondutores estão abrindo caminho para simulação molecular e baterias de alta densidade.",
           content: "## O Salto da Física Aplicada\n\nPesquisas recentes em novos materiais cristalinos e qubits com correção de erros prometem revolucionar o design de catalisadores para captura de carbono e baterias de estado sólido."
         },
         {
           title: "Exploração Espacial e Telecomunicações: A Rede Global de Satélites de Baixa Órbita",
           category: "Science & Space",
-          date: "Olhar Digital",
+          date: "Espaço",
           excerpt: "Como constelações de satélites estão levando internet de alta velocidade e conexão direta com celulares em todo o planeta.",
           content: "## A Conectividade Orbital Global\n\nA tecnologia Direct-to-Cell permite que smartphones comuns se conectem diretamente a satélites em áreas remotas sem necessidade de antenas parabólicas terrestres."
         },
         {
           title: "Chips Neuromórficos e Computação Analógica: Consumindo 1/200 da Energia de GPUs",
           category: "Science & Space",
-          date: "Wired",
+          date: "Hardware",
           excerpt: "Semicondutores inspirados na sinapse biológica que realizam cálculos matriciais com frações de miliwatts de energia.",
           content: "## O Fim da Arquitetura von Neumann Tradicional\n\nChips analógicos realizam computação diretamente na memória através de leis de física de circuitos, eliminando o tráfego contínuo de dados entre CPU e RAM."
         },
@@ -545,16 +548,16 @@
         {
           title: "The AI Power Battle: How 60GW Data Centers Are Reshaping the Global Map",
           category: "Business & Startups",
-          date: "The Economist",
+          date: "Featured",
           excerpt: "A deep investigation into how electricity supply and dedicated nuclear power pacts have become the true physical bottleneck of AI scaling.",
-          content: "## The Physical Bottleneck of the Digital Frontier\n\nAs highlighted by [The Economist](https://www.economist.com/), artificial intelligence scaling is now bound by physical megawatt grid capacity rather than algorithmic constraints."
+          content: "## The Physical Bottleneck of the Digital Frontier\n\nThe frontier of artificial intelligence is no longer constrained solely by algorithmic research, but by the physical availability of power grid megawatts. The emergence of hyperscale clusters requiring **2GW to 5GW per campus** is altering global capital allocation.\n\n### 1. The Scale of Compute Demand\n* **Projected Capacity:** Total AI data center capacity is forecast to double to over **60GW by 2030**.\n* **Small Modular Reactors (SMRs):** Hyperscalers are signing direct nuclear and clean energy pacts to fuel dense racks of specialized silicon.\n* **Geopolitics of Compute:** Regions with reliable, affordable power grids are emerging as critical hubs for the AI economy."
         },
         {
           title: "The Productivity Paradox: Why AI Isn't Destroying White-Collar Jobs",
           category: "Business & Startups",
           date: "Economics",
           excerpt: "Labor market data reveals that generative AI and autonomous software agents are expanding scope rather than causing mass office layoffs.",
-          content: "## Reassessing the Macroeconomic Impact on Knowledge Work\n\nEconomic findings from [The Economist](https://www.economist.com/) indicate that generative AI acts as a **scope multiplier** across software engineering, legal, and financial industries."
+          content: "## Reassessing the Macroeconomic Impact on Knowledge Work\n\nContrary to speculative narratives of mass white-collar displacement, recent economic findings indicate that generative AI acts as a **scope multiplier** across software engineering, legal, and financial industries."
         },
         {
           title: "The $1.4 Trillion at Stake in the S&P 500: Can Big Tech Monetize the AI Boom?",
@@ -643,7 +646,7 @@
         {
           title: "Neuromorphic Analog Computing: Slashing AI Power Draw by 99%",
           category: "Science & Space",
-          date: "Wired",
+          date: "Hardware",
           excerpt: "Bio-inspired analog silicon performing matrix vector multiplications with sub-milliwatt power envelopes.",
           content: "## Beyond the Von Neumann Bottleneck\n\nAnalog crossbar arrays compute directly within memory cells through physical circuit laws, bypassing memory-to-processor bandwidth limits."
         },
@@ -974,7 +977,7 @@
         document.getElementById('dnav-sci').innerText = "Ciência & Futuro";
         document.getElementById('dnav-tut').innerText = "Tutoriais";
         document.getElementById('dnav-news').innerText = "Edição de Domingo";
-        document.getElementById('footer-about').innerText = "O fluxo da tecnologia, inovação e inteligência artificial. Inspirado no rigor do The Economist e no design do The Verge.";
+        document.getElementById('footer-about').innerText = "O fluxo da tecnologia, inovação e inteligência artificial. Portal independente de notícias, análises de produtos e tutoriais autônomos.";
         document.getElementById('footer-cat-title').innerText = "EDITORIAS";
         document.getElementById('footer-inst-title').innerText = "INSTITUCIONAL";
         document.getElementById('fnav-priv').innerText = "Política de Privacidade";
@@ -1026,9 +1029,9 @@
         document.getElementById('dnav-sci').innerText = "Science & Space";
         document.getElementById('dnav-tut').innerText = "Tutorials";
         document.getElementById('dnav-news').innerText = "Sunday Edition";
-        document.getElementById('footer-about').innerText = "The stream of tech, innovation, and artificial intelligence. Built with Economist rigour and Verge aesthetics.";
+        document.getElementById('footer-about').innerText = "The stream of tech, innovation, and artificial intelligence. Independent technology media publication.";
         document.getElementById('footer-cat-title').innerText = "SECTIONS";
-        document.getElementById('footer-inst-title').innerText = "VERGE NETWORK";
+        document.getElementById('footer-inst-title').innerText = "CORPORATE";
         document.getElementById('fnav-priv').innerText = "Privacy Policy";
         document.getElementById('fnav-terms').innerText = "Terms of Service";
         document.getElementById('footer-sun-title').innerText = "SUNDAY DISPATCH";
