@@ -13,7 +13,11 @@ MODELS = [
     "gemini-1.5-pro"
 ]
 
+# Feeds globais incluindo The Economist, TechCrunch, The Verge e MIT Tech Review
 FEEDS = [
+    "https://www.economist.com/science-and-technology/rss.xml",
+    "https://www.economist.com/business/rss.xml",
+    "https://www.economist.com/finance-and-economics/rss.xml",
     "https://techcrunch.com/feed/",
     "https://www.theverge.com/rss/index.xml",
     "https://www.technologyreview.com/feed/",
@@ -33,11 +37,11 @@ def fetch_latest_news():
                 })
         except Exception as e:
             print(f"Aviso ao ler feed {url}: {e}")
-    return articles[:4]
+    return articles[:6]
 
 def call_gemini_api(prompt):
     if not API_KEY:
-        raise ValueError("ERRO: GEMINI_API_KEY não foi configurada nas Secrets!")
+        raise ValueError("ERRO: GEMINI_API_KEY não configurada!")
 
     payload = {
         "contents": [{"parts": [{"text": prompt}]}],
@@ -51,7 +55,7 @@ def call_gemini_api(prompt):
     last_error = None
     for model in MODELS:
         url = f"https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent?key={API_KEY}"
-        print(f"Tentando gerar artigo longo com o modelo: {model}...")
+        print(f"Tentando gerar matéria aprofundada com o modelo: {model}...")
         try:
             res = requests.post(url, json=payload, timeout=90)
             if res.status_code == 200:
@@ -61,16 +65,14 @@ def call_gemini_api(prompt):
                 return json.loads(text)
             else:
                 last_error = f"{model} (HTTP {res.status_code}): {res.text}"
-                print(f"Aviso: {model} retornou erro {res.status_code}. Tentando próximo...")
         except Exception as e:
             last_error = str(e)
-            print(f"Falha na requisição com {model}: {e}")
 
     raise Exception(f"Falha em todos os modelos. Último retorno: {last_error}")
 
 def generate_bilingual_post(news_item):
     prompt = f"""
-    You are the Senior Editorial Director and Chief AI Analyst for 'CorticFlow', an authoritative international publication focused on AI engineering, frontier models, and technology ecosystems.
+    You are the Senior Editorial Director and Chief AI Analyst for 'CorticFlow', an authoritative international publication with the editorial depth of The Economist and the visual flair of The Verge.
     
     Based on this raw news lead:
     - Lead Headline: {news_item['title']}
@@ -79,21 +81,15 @@ def generate_bilingual_post(news_item):
 
     Your mission is to write a comprehensive, authoritative, deeply analytical, and long-form journalistic article (800 to 1,200+ words per language) in TWO languages: English and Portuguese.
     
-    CRITICAL EDITORIAL GUIDELINES FOR THE ARTICLE BODY:
-    1. Introduction & Strategic Context: Explain the background, the core development, and why it is a critical milestone for the industry.
-    2. Deep Technical Breakdown: Provide a granular analysis of the architecture, algorithmic approach, performance benchmarks, or underlying infrastructure.
-    3. Practical Applications & Real-World Use Cases: How developers, enterprises, and everyday creators can practically utilize or prepare for this technology (include prompt examples or actionable workflows if applicable).
-    4. Market Dynamics & Competitive Landscape: Compare this move against competitors (OpenAI, Google, Anthropic, Meta, open-source community) and evaluate long-term financial/operational implications.
-    5. Editorial Outlook & Next Steps: Synthesize future implications and conclude with a clean citation acknowledging the primary source with a markdown hyperlink.
-    6. Formatting: Use rich Markdown formatting with H2, H3 headers, bullet points, bold key terms, blockquotes, and structured readability.
+    CRITICAL EDITORIAL GUIDELINES:
+    1. Strategic Context: The economic, technological, and market implications.
+    2. Granular Analysis: Architecture, computational physics, capital expenditures, or prompt workflows.
+    3. Practical Takeaways: Real-world enterprise and developer applications.
+    4. Sourcing: Cite the primary source with a clean markdown link.
+    5. Formatting: Rich markdown with H2, H3 headers, bullet points, and pull-quotes.
 
-    Return the complete response strictly as a single valid JSON object with these exact keys:
-    - "slug": "a-concise-seo-friendly-url-slug-in-english"
-    - "category": "AI & Models" or "Tutorials & Guides" or "Business & Startups" or "AI Tools"
-    - "title_en": "Compelling, High-CTR, SEO-Optimized Title in English"
-    - "content_en": "Full extensive long-form markdown article in English (800-1200+ words)"
-    - "title_pt": "Título Atraente, Otimizado para SEO e Alta Taxa de Cliques em Português"
-    - "content_pt": "Artigo completo e aprofundado em Markdown em Português (800-1200+ palavras)"
+    Return the complete response strictly as valid JSON with keys:
+    "slug", "category", "title_en", "content_en", "title_pt", "content_pt".
     """
     return call_gemini_api(prompt)
 
@@ -119,10 +115,10 @@ def save_posts(data):
 if __name__ == "__main__":
     os.makedirs("content/en", exist_ok=True)
     os.makedirs("content/pt", exist_ok=True)
-    print("🚀 CorticFlow Bot: Buscando notícias para redação aprofundada...")
+    print("🚀 CorticFlow Bot: Buscando notícias (Economist, Verge, TechCrunch)...")
     news = fetch_latest_news()
     success_count = 0
-    for item in news[:2]:
+    for item in news[:3]:
         try:
             post_data = generate_bilingual_post(item)
             save_posts(post_data)
@@ -130,4 +126,4 @@ if __name__ == "__main__":
         except Exception as e:
             print(f"Erro ao processar item: {e}")
 
-    print(f"🎉 Finalizado com sucesso! {success_count} matérias aprofundadas geradas.")
+    print(f"🎉 Finalizado com sucesso! {success_count} matérias geradas.")
