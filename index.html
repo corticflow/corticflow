@@ -33,9 +33,12 @@
     .glass-nav { background: rgba(11, 15, 25, 0.85); backdrop-filter: blur(16px); border-bottom: 1px solid rgba(30, 41, 59, 0.8); }
     .prose-dark { color: #CBD5E1; }
     .prose-dark h2 { color: #FFFFFF; font-weight: 700; font-size: 1.35rem; margin-top: 1.5rem; margin-bottom: 0.5rem; border-bottom: 1px solid #1E293B; padding-bottom: 0.3rem; }
-    .prose-dark p { margin-bottom: 1rem; line-height: 1.7; }
+    .prose-dark h3 { color: #00E5FF; font-weight: 600; font-size: 1.15rem; margin-top: 1.2rem; margin-bottom: 0.4rem; }
+    .prose-dark p { margin-bottom: 1rem; line-height: 1.75; }
     .prose-dark ul { list-style-type: disc; padding-left: 1.25rem; margin-bottom: 1rem; }
-    .prose-dark a { color: #00E5FF; text-decoration: underline; }
+    .prose-dark li { margin-bottom: 0.4rem; }
+    .prose-dark a { color: #00E5FF; text-decoration: underline; font-weight: 600; }
+    .prose-dark blockquote { border-left: 4px solid #8B5CF6; padding-left: 1rem; color: #94A3B8; font-style: italic; margin: 1rem 0; }
   </style>
 </head>
 <body class="min-h-screen flex flex-col antialiased selection:bg-brandCyan selection:text-black">
@@ -68,7 +71,6 @@
         <span id="hero-badge">Curadoria Autônoma em Tempo Real</span>
       </div>
 
-      <!-- Título Padrão em Português -->
       <h1 id="hero-title" class="text-4xl sm:text-6xl font-black tracking-tight mb-4 leading-tight">
         O Fluxo da <span class="text-transparent bg-clip-text bg-gradient-to-r from-brandCyan via-purple-400 to-brandCyan">Inteligência Artificial & Tecnologia</span>
       </h1>
@@ -140,57 +142,9 @@
     </div>
   </footer>
 
+  <!-- Script com Leitor Markdown Corrigido -->
   <script>
     let currentLang = 'pt';
-
-    const INITIAL_ARTICLES = {
-      pt: [
-        {
-          title: "Modelos de Raciocínio Profundo: Como a IA está redefinindo a resolução de problemas",
-          category: "AI & Models",
-          date: "Hoje",
-          excerpt: "Uma análise técnica sobre a evolução das arquiteturas neurais de raciocínio passo a passo e o impacto nos agentes autônomos de software.",
-          content: "## A Nova Fronteira do Raciocínio em IA\n\nA evolução recente dos modelos de linguagem (*LLMs*) ultrapassou a simples previsão estatística de palavras. Com a introdução de cadeias de raciocínio profundo (*Chain-of-Thought* estruturado), os modelos agora são capazes de planejar, testar hipóteses e validar código antes de emitir a resposta final.\n\n### O que muda na prática:\n* **Menor taxa de alucinação:** O modelo verifica a consistência lógica das etapas anteriores.\n* **Automação de alto nível:** Tarefas de programação complexa e análise de dados são executadas com autonomia supervisionada.\n* **Eficiência computacional:** Uso inteligente de tempo de inferência para problemas difíceis.\n\n*Fonte original e análise completa pela equipe editorial CorticFlow.*"
-        },
-        {
-          title: "Guia Prático: Construindo Pipelines de Automação com IA a Custo Zero",
-          category: "Tutorials & Guides",
-          date: "Hoje",
-          excerpt: "Passo a passo completo de como estruturar esteiras de curadoria, processamento de texto e publicação contínua sem gastar com servidores.",
-          content: "## Construindo Automação Moderna sem Servidores\n\nCriar sistemas autônomos na web não exige mais a contratação de servidores VPS caros. Utilizando ferramentas gratuitas como **GitHub Actions**, **Google AI Studio (Gemini API)** e **GitHub Pages**, qualquer desenvolvedor ou criador pode colocar no ar esteiras de inteligência artificial de alta performance.\n\n### Arquitetura Recomendada:\n1. **Ingestão:** Rastreamento periódico de feeds RSS de portais especializados.\n2. **Processamento:** Extração e geração de artigos bilíngues com prompts estruturados em JSON.\n3. **Deploy:** Commit direto dos arquivos Markdown disparando atualizações instantâneas no frontend.\n\n*Acompanhe nossos tutoriais semanais todo domingo no CorticFlow.*"
-        },
-        {
-          title: "Infraestrutura Global de IA: A Corrida dos Novos Data Centers e Chips Especializados",
-          category: "Business & Startups",
-          date: "Hoje",
-          excerpt: "Como os investimentos em semicondutores e energia limpa estão moldando a nova economia das Big Techs e startups de tecnologia.",
-          content: "## O Peso da Infraestrutura Física na Era Digital\n\nA corrida pela liderança em inteligência artificial depende fundamentalmente de capacidade de processamento e eficiência energética. As maiores empresas de tecnologia do mundo estão reorientando centenas de bilhões de dólares para a construção de data centers de última geração e parcerias com o setor de energia renovável.\n\n### Principais Destaques:\n* **Avanço de Silício Próprio:** Grandes players desenvolvendo chips dedicados para reduzir dependência de fornecedores únicos.\n* **Sustentabilidade Operacional:** Foco em resfriamento líquido e proximidade com fontes de energia solar e eólica.\n* **Impacto no Mercado:** Novas startups de software focadas em otimização de latência e consumo de tokens."
-        }
-      ],
-      en: [
-        {
-          title: "Deep Reasoning Models: How AI is Redefining Complex Problem Solving",
-          category: "AI & Models",
-          date: "Today",
-          excerpt: "A technical breakdown of test-time compute, reasoning chains, and their real-world impact on autonomous software engineering.",
-          content: "## The Frontier of Cognitive AI Architecture\n\nRecent breakthroughs in Large Language Models have shifted the paradigm from pure next-token prediction to structured test-time reasoning. By utilizing internal chains of thought, modern AI systems can formulate hypotheses, backtrack upon detecting errors, and verify logic before delivering answers.\n\n### Key Takeaways:\n* **Drastic Reduction in Hallucinations:** Multi-step verification ensures factual integrity.\n* **Autonomous Agents:** High-level execution of complex coding and data analysis workflows.\n* **Inference Efficiency:** Allocating dynamic compute time based on problem complexity.\n\n*Original analysis by the CorticFlow editorial team.*"
-        },
-        {
-          title: "Actionable Guide: Building Zero-Cost Autonomous AI Pipelines",
-          category: "Tutorials & Guides",
-          date: "Today",
-          excerpt: "A complete walkthrough on designing serverless content pipelines with GitHub Actions, Gemini API, and static site deployment.",
-          content: "## Engineering Serverless AI Workflows\n\nDeploying production-grade autonomous content workflows no longer requires expensive cloud servers. By combining **GitHub Actions**, **Google AI Studio (Gemini API)**, and **GitHub Pages**, creators and engineers can run end-to-end automated pipelines at zero marginal cost.\n\n### Core Architecture:\n1. **Ingestion:** Periodic polling of authoritative RSS news feeds.\n2. **Synthesis:** Structured prompt engineering generating bilingual markdown dispatches.\n3. **Continuous Deployment:** Git commits triggering automated static site updates.\n\n*Follow our weekly technical guides every Sunday on CorticFlow.*"
-        },
-        {
-          title: "Global AI Infrastructure: The Scale of Next-Gen Data Centers & Specialized Silicon",
-          category: "Business & Startups",
-          date: "Today",
-          excerpt: "How hyperscale capital expenditures in custom chips and clean energy are reshaping the enterprise tech economy.",
-          content: "## The Physical Foundation of Artificial Intelligence\n\nThe frontier of artificial intelligence is bound by silicon supply chains and power grid capacity. Global technology leaders are committing hundreds of billions of dollars toward custom accelerators and clean energy partnerships to fuel next-generation AI workloads.\n\n### Strategic Highlights:\n* **Custom Silicon:** In-house ASIC development to optimize compute cost and latency.\n* **Clean Energy Integration:** Direct power purchase agreements with nuclear, solar, and wind providers.\n* **Startup Ecosystem:** Emerging software layers dedicated to token efficiency and model distillation."
-        }
-      ]
-    };
 
     function renderArticles(articles) {
       const grid = document.getElementById('articles-grid');
@@ -218,45 +172,58 @@
     }
 
     async function loadArticles() {
-      renderArticles(INITIAL_ARTICLES[currentLang]);
+      const grid = document.getElementById('articles-grid');
+      grid.innerHTML = '<div class="col-span-full text-center py-12 text-brandCyan animate-pulse">Carregando artigos do CorticFlow...</div>';
 
       try {
         const response = await fetch(`https://api.github.com/repos/corticflow/corticflow/contents/content/${currentLang}`);
-        if (!response.ok) return;
+        if (!response.ok) throw new Error('Sem artigos gravados');
         const files = await response.json();
         const mdFiles = files.filter(f => f.name.endsWith('.md') && !f.name.startsWith('.gitkeep'));
 
-        if (mdFiles.length > 0) {
-          const fetchedArticles = [];
-          for (const file of mdFiles) {
-            const fileRes = await fetch(file.download_url);
-            const text = await fileRes.text();
-            let title = file.name.replace('.md', '');
-            let category = 'AI & Models';
-            let date = 'Recente';
-            let body = text;
+        if (mdFiles.length === 0) throw new Error('Pasta vazia');
 
-            if (text.startsWith('---')) {
-              const parts = text.split('---');
-              if (parts.length >= 3) {
-                const frontmatter = parts;
-                body = parts.slice(2).join('---').trim();
-                const titleMatch = frontmatter.match(/title:\s*["']?([^"'\n]+)["']?/);
-                if (titleMatch) title = titleMatch;
-                const catMatch = frontmatter.match(/category:\s*["']?([^"'\n]+)["']?/) || frontmatter.match(/categoria:\s*["']?([^"'\n]+)["']?/);
-                if (catMatch) category = catMatch;
-                const dateMatch = frontmatter.match(/date:\s*["']?([^"'\n]+)["']?/) || frontmatter.match(/data:\s*["']?([^"'\n]+)["']?/);
-                if (dateMatch) date = dateMatch;
-              }
+        const fetchedArticles = [];
+        for (const file of mdFiles) {
+          const fileRes = await fetch(file.download_url);
+          const text = await fileRes.text();
+
+          let title = file.name.replace('.md', '');
+          let category = 'AI & Models';
+          let date = 'Hoje';
+          let body = text;
+
+          if (text.startsWith('---')) {
+            const parts = text.split('---');
+            if (parts.length >= 3) {
+              const frontmatter = parts; // Correção: pegar o texto do frontmatter
+              body = parts.slice(2).join('---').trim();
+
+              const titleMatch = frontmatter.match(/title:\s*["']?([^"'\n\r]+)["']?/);
+              if (titleMatch && titleMatch) title = titleMatch;
+
+              const catMatch = frontmatter.match(/category:\s*["']?([^"'\n\r]+)["']?/) || frontmatter.match(/categoria:\s*["']?([^"'\n\r]+)["']?/);
+              if (catMatch && catMatch) category = catMatch;
+
+              const dateMatch = frontmatter.match(/date:\s*["']?([^"'\n\r]+)["']?/) || frontmatter.match(/data:\s*["']?([^"'\n\r]+)["']?/);
+              if (dateMatch && dateMatch) date = dateMatch;
             }
-            const cleanBody = body.replace(/#+/g, '').replace(/\[([^\]]+)\]\([^)]+\)/g, '$1').replace(/[*_`]/g, '');
-            const excerpt = cleanBody.slice(0, 130).trim() + '...';
-            fetchedArticles.push({ title, category, date, excerpt, content: body });
           }
-          renderArticles([...fetchedArticles, ...INITIAL_ARTICLES[currentLang]]);
+
+          const cleanBody = body.replace(/#+/g, '').replace(/\[([^\]]+)\]\([^)]+\)/g, '$1').replace(/[*_`]/g, '');
+          const excerpt = cleanBody.slice(0, 140).trim() + '...';
+          fetchedArticles.push({ title, category, date, excerpt, content: body });
         }
+
+        renderArticles(fetchedArticles);
       } catch (e) {
-        console.log("Exibindo artigos padrão.");
+        grid.innerHTML = `
+          <div class="col-span-full bg-brandCard border border-brandBorder rounded-2xl p-10 text-center">
+            <div class="text-brandCyan text-3xl mb-3">⚡</div>
+            <h3 class="text-lg font-bold text-white mb-2">${currentLang === 'pt' ? 'Nenhuma publicação encontrada' : 'No dispatches found'}</h3>
+            <p class="text-slate-400 text-sm max-w-md mx-auto mb-4">${currentLang === 'pt' ? 'O robô ainda não gravou artigos nesta pasta. Execute o robô no GitHub Actions.' : 'No articles generated yet. Trigger the bot in GitHub Actions.'}</p>
+          </div>
+        `;
       }
     }
 
