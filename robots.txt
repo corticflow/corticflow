@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://corticflow.github.io/corticflow/sitemap.xml
