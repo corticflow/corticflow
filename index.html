@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>CorticFlow — O Fluxo da Inteligência Artificial e Tecnologia</title>
-  <meta name="description" content="Portal internacional de notícias, análises de IA e economia de tecnologia com a profundidade do The Economist e design The Verge.">
+  <meta name="description" content="Portal internacional de tecnologia, inovação, Apple, Android, startups, ciência e tutoriais.">
   <link rel="icon" type="image/jpeg" href="favicon.jpg.jpeg" onerror="this.href='favicon.jpg'">
 
   <!-- Tailwind CSS & Markdown Parser -->
@@ -21,10 +21,8 @@
             brandBorder: '#232838',
             brandCyan: '#00E5FF',
             brandPurple: '#E024C3',
-            brandYellow: '#FEE75C'
-          },
-          fontFamily: {
-            mono: ['ui-monospace', 'SFMono-Regular', 'Menlo', 'monospace']
+            brandYellow: '#FEE75C',
+            brandGreen: '#22C55E'
           }
         }
       }
@@ -51,7 +49,7 @@
 </head>
 <body class="min-h-screen flex flex-col antialiased selection:bg-brandCyan selection:text-black">
 
-  <!-- Top Live Bar -->
+  <!-- Ticker Global -->
   <div class="bg-black border-b border-brandBorder/80 py-1.5 px-4 text-xs font-mono flex items-center justify-between text-slate-400">
     <div class="flex items-center overflow-hidden flex-1 mr-4">
       <span id="wire-badge" class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded bg-brandPurple/20 text-brandPurple font-black uppercase tracking-widest text-[9px] mr-3 shrink-0 border border-brandPurple/40">
@@ -60,20 +58,20 @@
       </span>
       <div class="ticker-wrap flex-1">
         <div id="ticker-text" class="ticker-move text-slate-300 font-medium">
-          ⚡ [The Economist] A corrida global por data centers de 60GW e o limite de energia da IA • [Produtividade] O paradoxo da IA no trabalho de colarinho branco • [Semicondutores] Chips neuromórficos reduzem consumo em 90% • [Open-Source] Modelos de peso aberto desafiam gigantes proprietários
+          ⚡ [Apple] Apple Intelligence e novos chips M-Series • [Android] Dobráveis de última geração e processamento local • [IA] Benchmarks demonstram salto em raciocínio • [Startups] Investimentos bilionários em semicondutores e energia limpa • [Ciência] Avanços na física e exploração espacial
         </div>
       </div>
     </div>
 
-    <!-- Seletor de Idioma -->
+    <!-- Idioma -->
     <div class="flex items-center bg-slate-900 rounded-lg p-0.5 border border-brandBorder text-[10px] font-bold shrink-0">
       <button id="btn-pt" onclick="setLanguage('pt')" class="px-2.5 py-0.5 rounded bg-brandCyan text-slate-950 font-black transition">PT</button>
       <button id="btn-en" onclick="setLanguage('en')" class="px-2.5 py-0.5 rounded text-slate-400 hover:text-white transition">EN</button>
     </div>
   </div>
 
-  <!-- Header / Mastro Principal -->
-  <header class="sticky top-0 z-40 bg-black/90 backdrop-blur-xl border-b border-brandBorder">
+  <!-- Header Fixo -->
+  <header class="sticky top-0 z-50 bg-black/90 backdrop-blur-xl border-b border-brandBorder">
     <div class="max-w-7xl mx-auto px-4 h-20 flex items-center justify-between">
       
       <div class="flex items-center gap-6">
@@ -86,65 +84,67 @@
               CORTIC<span class="text-brandCyan font-black">//</span><span class="text-white">FLOW</span>
             </span>
             <div id="masthead-sub" class="text-[9px] font-mono tracking-widest text-slate-500 uppercase -mt-1">
-              O Fluxo da Inteligência Artificial e Tecnologia
+              O Fluxo da Tecnologia, Inovação e Inteligência Artificial
             </div>
           </div>
         </a>
       </div>
 
-      <!-- Navegação Desktop -->
-      <nav id="desktop-nav" class="hidden lg:flex items-center gap-6 text-xs font-bold uppercase tracking-wider text-slate-300">
+      <!-- Menu Desktop -->
+      <nav id="desktop-nav" class="hidden xl:flex items-center gap-5 text-xs font-bold uppercase tracking-wider text-slate-300">
         <button onclick="selectHub('all')" id="dnav-all" class="hover:text-brandCyan transition">Feed Geral</button>
-        <button onclick="scrollToSection('leaderboard')" id="dnav-lead" class="hover:text-brandCyan transition flex items-center gap-1.5 text-brandCyan">
-          <span>⚡ Radar de LLMs</span>
-        </button>
-        <button onclick="selectHub('Business & Startups')" id="dnav-biz" class="hover:text-brandCyan transition">Economia & Mercado</button>
+        <button onclick="scrollToSection('leaderboard')" id="dnav-lead" class="hover:text-brandCyan transition text-brandCyan">⚡ Radar LLMs</button>
+        <button onclick="selectHub('Apple & iOS')" id="dnav-app" class="hover:text-brandCyan transition">Apple & iOS</button>
+        <button onclick="selectHub('Android & Gadgets')" id="dnav-and" class="hover:text-brandCyan transition">Android & Gadgets</button>
         <button onclick="selectHub('AI & Models')" id="dnav-ai" class="hover:text-brandCyan transition">IA & Modelos</button>
+        <button onclick="selectHub('Business & Startups')" id="dnav-biz" class="hover:text-brandCyan transition">Negócios</button>
+        <button onclick="selectHub('Science & Space')" id="dnav-sci" class="hover:text-brandCyan transition">Ciência & Futuro</button>
         <button onclick="selectHub('Tutorials & Guides')" id="dnav-tut" class="hover:text-brandCyan transition">Tutoriais</button>
-        <button onclick="selectHub('AI Tools')" id="dnav-tools" class="hover:text-brandCyan transition">Ferramentas</button>
         <button onclick="selectHub('Newsletter')" id="dnav-news" class="px-3 py-1 rounded bg-brandPurple/20 text-brandPurple border border-brandPurple/40 hover:bg-brandPurple hover:text-black transition">Edição de Domingo</button>
       </nav>
 
-      <!-- Botão Menu Mobile -->
-      <button onclick="toggleMobileMenu()" class="lg:hidden p-2.5 rounded-xl bg-slate-900 text-slate-200 border border-brandBorder hover:text-brandCyan transition">
+      <!-- Botão Mobile -->
+      <button onclick="toggleMobileMenu()" class="xl:hidden p-2.5 rounded-xl bg-slate-900 text-slate-200 border border-brandBorder hover:text-brandCyan transition">
         <span class="text-lg font-bold">☰</span>
       </button>
     </div>
 
-    <!-- Menu Dropdown Mobile -->
-    <div id="mobile-menu" class="hidden lg:hidden bg-slate-950 border-b border-brandBorder px-4 py-4 space-y-2 text-xs font-bold uppercase tracking-wider">
-      <button onclick="selectHub('all'); toggleMobileMenu();" class="block w-full text-left py-2 px-3 rounded hover:bg-slate-900 text-slate-200">📑 Feed Geral (16)</button>
-      <button onclick="scrollToSection('leaderboard'); toggleMobileMenu();" class="block w-full text-left py-2 px-3 rounded hover:bg-slate-900 text-brandCyan">📊 Ranking de LLMs da Semana</button>
-      <button onclick="selectHub('Business & Startups'); toggleMobileMenu();" class="block w-full text-left py-2 px-3 rounded hover:bg-slate-900 text-slate-200">🏢 Economia & Mercado (4)</button>
-      <button onclick="selectHub('AI & Models'); toggleMobileMenu();" class="block w-full text-left py-2 px-3 rounded hover:bg-slate-900 text-slate-200">🧠 IA & Modelos (4)</button>
-      <button onclick="selectHub('Tutorials & Guides'); toggleMobileMenu();" class="block w-full text-left py-2 px-3 rounded hover:bg-slate-900 text-slate-200">🛠️ Tutoriais & Prompts (4)</button>
-      <button onclick="selectHub('AI Tools'); toggleMobileMenu();" class="block w-full text-left py-2 px-3 rounded hover:bg-slate-900 text-slate-200">⚙️ Ferramentas de IA (4)</button>
+    <!-- Menu Mobile Dropdown -->
+    <div id="mobile-menu" class="hidden xl:hidden bg-slate-950 border-b border-brandBorder px-4 py-4 space-y-2 text-xs font-bold uppercase tracking-wider">
+      <button onclick="selectHub('all'); toggleMobileMenu();" class="block w-full text-left py-2 px-3 rounded hover:bg-slate-900 text-slate-200">📑 Feed Geral (18)</button>
+      <button onclick="scrollToSection('leaderboard'); toggleMobileMenu();" class="block w-full text-left py-2 px-3 rounded hover:bg-slate-900 text-brandCyan">📊 Ranking de LLMs</button>
+      <button onclick="selectHub('Apple & iOS'); toggleMobileMenu();" class="block w-full text-left py-2 px-3 rounded hover:bg-slate-900 text-slate-200">🍏 Apple & iOS (3)</button>
+      <button onclick="selectHub('Android & Gadgets'); toggleMobileMenu();" class="block w-full text-left py-2 px-3 rounded hover:bg-slate-900 text-slate-200">🤖 Android & Gadgets (3)</button>
+      <button onclick="selectHub('AI & Models'); toggleMobileMenu();" class="block w-full text-left py-2 px-3 rounded hover:bg-slate-900 text-slate-200">🧠 IA & Modelos (3)</button>
+      <button onclick="selectHub('Business & Startups'); toggleMobileMenu();" class="block w-full text-left py-2 px-3 rounded hover:bg-slate-900 text-slate-200">🏢 Mercado & Startups (3)</button>
+      <button onclick="selectHub('Science & Space'); toggleMobileMenu();" class="block w-full text-left py-2 px-3 rounded hover:bg-slate-900 text-slate-200">🔬 Ciência & Futuro (3)</button>
+      <button onclick="selectHub('Tutorials & Guides'); toggleMobileMenu();" class="block w-full text-left py-2 px-3 rounded hover:bg-slate-900 text-slate-200">🛠️ Tutoriais & Prompts (3)</button>
       <button onclick="selectHub('Newsletter'); toggleMobileMenu();" class="block w-full text-left py-2 px-3 rounded hover:bg-slate-900 text-brandPurple">📬 Edições de Domingo</button>
     </div>
   </header>
 
-  <!-- The Verge Storystream Grid (Hero Modular com Matéria Quente do The Economist) -->
+  <!-- Storystream Hero (The Verge Style) -->
   <section class="max-w-7xl mx-auto px-4 pt-8 pb-10 w-full">
     <div class="grid lg:grid-cols-12 gap-6">
       
-      <!-- Matéria Principal de Capa (7 Colunas) -->
+      <!-- Matéria 1 de Capa -->
       <div class="lg:col-span-7 bg-brandCard verge-border rounded-3xl overflow-hidden glow-verge cursor-pointer group flex flex-col justify-between" onclick="openArticleByIndex(0)">
         <div class="h-72 sm:h-96 relative overflow-hidden bg-slate-900">
           <img src="hero.jpeg" alt="Hero Lead" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" onerror="if(!this.dataset.t1){this.dataset.t1='1'; this.src='cat-ai.jpeg';}">
           <div class="absolute inset-0 bg-gradient-to-t from-brandCard via-brandCard/50 to-transparent"></div>
           <span id="feat-tag" class="absolute top-4 left-4 px-3 py-1 rounded bg-brandPurple text-white text-[10px] font-black uppercase tracking-widest">
-            THE ECONOMIST RADAR
+            MATÉRIA DE CAPA
           </span>
         </div>
         <div class="p-6 sm:p-8 -mt-10 relative z-10">
           <div class="text-[11px] font-mono text-brandCyan font-bold uppercase tracking-wider mb-2" id="feat-date">
-            ANÁLISE DE MERCADO • 9 MIN DE LEITURA
+            DESTAQUE EDITORIAL • 9 MIN DE LEITURA
           </div>
           <h1 id="feat-title" class="text-2xl sm:text-4xl font-black text-white verge-title leading-tight mb-3 group-hover:text-brandCyan transition-colors">
             A Batalha Energética da IA: Como os Data Centers de 60GW Estão Redesenhando o Mapa Global
           </h1>
           <p id="feat-excerpt" class="text-slate-400 text-sm sm:text-base leading-relaxed line-clamp-3 mb-4">
-            Uma investigação profunda sobre como o limite de eletricidade e a construção de usinas dedicadas se tornaram o verdadeiro gargalo da inteligência artificial global.
+            Uma investigação profunda sobre como o limite de eletricidade e a construção de usinas dedicadas se tornaram o verdadeiro gargalo da tecnologia mundial.
           </p>
           <div class="text-xs font-bold text-brandCyan flex items-center gap-1 group-hover:translate-x-1 transition-transform">
             <span id="feat-btn">Ler Matéria Completa</span> →
@@ -152,48 +152,41 @@
         </div>
       </div>
 
-      <!-- Duas Matérias Secundárias -->
+      <!-- Secundárias -->
       <div class="lg:col-span-5 flex flex-col gap-6">
-        
-        <!-- Secundária 1 -->
-        <div class="bg-brandCard verge-border rounded-3xl p-6 glow-verge cursor-pointer group flex-1 flex flex-col justify-between" onclick="openArticleByIndex(1)">
+        <div class="bg-brandCard verge-border rounded-3xl p-6 glow-verge cursor-pointer group flex-1 flex flex-col justify-between" onclick="openArticleByIndex(3)">
           <div>
             <div class="flex items-center justify-between mb-2">
-              <span id="sec1-tag" class="text-[9px] font-black px-2 py-0.5 rounded bg-brandCyan/10 text-brandCyan border border-brandCyan/20 uppercase tracking-widest font-mono">ECONOMIA</span>
-              <span id="sec1-read" class="text-[10px] font-mono text-slate-500">7 MIN DE LEITURA</span>
+              <span class="text-[9px] font-black px-2 py-0.5 rounded bg-brandCyan/10 text-brandCyan border border-brandCyan/20 uppercase tracking-widest font-mono">APPLE & GADGETS</span>
+              <span class="text-[10px] font-mono text-slate-500">6 MIN</span>
             </div>
-            <h3 id="sec1-title" class="text-lg sm:text-xl font-extrabold text-white verge-title group-hover:text-brandCyan transition-colors leading-snug mb-2">
-              O Paradoxo da Produtividade: Por Que a IA Não Está Destruindo os Empregos de Escritório
+            <h3 class="text-lg sm:text-xl font-extrabold text-white verge-title group-hover:text-brandCyan transition-colors leading-snug mb-2">
+              Apple Intelligence e os Novos Chips M-Series: O Futuro do Hardware no iOS e Mac
             </h3>
-            <p id="sec1-excerpt" class="text-slate-400 text-xs sm:text-sm line-clamp-2 leading-relaxed">
-              Análise dos dados do Bureau of Labor Statistics revelando como os agentes de IA expandem o escopo de trabalho em vez de causar desemprego em massa.
+            <p class="text-slate-400 text-xs sm:text-sm line-clamp-2 leading-relaxed">
+              Como o ecossistema da Apple está integrando modelos neurais locais diretamente na NPU dos novos dispositivos.
             </p>
           </div>
-          <div id="sec1-btn" class="text-xs font-bold text-brandCyan pt-3 border-t border-brandBorder/60 flex items-center gap-1">
-            Ler Análise →
-          </div>
+          <div class="text-xs font-bold text-brandCyan pt-3 border-t border-brandBorder/60 flex items-center gap-1">Ler Análise →</div>
         </div>
 
-        <!-- Secundária 2 -->
-        <div class="bg-brandCard verge-border rounded-3xl p-6 glow-verge cursor-pointer group flex-1 flex flex-col justify-between" onclick="openArticleByIndex(2)">
+        <div class="bg-brandCard verge-border rounded-3xl p-6 glow-verge cursor-pointer group flex-1 flex flex-col justify-between" onclick="openArticleByIndex(6)">
           <div>
             <div class="flex items-center justify-between mb-2">
-              <span id="sec2-tag" class="text-[9px] font-black px-2 py-0.5 rounded bg-brandYellow/10 text-brandYellow border border-brandYellow/20 uppercase tracking-widest font-mono">BIG TECHS</span>
-              <span id="sec2-read" class="text-[10px] font-mono text-slate-500">6 MIN DE LEITURA</span>
+              <span class="text-[9px] font-black px-2 py-0.5 rounded bg-brandGreen/10 text-brandGreen border border-brandGreen/20 uppercase tracking-widest font-mono">ANDROID & HARDWARE</span>
+              <span class="text-[10px] font-mono text-slate-500">5 MIN</span>
             </div>
-            <h3 id="sec2-title" class="text-lg sm:text-xl font-extrabold text-white verge-title group-hover:text-brandCyan transition-colors leading-snug mb-2">
-              Os $1.4 Trilhões em Jogo no S&P 500: As Big Techs Vão Conseguir Monetizar o Boom?
+            <h3 class="text-lg sm:text-xl font-extrabold text-white verge-title group-hover:text-brandCyan transition-colors leading-snug mb-2">
+              A Revolução dos Smartphones Dobráveis e o Avanço dos Processadores Móveis
             </h3>
-            <p id="sec2-excerpt" class="text-slate-400 text-xs sm:text-sm line-clamp-2 leading-relaxed">
-              Mais de 50% das 20 maiores empresas americanas agora dependem diretamente dos retornos de inteligência artificial.
+            <p class="text-slate-400 text-xs sm:text-sm line-clamp-2 leading-relaxed">
+              Análise comparativa das inovações em telas flexíveis, câmeras periscópio e chips de última geração.
             </p>
           </div>
-          <div id="sec2-btn" class="text-xs font-bold text-brandCyan pt-3 border-t border-brandBorder/60 flex items-center gap-1">
-            Ler Análise Financeira →
-          </div>
+          <div class="text-xs font-bold text-brandCyan pt-3 border-t border-brandBorder/60 flex items-center gap-1">Ler Review →</div>
         </div>
-
       </div>
+
     </div>
   </section>
 
@@ -222,17 +215,19 @@
     </div>
   </section>
 
-  <!-- Barra de Filtros de Tópicos e Busca -->
+  <!-- Pílulas de Editorias e Filtros -->
   <section class="bg-black/90 border-b border-brandBorder py-4 px-4 sticky top-20 z-30 backdrop-blur-xl">
     <div class="max-w-7xl mx-auto flex flex-col sm:flex-row sm:items-center justify-between gap-4">
       
-      <div class="flex items-center gap-1.5 overflow-x-auto no-scrollbar py-1">
-        <button onclick="selectHub('all')" id="hub-all" class="px-3.5 py-1.5 rounded-md bg-brandCyan text-black font-black text-[11px] uppercase tracking-wider transition shrink-0">TODAS AS PUBLICAÇÕES (16)</button>
-        <button onclick="selectHub('Business & Startups')" id="hub-biz" class="px-3.5 py-1.5 rounded-md bg-slate-900 text-slate-300 hover:text-white border border-brandBorder font-bold text-[11px] uppercase tracking-wider transition shrink-0">ECONOMIA & MERCADO (4)</button>
-        <button onclick="selectHub('AI & Models')" id="hub-ai" class="px-3.5 py-1.5 rounded-md bg-slate-900 text-slate-300 hover:text-white border border-brandBorder font-bold text-[11px] uppercase tracking-wider transition shrink-0">IA & MODELOS (4)</button>
-        <button onclick="selectHub('Tutorials & Guides')" id="hub-tut" class="px-3.5 py-1.5 rounded-md bg-slate-900 text-slate-300 hover:text-white border border-brandBorder font-bold text-[11px] uppercase tracking-wider transition shrink-0">TUTORIAIS (4)</button>
-        <button onclick="selectHub('AI Tools')" id="hub-tools" class="px-3.5 py-1.5 rounded-md bg-slate-900 text-slate-300 hover:text-white border border-brandBorder font-bold text-[11px] uppercase tracking-wider transition shrink-0">FERRAMENTAS (4)</button>
-        <button onclick="selectHub('Newsletter')" id="hub-news" class="px-3.5 py-1.5 rounded-md bg-brandPurple/20 text-brandPurple hover:bg-brandPurple hover:text-black border border-brandPurple/40 font-bold text-[11px] uppercase tracking-wider transition shrink-0">EDIÇÃO DE DOMINGO</button>
+      <div class="flex items-center gap-1.5 overflow-x-auto no-scrollbar py-1 text-[11px] font-bold uppercase tracking-wider">
+        <button onclick="selectHub('all')" id="hub-all" class="px-3 py-1.5 rounded-md bg-brandCyan text-black font-black transition shrink-0">TODOS (18)</button>
+        <button onclick="selectHub('Apple & iOS')" id="hub-app" class="px-3 py-1.5 rounded-md bg-slate-900 text-slate-300 hover:text-white border border-brandBorder transition shrink-0">🍏 APPLE & IOS (3)</button>
+        <button onclick="selectHub('Android & Gadgets')" id="hub-and" class="px-3 py-1.5 rounded-md bg-slate-900 text-slate-300 hover:text-white border border-brandBorder transition shrink-0">🤖 ANDROID & GADGETS (3)</button>
+        <button onclick="selectHub('AI & Models')" id="hub-ai" class="px-3 py-1.5 rounded-md bg-slate-900 text-slate-300 hover:text-white border border-brandBorder transition shrink-0">🧠 IA & MODELOS (3)</button>
+        <button onclick="selectHub('Business & Startups')" id="hub-biz" class="px-3 py-1.5 rounded-md bg-slate-900 text-slate-300 hover:text-white border border-brandBorder transition shrink-0">🏢 NEGÓCIOS (3)</button>
+        <button onclick="selectHub('Science & Space')" id="hub-sci" class="px-3 py-1.5 rounded-md bg-slate-900 text-slate-300 hover:text-white border border-brandBorder transition shrink-0">🔬 CIÊNCIA & ESPAÇO (3)</button>
+        <button onclick="selectHub('Tutorials & Guides')" id="hub-tut" class="px-3 py-1.5 rounded-md bg-slate-900 text-slate-300 hover:text-white border border-brandBorder transition shrink-0">🛠️ TUTORIAIS (3)</button>
+        <button onclick="selectHub('Newsletter')" id="hub-news" class="px-3 py-1.5 rounded-md bg-brandPurple/20 text-brandPurple hover:bg-brandPurple hover:text-black border border-brandPurple/40 transition shrink-0">📬 DOMINGO</button>
       </div>
 
       <div class="relative w-full sm:w-64">
@@ -265,7 +260,7 @@
       </div>
     </main>
 
-    <!-- Sidebar The Verge -->
+    <!-- Sidebar -->
     <aside class="lg:col-span-4 space-y-6">
       
       <div class="p-6 rounded-3xl bg-brandCard verge-border relative overflow-hidden">
@@ -283,12 +278,12 @@
       <div class="p-6 rounded-3xl bg-brandCard verge-border">
         <div class="flex items-center justify-between mb-3">
           <span id="prompt-tag" class="text-[9px] font-black px-2 py-0.5 rounded bg-brandPurple/20 text-brandPurple uppercase tracking-widest border border-brandPurple/30">PROMPT DA SEMANA</span>
-          <span id="prompt-cat-label" class="text-[10px] font-mono text-slate-500">ECONOMIA & ANÁLISE</span>
+          <span id="prompt-cat-label" class="text-[10px] font-mono text-slate-500">PRODUTIVIDADE</span>
         </div>
-        <h4 id="prompt-card-title" class="text-sm font-bold text-white mb-2">Análise de ROI de Infraestrutura</h4>
-        <p id="prompt-card-desc" class="text-slate-400 text-xs mb-3">Prompt calibrado para calcular custo por milhão de tokens vs. ganho de eficiência operacional.</p>
+        <h4 id="prompt-card-title" class="text-sm font-bold text-white mb-2">Auditoria e Refatoração de Código</h4>
+        <p id="prompt-card-desc" class="text-slate-400 text-xs mb-3">Prompt calibrado para analisar segurança, complexidade ciclomática e latência.</p>
         <div class="bg-black p-3.5 rounded-xl border border-brandBorder text-[11px] font-mono text-slate-300 mb-3 max-h-28 overflow-y-auto leading-relaxed" id="prompt-code">
-          "Atue como Economista Chefe de Tecnologia. Analise o consumo de tokens e custos de infraestrutura de TI da seguinte operação. Estime a redução de custos ao migrar para modelos de raciocínio híbridos."
+          "Atue como Engenheiro Sênior de QA e Segurança. Analise o código a seguir procurando vulnerabilidades de injeção, memory leaks e gargalos de latência. Forneça a versão corrigida acompanhada da justificativa técnica."
         </div>
         <button onclick="copyPrompt()" id="btn-copy-prompt" class="w-full py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-brandCyan text-xs font-bold border border-brandBorder transition uppercase tracking-wider">
           📋 Copiar Prompt
@@ -297,35 +292,35 @@
 
       <div class="p-6 rounded-3xl bg-brandCard verge-border">
         <h3 id="top-title" class="text-xs font-black text-white uppercase tracking-widest mb-4 flex items-center gap-2 border-b border-brandBorder pb-3">
-          🔥 TOP DISPATCHES
+          🔥 MAIS LIDAS DA SEMANA
         </h3>
         <div class="space-y-4" id="top-list">
           <div class="flex items-start gap-3 cursor-pointer group" onclick="openArticleByIndex(0)">
             <span class="text-2xl font-black text-brandCyan font-mono">01</span>
             <div>
-              <h5 class="text-xs font-bold text-slate-200 group-hover:text-brandCyan transition leading-snug">A Batalha Energética da IA: Os Data Centers de 60GW</h5>
+              <h5 class="text-xs font-bold text-slate-200 group-hover:text-brandCyan transition leading-snug">A Batalha Energética da IA e os Data Centers de 60GW</h5>
               <span class="text-[10px] font-mono text-slate-500">9 min • The Economist</span>
             </div>
           </div>
-          <div class="flex items-start gap-3 cursor-pointer group" onclick="openArticleByIndex(1)">
+          <div class="flex items-start gap-3 cursor-pointer group" onclick="openArticleByIndex(3)">
             <span class="text-2xl font-black text-brandPurple font-mono">02</span>
             <div>
-              <h5 class="text-xs font-bold text-slate-200 group-hover:text-brandCyan transition leading-snug">O Paradoxo da Produtividade e o Trabalho de Escritório</h5>
-              <span class="text-[10px] font-mono text-slate-500">7 min • Economia</span>
+              <h5 class="text-xs font-bold text-slate-200 group-hover:text-brandCyan transition leading-snug">Apple Intelligence e a Nova Linha M-Series</h5>
+              <span class="text-[10px] font-mono text-slate-500">6 min • Apple & iOS</span>
             </div>
           </div>
-          <div class="flex items-start gap-3 cursor-pointer group" onclick="openArticleByIndex(2)">
-            <span class="text-2xl font-black text-brandYellow font-mono">03</span>
+          <div class="flex items-start gap-3 cursor-pointer group" onclick="openArticleByIndex(6)">
+            <span class="text-2xl font-black text-brandGreen font-mono">03</span>
             <div>
-              <h5 class="text-xs font-bold text-slate-200 group-hover:text-brandCyan transition leading-snug">Os $1.4 Trilhões em Jogo no S&P 500 com IA</h5>
-              <span class="text-[10px] font-mono text-slate-500">6 min • Big Techs</span>
+              <h5 class="text-xs font-bold text-slate-200 group-hover:text-brandCyan transition leading-snug">A Revolução dos Smartphones Dobráveis e Chips Móveis</h5>
+              <span class="text-[10px] font-mono text-slate-500">5 min • Android</span>
             </div>
           </div>
           <div class="flex items-start gap-3 cursor-pointer group" onclick="openArticleByIndex(12)">
             <span class="text-2xl font-black text-slate-500 font-mono">04</span>
             <div>
-              <h5 class="text-xs font-bold text-slate-200 group-hover:text-brandCyan transition leading-snug">Top Ferramentas de IA para Produtividade em 2026</h5>
-              <span class="text-[10px] font-mono text-slate-500">4 min • Ferramentas</span>
+              <h5 class="text-xs font-bold text-slate-200 group-hover:text-brandCyan transition leading-snug">Descobertas na Computação Quântica e Novos Materiais</h5>
+              <span class="text-[10px] font-mono text-slate-500">7 min • Ciência</span>
             </div>
           </div>
         </div>
@@ -334,7 +329,7 @@
     </aside>
   </div>
 
-  <!-- Modal de Leitura Completa -->
+  <!-- Modal de Leitura -->
   <div id="article-modal" style="display: none;" class="fixed inset-0 z-[100] bg-black/90 backdrop-blur-xl items-center justify-center p-3 sm:p-6" onclick="if(event.target === this) closeModal();">
     <div class="bg-brandCard verge-border rounded-3xl max-w-3xl w-full max-h-[92vh] flex flex-col shadow-[0_20px_60px_rgba(0,0,0,0.9)] overflow-hidden relative">
       <div class="p-5 sm:p-6 border-b border-brandBorder flex items-center justify-between bg-black/80">
@@ -351,7 +346,7 @@
     </div>
   </div>
 
-  <!-- Rodapé The Verge Style -->
+  <!-- Rodapé The Verge -->
   <footer class="border-t border-brandBorder py-14 bg-black text-slate-500 text-xs mt-auto">
     <div class="max-w-7xl mx-auto px-4 grid sm:grid-cols-2 md:grid-cols-4 gap-8 mb-10">
       <div>
@@ -359,15 +354,16 @@
           <span class="w-6 h-6 bg-brandCyan text-black flex items-center justify-center text-xs font-black transform -skew-x-6">C</span>
           CORTIC//FLOW
         </div>
-        <p id="footer-about" class="text-slate-400 text-xs leading-relaxed">O fluxo da inteligência artificial e tecnologia. Curadoria autônoma com a profundidade do The Economist e design The Verge.</p>
+        <p id="footer-about" class="text-slate-400 text-xs leading-relaxed">O fluxo da tecnologia, inovação e inteligência artificial. Inspirado no rigor do The Economist e no design do The Verge.</p>
       </div>
       <div>
         <h4 id="footer-cat-title" class="text-white font-black mb-3 uppercase tracking-widest text-[10px]">EDITORIAS</h4>
         <ul class="space-y-2">
-          <li><button onclick="selectHub('Business & Startups')" id="fnav-biz" class="hover:text-brandCyan transition">Economia & Mercado</button></li>
-          <li><button onclick="selectHub('AI & Models')" id="fnav-ai" class="hover:text-brandCyan transition">IA & Modelos</button></li>
-          <li><button onclick="selectHub('Tutorials & Guides')" id="fnav-tut" class="hover:text-brandCyan transition">Tutoriais & Prompts</button></li>
-          <li><button onclick="selectHub('AI Tools')" id="fnav-tools" class="hover:text-brandCyan transition">Ferramentas de IA</button></li>
+          <li><button onclick="selectHub('Apple & iOS')" class="hover:text-brandCyan transition">Apple & iOS</button></li>
+          <li><button onclick="selectHub('Android & Gadgets')" class="hover:text-brandCyan transition">Android & Gadgets</button></li>
+          <li><button onclick="selectHub('AI & Models')" class="hover:text-brandCyan transition">IA & Modelos</button></li>
+          <li><button onclick="selectHub('Business & Startups')" class="hover:text-brandCyan transition">Negócios & Startups</button></li>
+          <li><button onclick="selectHub('Science & Space')" class="hover:text-brandCyan transition">Ciência & Futuro</button></li>
         </ul>
       </div>
       <div>
@@ -387,10 +383,11 @@
     </div>
     <div class="max-w-7xl mx-auto px-4 pt-6 border-t border-slate-900 flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-left text-slate-600">
       <div id="footer-copy">© 2026 <strong>CorticFlow</strong>. Todos os direitos reservados.</div>
-      <div class="font-mono text-[10px]">Designed with The Economist Rigour & The Verge Aesthetics</div>
+      <div class="font-mono text-[10px]">Total Tech & Innovation Media Portal</div>
     </div>
   </footer>
 
+  <!-- Banco com 18 Matérias Completas e Dados -->
   <script>
     let currentLang = 'pt';
     let currentHub = 'all';
@@ -405,11 +402,13 @@
     ];
 
     const HUB_CONFIG = {
-      all: { banner: "hero.jpeg", tag_pt: "THE VERGE STREAM", tag_en: "THE VERGE STREAM", title_pt: "Todas as Publicações", title_en: "All Dispatches", desc_pt: "Acervo completo com 16 matérias aprofundadas, análises do The Economist e benchmarks de LLMs.", desc_en: "Full archive featuring 16 deep-dive technical dispatches, Economist macro-analyses, and benchmarks." },
-      "Business & Startups": { banner: "cat-business.jpeg", tag_pt: "ECONOMIA & MERCADO", tag_en: "MACRO & ENTERPRISE", title_pt: "Economia de IA, Semicondutores e Data Centers", title_en: "AI Macroeconomics, Silicon & Data Centers", desc_pt: "Análises aprofundadas sobre o retorno sobre investimento de trilhões de dólares e infraestrutura energética.", desc_en: "Deep-dive investigations on multi-trillion dollar capex cycles and clean energy constraints." },
+      all: { banner: "hero.jpeg", tag_pt: "THE VERGE STREAM", tag_en: "THE VERGE STREAM", title_pt: "Todas as Publicações", title_en: "All Dispatches", desc_pt: "Acervo completo com 18 matérias em tecnologia, Apple, Android, startups, ciência e IA.", desc_en: "Full archive featuring 18 deep-dive dispatches across Apple, Android, startups, science, and AI." },
+      "Apple & iOS": { banner: "cat-ai.jpeg", tag_pt: "APPLE & IOS", tag_en: "APPLE & IOS", title_pt: "Ecossistema Apple: iPhone, Mac e Apple Intelligence", title_en: "Apple Ecosystem: iPhone, Mac & Apple Intelligence", desc_pt: "Cobertura completa sobre novos lançamentos, processadores M-Series, iOS e hardware de Cupertino.", desc_en: "Granular coverage of Cupertino hardware, M-series silicon, iOS architecture, and Vision Pro." },
+      "Android & Gadgets": { banner: "cat-tools.jpeg", tag_pt: "ANDROID & GADGETS", tag_en: "ANDROID & GADGETS", title_pt: "Smartphones, Dobráveis, Chips Móveis e Reviews", title_en: "Smartphones, Foldables, Silicon & Hardware Reviews", desc_pt: "Testes práticos de produtos, celulares topo de linha, wearables e novas tecnologias de consumo.", desc_en: "Hands-on reviews of flagship smartphones, foldable displays, wearable gadgets, and consumer tech." },
+      "Business & Startups": { banner: "cat-business.jpeg", tag_pt: "NEGÓCIOS & STARTUPS", tag_en: "BUSINESS & STARTUPS", title_pt: "Economia de Tecnologia, Startups e Big Techs", title_en: "Tech Economy, Startups & Venture Capital", desc_pt: "Investimentos de risco, data centers de hiperescala e o impacto financeiro das inovações.", desc_en: "Venture capital cycles, hyperscale data center infrastructure, and macroeconomic market shifts." },
+      "Science & Space": { banner: "hero.jpeg", tag_pt: "CIÊNCIA & ESPAÇO", tag_en: "SCIENCE & SPACE", title_pt: "Inovação Tecnológica, Física, Espaço e Energia", title_en: "Deep Tech, Physics, Space Exploration & Energy", desc_pt: "Descobertas científicas, semicondutores neuromórficos, computação quântica e novas engenharias.", desc_en: "Breakthrough physics discoveries, neuromorphic chips, quantum computing, and aerospace engineering." },
       "AI & Models": { banner: "cat-ai.jpeg", tag_pt: "IA & MODELOS", tag_en: "AI & MODELS", title_pt: "Modelos de Linguagem, Raciocínio e Pesos Abertos", title_en: "Frontier LLMs, Reasoning & Open-Weights", desc_pt: "Análises técnicas sobre as arquiteturas neurais que estão redefinindo a inteligência artificial.", desc_en: "Technical breakthroughs on neural architectures shaping the future of autonomous systems." },
       "Tutorials & Guides": { banner: "cat-tutorials.jpeg", tag_pt: "TUTORIAIS & GUIAS", tag_en: "TUTORIALS & GUIDES", title_pt: "Engenharia de Prompt e Automações Práticas", title_en: "Prompt Engineering & Actionable Automation", desc_pt: "Passo a passo didático para construir agentes, pipelines serverless e prompts estruturados.", desc_en: "Hands-on engineering blueprints for deploying production-ready serverless AI agents." },
-      "AI Tools": { banner: "cat-tools.jpeg", tag_pt: "FERRAMENTAS & CLI", tag_en: "AI TOOLS & CLI", title_pt: "Ecossistema de Ferramentas e Produtividade", title_en: "Productivity Tools, Code Assistants & CLI", desc_pt: "Reviews e testes práticos das melhores ferramentas de IA para acelerar o fluxo diário de trabalho.", desc_en: "Curated reviews and benchmarks of the fastest developer tools and visual automation platforms." },
       Newsletter: { banner: "hero.jpeg", tag_pt: "EDIÇÃO DE DOMINGO", tag_en: "SUNDAY DISPATCH", title_pt: "Edições Semanais de Domingo", title_en: "Sunday Executive Newsletters", desc_pt: "Compilados consolidados de fim de semana gerados autonomamente todo domingo às 20h.", desc_en: "Weekly executive digests and actionable evergreen tutorials delivered every Sunday at 8 PM." }
     };
 
@@ -420,112 +419,126 @@
           category: "Business & Startups",
           date: "The Economist",
           excerpt: "Uma investigação profunda sobre como o limite de eletricidade e a construção de usinas dedicadas se tornaram o verdadeiro gargalo da inteligência artificial global.",
-          content: "## O Gargalo Físico da Revolução Digital\n\nConforme destacado recentemente pelo [The Economist](https://www.economist.com/), a fronteira da inteligência artificial não é mais delimitada apenas pelo avanço algorítmico, mas sim pela disponibilidade física de megawatts de energia elétrica. O surgimento de data centers de hiperescala exigindo até **2GW a 5GW por cluster** está redefinindo as prioridades das maiores empresas do planeta.\n\n### 1. A Escala da Demanda Energética\n* **Capacidade Projetada:** A previsão global aponta que a capacidade de data centers dedicados a IA dobrará para mais de **60GW até 2030**.\n* **Reatores Nucleares Modulares (SMRs):** Big Techs como Microsoft, Google e Amazon estão assinando acordos de compra de energia direta de usinas nucleares para alimentar racks de chips Nvidia B200 e ASICs proprietários.\n* **Geopolítica da Computação:** Regiões com matriz elétrica estável e barata estão se tornando os novos pólos de atração de capital de risco.\n\n### 2. O Impacto na Rede e o Risco de Inflação Energética\nComunidades locais nos EUA e na Europa começam a pressionar governos contra o aumento das tarifas residenciais de energia decorrentes do consumo voraz dos clusters de IA. Isso está acelerando a transição para **resfriamento líquido direto no chip** e semicondutores neuromórficos analógicos.\n\n> *\"O poder computacional em 2026 é medido em gigawatts-hora e proximidade com fontes de energia limpa.\" — CorticFlow Editorial\"*\n\n*Fonte e dados complementares baseados no [The Economist](https://www.economist.com/topics/artificial-intelligence).*"
+          content: "## O Gargalo Físico da Revolução Digital\n\nConforme destacado pelo [The Economist](https://www.economist.com/), a fronteira da inteligência artificial não é mais delimitada apenas pelo avanço algorítmico, mas sim pela disponibilidade física de megawatts de energia elétrica. O surgimento de data centers de hiperescala exigindo até **2GW a 5GW por cluster** está redefinindo as prioridades das maiores empresas do planeta.\n\n### 1. A Escala da Demanda Energética\n* **Capacidade Projetada:** A previsão global aponta que a capacidade de data centers dedicados a IA dobrará para mais de **60GW até 2030**.\n* **Reatores Nucleares Modulares (SMRs):** Big Techs como Microsoft, Google e Amazon estão assinando acordos de compra de energia direta de usinas nucleares para alimentar racks de chips Nvidia B200 e ASICs proprietários.\n* **Geopolítica da Computação:** Regiões com matriz elétrica estável e barata estão se tornando os novos pólos de atração de capital de risco.\n\n*Fonte e dados complementares baseados no [The Economist](https://www.economist.com/topics/artificial-intelligence).*"
         },
         {
           title: "O Paradoxo da Produtividade: Por Que a IA Não Está Destruindo os Empregos de Escritório",
           category: "Business & Startups",
           date: "Economia",
           excerpt: "Análise dos dados do mercado de trabalho revelando como os agentes de IA expandem o escopo de trabalho em vez de causar desemprego em massa.",
-          content: "## A Reavaliação do Impacto no Trabalho Cognitivo\n\nAo contrário das previsões apocalípticas de substituição em massa de trabalhadores de colarinho branco, dados recentes analisados pelo [The Economist](https://www.economist.com/) mostram que a inteligência artificial generativa está agindo como um **amplificador de escopo** em vez de uma ferramenta de demissão em massa.\n\n### 1. O Paradoxo de Solow Revisitado\nHistoricamente, novas tecnologias levam anos para refletir em ganhos macroeconômicos agregados de produtividade. Os profissionais que adotam agentes autônomos de IA aumentam sua capacidade de entrega, assumindo projetos mais complexos e gerando novas linhas de receita dentro das empresas.\n\n### 2. Onde o Impacto é Real:\n* **Engenharia de Software:** Programadores passam de redatores de código para arquitetos de sistemas que gerenciam múltiplos bots.\n* **Análise Financeira e Jurídica:** Redução de 80% no tempo de auditoria de contratos extensos.\n* **Novas Funções:** Emergência de cargos dedicados à governança de dados sintéticos e avaliação de alucinações."
+          content: "## A Reavaliação do Impacto no Trabalho Cognitivo\n\nAo contrário das previsões apocalípticas de substituição em massa de trabalhadores de colarinho branco, dados recentes analisados pelo [The Economist](https://www.economist.com/) mostram que a inteligência artificial generativa está agindo como um **amplificador de escopo** em vez de uma ferramenta de demissão em massa.\n\n### Principais Destaques:\n* **Engenharia de Software:** Programadores passam de redatores de código para arquitetos de sistemas que gerenciam múltiplos bots.\n* **Análise Financeira e Jurídica:** Redução de 80% no tempo de auditoria de contratos extensos."
         },
         {
           title: "Os $1.4 Trilhões em Jogo no S&P 500: As Big Techs Vão Conseguir Monetizar o Boom de IA?",
           category: "Business & Startups",
           date: "Mercado",
           excerpt: "Mais de 50% das 20 maiores empresas americanas agora dependem diretamente dos retornos de inteligência artificial.",
-          content: "## A Maior Aposta de Capex da História Corporativa\n\nMais de 50% do valor de mercado das 20 maiores companhias do índice S&P 500 está diretamente exposto à tese de crescimento da IA. Como alerta o [The Economist](https://www.economist.com/), o desafio das gigantes de tecnologia migrou da construção de modelos para a demonstração tangível de receita recorrente de software e serviços empresariais.\n\n### Indicadores de Sustentabilidade Financeira:\n1. **Margens de Inferência:** A redução no custo por token via modelos compactos (como Gemini Flash e DeepSeek) é fundamental para viabilizar margens saudáveis.\n2. **Adoção Corporativa B2B:** O crescimento real de receita provém de integrações nativas de automação de fluxo de trabalho.\n3. **Hardware vs. Software:** A transição do pico de compras de GPUs para o ciclo de maturidade de aplicações de software."
+          content: "## A Maior Aposta de Capex da História Corporativa\n\nMais de 50% do valor de mercado das 20 maiores companhias do índice S&P 500 está diretamente exposto à tese de crescimento da IA. Como alerta o [The Economist](https://www.economist.com/), o desafio das gigantes de tecnologia migrou da construção de modelos para a demonstração tangível de receita recorrente de software e serviços empresariais."
         },
         {
-          title: "Modelos de Raciocínio Profundo: Como a IA está redefinindo a resolução de problemas complexos",
+          title: "Apple Intelligence e os Novos Chips M-Series: O Futuro do Hardware no iOS e Mac",
+          category: "Apple & iOS",
+          date: "Canaltech & Verge",
+          excerpt: "Como a Apple está integrando modelos neurais locais diretamente na NPU dos novos iPhones e Macs para privacidade total e zero latência.",
+          content: "## A Estratégia de IA Local da Apple\n\nA Apple adotou uma abordagem única no mercado de tecnologia: em vez de depender exclusivamente da nuvem, a empresa arquitetou o **Apple Intelligence** para processar 90% das tarefas diárias diretamente no silício dos iPhones e Macs com chips M-Series.\n\n### Inovações Técnicas:\n* **Memória Unificada:** A arquitetura de memória compartilhada permite que a GPU e a NPU acessem pesos de modelos de até 3B de parâmetros sem gargalo de barramento.\n* **Private Cloud Compute:** Quando uma tarefa exige um modelo maior, a requisição é enviada a servidores dedicados com chips de silício da Apple, sem armazenamento de logs ou dados do usuário."
+        },
+        {
+          title: "iOS e VisionOS: A Evolução da Interface Espacial e Computação Vestível",
+          category: "Apple & iOS",
+          date: "Review",
+          excerpt: "Análise profunda sobre a convergência entre sistemas operacionais móveis e a computação espacial imersiva da Apple.",
+          content: "## A Próxima Fronteira das Interfaces Digitais\n\nCom o avanço do VisionOS e sua integração nativa com o ecossistema iOS e macOS, a computação espacial deixa de ser um experimento e passa a integrar fluxos reais de trabalho multitelas e design 3D."
+        },
+        {
+          title: "Guia de Bateria e Desempenho: Como Otimizar Dispositivos Apple para Uso Intenso",
+          category: "Apple & iOS",
+          date: "Guia",
+          excerpt: "Dicas avançadas de gerenciamento térmico, ciclos de recarga e ajustes de sistema para extrair a máxima autonomia de Macs e iPhones.",
+          content: "## Maximizando a Eficiência do Silício Apple\n\nConfigurações de gerenciamento de energia, monitoramento de processos em segundo plano e boas práticas de ciclos de carga preservam a saúde da bateria por anos de uso profissional intenso."
+        },
+        {
+          title: "A Revolução dos Smartphones Dobráveis e o Avanço dos Processadores Móveis",
+          category: "Android & Gadgets",
+          date: "Tecnoblog",
+          excerpt: "Análise comparativa das inovações em telas flexíveis, câmeras periscópio e novos chips Snapdragon e Dimensity.",
+          content: "## O Amadurecimento dos Dobráveis\n\nOs dobráveis (*foldables*) superaram os desafios mecânicos iniciais de vincos e dobradiças. Processadores modernos de 3nm trazem NPUs dedicadas capazes de executar modelos de visão computacional em tempo real na câmera."
+        },
+        {
+          title: "Top Smartphones e Gadgets de 2026: Análise de Custo-Benefício e Desempenho",
+          category: "Android & Gadgets",
+          date: "Reviews",
+          excerpt: "Testamos os principais celulares topo de linha e intermediários premium do mercado brasileiro e global.",
+          content: "## O Guia Definitivo de Compra de Celulares\n\nComparamos fidelidade de tela OLED, velocidade de recarga ultrarrápida (120W), estabilização óptica de câmera e suporte a atualizações de software de longo prazo."
+        },
+        {
+          title: "Wearables e Fones Inteligentes: Áudio Espacial e Sensores Biométricos de Saúde",
+          category: "Android & Gadgets",
+          date: "Gadgets",
+          excerpt: "Como fones de ouvido TWS e smartwatches estão substituindo exames laboratoriais básicos com sensores ópticos de pulso e pressão.",
+          content: "## A Saúde Conectada no Pulso\n\nNovos algoritmos de IA filtram ruídos de movimento e oferecem eletrocardiogramas contínuos e alertas precoces de anomalias cardíacas com alta precisão médica."
+        },
+        {
+          title: "Modelos de Raciocínio Profundo: A Transição para Cadeias de Pensamento Estruturadas",
           category: "AI & Models",
           date: "Destaque",
           excerpt: "Uma análise técnica aprofundada sobre a transição dos modelos de linguagem estatísticos para cadeias de raciocínio passo a passo estruturadas.",
-          content: "## A Nova Fronteira do Raciocínio em Inteligência Artificial\n\nA evolução recente dos modelos de linguagem (*LLMs*) ultrapassou a simples previsão probabilística de palavras. Com a introdução de cadeias de raciocínio profundo (*Chain-of-Thought* estruturado), os modelos agora são capazes de planejar, testar hipóteses, depurar erros internamente e validar código antes de emitir a resposta final ao usuário.\n\n### 1. O Que Muda na Arquitetura Técnica\n* **Verificação Lógica Contínua:** O modelo audita as etapas anteriores de seu próprio pensamento, reduzindo drasticamente a taxa de alucinações factuais.\n* **Uso Dinâmico de Tempo de Inferência (*Test-Time Compute*):** Para problemas triviais, o modelo responde instantaneamente; para equações matemáticas ou códigos complexos, ele aloca segundos extras de processamento interno.\n* **Autonomia Supervisionada:** Agentes autônomos agora conseguem navegar por repositórios de software e orquestrar múltiplos microsserviços com precisão matemática."
-        },
-        {
-          title: "Guia Prático: Construindo Pipelines de Automação com IA a Custo Zero",
-          category: "Tutorials & Guides",
-          date: "Guia",
-          excerpt: "Passo a passo didático de como estruturar esteiras de curadoria, processamento de texto e publicação contínua sem gastar com servidores caros.",
-          content: "## Construindo Automação Moderna sem Servidores (*Serverless Architecture*)\n\nCriar sistemas autônomos de publicação e curadoria na web não exige mais a contratação de servidores VPS caros ou bancos de dados pesados. Utilizando ferramentas modernas gratuitas como **GitHub Actions**, **Google AI Studio (Gemini API)** e **GitHub Pages**, qualquer desenvolvedor ou criador pode colocar no ar esteiras de inteligência artificial de alta performance.\n\n### A Arquitetura em 3 Etapas:\n1. **Ingestão Inteligente:** Rastreamento periódico de feeds RSS de portais especializados de tecnologia.\n2. **Processamento e Redação por IA:** Utilização de modelos de última geração via chamadas REST com resposta formatada em JSON estruturado.\n3. **Deploy Contínuo:** Commit direto dos arquivos Markdown no repositório Git disparando atualizações instantâneas."
+          content: "## A Nova Fronteira do Raciocínio em IA\n\nModelos modernos alocam tempo extra de inferência (*Test-Time Compute*) para planejar, validar código e testar hipóteses internamente antes de emitir a resposta final, reduzindo alucinações a níveis mínimos históricos."
         },
         {
           title: "Modelos de Peso Aberto (Open-Weights): A Ascensão das Arquiteturas Locais de 8B a 70B",
           category: "AI & Models",
           date: "Análise",
           excerpt: "Como rodar inteligência artificial de ponta localmente em computadores e servidores privados com privacidade total e sem custos de API.",
-          content: "## A Revolução dos Modelos Abertos\n\nModelos como Llama e DeepSeek provaram que pesos abertos podem rivalizar com as maiores IAs proprietárias do mundo. Rodar modelos localmente usando quantização (GGUF / Ollama / vLLM) transforma a privacidade corporativa e zera custos de infraestrutura em tarefas de rotina."
+          content: "## A Revolução dos Modelos Abertos\n\nModelos como Llama e DeepSeek provaram que pesos abertos podem rivalizar com as maiores IAs proprietárias do mundo, permitindo privacidade total em empresas e estações de trabalho locais."
         },
         {
           title: "Multimodalidade Nativa: Áudio, Visão e Vídeo em Tempo Real sem Latência",
           category: "AI & Models",
           date: "Técnico",
           excerpt: "O fim dos pipelines separados de transcrição e voz: como os novos modelos processam sinais contínuos em tempo real.",
-          content: "## O Processamento Nativo de Sentidos Digitais\n\nModelos multimodais nativos eliminam a conversão intermediária de áudio para texto antes de entender a intenção do usuário. Eles capturam entonação, pausas, emoção e imagens em tempo real a 60fps com respostas instantâneas de menos de 300ms."
+          content: "## O Processamento Nativo de Sentidos Digitais\n\nModelos multimodais nativos capturam entonação, pausas, emoção e imagens em tempo real a 60fps com respostas instantâneas de menos de 300ms."
         },
         {
-          title: "Agentes Autônomos de Software: Governança, Segurança e Orquestração Multi-Bot",
-          category: "AI & Models",
-          date: "Deep Dive",
-          excerpt: "Estratégias de isolamento de privilégios, controle de chamadas de ferramentas e boas práticas para colocar equipes de bots em produção.",
-          content: "## Arquiteturas Multi-Agente Corporativas\n\nQuando agentes de pesquisa, arquitetura e testes colaboram de forma autônoma, novos desafios de segurança surgem. O uso de schemas JSON estritos e limites de execução por ciclo garante operações determinísticas e sem loops infinitos."
+          title: "Computação Quântica e Novos Materiais: A Próxima Fronteira da Engenharia",
+          category: "Science & Space",
+          date: "Inovação Tecnológica",
+          excerpt: "Como qubits de estado sólido e supercondutores estão abrindo caminho para simulação molecular e baterias de alta densidade.",
+          content: "## O Salto da Física Aplicada\n\nPesquisas recentes em novos materiais cristalinos e qubits com correção de erros prometem revolucionar o design de catalisadores para captura de carbono e baterias de estado sólido."
+        },
+        {
+          title: "Exploração Espacial e Telecomunicações: A Rede Global de Satélites de Baixa Órbita",
+          category: "Science & Space",
+          date: "Olhar Digital",
+          excerpt: "Como constelações de satélites estão levando internet de alta velocidade e conexão direta com celulares em todo o planeta.",
+          content: "## A Conectividade Orbital Global\n\nA tecnologia Direct-to-Cell permite que smartphones comuns se conectem diretamente a satélites em áreas remotas sem necessidade de antenas parabólicas terrestres."
+        },
+        {
+          title: "Chips Neuromórficos e Computação Analógica: Consumindo 1/200 da Energia de GPUs",
+          category: "Science & Space",
+          date: "Wired",
+          excerpt: "Semicondutores inspirados na sinapse biológica que realizam cálculos matriciais com frações de miliwatts de energia.",
+          content: "## O Fim da Arquitetura von Neumann Tradicional\n\nChips analógicos realizam computação diretamente na memória através de leis de física de circuitos, eliminando o tráfego contínuo de dados entre CPU e RAM."
+        },
+        {
+          title: "Guia Prático: Construindo Pipelines de Automação com IA a Custo Zero",
+          category: "Tutorials & Guides",
+          date: "Guia",
+          excerpt: "Passo a passo didático de como estruturar esteiras de curadoria, processamento de texto e publicação contínua sem gastar com servidores.",
+          content: "## Construindo Automação Moderna sem Servidores\n\nUtilizando **GitHub Actions**, **Google AI Studio (Gemini API)** e **GitHub Pages**, qualquer criador pode colocar no ar esteiras de inteligência artificial de alta performance com custo marginal zero."
         },
         {
           title: "Engenharia de Prompt Avançada: Do Rascunho aos Prompts Estruturados de Sistema",
           category: "Tutorials & Guides",
           date: "Tutorial",
           excerpt: "Como transformar comandos simples em prompts institucionais de alto desempenho que garantem respostas precisas e sem erros.",
-          content: "## A Ciência do Prompt Determinístico\n\nUm prompt bem estruturado elimina 90% das falhas e alucinações de qualquer LLM. Detalhamos as técnicas de ancoragem de papel (*Role*), delimitação de contexto com tags XML e travas estritas de formato de saída."
+          content: "## A Arte e a Ciência do Prompt Determinístico\n\nUm prompt bem estruturado elimina 90% das falhas de qualquer LLM através de delimitação XML de contexto, instruções negativas estritas e esquemas JSON rígidos."
         },
         {
           title: "Fine-Tuning vs. RAG Híbrido: Quando Ajustar Pesos ou Usar Busca Vetorial",
           category: "Tutorials & Guides",
           date: "Guia",
           excerpt: "O guia definitivo para arquitetos de software decidirem entre bancos vetoriais semânticos ou treinamento de adaptadores LoRA.",
-          content: "## Escolhendo a Estratégia de Conhecimento Certa\n\nRAG (Retrieval-Augmented Generation) é ideal para documentos dinâmicos e bases atualizadas diariamente. O Fine-Tuning brilha quando você precisa que o modelo aprenda um estilo específico de escrita, jargão ou sintaxe de código proprietário."
-        },
-        {
-          title: "Automação de Testes de Software com Agentes de IA e CI/CD",
-          category: "Tutorials & Guides",
-          date: "Prático",
-          excerpt: "Como integrar bots no GitHub Actions para revisar Pull Requests, detectar falhas de segurança e sugerir correções de código.",
-          content: "## O Futuro do DevOps Automatizado\n\nA integração de agentes de IA na esteira de integração contínua permite inspecionar cada commit em busca de regressões lógicas antes do merge para produção."
-        },
-        {
-          title: "Economia dos Tokens: Como Empresas Reduzem Custos Operacionais em 70%",
-          category: "Business & Startups",
-          date: "Negócios",
-          excerpt: "Técnicas de roteamento inteligente de prompts (usando modelos rápidos para triagem e modelos caros apenas para raciocínio final).",
-          content: "## Otimização de Custos em Escala\n\nEm vez de enviar todas as requisições para o modelo mais caro, empresas líderes adotam roteadores de modelo (*LLM Routers*). Prompts simples são resolvidos pelo Gemini Flash a frações de centavo, reservando modelos maiores para decisões de alto risco."
-        },
-        {
-          title: "Regulação Global de IA: O Impacto das Novas Leis de Governança nos Negócios",
-          category: "Business & Startups",
-          date: "Mercado",
-          excerpt: "Como os marcos regulatórios na Europa, EUA e Brasil impactam o uso de dados de treinamento e a responsabilidade civil de agentes.",
-          content: "## Navegando pelo Cenário Jurídico da IA\n\nA conformidade regulatória exige rastreabilidade completa de decisões automatizadas, transparência sobre uso de dados sintéticos e mecanismos de intervenção humana (*human-in-the-loop*) para operações sensíveis."
-        },
-        {
-          title: "Top Ferramentas de IA para Produtividade e Desenvolvimento em 2026",
-          category: "AI Tools",
-          date: "Análise",
-          excerpt: "Uma seleção das plataformas mais eficientes para desenvolvedores, criadores de conteúdo e profissionais automatizarem tarefas diárias.",
-          content: "## O Ecossistema Moderno de Ferramentas de IA\n\nA produtividade em 2026 é definida pela capacidade de delegar tarefas repetitivas a ferramentas especializadas. Testamos as principais soluções do mercado em código, escrita, design e automação de processos."
-        },
-        {
-          title: "Agentes de Terminal e CLI: O Futuro da Engenharia de Software no Prompt",
-          category: "AI Tools",
-          date: "Review",
-          excerpt: "Como novas ferramentas de linha de comando baseadas em IA executam testes, corrigem bugs e sobem pull requests automaticamente.",
-          content: "## O Terminal Reimaginado por IA\n\nFerramentas de linha de comando com acesso a ferramentas MCP (*Model Context Protocol*) analisam erros de compilação, corrigem dependências e aplicam patches diretamente nos arquivos locais sem sair do terminal."
-        },
-        {
-          title: "Model Context Protocol (MCP): O Padrão Universal que Conecta IAs ao Mundo Real",
-          category: "AI Tools",
-          date: "Destaque",
-          excerpt: "Por que o protocolo aberto da Anthropic se tornou a linguagem padrão para permitir que qualquer IA acesse bancos de dados e APIs locais.",
-          content: "## A Interoperabilidade de Agentes\n\nO MCP cria uma interface única e padronizada para ferramentas externas. Em vez de escrever integrações proprietárias para cada LLM, desenvolvedores agora expõem servidores MCP universais."
+          content: "## Escolhendo a Estratégia de Conhecimento Certa\n\nRAG é ideal para documentos dinâmicos e bases atualizadas diariamente. O Fine-Tuning brilha quando você precisa ensinar um estilo específico ou sintaxe proprietária."
         }
       ],
       en: [
@@ -534,42 +547,77 @@
           category: "Business & Startups",
           date: "The Economist",
           excerpt: "A deep investigation into how electricity supply and dedicated nuclear power pacts have become the true physical bottleneck of AI scaling.",
-          content: "## The Physical Bottleneck of the Digital Frontier\n\nAs recently highlighted by [The Economist](https://www.economist.com/), the frontier of artificial intelligence is no longer constrained solely by algorithmic research, but by the physical availability of power grid megawatts. The emergence of hyperscale clusters requiring **2GW to 5GW per campus** is altering global capital allocation.\n\n### 1. The Scale of Compute Demand\n* **Projected Capacity:** Total AI data center capacity is forecast to double to over **60GW by 2030**.\n* **Small Modular Reactors (SMRs):** Hyperscalers (Microsoft, Google, Amazon) are signing direct nuclear and clean energy pacts to fuel dense racks of specialized silicon.\n* **Geopolitics of Compute:** Regions with reliable, affordable power grids are emerging as critical hubs for the AI economy.\n\n*Analysis grounded in reporting from [The Economist](https://www.economist.com/topics/artificial-intelligence).*"
+          content: "## The Physical Bottleneck of the Digital Frontier\n\nAs highlighted by [The Economist](https://www.economist.com/), artificial intelligence scaling is now bound by physical megawatt grid capacity rather than algorithmic constraints."
         },
         {
           title: "The Productivity Paradox: Why AI Isn't Destroying White-Collar Jobs",
           category: "Business & Startups",
           date: "Economics",
           excerpt: "Labor market data reveals that generative AI and autonomous software agents are expanding scope rather than causing mass office layoffs.",
-          content: "## Reassessing the Macroeconomic Impact on Knowledge Work\n\nContrary to speculative narratives of mass white-collar displacement, recent economic findings from [The Economist](https://www.economist.com/) indicate that generative AI acts as a **scope multiplier** rather than an employment destroyer.\n\n### Key Takeaways:\n* **Solow's Paradox Revisited:** Macroeconomic productivity gains take years to register in national accounts as organizations redesign workflows.\n* **Software Engineering:** Developers evolve into systems architects orchestrating multiple AI sub-agents.\n* **Auditing & Finance:** 80% reduction in contract review latency with zero reduction in aggregate legal headcount."
+          content: "## Reassessing the Macroeconomic Impact on Knowledge Work\n\nEconomic findings from [The Economist](https://www.economist.com/) indicate that generative AI acts as a **scope multiplier** across software engineering, legal, and financial industries."
         },
         {
           title: "The $1.4 Trillion at Stake in the S&P 500: Can Big Tech Monetize the AI Boom?",
           category: "Business & Startups",
           date: "Markets",
           excerpt: "Over 50% of the top 20 S&P firms now directly depend on artificial intelligence returns to sustain equity valuations.",
-          content: "## The Largest Capex Cycle in Corporate History\n\nMore than half of the market capitalization of the S&P 500's top 20 firms is directly tied to the generative AI growth thesis. As analyzed by [The Economist](https://www.economist.com/), hyperscalers must now demonstrate sustained B2B enterprise recurring revenue from software layers to justify massive hardware expenditures."
+          content: "## The Largest Capex Cycle in Corporate History\n\nHyperscalers must now demonstrate sustained B2B enterprise recurring revenue from software layers to justify massive hardware expenditures."
         },
         {
-          title: "Deep Reasoning Models: How AI is Redefining Complex Problem Solving",
+          title: "Apple Intelligence & Next-Gen M-Series Silicon: The On-Device AI Architecture",
+          category: "Apple & iOS",
+          date: "Apple & Tech",
+          excerpt: "How Cupertino engineered unified memory and neural engines to process multimodal intelligence locally on iPhone and Mac.",
+          content: "## Apple's On-Device Intelligence Blueprint\n\nBy leveraging unified memory architecture, Apple Intelligence processes private models up to 3B parameters locally with zero cloud latency."
+        },
+        {
+          title: "Spatial Computing & VisionOS: The Evolution of Immersive Spatial Interfaces",
+          category: "Apple & iOS",
+          date: "Review",
+          excerpt: "How spatial computing integrates with macOS and iOS to create production-ready multimonitor workstations.",
+          content: "## The Evolution of Spatial Computing\n\nVisionOS transforms digital workspaces into infinite high-resolution canvas environments for engineering and creative design."
+        },
+        {
+          title: "Apple Silicon Battery & Thermal Management: Squeezing Maximum Efficiency",
+          category: "Apple & iOS",
+          date: "Guide",
+          excerpt: "Advanced power management techniques and background thread scheduling for sustained Apple Silicon performance.",
+          content: "## Maximizing Mac & iPhone Efficiency\n\nGranular process monitoring, thermal pacing, and charge cycle preservation strategies for power users."
+        },
+        {
+          title: "The Foldable Smartphone Revolution & Flagship Mobile Processors",
+          category: "Android & Gadgets",
+          date: "Gadgets",
+          excerpt: "A technical comparison of ultra-thin flexible displays, periscope zoom optics, and 3nm mobile silicon NPUs.",
+          content: "## The Maturation of Foldable Devices\n\nModern foldables feature durable hinge mechanisms and dedicated on-device neural processing units for computational photography."
+        },
+        {
+          title: "Top Flagship Smartphones and Gadgets for 2026: Benchmark Breakdown",
+          category: "Android & Gadgets",
+          date: "Reviews",
+          excerpt: "Comprehensive benchmarking across OLED panel fidelity, 120W charging curves, and long-term OS update policies.",
+          content: "## The Ultimate Consumer Hardware Guide\n\nComparing display luminance, camera sensor dynamic range, and thermal throttling in prolonged mobile workloads."
+        },
+        {
+          title: "Smart Wearables and Hearables: Continuous Biometric Health Tracking",
+          category: "Android & Gadgets",
+          date: "Wearables",
+          excerpt: "How smartwatches and TWS earbuds utilize optical photoplethysmography and AI algorithms to detect early cardiac anomalies.",
+          content: "## Continuous Wrist-Based Diagnostics\n\nAdvanced signal filtering eliminates motion artifacts to deliver medical-grade ECG and blood oxygen metrics in real time."
+        },
+        {
+          title: "Deep Reasoning Models: The Shift Toward Structured Chains of Thought",
           category: "AI & Models",
           date: "Featured",
           excerpt: "A deep technical analysis of test-time compute, reasoning chains, and their transformative impact on autonomous software engineering.",
-          content: "## The Frontier of Cognitive AI Architecture\n\nRecent breakthroughs in Large Language Models have shifted the industry paradigm from pure probabilistic token prediction to structured, test-time reasoning."
-        },
-        {
-          title: "Actionable Guide: Building Zero-Cost Autonomous AI Pipelines",
-          category: "Tutorials & Guides",
-          date: "Guide",
-          excerpt: "A complete step-by-step walkthrough on building serverless content pipelines with GitHub Actions, Gemini API, and static site deployment.",
-          content: "## Engineering Serverless AI Workflows\n\nDeploying production-grade autonomous content workflows no longer requires dedicated cloud servers. By combining **GitHub Actions**, **Google AI Studio (Gemini API)**, and **GitHub Pages**, engineers can run resilient automated pipelines at zero marginal infrastructure cost."
+          content: "## The Frontier of Cognitive AI Architecture\n\nRecent breakthroughs in Large Language Models have shifted the paradigm from pure next-token prediction to structured test-time reasoning."
         },
         {
           title: "Open-Weights AI: The Rise of Efficient 8B to 70B Local Architectures",
           category: "AI & Models",
           date: "Analysis",
           excerpt: "How local open-weight models rival proprietary cloud systems with absolute data privacy and zero API token overhead.",
-          content: "## The Open-Weights Revolution\n\nOpen architectures like Llama and DeepSeek have demonstrated that open weights can match enterprise cloud LLMs on complex coding and reasoning benchmarks."
+          content: "## The Open-Weights Revolution\n\nOpen architectures like Llama and DeepSeek have demonstrated that open weights can match enterprise cloud LLMs on complex coding benchmarks."
         },
         {
           title: "Native Multimodality: Real-Time Zero-Latency Audio, Vision, and Video",
@@ -579,76 +627,57 @@
           content: "## End-to-End Multimodal Perception\n\nNative multimodal models ingest raw acoustic and visual tokens directly, capturing pitch, hesitation, and 60fps video frames seamlessly."
         },
         {
-          title: "Autonomous Software Agents: Multi-Bot Governance & Security Frameworks",
-          category: "AI & Models",
-          date: "Deep Dive",
-          excerpt: "Least-privilege tool isolation, schema validation, and deterministic orchestration for multi-agent production pipelines.",
-          content: "## Enterprise Multi-Agent Systems\n\nWhen specialized agents collaborate autonomously, strict JSON schema validation and cycle execution limits prevent non-deterministic loops."
+          title: "Quantum Computing & Advanced Materials: The Frontier of Solid-State Physics",
+          category: "Science & Space",
+          date: "Deep Tech",
+          excerpt: "How error-corrected qubits and solid-state crystal lattices are accelerating molecular battery simulation.",
+          content: "## Quantum Engineering Milestones\n\nSolid-state quantum processors enable accurate electronic structure simulations for next-generation solid-state batteries."
+        },
+        {
+          title: "Low Earth Orbit Satellite Networks & Direct-to-Cell Telecommunications",
+          category: "Science & Space",
+          date: "Space Tech",
+          excerpt: "How orbital satellite megaconstellations are connecting unmodified smartphones in remote regions worldwide.",
+          content: "## Planetary Orbital Connectivity\n\nDirect-to-Cell satellite beamforming bridges connectivity gaps without requiring ground dish terminals."
+        },
+        {
+          title: "Neuromorphic Analog Computing: Slashing AI Power Draw by 99%",
+          category: "Science & Space",
+          date: "Wired",
+          excerpt: "Bio-inspired analog silicon performing matrix vector multiplications with sub-milliwatt power envelopes.",
+          content: "## Beyond the Von Neumann Bottleneck\n\nAnalog crossbar arrays compute directly within memory cells through physical circuit laws, bypassing memory-to-processor bandwidth limits."
+        },
+        {
+          title: "Actionable Guide: Building Zero-Cost Autonomous AI Pipelines",
+          category: "Tutorials & Guides",
+          date: "Guide",
+          excerpt: "A complete step-by-step walkthrough on building serverless content pipelines with GitHub Actions, Gemini API, and static site deployment.",
+          content: "## Engineering Serverless AI Workflows\n\nDeploying production-grade autonomous content workflows no longer requires expensive dedicated cloud servers."
         },
         {
           title: "Advanced Prompt Engineering: Structuring Institutional System Prompts",
           category: "Tutorials & Guides",
           date: "Tutorial",
           excerpt: "How to craft production-grade system prompts that eliminate hallucinations and enforce deterministic output schemas.",
-          content: "## The Science of Deterministic Prompting\n\nA well-architected system prompt eliminates the majority of downstream LLM errors through role anchoring, delimited inputs, and negative constraints."
+          content: "## The Science of Deterministic Prompting\n\nA well-architected system prompt eliminates the majority of downstream LLM errors through role anchoring and negative constraints."
         },
         {
           title: "Fine-Tuning vs. Hybrid RAG: When to Adapt Weights or Search Vectors",
           category: "Tutorials & Guides",
           date: "Guide",
           excerpt: "The definitive guide for architects deciding between semantic vector search retrieval or parameter-efficient LoRA fine-tuning.",
-          content: "## Selecting the Right Knowledge Strategy\n\nRAG excels for dynamic, frequently updated documents. Fine-tuning is optimal when teaching a model proprietary syntax, style, or task-specific formats."
-        },
-        {
-          title: "Automated Software Testing with AI Agents and CI/CD Pipelines",
-          category: "Tutorials & Guides",
-          date: "Practical",
-          excerpt: "How to embed autonomous bots inside GitHub Actions to audit PRs, catch vulnerabilities, and propose patches.",
-          content: "## Continuous Quality Assurance\n\nDeploying automated review bots into CI/CD pipelines ensures that every pull request is checked against architectural invariants before deployment."
-        },
-        {
-          title: "Token Economics: How Enterprises Cut Operational LLM Costs by 70%",
-          category: "Business & Startups",
-          date: "Strategy",
-          excerpt: "Smart model routing architectures that solve simple tasks with lightweight models and allocate frontier LLMs for high-risk decisions.",
-          content: "## Scaling Inference Efficiency\n\nProduction systems utilize intelligent routers: fast sub-cent models triage requests, reserving heavy frontier models strictly for multi-step reasoning."
-        },
-        {
-          title: "Global AI Regulation: The Compliance Blueprint for Enterprise Systems",
-          category: "Business & Startups",
-          date: "Policy",
-          excerpt: "Navigating legal frameworks across the EU, US, and Latin America regarding automated decision transparency and data provenance.",
-          content: "## Corporate Governance in the Age of AI\n\nRegulatory compliance requires full audit trails for automated agent workflows and clear human-in-the-loop escalation paths."
-        },
-        {
-          title: "Top AI Productivity & Developer Tools for 2026",
-          category: "AI Tools",
-          date: "Review",
-          excerpt: "An expert selection of the most powerful platforms for developers, engineers, and creators to accelerate workflows.",
-          content: "## The Modern AI Tool Ecosystem\n\nEngineering velocity in 2026 is defined by how effectively teams leverage specialized AI layers across code generation, workflow orchestration, and multimodal assets."
-        },
-        {
-          title: "Terminal AI Agents & CLI Automation: The Future of Developer Workflows",
-          category: "AI Tools",
-          date: "Tools",
-          excerpt: "How Model Context Protocol (MCP) and terminal agents autonomously inspect codebases, execute test suites, and resolve pull requests.",
-          content: "## The Terminal Reimagined by AI\n\nCommand-line tools with MCP capabilities trace stack traces, refactor broken imports, and generate unit tests directly in your local environment."
-        },
-        {
-          title: "Model Context Protocol (MCP): The Universal Standard for Agent Integrations",
-          category: "AI Tools",
-          date: "Standard",
-          excerpt: "Why Anthropic's open protocol became the unified industry standard for connecting LLMs to local databases and enterprise APIs.",
-          content: "## Agent Interoperability\n\nMCP establishes a single interface for external tools. Rather than building custom connectors for every model, developers now expose universal MCP endpoints."
+          content: "## Selecting the Right Knowledge Strategy\n\nRAG excels for dynamic, frequently updated documents. Fine-tuning is optimal when teaching a model proprietary syntax or style."
         }
       ]
     };
 
     function getCategoryBanner(category) {
-      if (category.includes('AI') || category.includes('Model')) return 'cat-ai.jpeg';
+      if (category.includes('Apple') || category.includes('iOS')) return 'cat-ai.jpeg';
+      if (category.includes('Android') || category.includes('Gadget')) return 'cat-tools.jpeg';
+      if (category.includes('Business') || category.includes('Startup') || category.includes('Mercado')) return 'cat-business.jpeg';
+      if (category.includes('Science') || category.includes('Space') || category.includes('Ciência')) return 'hero.jpeg';
       if (category.includes('Tutorial') || category.includes('Guide')) return 'cat-tutorials.jpeg';
-      if (category.includes('Business') || category.includes('Startup') || category.includes('Mercado') || category.includes('Enterprise')) return 'cat-business.jpeg';
-      return 'cat-tools.jpeg';
+      return 'cat-ai.jpeg';
     }
 
     function toggleMobileMenu() {
@@ -719,21 +748,23 @@
     function selectHub(hubKey) {
       currentHub = hubKey;
       
-      const hubButtons = ['all', 'ai', 'tut', 'biz', 'tools', 'news'];
+      const hubButtons = ['all', 'app', 'and', 'ai', 'biz', 'sci', 'tut', 'news'];
       hubButtons.forEach(h => {
         const btn = document.getElementById('hub-' + h);
-        if (btn) btn.className = "px-3.5 py-1.5 rounded-md bg-slate-900 text-slate-300 hover:text-white border border-brandBorder font-bold text-[11px] uppercase tracking-wider transition shrink-0";
+        if (btn) btn.className = "px-3 py-1.5 rounded-md bg-slate-900 text-slate-300 hover:text-white border border-brandBorder font-bold text-[11px] uppercase tracking-wider transition shrink-0";
       });
 
       let activeHubId = 'hub-all';
-      if (hubKey === 'Business & Startups') activeHubId = 'hub-biz';
+      if (hubKey === 'Apple & iOS') activeHubId = 'hub-app';
+      else if (hubKey === 'Android & Gadgets') activeHubId = 'hub-and';
       else if (hubKey === 'AI & Models') activeHubId = 'hub-ai';
+      else if (hubKey === 'Business & Startups') activeHubId = 'hub-biz';
+      else if (hubKey === 'Science & Space') activeHubId = 'hub-sci';
       else if (hubKey === 'Tutorials & Guides') activeHubId = 'hub-tut';
-      else if (hubKey === 'AI Tools') activeHubId = 'hub-tools';
       else if (hubKey === 'Newsletter') activeHubId = 'hub-news';
 
       const activeBtn = document.getElementById(activeHubId);
-      if (activeBtn) activeBtn.className = "px-3.5 py-1.5 rounded-md bg-brandCyan text-black font-black text-[11px] uppercase tracking-wider transition shrink-0";
+      if (activeBtn) activeBtn.className = "px-3 py-1.5 rounded-md bg-brandCyan text-black font-black text-[11px] uppercase tracking-wider transition shrink-0";
 
       const conf = HUB_CONFIG[hubKey] || HUB_CONFIG.all;
       document.getElementById('cat-banner-bg').src = conf.banner;
@@ -903,9 +934,9 @@
         btnPt.className = "px-2.5 py-0.5 rounded bg-brandCyan text-slate-950 font-black transition";
         btnEn.className = "px-2.5 py-0.5 rounded text-slate-400 hover:text-white transition";
         document.getElementById('wire-badge').innerHTML = '<span class="w-1.5 h-1.5 rounded-full bg-brandPurple animate-ping"></span> RADAR AO VIVO';
-        document.getElementById('masthead-sub').innerText = "O Fluxo da Inteligência Artificial e Tecnologia";
+        document.getElementById('masthead-sub').innerText = "O Fluxo da Tecnologia, Inovação e Inteligência Artificial";
         document.getElementById('search-input').placeholder = "Filtrar matérias...";
-        document.getElementById('ticker-text').innerText = "⚡ [The Economist] A corrida global por data centers de 60GW e o limite de energia da IA • [Produtividade] O paradoxo da IA no trabalho de colarinho branco • [Semicondutores] Chips neuromórficos reduzem consumo em 90% • [Open-Source] Modelos de peso aberto desafiam gigantes proprietários";
+        document.getElementById('ticker-text').innerText = "⚡ [Apple] Apple Intelligence e novos chips M-Series • [Android] Dobráveis de última geração e processamento local • [IA] Benchmarks demonstram salto em raciocínio • [Startups] Investimentos bilionários em semicondutores e energia limpa • [Ciência] Avanços na física e exploração espacial";
         document.getElementById('newsletter-title').innerText = "CorticFlow Semanal";
         document.getElementById('newsletter-sub').innerText = "Todo domingo às 20h, receba a compilação executiva e o tutorial da semana no seu e-mail.";
         document.getElementById('newsletter-input').placeholder = "Seu melhor e-mail";
@@ -916,41 +947,35 @@
         document.getElementById('lbtn-all').innerText = "GERAL";
         document.getElementById('lbtn-rea').innerText = "RACIOCÍNIO & CÓDIGO";
         document.getElementById('lbtn-opn').innerText = "OPEN-SOURCE";
-        document.getElementById('feat-tag').innerText = "THE ECONOMIST RADAR";
-        document.getElementById('feat-date').innerText = "ANÁLISE DE MERCADO • 9 MIN DE LEITURA";
+        document.getElementById('feat-tag').innerText = "MATÉRIA DE CAPA";
+        document.getElementById('feat-date').innerText = "DESTAQUE EDITORIAL • 9 MIN DE LEITURA";
         document.getElementById('feat-btn').innerText = "Ler Matéria Completa";
-        document.getElementById('sec1-tag').innerText = "ECONOMIA";
-        document.getElementById('sec1-read').innerText = "7 MIN DE LEITURA";
-        document.getElementById('sec1-btn').innerText = "Ler Análise →";
-        document.getElementById('sec2-tag').innerText = "BIG TECHS";
-        document.getElementById('sec2-read').innerText = "6 MIN DE LEITURA";
-        document.getElementById('sec2-btn').innerText = "Ler Análise Financeira →";
         document.getElementById('prompt-tag').innerText = "PROMPT DA SEMANA";
-        document.getElementById('prompt-cat-label').innerText = "ECONOMIA & ANÁLISE";
-        document.getElementById('prompt-card-title').innerText = "Análise de ROI de Infraestrutura";
-        document.getElementById('prompt-card-desc').innerText = "Prompt calibrado para calcular custo por milhão de tokens vs. ganho de eficiência operacional.";
-        document.getElementById('prompt-code').innerText = '"Atue como Economista Chefe de Tecnologia. Analise o consumo de tokens e custos de infraestrutura de TI da seguinte operação. Estime a redução de custos ao migrar para modelos de raciocínio híbridos."';
+        document.getElementById('prompt-cat-label').innerText = "PRODUTIVIDADE";
+        document.getElementById('prompt-card-title').innerText = "Auditoria e Refatoração de Código";
+        document.getElementById('prompt-card-desc').innerText = "Prompt calibrado para analisar segurança, complexidade ciclomática e latência.";
+        document.getElementById('prompt-code').innerText = '"Atue como Engenheiro Sênior de QA e Segurança. Analise o código a seguir procurando vulnerabilidades de injeção, memory leaks e gargalos de latência. Forneça a versão corrigida acompanhada da justificativa técnica."';
         document.getElementById('btn-copy-prompt').innerText = "📋 COPIAR PROMPT";
-        document.getElementById('top-title').innerText = "🔥 TOP DISPATCHES";
-        document.getElementById('hub-all').innerText = "TODAS AS PUBLICAÇÕES (16)";
-        document.getElementById('hub-biz').innerText = "ECONOMIA & MERCADO (4)";
-        document.getElementById('hub-ai').innerText = "IA & MODELOS (4)";
-        document.getElementById('hub-tut').innerText = "TUTORIAIS (4)";
-        document.getElementById('hub-tools').innerText = "FERRAMENTAS (4)";
-        document.getElementById('hub-news').innerText = "EDIÇÃO DE DOMINGO";
+        document.getElementById('top-title').innerText = "🔥 MAIS LIDAS DA SEMANA";
+        document.getElementById('hub-all').innerText = "TODOS (18)";
+        document.getElementById('hub-app').innerText = "🍏 APPLE & IOS (3)";
+        document.getElementById('hub-and').innerText = "🤖 ANDROID & GADGETS (3)";
+        document.getElementById('hub-ai').innerText = "🧠 IA & MODELOS (3)";
+        document.getElementById('hub-biz').innerText = "🏢 NEGÓCIOS (3)";
+        document.getElementById('hub-sci').innerText = "🔬 CIÊNCIA & ESPAÇO (3)";
+        document.getElementById('hub-tut').innerText = "🛠️ TUTORIAIS (3)";
+        document.getElementById('hub-news').innerText = "📬 DOMINGO";
         document.getElementById('dnav-all').innerText = "Feed Geral";
-        document.getElementById('dnav-lead').innerHTML = "<span>⚡ Radar de LLMs</span>";
-        document.getElementById('dnav-biz').innerText = "Economia & Mercado";
+        document.getElementById('dnav-lead').innerHTML = "<span>⚡ Radar LLMs</span>";
+        document.getElementById('dnav-app').innerText = "Apple & iOS";
+        document.getElementById('dnav-and').innerText = "Android & Gadgets";
         document.getElementById('dnav-ai').innerText = "IA & Modelos";
+        document.getElementById('dnav-biz').innerText = "Negócios";
+        document.getElementById('dnav-sci').innerText = "Ciência & Futuro";
         document.getElementById('dnav-tut').innerText = "Tutoriais";
-        document.getElementById('dnav-tools').innerText = "Ferramentas";
         document.getElementById('dnav-news').innerText = "Edição de Domingo";
-        document.getElementById('footer-about').innerText = "O fluxo da inteligência artificial e tecnologia. Curadoria autônoma com a profundidade do The Economist e design The Verge.";
+        document.getElementById('footer-about').innerText = "O fluxo da tecnologia, inovação e inteligência artificial. Inspirado no rigor do The Economist e no design do The Verge.";
         document.getElementById('footer-cat-title').innerText = "EDITORIAS";
-        document.getElementById('fnav-biz').innerText = "Economia & Mercado";
-        document.getElementById('fnav-ai').innerText = "IA & Modelos";
-        document.getElementById('fnav-tut').innerText = "Tutoriais & Prompts";
-        document.getElementById('fnav-tools').innerText = "Ferramentas de IA";
         document.getElementById('footer-inst-title').innerText = "INSTITUCIONAL";
         document.getElementById('fnav-priv').innerText = "Política de Privacidade";
         document.getElementById('fnav-terms').innerText = "Termos de Uso";
@@ -961,9 +986,9 @@
         btnEn.className = "px-2.5 py-0.5 rounded bg-brandCyan text-slate-950 font-black transition";
         btnPt.className = "px-2.5 py-0.5 rounded text-slate-400 hover:text-white transition";
         document.getElementById('wire-badge').innerHTML = '<span class="w-1.5 h-1.5 rounded-full bg-brandPurple animate-ping"></span> THE WIRE';
-        document.getElementById('masthead-sub').innerText = "The Stream of AI & Tech Intelligence";
+        document.getElementById('masthead-sub').innerText = "The Stream of Tech, Innovation and Artificial Intelligence";
         document.getElementById('search-input').placeholder = "Filter dispatches...";
-        document.getElementById('ticker-text').innerText = "⚡ [The Economist] Global race for 60GW data centers reaches critical energy thresholds • [Productivity] The AI white-collar productivity paradox • [Silicon] Neuromorphic chips cut compute draw by 90% • [Open-Source] Open weights rival proprietary frontiers";
+        document.getElementById('ticker-text').innerText = "⚡ [Apple] Apple Intelligence and next-gen M-Series silicon • [Android] Flagship foldables and edge AI processing • [AI] Frontier benchmarks demonstrate reasoning leaps • [Startups] Capital investments in semiconductors and clean energy • [Science] Space exploration breakthroughs";
         document.getElementById('newsletter-title').innerText = "CorticFlow Weekly";
         document.getElementById('newsletter-sub').innerText = "Every Sunday at 8 PM, receive executive AI curation and deep-dive technical guides directly in your inbox.";
         document.getElementById('newsletter-input').placeholder = "Enter your email address";
@@ -974,41 +999,35 @@
         document.getElementById('lbtn-all').innerText = "OVERALL";
         document.getElementById('lbtn-rea').innerText = "REASONING & CODE";
         document.getElementById('lbtn-opn').innerText = "OPEN-WEIGHTS";
-        document.getElementById('feat-tag').innerText = "THE ECONOMIST RADAR";
-        document.getElementById('feat-date').innerText = "MACRO ANALYSIS • 9 MIN READ";
+        document.getElementById('feat-tag').innerText = "FEATURED COVER STORY";
+        document.getElementById('feat-date').innerText = "EDITORIAL LEAD • 9 MIN READ";
         document.getElementById('feat-btn').innerText = "Read Full Story";
-        document.getElementById('sec1-tag').innerText = "ECONOMICS";
-        document.getElementById('sec1-read').innerText = "7 MIN READ";
-        document.getElementById('sec1-btn').innerText = "Read Analysis →";
-        document.getElementById('sec2-tag').innerText = "BIG TECH";
-        document.getElementById('sec2-read').innerText = "6 MIN READ";
-        document.getElementById('sec2-btn').innerText = "Read Financial Analysis →";
         document.getElementById('prompt-tag').innerText = "PROMPT OF THE WEEK";
-        document.getElementById('prompt-cat-label').innerText = "MACRO & ROI";
-        document.getElementById('prompt-card-title').innerText = "Infrastructure ROI Modeling";
-        document.getElementById('prompt-card-desc').innerText = "Benchmarked prompt to calculate token cost vs. operational efficiency gains.";
-        document.getElementById('prompt-code').innerText = '"Act as a Chief Technology Economist. Model token consumption and infrastructure compute costs. Estimate margin expansion by deploying hybrid reasoning routers."';
+        document.getElementById('prompt-cat-label').innerText = "PRODUCTIVITY";
+        document.getElementById('prompt-card-title').innerText = "Code Security & Refactoring";
+        document.getElementById('prompt-card-desc').innerText = "Benchmarked prompt to audit injection vulnerabilities, memory leaks, and latency bottlenecks.";
+        document.getElementById('prompt-code').innerText = '"Act as a Principal QA and Security Engineer. Analyze the following code for injection vectors, memory leaks, and latency bottlenecks. Provide the refactored code alongside technical justification."';
         document.getElementById('btn-copy-prompt').innerText = "📋 COPY PROMPT";
         document.getElementById('top-title').innerText = "🔥 TOP DISPATCHES";
-        document.getElementById('hub-all').innerText = "ALL DISPATCHES (16)";
-        document.getElementById('hub-biz').innerText = "MACRO & ENTERPRISE (4)";
-        document.getElementById('hub-ai').innerText = "AI & MODELS (4)";
-        document.getElementById('hub-tut').innerText = "TUTORIALS (4)";
-        document.getElementById('hub-tools').innerText = "AI TOOLS (4)";
-        document.getElementById('hub-news').innerText = "SUNDAY WIRE";
-        document.getElementById('dnav-all').innerText = "Dispatches";
+        document.getElementById('hub-all').innerText = "ALL (18)";
+        document.getElementById('hub-app').innerText = "🍏 APPLE & IOS (3)";
+        document.getElementById('hub-and').innerText = "🤖 ANDROID & GADGETS (3)";
+        document.getElementById('hub-ai').innerText = "🧠 AI & MODELS (3)";
+        document.getElementById('hub-biz').innerText = "🏢 BUSINESS (3)";
+        document.getElementById('hub-sci').innerText = "🔬 SCIENCE & SPACE (3)";
+        document.getElementById('hub-tut').innerText = "🛠️ TUTORIALS (3)";
+        document.getElementById('hub-news').innerText = "📬 SUNDAY WIRE";
+        document.getElementById('dnav-all').innerText = "All Feed";
         document.getElementById('dnav-lead').innerHTML = "<span>⚡ LLM Radar</span>";
-        document.getElementById('dnav-biz').innerText = "Macro & Enterprise";
+        document.getElementById('dnav-app').innerText = "Apple & iOS";
+        document.getElementById('dnav-and').innerText = "Android & Gadgets";
         document.getElementById('dnav-ai').innerText = "AI & Models";
+        document.getElementById('dnav-biz').innerText = "Business";
+        document.getElementById('dnav-sci').innerText = "Science & Space";
         document.getElementById('dnav-tut').innerText = "Tutorials";
-        document.getElementById('dnav-tools').innerText = "Tools";
         document.getElementById('dnav-news').innerText = "Sunday Edition";
-        document.getElementById('footer-about').innerText = "The stream of AI & Tech intelligence. Autonomous bilingual news curation, prompt engineering, and deep-dive technical dispatches.";
+        document.getElementById('footer-about').innerText = "The stream of tech, innovation, and artificial intelligence. Built with Economist rigour and Verge aesthetics.";
         document.getElementById('footer-cat-title').innerText = "SECTIONS";
-        document.getElementById('fnav-biz').innerText = "Macro & Enterprise";
-        document.getElementById('fnav-ai').innerText = "AI & Models";
-        document.getElementById('fnav-tut').innerText = "Prompt Engineering";
-        document.getElementById('fnav-tools').innerText = "Developer Tools";
         document.getElementById('footer-inst-title').innerText = "VERGE NETWORK";
         document.getElementById('fnav-priv').innerText = "Privacy Policy";
         document.getElementById('fnav-terms').innerText = "Terms of Service";
@@ -1020,14 +1039,6 @@
       const feat = ARTICLES_DATA[currentLang][0];
       document.getElementById('feat-title').innerText = feat.title;
       document.getElementById('feat-excerpt').innerText = feat.excerpt;
-
-      const sec1 = ARTICLES_DATA[currentLang];
-      document.getElementById('sec1-title').innerText = sec1.title;
-      document.getElementById('sec1-excerpt').innerText = sec1.excerpt;
-
-      const sec2 = ARTICLES_DATA[currentLang];
-      document.getElementById('sec2-title').innerText = sec2.title;
-      document.getElementById('sec2-excerpt').innerText = sec2.excerpt;
 
       selectHub(currentHub);
     }
