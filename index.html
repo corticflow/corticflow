@@ -17,10 +17,10 @@
 
   <link rel="icon" type="image/jpeg" href="favicon.jpg.jpeg" onerror="this.href='favicon.jpg'">
 
-  <!-- Google Fonts: Syne (Brutalist Verge), Inter (Body) & JetBrains Mono (Tech) -->
+  <!-- Google Fonts: Plus Jakarta Sans & JetBrains Mono -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700;800&family=Syne:wght@700;800;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
   <!-- Tailwind CSS & Markdown Parser -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -31,8 +31,8 @@
       theme: {
         extend: {
           fontFamily: {
-            sans: ['Inter', 'system-ui', 'sans-serif'],
-            display: ['Syne', 'sans-serif'],
+            sans: ['Plus Jakarta Sans', 'system-ui', 'sans-serif'],
+            display: ['Plus Jakarta Sans', 'sans-serif'],
             mono: ['JetBrains Mono', 'monospace']
           },
           colors: {
@@ -51,133 +51,141 @@
     }
   </script>
   <style>
-    body { background-color: #080A0F; color: #E2E8F0; font-family: 'Inter', sans-serif; }
-    .verge-title { font-family: 'Syne', sans-serif; letter-spacing: -0.04em; }
+    body { font-family: 'Plus Jakarta Sans', sans-serif; transition: background-color 0.3s, color 0.3s; }
     .glow-verge { transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1); }
-    .glow-verge:hover { transform: translateY(-3px); box-shadow: 0 12px 30px -10px rgba(0, 229, 255, 0.25); border-color: rgba(0, 229, 255, 0.45); }
-    .verge-border { border: 1px solid #202636; }
+    .glow-verge:hover { transform: translateY(-3px); box-shadow: 0 12px 30px -10px rgba(0, 229, 255, 0.25); }
     
-    /* Long-Form Prose Styling */
-    .prose-verge { color: #CBD5E1; font-size: 1rem; line-height: 1.85; }
-    .prose-verge h2 { font-family: 'Syne', sans-serif; color: #FFFFFF; font-weight: 800; font-size: 1.5rem; margin-top: 2rem; margin-bottom: 0.75rem; border-bottom: 2px solid #202636; padding-bottom: 0.5rem; letter-spacing: -0.03em; }
-    .prose-verge h3 { font-family: 'Syne', sans-serif; color: #00E5FF; font-weight: 700; font-size: 1.2rem; margin-top: 1.5rem; margin-bottom: 0.5rem; }
-    .prose-verge p { margin-bottom: 1.25rem; }
-    .prose-verge ul { list-style-type: disc; padding-left: 1.5rem; margin-bottom: 1.25rem; space-y: 0.5rem; }
-    .prose-verge li { margin-bottom: 0.5rem; }
-    .prose-verge strong { color: #FFFFFF; font-weight: 700; }
-    .prose-verge a { color: #00E5FF; text-decoration: underline; font-weight: 700; }
-    .prose-verge blockquote { border-left: 4px solid #E024C3; background: rgba(224, 36, 195, 0.05); padding: 1rem 1.25rem; color: #E2E8F0; font-style: italic; margin: 1.5rem 0; border-radius: 0 1rem 1rem 0; }
-    .prose-verge table { width: 100%; border-collapse: collapse; margin: 1.5rem 0; font-size: 0.875rem; font-family: 'JetBrains Mono', monospace; }
-    .prose-verge th, .prose-verge td { border: 1px solid #202636; padding: 0.75rem 1rem; text-align: left; }
-    .prose-verge th { background: #11141E; color: #00E5FF; font-weight: 700; }
-    .drop-cap::first-letter { float: left; font-family: 'Syne', sans-serif; font-size: 3.75rem; line-height: 0.8; font-weight: 900; margin-right: 0.75rem; color: #00E5FF; }
+    /* Long-Form Reading Typography */
+    .prose-custom { font-size: 1.05rem; line-height: 1.85; }
+    .prose-custom h2 { font-weight: 800; font-size: 1.5rem; margin-top: 2rem; margin-bottom: 0.75rem; padding-bottom: 0.5rem; letter-spacing: -0.02em; border-bottom: 1px solid rgba(156, 163, 175, 0.2); }
+    .prose-custom h3 { color: #00E5FF; font-weight: 700; font-size: 1.25rem; margin-top: 1.5rem; margin-bottom: 0.5rem; }
+    .light .prose-custom h3 { color: #0284C7; }
+    .prose-custom p { margin-bottom: 1.25rem; }
+    .prose-custom ul { list-style-type: disc; padding-left: 1.5rem; margin-bottom: 1.25rem; }
+    .prose-custom li { margin-bottom: 0.5rem; }
+    .prose-custom blockquote { border-left: 4px solid #E024C3; padding: 1rem 1.25rem; font-style: italic; margin: 1.5rem 0; border-radius: 0 1rem 1rem 0; background: rgba(224, 36, 195, 0.06); }
+    .prose-custom table { width: 100%; border-collapse: collapse; margin: 1.5rem 0; font-size: 0.9rem; font-family: 'JetBrains Mono', monospace; }
+    .prose-custom th, .prose-custom td { border: 1px solid rgba(156, 163, 175, 0.2); padding: 0.75rem 1rem; text-align: left; }
+    .prose-custom th { background: rgba(156, 163, 175, 0.1); font-weight: 700; }
+    .drop-cap::first-letter { float: left; font-size: 3.5rem; line-height: 0.85; font-weight: 800; margin-right: 0.75rem; color: #00E5FF; }
+    .light .drop-cap::first-letter { color: #0284C7; }
 
     .ticker-wrap { overflow: hidden; white-space: nowrap; }
-    .ticker-move { display: inline-block; animation: ticker 28s linear infinite; }
+    .ticker-move { display: inline-block; animation: ticker 30s linear infinite; }
     @keyframes ticker { 0% { transform: translate3d(0, 0, 0); } 100% { transform: translate3d(-50%, 0, 0); } }
   </style>
 </head>
-<body class="min-h-screen flex flex-col antialiased selection:bg-brandCyan selection:text-black">
+<body class="min-h-screen flex flex-col antialiased bg-slate-50 text-slate-900 dark:bg-[#080A0F] dark:text-slate-100 selection:bg-brandCyan selection:text-black">
 
   <!-- Top Wire Ticker -->
-  <div class="bg-black border-b border-brandBorder/80 py-1.5 px-4 text-xs font-mono flex items-center justify-between text-slate-400">
+  <div class="bg-slate-200/80 dark:bg-black border-b border-slate-300 dark:border-brandBorder/80 py-1.5 px-4 text-xs font-mono flex items-center justify-between text-slate-600 dark:text-slate-400">
     <div class="flex items-center overflow-hidden flex-1 mr-4">
-      <span id="wire-badge" class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded bg-brandPurple/20 text-brandPurple font-black uppercase tracking-widest text-[9px] mr-3 shrink-0 border border-brandPurple/40 font-mono">
+      <span id="wire-badge" class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded bg-brandPurple/10 dark:bg-brandPurple/20 text-brandPurple font-black uppercase tracking-widest text-[9px] mr-3 shrink-0 border border-brandPurple/30 font-mono">
         <span class="w-1.5 h-1.5 rounded-full bg-brandPurple animate-ping"></span>
-        THE WIRE // RADAR
+        RADAR AO VIVO
       </span>
       <div class="ticker-wrap flex-1">
-        <div id="ticker-text" class="ticker-move text-slate-300 font-medium">
+        <div id="ticker-text" class="ticker-move text-slate-700 dark:text-slate-300 font-medium">
           ⚡ [Windows] Copilot+ PCs e transição para ARM • [Linux] Novos kernels e aceleração de IA • [Apple] Apple Intelligence e chips M-Series • [Android] Smartphones dobráveis e IA on-device • [Startups] Investimentos bilionários em semicondutores
         </div>
       </div>
     </div>
 
-    <!-- Idioma -->
-    <div class="flex items-center bg-slate-900 rounded-lg p-0.5 border border-brandBorder text-[10px] font-bold shrink-0">
-      <button id="btn-pt" onclick="setLanguage('pt')" class="px-2.5 py-0.5 rounded bg-brandCyan text-slate-950 font-black transition">PT</button>
-      <button id="btn-en" onclick="setLanguage('en')" class="px-2.5 py-0.5 rounded text-slate-400 hover:text-white transition">EN</button>
+    <!-- Controles: Tema (Claro/Escuro) e Idioma (PT/EN) -->
+    <div class="flex items-center gap-2 shrink-0">
+      
+      <!-- Alternador Tema Claro/Escuro -->
+      <button onclick="toggleTheme()" id="theme-btn" title="Alternar Modo Claro / Escuro" class="p-1 rounded-lg bg-slate-300 dark:bg-slate-900 border border-slate-400 dark:border-brandBorder text-slate-800 dark:text-yellow-400 text-xs transition">
+        🌙
+      </button>
+
+      <!-- Idioma -->
+      <div class="flex items-center bg-slate-300 dark:bg-slate-900 rounded-lg p-0.5 border border-slate-400 dark:border-brandBorder text-[10px] font-bold">
+        <button id="btn-pt" onclick="setLanguage('pt')" class="px-2 py-0.5 rounded bg-brandCyan text-slate-950 font-black transition">PT</button>
+        <button id="btn-en" onclick="setLanguage('en')" class="px-2 py-0.5 rounded text-slate-600 dark:text-slate-400 hover:text-slate-950 dark:hover:text-white transition">EN</button>
+      </div>
+
     </div>
   </div>
 
-  <!-- Header Fixo Brutalista -->
-  <header class="sticky top-0 z-50 bg-black/90 backdrop-blur-xl border-b border-brandBorder">
+  <!-- Header Fixo -->
+  <header class="sticky top-0 z-50 bg-white/90 dark:bg-black/90 backdrop-blur-xl border-b border-slate-200 dark:border-brandBorder">
     <div class="max-w-7xl mx-auto px-4 h-20 flex items-center justify-between">
       
       <div class="flex items-center gap-6">
         <a href="#" class="flex items-center gap-3 group">
-          <div class="w-11 h-11 bg-brandCyan text-black font-black text-2xl flex items-center justify-center transform -skew-x-6 shadow-[3px_3px_0px_#E024C3] font-display">
+          <div class="w-11 h-11 bg-brandCyan text-black font-black text-2xl flex items-center justify-center transform -skew-x-6 shadow-[3px_3px_0px_#E024C3]">
             C
           </div>
           <div>
-            <span class="text-3xl font-black tracking-tighter text-white uppercase verge-title">
-              CORTIC<span class="text-brandCyan font-black">//</span><span class="text-white">FLOW</span>
+            <span class="text-3xl font-extrabold tracking-tighter text-slate-950 dark:text-white uppercase">
+              CORTIC<span class="text-cyan-600 dark:text-brandCyan font-black">//</span><span>FLOW</span>
             </span>
             <div id="masthead-sub" class="text-[9px] font-mono tracking-widest text-slate-500 uppercase -mt-1 font-bold">
-              The Stream of Tech, Innovation and Frontier AI
+              O Fluxo da Tecnologia, Inovação e Inteligência Artificial
             </div>
           </div>
         </a>
       </div>
 
       <!-- Menu Desktop -->
-      <nav id="desktop-nav" class="hidden 2xl:flex items-center gap-4 text-xs font-bold uppercase tracking-wider text-slate-300 font-mono">
-        <button onclick="selectHub('all', true)" id="dnav-all" class="hover:text-brandCyan transition">Feed Geral</button>
-        <button onclick="scrollToSection('leaderboard')" id="dnav-lead" class="hover:text-brandCyan transition text-brandCyan">⚡ Radar LLMs</button>
-        <button onclick="selectHub('Windows & PC', true)" id="dnav-win" class="hover:text-brandCyan transition">Windows & PC</button>
-        <button onclick="selectHub('Linux & Open-Source', true)" id="dnav-lin" class="hover:text-brandCyan transition">Linux</button>
-        <button onclick="selectHub('Apple & iOS', true)" id="dnav-app" class="hover:text-brandCyan transition">Apple & iOS</button>
-        <button onclick="selectHub('Android & Gadgets', true)" id="dnav-and" class="hover:text-brandCyan transition">Android</button>
-        <button onclick="selectHub('AI & Models', true)" id="dnav-ai" class="hover:text-brandCyan transition">IA</button>
-        <button onclick="selectHub('Business & Startups', true)" id="dnav-biz" class="hover:text-brandCyan transition">Negócios</button>
-        <button onclick="selectHub('Science & Space', true)" id="dnav-sci" class="hover:text-brandCyan transition">Ciência</button>
-        <button onclick="selectHub('Tutorials & Guides', true)" id="dnav-tut" class="hover:text-brandCyan transition">Tutoriais</button>
-        <button onclick="selectHub('Newsletter', true)" id="dnav-news" class="px-3 py-1 rounded bg-brandPurple/20 text-brandPurple border border-brandPurple/40 hover:bg-brandPurple hover:text-black transition">Edição de Domingo</button>
+      <nav id="desktop-nav" class="hidden 2xl:flex items-center gap-4 text-xs font-bold uppercase tracking-wider text-slate-600 dark:text-slate-300 font-mono">
+        <button onclick="selectHub('all', true)" id="dnav-all" class="hover:text-cyan-600 dark:hover:text-brandCyan transition">Feed Geral</button>
+        <button onclick="scrollToSection('leaderboard')" id="dnav-lead" class="text-cyan-600 dark:text-brandCyan hover:underline transition font-black">⚡ Radar LLMs</button>
+        <button onclick="selectHub('Windows & PC', true)" id="dnav-win" class="hover:text-cyan-600 dark:hover:text-brandCyan transition">Windows & PC</button>
+        <button onclick="selectHub('Linux & Open-Source', true)" id="dnav-lin" class="hover:text-cyan-600 dark:hover:text-brandCyan transition">Linux</button>
+        <button onclick="selectHub('Apple & iOS', true)" id="dnav-app" class="hover:text-cyan-600 dark:hover:text-brandCyan transition">Apple & iOS</button>
+        <button onclick="selectHub('Android & Gadgets', true)" id="dnav-and" class="hover:text-cyan-600 dark:hover:text-brandCyan transition">Android</button>
+        <button onclick="selectHub('AI & Models', true)" id="dnav-ai" class="hover:text-cyan-600 dark:hover:text-brandCyan transition">IA</button>
+        <button onclick="selectHub('Business & Startups', true)" id="dnav-biz" class="hover:text-cyan-600 dark:hover:text-brandCyan transition">Negócios</button>
+        <button onclick="selectHub('Science & Space', true)" id="dnav-sci" class="hover:text-cyan-600 dark:hover:text-brandCyan transition">Ciência</button>
+        <button onclick="selectHub('Tutorials & Guides', true)" id="dnav-tut" class="hover:text-cyan-600 dark:hover:text-brandCyan transition">Tutoriais</button>
+        <button onclick="selectHub('Newsletter', true)" id="dnav-news" class="px-3 py-1 rounded bg-brandPurple/10 dark:bg-brandPurple/20 text-brandPurple border border-brandPurple/30 hover:bg-brandPurple hover:text-white transition">Edição de Domingo</button>
       </nav>
 
       <!-- Botão Mobile -->
-      <button onclick="toggleMobileMenu()" class="2xl:hidden p-2.5 rounded-xl bg-slate-900 text-slate-200 border border-brandBorder hover:text-brandCyan transition">
+      <button onclick="toggleMobileMenu()" class="2xl:hidden p-2.5 rounded-xl bg-slate-100 dark:bg-slate-900 text-slate-800 dark:text-slate-200 border border-slate-300 dark:border-brandBorder transition">
         <span class="text-lg font-bold">☰</span>
       </button>
     </div>
 
     <!-- Menu Mobile Dropdown -->
-    <div id="mobile-menu" class="hidden 2xl:hidden bg-slate-950 border-b border-brandBorder px-4 py-4 space-y-2 text-xs font-bold uppercase tracking-wider font-mono">
-      <button onclick="selectHub('all', true); toggleMobileMenu();" class="block w-full text-left py-2 px-3 rounded hover:bg-slate-900 text-slate-200">📑 Feed Geral (20)</button>
-      <button onclick="scrollToSection('leaderboard'); toggleMobileMenu();" class="block w-full text-left py-2 px-3 rounded hover:bg-slate-900 text-brandCyan">📊 Ranking de LLMs</button>
-      <button onclick="selectHub('Windows & PC', true); toggleMobileMenu();" class="block w-full text-left py-2 px-3 rounded hover:bg-slate-900 text-slate-200">🪟 Windows & PC</button>
-      <button onclick="selectHub('Linux & Open-Source', true); toggleMobileMenu();" class="block w-full text-left py-2 px-3 rounded hover:bg-slate-900 text-slate-200">🐧 Linux & Open-Source</button>
-      <button onclick="selectHub('Apple & iOS', true); toggleMobileMenu();" class="block w-full text-left py-2 px-3 rounded hover:bg-slate-900 text-slate-200">🍏 Apple & iOS</button>
-      <button onclick="selectHub('Android & Gadgets', true); toggleMobileMenu();" class="block w-full text-left py-2 px-3 rounded hover:bg-slate-900 text-slate-200">🤖 Android & Gadgets</button>
-      <button onclick="selectHub('AI & Models', true); toggleMobileMenu();" class="block w-full text-left py-2 px-3 rounded hover:bg-slate-900 text-slate-200">🧠 IA & Modelos</button>
-      <button onclick="selectHub('Business & Startups', true); toggleMobileMenu();" class="block w-full text-left py-2 px-3 rounded hover:bg-slate-900 text-slate-200">🏢 Mercado & Startups</button>
-      <button onclick="selectHub('Science & Space', true); toggleMobileMenu();" class="block w-full text-left py-2 px-3 rounded hover:bg-slate-900 text-slate-200">🔬 Ciência & Futuro</button>
-      <button onclick="selectHub('Tutorials & Guides', true); toggleMobileMenu();" class="block w-full text-left py-2 px-3 rounded hover:bg-slate-900 text-slate-200">🛠️ Tutoriais & Prompts</button>
-      <button onclick="selectHub('Newsletter', true); toggleMobileMenu();" class="block w-full text-left py-2 px-3 rounded hover:bg-slate-900 text-brandPurple">📬 Edições de Domingo</button>
+    <div id="mobile-menu" class="hidden 2xl:hidden bg-white dark:bg-slate-950 border-b border-slate-200 dark:border-brandBorder px-4 py-4 space-y-2 text-xs font-bold uppercase tracking-wider font-mono">
+      <button onclick="selectHub('all', true); toggleMobileMenu();" class="block w-full text-left py-2 px-3 rounded hover:bg-slate-100 dark:hover:bg-slate-900 text-slate-800 dark:text-slate-200">📑 Feed Geral (20)</button>
+      <button onclick="scrollToSection('leaderboard'); toggleMobileMenu();" class="block w-full text-left py-2 px-3 rounded hover:bg-slate-100 dark:hover:bg-slate-900 text-cyan-600 dark:text-brandCyan">📊 Ranking de LLMs</button>
+      <button onclick="selectHub('Windows & PC', true); toggleMobileMenu();" class="block w-full text-left py-2 px-3 rounded hover:bg-slate-100 dark:hover:bg-slate-900 text-slate-800 dark:text-slate-200">🪟 Windows & PC</button>
+      <button onclick="selectHub('Linux & Open-Source', true); toggleMobileMenu();" class="block w-full text-left py-2 px-3 rounded hover:bg-slate-100 dark:hover:bg-slate-900 text-slate-800 dark:text-slate-200">🐧 Linux & Open-Source</button>
+      <button onclick="selectHub('Apple & iOS', true); toggleMobileMenu();" class="block w-full text-left py-2 px-3 rounded hover:bg-slate-100 dark:hover:bg-slate-900 text-slate-800 dark:text-slate-200">🍏 Apple & iOS</button>
+      <button onclick="selectHub('Android & Gadgets', true); toggleMobileMenu();" class="block w-full text-left py-2 px-3 rounded hover:bg-slate-100 dark:hover:bg-slate-900 text-slate-800 dark:text-slate-200">🤖 Android & Gadgets</button>
+      <button onclick="selectHub('AI & Models', true); toggleMobileMenu();" class="block w-full text-left py-2 px-3 rounded hover:bg-slate-100 dark:hover:bg-slate-900 text-slate-800 dark:text-slate-200">🧠 IA & Modelos</button>
+      <button onclick="selectHub('Business & Startups', true); toggleMobileMenu();" class="block w-full text-left py-2 px-3 rounded hover:bg-slate-100 dark:hover:bg-slate-900 text-slate-800 dark:text-slate-200">🏢 Mercado & Startups</button>
+      <button onclick="selectHub('Science & Space', true); toggleMobileMenu();" class="block w-full text-left py-2 px-3 rounded hover:bg-slate-100 dark:hover:bg-slate-900 text-slate-800 dark:text-slate-200">🔬 Ciência & Futuro</button>
+      <button onclick="selectHub('Tutorials & Guides', true); toggleMobileMenu();" class="block w-full text-left py-2 px-3 rounded hover:bg-slate-100 dark:hover:bg-slate-900 text-slate-800 dark:text-slate-200">🛠️ Tutoriais & Prompts</button>
+      <button onclick="selectHub('Newsletter', true); toggleMobileMenu();" class="block w-full text-left py-2 px-3 rounded hover:bg-slate-100 dark:hover:bg-slate-900 text-brandPurple">📬 Edições de Domingo</button>
     </div>
   </header>
 
-  <!-- Hero Section Modular Asimétrico (The Verge Bento) -->
+  <!-- Hero Section Modular -->
   <section class="max-w-7xl mx-auto px-4 pt-8 pb-10 w-full">
     <div class="grid lg:grid-cols-12 gap-6">
       
-      <!-- Matéria 1 de Capa Principal (Esquerda - 7 cols) -->
-      <div class="lg:col-span-7 bg-brandCard verge-border rounded-3xl overflow-hidden glow-verge cursor-pointer group flex flex-col justify-between" onclick="openArticleByIndex(0)">
+      <!-- Matéria 1 de Capa Principal (Esquerda) -->
+      <div class="lg:col-span-7 bg-white dark:bg-brandCard border border-slate-200 dark:border-brandBorder rounded-3xl overflow-hidden glow-verge cursor-pointer group flex flex-col justify-between shadow-sm" onclick="openArticleByIndex(0)">
         <div class="h-80 sm:h-[420px] relative overflow-hidden bg-slate-900">
           <img src="https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&w=1200&q=80" alt="Hero Lead" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
-          <div class="absolute inset-0 bg-gradient-to-t from-brandCard via-brandCard/60 to-transparent"></div>
+          <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent"></div>
           <span id="feat-tag" class="absolute top-4 left-4 px-3.5 py-1 rounded bg-brandPurple text-white text-[10px] font-black uppercase tracking-widest font-mono">
             MATÉRIA DE CAPA
           </span>
         </div>
-        <div class="p-6 sm:p-8 -mt-14 relative z-10">
+        <div class="p-6 sm:p-8 -mt-16 relative z-10 text-white">
           <div class="text-[11px] font-mono text-brandCyan font-bold uppercase tracking-wider mb-2" id="feat-date">
             INVESTIGAÇÃO ESPECIAL • 9 MIN DE LEITURA
           </div>
-          <h1 id="feat-title" class="text-2xl sm:text-4xl font-black text-white verge-title leading-tight mb-3 group-hover:text-brandCyan transition-colors">
+          <h1 id="feat-title" class="text-2xl sm:text-4xl font-extrabold text-white leading-tight mb-3 group-hover:text-brandCyan transition-colors">
             A Batalha Energética da IA: Como os Data Centers de 60GW Estão Redesenhando o Mapa Global
           </h1>
-          <p id="feat-excerpt" class="text-slate-300 text-sm sm:text-base leading-relaxed line-clamp-3 mb-4">
+          <p id="feat-excerpt" class="text-slate-200 text-sm sm:text-base leading-relaxed line-clamp-3 mb-4">
             Uma investigação profunda sobre como o limite físico de eletricidade e os reatores nucleares modulares se tornaram o verdadeiro gargalo da inteligência artificial.
           </p>
           <div class="text-xs font-bold text-brandCyan flex items-center gap-1 group-hover:translate-x-1 transition-transform font-mono">
@@ -186,50 +194,50 @@
         </div>
       </div>
 
-      <!-- Duas Janelas da Direita com Fotos de Fundo (5 cols) -->
+      <!-- Duas Janelas da Direita com Fotos de Fundo -->
       <div class="lg:col-span-5 flex flex-col gap-6">
         
         <!-- Janela 1: Apple & iOS -->
-        <div class="bg-brandCard verge-border rounded-3xl overflow-hidden glow-verge cursor-pointer group flex flex-col justify-between relative min-h-[220px] flex-1" onclick="openArticleByIndex(3)">
-          <img src="https://images.unsplash.com/photo-1517336714731-489689fd1ca8?auto=format&fit=crop&w=800&q=80" alt="Apple & iOS" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 opacity-40">
-          <div class="absolute inset-0 bg-gradient-to-t from-brandCard via-brandCard/80 to-brandCard/30"></div>
+        <div class="bg-white dark:bg-brandCard border border-slate-200 dark:border-brandBorder rounded-3xl overflow-hidden glow-verge cursor-pointer group flex flex-col justify-between relative min-h-[220px] flex-1 shadow-sm" onclick="openArticleByIndex(3)">
+          <img src="https://images.unsplash.com/photo-1517336714731-489689fd1ca8?auto=format&fit=crop&w=800&q=80" alt="Apple & iOS" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 opacity-30 dark:opacity-40">
+          <div class="absolute inset-0 bg-gradient-to-t from-white dark:from-brandCard via-white/80 dark:via-brandCard/80 to-transparent"></div>
           <div class="relative z-10 p-6 flex flex-col justify-between h-full">
             <div>
               <div class="flex items-center justify-between mb-2">
-                <span id="hero-right1-cat" class="text-[9px] font-black px-2.5 py-0.5 rounded bg-brandPurple/30 text-white border border-brandPurple/40 uppercase tracking-widest font-mono backdrop-blur-md">🍏 APPLE & IOS</span>
-                <span class="text-[10px] font-mono text-slate-300 font-bold">7 MIN</span>
+                <span id="hero-right1-cat" class="text-[9px] font-black px-2.5 py-0.5 rounded bg-brandPurple/10 dark:bg-brandPurple/30 text-brandPurple dark:text-white border border-brandPurple/30 uppercase tracking-widest font-mono">🍏 APPLE & IOS</span>
+                <span class="text-[10px] font-mono text-slate-500 dark:text-slate-400 font-bold">7 MIN</span>
               </div>
-              <h3 id="hero-right1-title" class="text-lg sm:text-xl font-extrabold text-white verge-title group-hover:text-brandCyan transition-colors leading-snug mb-2">
+              <h3 id="hero-right1-title" class="text-lg sm:text-xl font-bold text-slate-900 dark:text-white group-hover:text-cyan-600 dark:group-hover:text-brandCyan transition-colors leading-snug mb-2">
                 Apple Intelligence e os Novos Chips M-Series: O Futuro do Hardware no iOS e Mac
               </h3>
-              <p id="hero-right1-desc" class="text-slate-300 text-xs sm:text-sm line-clamp-2 leading-relaxed">
+              <p id="hero-right1-desc" class="text-slate-600 dark:text-slate-300 text-xs sm:text-sm line-clamp-2 leading-relaxed">
                 Como a Apple integrou memória unificada e arquitetura neural privada de 3B de parâmetros para processamento local com latência zero.
               </p>
             </div>
-            <div id="hero-right1-btn" class="text-xs font-bold text-brandCyan pt-3 border-t border-brandBorder/60 flex items-center gap-1 group-hover:translate-x-1 transition-transform font-mono">
+            <div id="hero-right1-btn" class="text-xs font-bold text-cyan-600 dark:text-brandCyan pt-3 border-t border-slate-200 dark:border-brandBorder/60 flex items-center gap-1 group-hover:translate-x-1 transition-transform font-mono">
               Ler Análise Apple →
             </div>
           </div>
         </div>
 
         <!-- Janela 2: Windows & PC -->
-        <div class="bg-brandCard verge-border rounded-3xl overflow-hidden glow-verge cursor-pointer group flex flex-col justify-between relative min-h-[220px] flex-1" onclick="openArticleByIndex(6)">
-          <img src="https://images.unsplash.com/photo-1588872657578-7efd1f1555ed?auto=format&fit=crop&w=800&q=80" alt="Windows & PC" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 opacity-40">
-          <div class="absolute inset-0 bg-gradient-to-t from-brandCard via-brandCard/80 to-brandCard/30"></div>
+        <div class="bg-white dark:bg-brandCard border border-slate-200 dark:border-brandBorder rounded-3xl overflow-hidden glow-verge cursor-pointer group flex flex-col justify-between relative min-h-[220px] flex-1 shadow-sm" onclick="openArticleByIndex(6)">
+          <img src="https://images.unsplash.com/photo-1588872657578-7efd1f1555ed?auto=format&fit=crop&w=800&q=80" alt="Windows & PC" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 opacity-30 dark:opacity-40">
+          <div class="absolute inset-0 bg-gradient-to-t from-white dark:from-brandCard via-white/80 dark:via-brandCard/80 to-transparent"></div>
           <div class="relative z-10 p-6 flex flex-col justify-between h-full">
             <div>
               <div class="flex items-center justify-between mb-2">
-                <span id="hero-right2-cat" class="text-[9px] font-black px-2.5 py-0.5 rounded bg-brandBlue/30 text-white border border-brandBlue/40 uppercase tracking-widest font-mono backdrop-blur-md">🪟 WINDOWS & PC</span>
-                <span class="text-[10px] font-mono text-slate-300 font-bold">6 MIN</span>
+                <span id="hero-right2-cat" class="text-[9px] font-black px-2.5 py-0.5 rounded bg-blue-500/10 dark:bg-brandBlue/30 text-blue-600 dark:text-white border border-blue-500/30 uppercase tracking-widest font-mono">🪟 WINDOWS & PC</span>
+                <span class="text-[10px] font-mono text-slate-500 dark:text-slate-400 font-bold">6 MIN</span>
               </div>
-              <h3 id="hero-right2-title" class="text-lg sm:text-xl font-extrabold text-white verge-title group-hover:text-brandCyan transition-colors leading-snug mb-2">
+              <h3 id="hero-right2-title" class="text-lg sm:text-xl font-bold text-slate-900 dark:text-white group-hover:text-cyan-600 dark:group-hover:text-brandCyan transition-colors leading-snug mb-2">
                 Copilot+ PCs e a Transição para Processadores ARM no Windows
               </h3>
-              <p id="hero-right2-desc" class="text-slate-300 text-xs sm:text-sm line-clamp-2 leading-relaxed">
+              <p id="hero-right2-desc" class="text-slate-600 dark:text-slate-300 text-xs sm:text-sm line-clamp-2 leading-relaxed">
                 A evolução da emulação Prism, chips Snapdragon X Elite e NPUs de 45+ TOPS entregando mais de 20 horas de autonomia real.
               </p>
             </div>
-            <div id="hero-right2-btn" class="text-xs font-bold text-brandCyan pt-3 border-t border-brandBorder/60 flex items-center gap-1 group-hover:translate-x-1 transition-transform font-mono">
+            <div id="hero-right2-btn" class="text-xs font-bold text-cyan-600 dark:text-brandCyan pt-3 border-t border-slate-200 dark:border-brandBorder/60 flex items-center gap-1 group-hover:translate-x-1 transition-transform font-mono">
               Ler Análise PC →
             </div>
           </div>
@@ -241,23 +249,23 @@
   </section>
 
   <!-- LLM Benchmark Arena com Logos das Big Techs -->
-  <section id="leaderboard" class="border-y border-brandBorder bg-black/70 py-12 px-4 scroll-mt-20">
+  <section id="leaderboard" class="border-y border-slate-200 dark:border-brandBorder bg-slate-100/70 dark:bg-black/70 py-12 px-4 scroll-mt-20">
     <div class="max-w-7xl mx-auto">
       <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-8">
         <div>
-          <div class="inline-flex items-center gap-2 text-brandCyan text-[11px] font-mono font-bold uppercase tracking-widest mb-1.5">
-            <span class="w-2 h-2 bg-brandCyan rounded-full"></span>
+          <div class="inline-flex items-center gap-2 text-cyan-600 dark:text-brandCyan text-[11px] font-mono font-bold uppercase tracking-widest mb-1.5">
+            <span class="w-2 h-2 bg-cyan-600 dark:bg-brandCyan rounded-full"></span>
             <span id="lead-badge">MATRIZ DE BENCHMARKS • ÍNDICE SEMANAL</span>
           </div>
-          <h2 id="lead-title" class="text-2xl sm:text-3xl font-black text-white verge-title">
+          <h2 id="lead-title" class="text-2xl sm:text-3xl font-extrabold text-slate-950 dark:text-white">
             Arena de Benchmarks de IA (Clique no Modelo para Testar)
           </h2>
         </div>
         
         <div class="flex items-center gap-2 text-xs font-bold uppercase tracking-wider font-mono">
-          <button onclick="renderLeaderboard('all')" id="lbtn-all" class="px-3.5 py-1.5 rounded-lg bg-brandCyan text-slate-950 font-black transition">GERAL</button>
-          <button onclick="renderLeaderboard('reasoning')" id="lbtn-rea" class="px-3.5 py-1.5 rounded-lg bg-slate-900 text-slate-400 hover:text-white border border-brandBorder transition">RACIOCÍNIO & CÓDIGO</button>
-          <button onclick="renderLeaderboard('open')" id="lbtn-opn" class="px-3.5 py-1.5 rounded-lg bg-slate-900 text-slate-400 hover:text-white border border-brandBorder transition">OPEN-SOURCE</button>
+          <button onclick="renderLeaderboard('all')" id="lbtn-all" class="px-3.5 py-1.5 rounded-lg bg-cyan-500 dark:bg-brandCyan text-slate-950 font-black transition">GERAL</button>
+          <button onclick="renderLeaderboard('reasoning')" id="lbtn-rea" class="px-3.5 py-1.5 rounded-lg bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-400 hover:text-slate-950 dark:hover:text-white border border-slate-300 dark:border-brandBorder transition">RACIOCÍNIO & CÓDIGO</button>
+          <button onclick="renderLeaderboard('open')" id="lbtn-opn" class="px-3.5 py-1.5 rounded-lg bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-400 hover:text-slate-950 dark:hover:text-white border border-slate-300 dark:border-brandBorder transition">OPEN-SOURCE</button>
         </div>
       </div>
 
@@ -265,23 +273,23 @@
     </div>
   </section>
 
-  <!-- Feed Principal de Matérias (Transição Direta sem Barra Duplicada) -->
+  <!-- Feed Principal de Matérias -->
   <div class="max-w-7xl mx-auto px-4 py-10 w-full grid lg:grid-cols-12 gap-8" id="feed-container">
     
     <main class="lg:col-span-8 space-y-8 scroll-mt-24" id="feed">
       
       <!-- Cabeçalho da Seção Ativa com Busca Discreta -->
-      <div id="category-banner-card" class="border-b border-brandBorder pb-5 flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+      <div id="category-banner-card" class="border-b border-slate-200 dark:border-brandBorder pb-5 flex flex-col sm:flex-row sm:items-end justify-between gap-4">
         <div>
-          <span id="cat-banner-tag" class="px-2.5 py-0.5 rounded bg-brandCyan/20 text-brandCyan text-[9px] font-black uppercase tracking-widest border border-brandCyan/30 font-mono">HUB EDITORIAL</span>
-          <h2 id="cat-banner-title" class="text-2xl sm:text-3xl font-black text-white verge-title mt-1.5">Todas as Publicações</h2>
-          <p id="cat-banner-desc" class="text-slate-400 text-xs mt-1">Acervo completo com 20 análises aprofundadas, tutoriais e benchmarks.</p>
+          <span id="cat-banner-tag" class="px-2.5 py-0.5 rounded bg-cyan-500/10 dark:bg-brandCyan/20 text-cyan-700 dark:text-brandCyan text-[9px] font-black uppercase tracking-widest border border-cyan-500/20 dark:border-brandCyan/30 font-mono">HUB EDITORIAL</span>
+          <h2 id="cat-banner-title" class="text-2xl sm:text-3xl font-extrabold text-slate-950 dark:text-white mt-1.5">Todas as Publicações</h2>
+          <p id="cat-banner-desc" class="text-slate-600 dark:text-slate-400 text-xs mt-1">Acervo completo com 20 análises aprofundadas, tutoriais e benchmarks.</p>
         </div>
 
         <!-- Busca Integrada -->
         <div class="relative w-full sm:w-60 shrink-0">
-          <input id="search-input" oninput="handleSearch()" type="text" placeholder="Filtrar matérias..." class="w-full pl-8 pr-3 py-2 rounded-xl bg-slate-900 border border-brandBorder text-xs text-white focus:outline-none focus:border-brandCyan transition font-mono">
-          <span class="absolute left-3 top-2.5 text-slate-500 text-xs">⚡</span>
+          <input id="search-input" oninput="handleSearch()" type="text" placeholder="Filtrar matérias..." class="w-full pl-8 pr-3 py-2 rounded-xl bg-white dark:bg-slate-900 border border-slate-300 dark:border-brandBorder text-xs text-slate-900 dark:text-white focus:outline-none focus:border-brandCyan transition font-mono">
+          <span class="absolute left-3 top-2.5 text-slate-400 text-xs">⚡</span>
         </div>
       </div>
 
@@ -289,7 +297,7 @@
       <div id="articles-grid" class="grid sm:grid-cols-2 gap-6"></div>
 
       <!-- Bloco de Anúncio Google AdSense Responsivo -->
-      <div class="p-4 rounded-2xl border border-brandBorder bg-slate-950/60 text-center overflow-hidden min-h-[100px] flex items-center justify-center">
+      <div class="p-4 rounded-2xl border border-slate-300 dark:border-brandBorder bg-slate-100 dark:bg-slate-950/60 text-center overflow-hidden min-h-[100px] flex items-center justify-center">
         <ins class="adsbygoogle"
              style="display:block"
              data-ad-format="fluid"
@@ -302,69 +310,69 @@
       </div>
     </main>
 
-    <!-- Sidebar Estilo The Verge -->
+    <!-- Sidebar -->
     <aside class="lg:col-span-4 space-y-6">
       
       <!-- Newsletter -->
-      <div class="p-6 rounded-3xl bg-brandCard verge-border relative overflow-hidden">
+      <div class="p-6 rounded-3xl bg-white dark:bg-brandCard border border-slate-200 dark:border-brandBorder relative overflow-hidden shadow-sm">
         <div id="sidebar-news-tag" class="flex items-center gap-2 mb-2 text-brandPurple font-mono font-bold text-[10px] tracking-widest uppercase">
           <span>📬</span> DISPARO DIRETO NA CAIXA DE ENTRADA
         </div>
-        <h3 id="newsletter-title" class="text-xl font-black text-white verge-title mb-2">CorticFlow Semanal</h3>
-        <p id="newsletter-sub" class="text-slate-400 text-xs mb-4 leading-relaxed">Todo domingo às 20h, receba a compilação executiva e o tutorial da semana no seu e-mail.</p>
+        <h3 id="newsletter-title" class="text-xl font-extrabold text-slate-950 dark:text-white mb-2">CorticFlow Semanal</h3>
+        <p id="newsletter-sub" class="text-slate-600 dark:text-slate-400 text-xs mb-4 leading-relaxed">Todo domingo às 20h, receba a compilação executiva e o tutorial da semana no seu e-mail.</p>
         <form class="space-y-3" onsubmit="event.preventDefault(); alert(currentLang === 'pt' ? 'Inscrição confirmada no CorticFlow!' : 'Subscription confirmed on CorticFlow!');">
-          <input id="newsletter-input" type="email" placeholder="Seu melhor e-mail" required class="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-brandBorder text-white text-xs focus:outline-none focus:border-brandCyan transition font-mono">
+          <input id="newsletter-input" type="email" placeholder="Seu melhor e-mail" required class="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-brandBorder text-slate-900 dark:text-white text-xs focus:outline-none focus:border-brandCyan transition font-mono">
           <button id="newsletter-btn" type="submit" class="w-full py-2.5 rounded-xl bg-brandCyan hover:bg-cyan-300 text-black font-black text-xs uppercase tracking-wider transition font-mono">Inscrever-se Grátis</button>
         </form>
       </div>
 
       <!-- Prompt da Semana -->
-      <div class="p-6 rounded-3xl bg-brandCard verge-border">
+      <div class="p-6 rounded-3xl bg-white dark:bg-brandCard border border-slate-200 dark:border-brandBorder shadow-sm">
         <div class="flex items-center justify-between mb-3">
-          <span id="prompt-tag" class="text-[9px] font-black px-2 py-0.5 rounded bg-brandPurple/20 text-brandPurple uppercase tracking-widest border border-brandPurple/30 font-mono">PROMPT DA SEMANA</span>
+          <span id="prompt-tag" class="text-[9px] font-black px-2 py-0.5 rounded bg-brandPurple/10 dark:bg-brandPurple/20 text-brandPurple uppercase tracking-widest border border-brandPurple/30 font-mono">PROMPT DA SEMANA</span>
           <span id="prompt-cat-label" class="text-[10px] font-mono text-slate-500">PRODUTIVIDADE</span>
         </div>
-        <h4 id="prompt-card-title" class="text-sm font-bold text-white mb-2 font-display">Auditoria e Refatoração de Código</h4>
-        <p id="prompt-card-desc" class="text-slate-400 text-xs mb-3">Prompt calibrado para analisar vulnerabilidades de injeção, memory leaks e latência.</p>
-        <div class="bg-black p-3.5 rounded-xl border border-brandBorder text-[11px] font-mono text-slate-300 mb-3 max-h-28 overflow-y-auto leading-relaxed" id="prompt-code">
+        <h4 id="prompt-card-title" class="text-sm font-bold text-slate-950 dark:text-white mb-2">Auditoria e Refatoração de Código</h4>
+        <p id="prompt-card-desc" class="text-slate-600 dark:text-slate-400 text-xs mb-3">Prompt calibrado para analisar vulnerabilidades de injeção, memory leaks e latência.</p>
+        <div class="bg-slate-100 dark:bg-black p-3.5 rounded-xl border border-slate-200 dark:border-brandBorder text-[11px] font-mono text-slate-800 dark:text-slate-300 mb-3 max-h-28 overflow-y-auto leading-relaxed" id="prompt-code">
           "Atue como Engenheiro Sênior de QA e Segurança. Analise o código a seguir procurando vulnerabilidades de injeção, memory leaks e gargalos de latência. Forneça a versão corrigida acompanhada da justificativa técnica."
         </div>
-        <button onclick="copyPrompt()" id="btn-copy-prompt" class="w-full py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-brandCyan text-xs font-bold border border-brandBorder transition uppercase tracking-wider font-mono">
+        <button onclick="copyPrompt()" id="btn-copy-prompt" class="w-full py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-900 dark:hover:bg-slate-800 text-cyan-700 dark:text-brandCyan text-xs font-bold border border-slate-300 dark:border-brandBorder transition uppercase tracking-wider font-mono">
           📋 Copiar Prompt
         </button>
       </div>
 
       <!-- Mais Lidas -->
-      <div class="p-6 rounded-3xl bg-brandCard verge-border">
-        <h3 id="top-title" class="text-xs font-black text-white uppercase tracking-widest mb-4 flex items-center gap-2 border-b border-brandBorder pb-3 font-mono">
+      <div class="p-6 rounded-3xl bg-white dark:bg-brandCard border border-slate-200 dark:border-brandBorder shadow-sm">
+        <h3 id="top-title" class="text-xs font-black text-slate-950 dark:text-white uppercase tracking-widest mb-4 flex items-center gap-2 border-b border-slate-200 dark:border-brandBorder pb-3 font-mono">
           🔥 MAIS LIDAS DA SEMANA
         </h3>
         <div class="space-y-4" id="top-list">
           <div class="flex items-start gap-3 cursor-pointer group" onclick="openArticleByIndex(0)">
-            <span class="text-2xl font-black text-brandCyan font-mono">01</span>
+            <span class="text-2xl font-black text-cyan-600 dark:text-brandCyan font-mono">01</span>
             <div>
-              <h5 class="text-xs font-bold text-slate-200 group-hover:text-brandCyan transition leading-snug">A Batalha Energética da IA e os Data Centers de 60GW</h5>
+              <h5 class="text-xs font-bold text-slate-800 dark:text-slate-200 group-hover:text-cyan-600 dark:group-hover:text-brandCyan transition leading-snug">A Batalha Energética da IA e os Data Centers de 60GW</h5>
               <span class="text-[10px] font-mono text-slate-500">9 min • Infraestrutura</span>
             </div>
           </div>
           <div class="flex items-start gap-3 cursor-pointer group" onclick="openArticleByIndex(3)">
             <span class="text-2xl font-black text-brandPurple font-mono">02</span>
             <div>
-              <h5 class="text-xs font-bold text-slate-200 group-hover:text-brandCyan transition leading-snug">Apple Intelligence e a Nova Linha M-Series</h5>
+              <h5 class="text-xs font-bold text-slate-800 dark:text-slate-200 group-hover:text-cyan-600 dark:group-hover:text-brandCyan transition leading-snug">Apple Intelligence e a Nova Linha M-Series</h5>
               <span class="text-[10px] font-mono text-slate-500">7 min • Apple & iOS</span>
             </div>
           </div>
           <div class="flex items-start gap-3 cursor-pointer group" onclick="openArticleByIndex(6)">
-            <span class="text-2xl font-black text-brandBlue font-mono">03</span>
+            <span class="text-2xl font-black text-blue-600 dark:text-brandBlue font-mono">03</span>
             <div>
-              <h5 class="text-xs font-bold text-slate-200 group-hover:text-brandCyan transition leading-snug">Copilot+ PCs e a Transição para Processadores ARM</h5>
+              <h5 class="text-xs font-bold text-slate-800 dark:text-slate-200 group-hover:text-cyan-600 dark:group-hover:text-brandCyan transition leading-snug">Copilot+ PCs e a Transição para Processadores ARM</h5>
               <span class="text-[10px] font-mono text-slate-500">6 min • Windows & PC</span>
             </div>
           </div>
           <div class="flex items-start gap-3 cursor-pointer group" onclick="openArticleByIndex(8)">
             <span class="text-2xl font-black text-brandOrange font-mono">04</span>
             <div>
-              <h5 class="text-xs font-bold text-slate-200 group-hover:text-brandCyan transition leading-snug">A Ascensão do Linux em Servidores de IA</h5>
+              <h5 class="text-xs font-bold text-slate-800 dark:text-slate-200 group-hover:text-cyan-600 dark:group-hover:text-brandCyan transition leading-snug">A Ascensão do Linux em Servidores de IA</h5>
               <span class="text-[10px] font-mono text-slate-500">8 min • Linux</span>
             </div>
           </div>
@@ -374,70 +382,70 @@
     </aside>
   </div>
 
-  <!-- Modal de Leitura Long-Form Estilo The Verge -->
-  <div id="article-modal" style="display: none;" class="fixed inset-0 z-[100] bg-black/90 backdrop-blur-xl items-center justify-center p-3 sm:p-6" onclick="if(event.target === this) closeModal();">
-    <div class="bg-brandCard verge-border rounded-3xl max-w-3xl w-full max-h-[92vh] flex flex-col shadow-[0_20px_60px_rgba(0,0,0,0.9)] overflow-hidden relative">
+  <!-- Modal de Leitura Long-Form -->
+  <div id="article-modal" style="display: none;" class="fixed inset-0 z-[100] bg-black/80 backdrop-blur-xl items-center justify-center p-3 sm:p-6" onclick="if(event.target === this) closeModal();">
+    <div class="bg-white dark:bg-brandCard border border-slate-300 dark:border-brandBorder rounded-3xl max-w-3xl w-full max-h-[92vh] flex flex-col shadow-2xl overflow-hidden relative text-slate-900 dark:text-slate-100">
       
       <!-- Topo do Modal -->
-      <div class="p-5 sm:p-6 border-b border-brandBorder flex items-center justify-between bg-black/80">
+      <div class="p-5 sm:p-6 border-b border-slate-200 dark:border-brandBorder flex items-center justify-between bg-slate-50 dark:bg-black/80">
         <div class="flex items-center gap-3">
-          <span id="modal-cat" class="text-[10px] font-black px-2.5 py-1 rounded bg-brandCyan/20 text-brandCyan border border-brandCyan/30 uppercase tracking-widest font-mono"></span>
-          <span id="modal-date" class="text-xs font-mono text-slate-400"></span>
+          <span id="modal-cat" class="text-[10px] font-black px-2.5 py-1 rounded bg-cyan-500/10 dark:bg-brandCyan/20 text-cyan-700 dark:text-brandCyan border border-cyan-500/20 dark:border-brandCyan/30 uppercase tracking-widest font-mono"></span>
+          <span id="modal-date" class="text-xs font-mono text-slate-500 dark:text-slate-400"></span>
         </div>
-        <button onclick="closeModal()" class="w-8 h-8 rounded-full bg-slate-900 hover:bg-slate-800 text-slate-200 flex items-center justify-center text-base font-bold transition">✕</button>
+        <button onclick="closeModal()" class="w-8 h-8 rounded-full bg-slate-200 dark:bg-slate-900 hover:bg-slate-300 dark:hover:bg-slate-800 text-slate-800 dark:text-slate-200 flex items-center justify-center text-base font-bold transition">✕</button>
       </div>
 
-      <!-- Corpo da Matéria Long-Form -->
+      <!-- Corpo da Matéria -->
       <div class="p-6 sm:p-10 overflow-y-auto flex-1">
-        <div class="mb-6 pb-6 border-b border-brandBorder">
-          <h1 id="modal-title" class="text-2xl sm:text-4xl font-black text-white verge-title mb-4 leading-tight"></h1>
-          <div class="flex items-center gap-4 text-xs font-mono text-slate-400">
-            <span class="text-brandCyan font-bold">Por Equipe CorticFlow</span>
+        <div class="mb-6 pb-6 border-b border-slate-200 dark:border-brandBorder">
+          <h1 id="modal-title" class="text-2xl sm:text-4xl font-extrabold text-slate-950 dark:text-white mb-4 leading-tight"></h1>
+          <div class="flex items-center gap-4 text-xs font-mono text-slate-500 dark:text-slate-400">
+            <span class="text-cyan-700 dark:text-brandCyan font-bold">Por Equipe CorticFlow</span>
             <span>•</span>
-            <span id="modal-readtime" class="bg-slate-900 px-2 py-0.5 rounded border border-brandBorder"></span>
+            <span id="modal-readtime" class="bg-slate-100 dark:bg-slate-900 px-2 py-0.5 rounded border border-slate-200 dark:border-brandBorder"></span>
           </div>
         </div>
-        <div id="modal-content" class="prose-verge drop-cap"></div>
+        <div id="modal-content" class="prose-custom drop-cap"></div>
       </div>
     </div>
   </div>
 
   <!-- Rodapé -->
-  <footer class="border-t border-brandBorder py-14 bg-black text-slate-500 text-xs mt-auto">
+  <footer class="border-t border-slate-200 dark:border-brandBorder py-14 bg-white dark:bg-black text-slate-500 text-xs mt-auto">
     <div class="max-w-7xl mx-auto px-4 grid sm:grid-cols-2 md:grid-cols-4 gap-8 mb-10">
       <div>
-        <div class="flex items-center gap-2 mb-3 text-white font-black text-lg verge-title">
+        <div class="flex items-center gap-2 mb-3 text-slate-950 dark:text-white font-extrabold text-lg">
           <span class="w-6 h-6 bg-brandCyan text-black flex items-center justify-center text-xs font-black transform -skew-x-6">C</span>
           CORTIC//FLOW
         </div>
-        <p id="footer-about" class="text-slate-400 text-xs leading-relaxed">O fluxo da tecnologia, inovação e inteligência artificial. Portal independente de notícias, análises de produtos e tutoriais autônomos.</p>
+        <p id="footer-about" class="text-slate-600 dark:text-slate-400 text-xs leading-relaxed">O fluxo da tecnologia, inovação e inteligência artificial. Portal independente de notícias, análises de produtos e tutoriais autônomos.</p>
       </div>
       <div>
-        <h4 id="footer-cat-title" class="text-white font-black mb-3 uppercase tracking-widest text-[10px] font-mono">EDITORIAS</h4>
+        <h4 id="footer-cat-title" class="text-slate-950 dark:text-white font-bold mb-3 uppercase tracking-widest text-[10px] font-mono">EDITORIAS</h4>
         <ul class="space-y-2">
-          <li><button onclick="selectHub('Windows & PC', true)" class="hover:text-brandCyan transition">Windows & PC</button></li>
-          <li><button onclick="selectHub('Linux & Open-Source', true)" class="hover:text-brandCyan transition">Linux & Open-Source</button></li>
-          <li><button onclick="selectHub('Apple & iOS', true)" class="hover:text-brandCyan transition">Apple & iOS</button></li>
-          <li><button onclick="selectHub('Android & Gadgets', true)" class="hover:text-brandCyan transition">Android & Gadgets</button></li>
-          <li><button onclick="selectHub('AI & Models', true)" class="hover:text-brandCyan transition">IA & Modelos</button></li>
+          <li><button onclick="selectHub('Windows & PC', true)" class="hover:text-cyan-600 dark:hover:text-brandCyan transition">Windows & PC</button></li>
+          <li><button onclick="selectHub('Linux & Open-Source', true)" class="hover:text-cyan-600 dark:hover:text-brandCyan transition">Linux & Open-Source</button></li>
+          <li><button onclick="selectHub('Apple & iOS', true)" class="hover:text-cyan-600 dark:hover:text-brandCyan transition">Apple & iOS</button></li>
+          <li><button onclick="selectHub('Android & Gadgets', true)" class="hover:text-cyan-600 dark:hover:text-brandCyan transition">Android & Gadgets</button></li>
+          <li><button onclick="selectHub('AI & Models', true)" class="hover:text-cyan-600 dark:hover:text-brandCyan transition">IA & Modelos</button></li>
         </ul>
       </div>
       <div>
-        <h4 id="footer-inst-title" class="text-white font-black mb-3 uppercase tracking-widest text-[10px] font-mono">INSTITUCIONAL</h4>
+        <h4 id="footer-inst-title" class="text-slate-950 dark:text-white font-bold mb-3 uppercase tracking-widest text-[10px] font-mono">INSTITUCIONAL</h4>
         <ul class="space-y-2">
-          <li><a href="privacy.html" id="fnav-priv" class="hover:text-brandCyan transition">Política de Privacidade</a></li>
-          <li><a href="terms.html" id="fnav-terms" class="hover:text-slate-300 transition">Termos de Uso</a></li>
-          <li><a href="mailto:corticflow@gmail.com" class="hover:text-slate-300 transition">Contato: corticflow@gmail.com</a></li>
-          <li><a href="https://github.com/corticflow" target="_blank" class="hover:text-slate-300 transition">Repositório GitHub ↗</a></li>
+          <li><a href="privacy.html" id="fnav-priv" class="hover:text-cyan-600 dark:hover:text-brandCyan transition">Política de Privacidade</a></li>
+          <li><a href="terms.html" id="fnav-terms" class="hover:text-slate-700 dark:hover:text-slate-300 transition">Termos de Uso</a></li>
+          <li><a href="mailto:corticflow@gmail.com" class="hover:text-slate-700 dark:hover:text-slate-300 transition">Contato: corticflow@gmail.com</a></li>
+          <li><a href="https://github.com/corticflow" target="_blank" class="hover:text-slate-700 dark:hover:text-slate-300 transition">Repositório GitHub ↗</a></li>
         </ul>
       </div>
       <div>
-        <h4 id="footer-sun-title" class="text-white font-black mb-3 uppercase tracking-widest text-[10px] font-mono">EDIÇÃO DE DOMINGO</h4>
-        <p id="footer-sun-desc" class="text-slate-400 text-xs mb-2">Entregue todo domingo às 20h pelo pipeline autônomo do Gemini.</p>
-        <span class="inline-block px-2 py-0.5 rounded bg-slate-900 text-brandCyan border border-brandCyan/20 text-[10px] font-mono">100% Serverless Architecture</span>
+        <h4 id="footer-sun-title" class="text-slate-950 dark:text-white font-bold mb-3 uppercase tracking-widest text-[10px] font-mono">EDIÇÃO DE DOMINGO</h4>
+        <p id="footer-sun-desc" class="text-slate-600 dark:text-slate-400 text-xs mb-2">Entregue todo domingo às 20h pelo pipeline autônomo do Gemini.</p>
+        <span class="inline-block px-2 py-0.5 rounded bg-slate-100 dark:bg-slate-900 text-cyan-700 dark:text-brandCyan border border-cyan-500/20 dark:border-brandCyan/20 text-[10px] font-mono">100% Serverless Architecture</span>
       </div>
     </div>
-    <div class="max-w-7xl mx-auto px-4 pt-6 border-t border-slate-900 flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-left text-slate-600">
+    <div class="max-w-7xl mx-auto px-4 pt-6 border-t border-slate-200 dark:border-slate-900 flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-left text-slate-500">
       <div id="footer-copy">© 2026 <strong>CorticFlow</strong>. Todos os direitos reservados.</div>
       <div class="font-mono text-[10px]">Plataforma Independente de Tecnologia & Inovação</div>
     </div>
@@ -447,6 +455,35 @@
   <script>
     let currentLang = 'pt';
     let currentHub = 'all';
+
+    // Gerenciador de Tema (Claro / Escuro)
+    function initTheme() {
+      const savedTheme = localStorage.getItem('cortic_theme');
+      if (savedTheme === 'light') {
+        document.documentElement.classList.remove('dark');
+        document.documentElement.classList.add('light');
+        document.getElementById('theme-btn').innerText = '☀️';
+      } else {
+        document.documentElement.classList.add('dark');
+        document.documentElement.classList.remove('light');
+        document.getElementById('theme-btn').innerText = '🌙';
+      }
+    }
+
+    function toggleTheme() {
+      const isDark = document.documentElement.classList.contains('dark');
+      if (isDark) {
+        document.documentElement.classList.remove('dark');
+        document.documentElement.classList.add('light');
+        localStorage.setItem('cortic_theme', 'light');
+        document.getElementById('theme-btn').innerText = '☀️';
+      } else {
+        document.documentElement.classList.add('dark');
+        document.documentElement.classList.remove('light');
+        localStorage.setItem('cortic_theme', 'dark');
+        document.getElementById('theme-btn').innerText = '🌙';
+      }
+    }
 
     const LEADERBOARD_DATA = [
       { 
@@ -460,7 +497,7 @@
         cost: "$0.075 / 1M", 
         url: "https://aistudio.google.com",
         bg_gradient: "from-blue-950/40 via-brandCard to-brandCard",
-        badge_style: "text-blue-400 border border-blue-500/30",
+        badge_style: "text-blue-500 dark:text-blue-400 border border-blue-500/30",
         dot_color: "bg-blue-400",
         svg_watermark: `<svg viewBox="0 0 100 100" fill="currentColor" class="w-full h-full"><path d="M50 0 C50 27.6 27.6 50 0 50 C27.6 50 50 72.4 50 100 C50 72.4 72.4 50 100 50 C72.4 50 50 27.6 50 0 Z" fill="url(#g-gemini)"/><defs><linearGradient id="g-gemini" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#3B82F6"/><stop offset="100%" stop-color="#E024C3"/></linearGradient></defs></svg>`
       },
@@ -475,7 +512,7 @@
         cost: "$3.00 / 1M", 
         url: "https://claude.ai",
         bg_gradient: "from-amber-950/40 via-brandCard to-brandCard",
-        badge_style: "text-amber-400 border border-amber-500/30",
+        badge_style: "text-amber-600 dark:text-amber-400 border border-amber-500/30",
         dot_color: "bg-amber-400",
         svg_watermark: `<svg viewBox="0 0 100 100" fill="currentColor" class="w-full h-full"><rect x="42" y="10" width="16" height="80" rx="8" fill="#D97706"/><rect x="10" y="42" width="80" height="16" rx="8" fill="#D97706"/><rect x="19" y="19" width="62" height="16" rx="8" transform="rotate(45 50 50)" fill="#D97706"/><rect x="19" y="19" width="62" height="16" rx="8" transform="rotate(-45 50 50)" fill="#D97706"/></svg>`
       },
@@ -490,7 +527,7 @@
         cost: "$2.50 / 1M", 
         url: "https://chatgpt.com",
         bg_gradient: "from-emerald-950/40 via-brandCard to-brandCard",
-        badge_style: "text-emerald-400 border border-emerald-500/30",
+        badge_style: "text-emerald-600 dark:text-emerald-400 border border-emerald-500/30",
         dot_color: "bg-emerald-400",
         svg_watermark: `<svg viewBox="0 0 100 100" fill="none" stroke="#10B981" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" class="w-full h-full"><path d="M50 15 L78 31 L78 69 L50 85 L22 69 L22 31 Z"/><path d="M50 15 L50 50 L78 69"/><path d="M78 31 L50 50 L22 69"/><path d="M22 31 L50 50 L50 85"/></svg>`
       },
@@ -505,7 +542,7 @@
         cost: "Open-Weights", 
         url: "https://chat.deepseek.com",
         bg_gradient: "from-cyan-950/40 via-brandCard to-brandCard",
-        badge_style: "text-cyan-400 border border-cyan-500/30",
+        badge_style: "text-cyan-600 dark:text-cyan-400 border border-cyan-500/30",
         dot_color: "bg-cyan-400",
         svg_watermark: `<svg viewBox="0 0 100 100" fill="currentColor" class="w-full h-full"><path d="M20 65 Q45 20 80 35 Q90 60 65 75 Q40 85 20 65 Z" fill="#06B6D4"/><circle cx="70" cy="45" r="4" fill="#0B0D13"/><path d="M15 70 Q30 65 35 80 Q20 85 15 70 Z" fill="#06B6D4"/></svg>`
       },
@@ -520,7 +557,7 @@
         cost: "Open-Weights", 
         url: "https://www.llama.com",
         bg_gradient: "from-indigo-950/40 via-brandCard to-brandCard",
-        badge_style: "text-indigo-400 border border-indigo-500/30",
+        badge_style: "text-indigo-600 dark:text-indigo-400 border border-indigo-500/30",
         dot_color: "bg-indigo-400",
         svg_watermark: `<svg viewBox="0 0 100 100" fill="none" stroke="#6366F1" stroke-width="8" class="w-full h-full"><path d="M30 50 C15 35 15 65 30 50 C45 35 55 65 70 50 C85 35 85 65 70 50 C55 35 45 65 30 50 Z"/></svg>`
       }
@@ -1008,14 +1045,14 @@ From distributed Kubernetes clusters to low-latency kernel scheduling, Linux rem
 
       ['all', 'rea', 'opn'].forEach(t => {
         const b = document.getElementById('lbtn-' + t);
-        if (b) b.className = "px-3.5 py-1.5 rounded-lg bg-slate-900 text-slate-400 hover:text-white border border-brandBorder transition";
+        if (b) b.className = "px-3.5 py-1.5 rounded-lg bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-400 hover:text-slate-950 dark:hover:text-white border border-slate-300 dark:border-brandBorder transition";
       });
 
       let activeB = 'lbtn-all';
       if (filter === 'reasoning') activeB = 'lbtn-rea';
       if (filter === 'open') activeB = 'lbtn-opn';
       const ab = document.getElementById(activeB);
-      if (ab) ab.className = "px-3.5 py-1.5 rounded-lg bg-brandCyan text-slate-950 font-black transition";
+      if (ab) ab.className = "px-3.5 py-1.5 rounded-lg bg-cyan-500 dark:bg-brandCyan text-slate-950 font-black transition";
 
       const list = filter === 'all' 
         ? LEADERBOARD_DATA 
@@ -1026,38 +1063,38 @@ From distributed Kubernetes clusters to low-latency kernel scheduling, Linux rem
         card.href = m.url;
         card.target = "_blank";
         card.rel = "noopener noreferrer";
-        card.className = `relative overflow-hidden bg-brandCard verge-border rounded-2xl p-5 flex flex-col justify-between glow-verge transition group bg-gradient-to-br ${m.bg_gradient}`;
+        card.className = `relative overflow-hidden bg-white dark:bg-brandCard border border-slate-200 dark:border-brandBorder rounded-2xl p-5 flex flex-col justify-between glow-verge transition group shadow-sm`;
         card.innerHTML = `
-          <div class="absolute -right-4 -bottom-4 w-28 h-28 pointer-events-none opacity-10 group-hover:opacity-25 group-hover:scale-110 transition-all duration-500 text-white">
+          <div class="absolute -right-4 -bottom-4 w-28 h-28 pointer-events-none opacity-10 dark:opacity-15 group-hover:opacity-30 group-hover:scale-110 transition-all duration-500">
             ${m.svg_watermark}
           </div>
 
           <div class="relative z-10">
             <div class="flex items-center justify-between mb-3">
-              <span class="text-[9px] font-black px-2.5 py-0.5 rounded bg-slate-950/80 ${m.badge_style} uppercase font-mono tracking-wider flex items-center gap-1.5 shadow-sm">
+              <span class="text-[9px] font-black px-2.5 py-0.5 rounded bg-slate-100 dark:bg-slate-950/80 ${m.badge_style} uppercase font-mono tracking-wider flex items-center gap-1.5 shadow-sm">
                 <span class="w-1.5 h-1.5 rounded-full ${m.dot_color}"></span>
                 #${idx + 1} ${m.provider}
               </span>
-              <span class="text-xs text-slate-400 group-hover:text-brandCyan group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform font-bold">↗</span>
+              <span class="text-xs text-slate-400 group-hover:text-cyan-600 dark:group-hover:text-brandCyan group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform font-bold">↗</span>
             </div>
-            <h4 class="text-sm sm:text-base font-black text-white mb-2.5 group-hover:text-brandCyan transition verge-title">${m.name}</h4>
+            <h4 class="text-sm sm:text-base font-bold text-slate-950 dark:text-white mb-2.5 group-hover:text-cyan-600 dark:group-hover:text-brandCyan transition">${m.name}</h4>
             <div class="space-y-1.5 mb-3">
-              <div class="flex justify-between text-[11px] font-mono text-slate-400">
+              <div class="flex justify-between text-[11px] font-mono text-slate-500 dark:text-slate-400">
                 <span>${currentLang === 'pt' ? 'PONTUAÇÃO GERAL' : 'OVERALL SCORE'}</span>
-                <span class="font-bold text-brandCyan">${m.score}/100</span>
+                <span class="font-bold text-cyan-600 dark:text-brandCyan">${m.score}/100</span>
               </div>
-              <div class="w-full h-1.5 bg-slate-950/80 rounded-full overflow-hidden border border-slate-800">
-                <div class="h-full bg-gradient-to-r from-brandCyan to-brandPurple rounded-full" style="width: ${m.score}%"></div>
+              <div class="w-full h-1.5 bg-slate-200 dark:bg-slate-950/80 rounded-full overflow-hidden border border-slate-300 dark:border-slate-800">
+                <div class="h-full bg-gradient-to-r from-cyan-500 to-brandPurple rounded-full" style="width: ${m.score}%"></div>
               </div>
-              <div class="flex justify-between text-[10px] font-mono text-slate-400 pt-1">
-                <span>${currentLang === 'pt' ? 'Raciocínio' : 'Reasoning'}: <strong class="text-white">${m.reasoning}</strong></span>
-                <span>${currentLang === 'pt' ? 'Código' : 'Coding'}: <strong class="text-white">${m.coding}</strong></span>
+              <div class="flex justify-between text-[10px] font-mono text-slate-500 dark:text-slate-400 pt-1">
+                <span>${currentLang === 'pt' ? 'Raciocínio' : 'Reasoning'}: <strong class="text-slate-800 dark:text-white">${m.reasoning}</strong></span>
+                <span>${currentLang === 'pt' ? 'Código' : 'Coding'}: <strong class="text-slate-800 dark:text-white">${m.coding}</strong></span>
               </div>
             </div>
           </div>
-          <div class="relative z-10 text-[10px] font-mono text-slate-400 pt-2.5 border-t border-brandBorder/60 flex justify-between">
+          <div class="relative z-10 text-[10px] font-mono text-slate-500 dark:text-slate-400 pt-2.5 border-t border-slate-200 dark:border-brandBorder/60 flex justify-between">
             <span>${m.context}</span>
-            <span class="font-bold text-brandCyan">${m.cost}</span>
+            <span class="font-bold text-cyan-600 dark:text-brandCyan">${m.cost}</span>
           </div>
         `;
         container.appendChild(card);
@@ -1126,23 +1163,23 @@ From distributed Kubernetes clusters to low-latency kernel scheduling, Linux rem
       filtered.forEach((art, idx) => {
         const imageUrl = art.image || FALLBACK_IMAGES[idx % FALLBACK_IMAGES.length];
         const card = document.createElement('article');
-        card.className = "bg-brandCard verge-border rounded-3xl overflow-hidden glow-verge flex flex-col justify-between cursor-pointer group";
+        card.className = "bg-white dark:bg-brandCard border border-slate-200 dark:border-brandBorder rounded-3xl overflow-hidden glow-verge flex flex-col justify-between cursor-pointer group shadow-sm";
         card.onclick = () => openArticle(art.title, art.category, art.readTime || art.date, art.content);
         card.innerHTML = `
           <div>
             <div class="h-48 bg-slate-950 relative overflow-hidden">
               <img src="${imageUrl}" alt="${art.title}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy" onerror="this.style.display='none'; this.parentElement.classList.add('bg-gradient-to-br','from-slate-900','to-brandCard');">
-              <div class="absolute inset-0 bg-gradient-to-t from-brandCard via-transparent to-transparent"></div>
+              <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
               <span class="absolute top-3 left-3 px-2.5 py-0.5 rounded bg-black/90 backdrop-blur-md border border-brandBorder text-brandCyan text-[9px] font-black tracking-widest uppercase font-mono">${art.category}</span>
             </div>
             
             <div class="p-6">
-              <div class="text-[10px] font-mono text-slate-500 mb-1.5 uppercase">${art.readTime || art.date}</div>
-              <h3 class="text-base sm:text-lg font-black text-white verge-title mb-2 group-hover:text-brandCyan transition-colors leading-snug">${art.title}</h3>
-              <p class="text-slate-400 text-xs sm:text-sm leading-relaxed mb-4 line-clamp-3">${art.excerpt}</p>
+              <div class="text-[10px] font-mono text-slate-500 dark:text-slate-400 mb-1.5 uppercase">${art.readTime || art.date}</div>
+              <h3 class="text-base sm:text-lg font-bold text-slate-950 dark:text-white mb-2 group-hover:text-cyan-600 dark:group-hover:text-brandCyan transition-colors leading-snug">${art.title}</h3>
+              <p class="text-slate-600 dark:text-slate-400 text-xs sm:text-sm leading-relaxed mb-4 line-clamp-3">${art.excerpt}</p>
             </div>
           </div>
-          <div class="px-6 pb-6 pt-0 text-xs font-bold text-brandCyan flex items-center gap-1 group-hover:translate-x-1 transition-transform font-mono">
+          <div class="px-6 pb-6 pt-0 text-xs font-bold text-cyan-600 dark:text-brandCyan flex items-center gap-1 group-hover:translate-x-1 transition-transform font-mono">
             ${currentLang === 'pt' ? 'Ler matéria completa' : 'Read full story'} →
           </div>
         `;
@@ -1263,9 +1300,9 @@ From distributed Kubernetes clusters to low-latency kernel scheduling, Linux rem
       const btnEn = document.getElementById('btn-en');
 
       if (lang === 'pt') {
-        btnPt.className = "px-2.5 py-0.5 rounded bg-brandCyan text-slate-950 font-black transition";
-        btnEn.className = "px-2.5 py-0.5 rounded text-slate-400 hover:text-white transition";
-        document.getElementById('wire-badge').innerHTML = '<span class="w-1.5 h-1.5 rounded-full bg-brandPurple animate-ping"></span> THE WIRE // RADAR';
+        btnPt.className = "px-2 py-0.5 rounded bg-brandCyan text-slate-950 font-black transition";
+        btnEn.className = "px-2 py-0.5 rounded text-slate-600 dark:text-slate-400 hover:text-slate-950 dark:hover:text-white transition";
+        document.getElementById('wire-badge').innerHTML = '<span class="w-1.5 h-1.5 rounded-full bg-brandPurple animate-ping"></span> RADAR AO VIVO';
         document.getElementById('masthead-sub').innerText = "O Fluxo da Tecnologia, Inovação e Inteligência Artificial";
         document.getElementById('search-input').placeholder = "Filtrar matérias...";
         document.getElementById('ticker-text').innerText = "⚡ [Windows] Copilot+ PCs e transição para ARM • [Linux] Novos kernels e aceleração de IA • [Apple] Apple Intelligence e chips M-Series • [Android] Smartphones dobráveis e IA on-device • [Startups] Investimentos bilionários em semicondutores";
@@ -1321,9 +1358,9 @@ From distributed Kubernetes clusters to low-latency kernel scheduling, Linux rem
         document.getElementById('footer-sun-desc').innerText = "Entregue todo domingo às 20h pelo pipeline autônomo do Gemini.";
         document.getElementById('footer-copy').innerHTML = "© 2026 <strong>CorticFlow</strong>. Todos os direitos reservados.";
       } else {
-        btnEn.className = "px-2.5 py-0.5 rounded bg-brandCyan text-slate-950 font-black transition";
-        btnPt.className = "px-2.5 py-0.5 rounded text-slate-400 hover:text-white transition";
-        document.getElementById('wire-badge').innerHTML = '<span class="w-1.5 h-1.5 rounded-full bg-brandPurple animate-ping"></span> THE WIRE // RADAR';
+        btnEn.className = "px-2 py-0.5 rounded bg-brandCyan text-slate-950 font-black transition";
+        btnPt.className = "px-2 py-0.5 rounded text-slate-600 dark:text-slate-400 hover:text-slate-950 dark:hover:text-white transition";
+        document.getElementById('wire-badge').innerHTML = '<span class="w-1.5 h-1.5 rounded-full bg-brandPurple animate-ping"></span> THE WIRE';
         document.getElementById('masthead-sub').innerText = "The Stream of Tech, Innovation and Artificial Intelligence";
         document.getElementById('search-input').placeholder = "Filter dispatches...";
         document.getElementById('ticker-text').innerText = "⚡ [Windows] Copilot+ PCs & ARM architecture • [Linux] Next-gen kernels & AI acceleration • [Apple] Apple Intelligence & M-Series silicon • [Android] Foldable smartphones & on-device AI • [Startups] Capital investments in semiconductors";
@@ -1389,6 +1426,7 @@ From distributed Kubernetes clusters to low-latency kernel scheduling, Linux rem
     }
 
     window.addEventListener('DOMContentLoaded', () => {
+      initTheme();
       setLanguage('pt');
     });
   </script>
