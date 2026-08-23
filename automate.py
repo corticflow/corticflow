@@ -13,14 +13,21 @@ MODELS = [
     "gemini-1.5-pro"
 ]
 
-# Feeds globais incluindo The Economist, TechCrunch, The Verge e MIT Tech Review
+# Feeds de referência: Brasil + Internacional
 FEEDS = [
-    "https://www.economist.com/science-and-technology/rss.xml",
-    "https://www.economist.com/business/rss.xml",
-    "https://www.economist.com/finance-and-economics/rss.xml",
-    "https://techcrunch.com/feed/",
+    # Nacionais e Foco no Brasil
+    "https://canaltech.com.br/rss/",
+    "https://tecnoblog.net/feed/",
+    "https://olhardigital.com.br/feed/",
+    "https://www.inovacaotecnologica.com.br/boletim/rss.xml",
+    "https://mittechreview.com.br/feed/",
+    # Internacionais
     "https://www.theverge.com/rss/index.xml",
-    "https://www.technologyreview.com/feed/",
+    "https://techcrunch.com/feed/",
+    "https://www.wired.com/feed/rss",
+    "https://www.economist.com/science-and-technology/rss.xml",
+    "https://9to5mac.com/feed/",
+    "https://9to5google.com/feed/",
     "https://feeds.arstechnica.com/arstechnica/index"
 ]
 
@@ -37,7 +44,7 @@ def fetch_latest_news():
                 })
         except Exception as e:
             print(f"Aviso ao ler feed {url}: {e}")
-    return articles[:6]
+    return articles[:8]
 
 def call_gemini_api(prompt):
     if not API_KEY:
@@ -55,13 +62,13 @@ def call_gemini_api(prompt):
     last_error = None
     for model in MODELS:
         url = f"https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent?key={API_KEY}"
-        print(f"Tentando gerar matéria aprofundada com o modelo: {model}...")
+        print(f"Tentando gerar com o modelo: {model}...")
         try:
             res = requests.post(url, json=payload, timeout=90)
             if res.status_code == 200:
                 result = res.json()
                 text = result["candidates"][0]["content"]["parts"][0]["text"]
-                print(f"✅ Sucesso com o modelo: {model}!")
+                print(f"✅ Sucesso com {model}!")
                 return json.loads(text)
             else:
                 last_error = f"{model} (HTTP {res.status_code}): {res.text}"
@@ -72,30 +79,31 @@ def call_gemini_api(prompt):
 
 def generate_bilingual_post(news_item):
     prompt = f"""
-    You are the Senior Editorial Director and Chief AI Analyst for 'CorticFlow', an authoritative international publication with the editorial depth of The Economist and the visual flair of The Verge.
+    You are the Senior Editorial Director for 'CorticFlow', a premier technology and innovation publication covering AI, Apple, Android, Gadgets, Startups, Science, and Tutorials.
     
     Based on this raw news lead:
-    - Lead Headline: {news_item['title']}
+    - Title: {news_item['title']}
     - Source URL: {news_item['link']}
-    - Raw Lead Summary: {news_item['summary']}
+    - Summary: {news_item['summary']}
 
-    Your mission is to write a comprehensive, authoritative, deeply analytical, and long-form journalistic article (800 to 1,200+ words per language) in TWO languages: English and Portuguese.
+    Write a comprehensive, engaging, high-authority journalistic article (800-1200+ words) in TWO languages: English and Portuguese.
     
-    CRITICAL EDITORIAL GUIDELINES:
-    1. Strategic Context: The economic, technological, and market implications.
-    2. Granular Analysis: Architecture, computational physics, capital expenditures, or prompt workflows.
-    3. Practical Takeaways: Real-world enterprise and developer applications.
-    4. Sourcing: Cite the primary source with a clean markdown link.
-    5. Formatting: Rich markdown with H2, H3 headers, bullet points, and pull-quotes.
+    Categorize into one of these exact tracks:
+    - "AI & Models" (LLMs, neural networks, agents)
+    - "Apple & iOS" (iPhone, iOS, Mac, Apple Intelligence, Apple hardware)
+    - "Android & Gadgets" (Android smartphones, foldables, chips, wearable gadgets, reviews)
+    - "Business & Startups" (Venture capital, Big Tech earnings, telecom, market trends)
+    - "Science & Space" (Scientific breakthroughs, physics, space, deep tech, energy)
+    - "Tutorials & Prompts" (Prompt engineering, how-to guides, actionable developer workflows)
 
-    Return the complete response strictly as valid JSON with keys:
+    Return strictly as valid JSON with keys:
     "slug", "category", "title_en", "content_en", "title_pt", "content_pt".
     """
     return call_gemini_api(prompt)
 
 def save_posts(data):
     today = datetime.datetime.now().strftime("%Y-%m-%d")
-    slug = data.get("slug", "tech-analysis")
+    slug = data.get("slug", "tech-dispatch")
     
     os.makedirs("content/en", exist_ok=True)
     os.makedirs("content/pt", exist_ok=True)
@@ -110,15 +118,15 @@ def save_posts(data):
         f.write(f"---\ntitle: \"{data['title_pt']}\"\ndata: \"{today}\"\ncategoria: \"{data['category']}\"\n---\n\n")
         f.write(data["content_pt"])
 
-    print(f"📁 Artigos completos salvos: {en_file} e {pt_file}")
+    print(f"📁 Artigos salvos: {en_file} e {pt_file}")
 
 if __name__ == "__main__":
     os.makedirs("content/en", exist_ok=True)
     os.makedirs("content/pt", exist_ok=True)
-    print("🚀 CorticFlow Bot: Buscando notícias (Economist, Verge, TechCrunch)...")
+    print("🚀 CorticFlow Bot: Buscando notícias nos 12 feeds nacionais e globais...")
     news = fetch_latest_news()
     success_count = 0
-    for item in news[:3]:
+    for item in news[:4]:
         try:
             post_data = generate_bilingual_post(item)
             save_posts(post_data)
