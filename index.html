@@ -139,7 +139,7 @@
     </div>
   </header>
 
-  <!-- Hero Section Modular com Imagens em Todos os Destaques -->
+  <!-- Hero Section Modular com Fotos em Todos os Destaques -->
   <section class="max-w-7xl mx-auto px-4 pt-8 pb-10 w-full">
     <div class="grid lg:grid-cols-12 gap-6">
       
@@ -247,43 +247,24 @@
     </div>
   </section>
 
-  <!-- Pílulas de Editorias e Filtros -->
-  <section class="bg-black/90 border-b border-brandBorder py-4 px-4 sticky top-20 z-30 backdrop-blur-xl">
-    <div class="max-w-7xl mx-auto flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-      
-      <div class="flex items-center gap-1.5 overflow-x-auto no-scrollbar py-1 text-[11px] font-bold uppercase tracking-wider">
-        <button onclick="selectHub('all', true)" id="hub-all" class="px-3 py-1.5 rounded-md bg-brandCyan text-black font-black transition shrink-0">TODOS (20)</button>
-        <button onclick="selectHub('Windows & PC', true)" id="hub-win" class="px-3 py-1.5 rounded-md bg-slate-900 text-slate-300 hover:text-white border border-brandBorder transition shrink-0">🪟 WINDOWS & PC (2)</button>
-        <button onclick="selectHub('Linux & Open-Source', true)" id="hub-lin" class="px-3 py-1.5 rounded-md bg-slate-900 text-slate-300 hover:text-white border border-brandBorder transition shrink-0">🐧 LINUX & OPEN-SOURCE (2)</button>
-        <button onclick="selectHub('Apple & iOS', true)" id="hub-app" class="px-3 py-1.5 rounded-md bg-slate-900 text-slate-300 hover:text-white border border-brandBorder transition shrink-0">🍏 APPLE & IOS (3)</button>
-        <button onclick="selectHub('Android & Gadgets', true)" id="hub-and" class="px-3 py-1.5 rounded-md bg-slate-900 text-slate-300 hover:text-white border border-brandBorder transition shrink-0">🤖 ANDROID (3)</button>
-        <button onclick="selectHub('AI & Models', true)" id="hub-ai" class="px-3 py-1.5 rounded-md bg-slate-900 text-slate-300 hover:text-white border border-brandBorder transition shrink-0">🧠 IA & MODELOS (3)</button>
-        <button onclick="selectHub('Business & Startups', true)" id="hub-biz" class="px-3 py-1.5 rounded-md bg-slate-900 text-slate-300 hover:text-white border border-brandBorder transition shrink-0">🏢 NEGÓCIOS (3)</button>
-        <button onclick="selectHub('Science & Space', true)" id="hub-sci" class="px-3 py-1.5 rounded-md bg-slate-900 text-slate-300 hover:text-white border border-brandBorder transition shrink-0">🔬 CIÊNCIA (2)</button>
-        <button onclick="selectHub('Tutorials & Guides', true)" id="hub-tut" class="px-3 py-1.5 rounded-md bg-slate-900 text-slate-300 hover:text-white border border-brandBorder transition shrink-0">🛠️ TUTORIAIS (2)</button>
-        <button onclick="selectHub('Newsletter', true)" id="hub-news" class="px-3 py-1.5 rounded-md bg-brandPurple/20 text-brandPurple hover:bg-brandPurple hover:text-black border border-brandPurple/40 transition shrink-0">📬 DOMINGO</button>
-      </div>
-
-      <div class="relative w-full sm:w-64">
-        <input id="search-input" oninput="handleSearch()" type="text" placeholder="Filtrar matérias..." class="w-full pl-8 pr-3 py-1.5 rounded-lg bg-slate-900 border border-brandBorder text-xs text-white focus:outline-none focus:border-brandCyan transition font-mono">
-        <span class="absolute left-2.5 top-2 text-slate-500 text-xs">⚡</span>
-      </div>
-
-    </div>
-  </section>
-
-  <!-- Feed Principal de Matérias -->
+  <!-- Feed Principal de Matérias (Transição Direta e Limpa) -->
   <div class="max-w-7xl mx-auto px-4 py-10 w-full grid lg:grid-cols-12 gap-8" id="feed-container">
     
-    <main class="lg:col-span-8 space-y-8 scroll-mt-40" id="feed">
+    <main class="lg:col-span-8 space-y-8 scroll-mt-24" id="feed">
       
-      <!-- Cabeçalho da Seção Ativa -->
-      <div id="category-banner-card" class="border-b border-brandBorder pb-4 flex flex-col sm:flex-row sm:items-end justify-between gap-2">
+      <!-- Cabeçalho da Seção Ativa com Busca Discreta -->
+      <div id="category-banner-card" class="border-b border-brandBorder pb-5 flex flex-col sm:flex-row sm:items-end justify-between gap-4">
         <div>
-          <span id="cat-banner-tag" class="px-2 py-0.5 rounded bg-brandCyan/20 text-brandCyan text-[9px] font-black uppercase tracking-widest border border-brandCyan/30 font-mono">HUB EDITORIAL</span>
+          <span id="cat-banner-tag" class="px-2.5 py-0.5 rounded bg-brandCyan/20 text-brandCyan text-[9px] font-black uppercase tracking-widest border border-brandCyan/30 font-mono">HUB EDITORIAL</span>
           <h2 id="cat-banner-title" class="text-2xl sm:text-3xl font-black text-white verge-title mt-1.5">Todas as Publicações</h2>
+          <p id="cat-banner-desc" class="text-slate-400 text-xs mt-1">Acervo completo com 20 análises aprofundadas, tutoriais e benchmarks.</p>
         </div>
-        <p id="cat-banner-desc" class="text-slate-400 text-xs max-w-md">Acervo completo com análises aprofundadas, tutoriais e benchmarks.</p>
+
+        <!-- Busca Elegante Integrada -->
+        <div class="relative w-full sm:w-60 shrink-0">
+          <input id="search-input" oninput="handleSearch()" type="text" placeholder="Filtrar matérias..." class="w-full pl-8 pr-3 py-2 rounded-xl bg-slate-900 border border-brandBorder text-xs text-white focus:outline-none focus:border-brandCyan transition font-mono">
+          <span class="absolute left-3 top-2.5 text-slate-500 text-xs">⚡</span>
+        </div>
       </div>
 
       <!-- Grid com os Artigos Clicáveis com Imagens Únicas -->
@@ -514,7 +495,7 @@
     ];
 
     const HUB_CONFIG = {
-      all: { tag_pt: "HUB EDITORIAL", tag_en: "EDITORIAL STREAM", title_pt: "Todas as Publicações", title_en: "All Dispatches", desc_pt: "Acervo completo com 20 matérias em Windows, Linux, Apple, Android, startups, ciência e IA.", desc_en: "Full archive featuring 20 deep-dive dispatches across Windows, Linux, Apple, Android, startups, and AI." },
+      all: { tag_pt: "HUB EDITORIAL", tag_en: "EDITORIAL STREAM", title_pt: "Todas as Publicações", title_en: "All Dispatches", desc_pt: "Acervo completo com 20 análises aprofundadas, tutoriais e benchmarks.", desc_en: "Full archive featuring 20 deep-dive dispatches across tech, hardware, and AI." },
       "Windows & PC": { tag_pt: "WINDOWS & PC", tag_en: "WINDOWS & PC", title_pt: "Ecossistema Windows, Copilot+ PCs e Hardware", title_en: "Windows Ecosystem, Copilot+ PCs & PC Hardware", desc_pt: "Cobertura completa sobre Windows on ARM, processadores x86/Snapdragon, laptops e hardware.", desc_en: "Granular coverage of Windows on ARM, Snapdragon silicon, desktop hardware, and PC gaming." },
       "Linux & Open-Source": { tag_pt: "LINUX & OPEN-SOURCE", tag_en: "LINUX & OPEN-SOURCE", title_pt: "Distribuições Linux, Servidores de IA e Código Aberto", title_en: "Linux Distros, AI Infrastructure & Open-Source", desc_pt: "Análises técnicas sobre kernels, Docker, servidores em nuvem e ferramentas abertas de IA.", desc_en: "Deep-dive technical guides on real-time kernels, Docker orchestration, and local AI stacks." },
       "Apple & iOS": { tag_pt: "APPLE & IOS", tag_en: "APPLE & IOS", title_pt: "Ecossistema Apple: iPhone, Mac e Apple Intelligence", title_en: "Apple Ecosystem: iPhone, Mac & Apple Intelligence", desc_pt: "Cobertura completa sobre novos lançamentos, processadores M-Series, iOS e hardware de Cupertino.", desc_en: "Granular coverage of Cupertino hardware, M-series silicon, iOS architecture, and Vision Pro." },
@@ -953,31 +934,14 @@
 
     function selectHub(hubKey, shouldScroll = false) {
       currentHub = hubKey;
-      
-      const hubButtons = ['all', 'win', 'lin', 'app', 'and', 'ai', 'biz', 'sci', 'tut', 'news'];
-      hubButtons.forEach(h => {
-        const btn = document.getElementById('hub-' + h);
-        if (btn) btn.className = "px-3 py-1.5 rounded-md bg-slate-900 text-slate-300 hover:text-white border border-brandBorder font-bold text-[11px] uppercase tracking-wider transition shrink-0";
-      });
-
-      let activeHubId = 'hub-all';
-      if (hubKey === 'Windows & PC') activeHubId = 'hub-win';
-      else if (hubKey === 'Linux & Open-Source') activeHubId = 'hub-lin';
-      else if (hubKey === 'Apple & iOS') activeHubId = 'hub-app';
-      else if (hubKey === 'Android & Gadgets') activeHubId = 'hub-and';
-      else if (hubKey === 'AI & Models') activeHubId = 'hub-ai';
-      else if (hubKey === 'Business & Startups') activeHubId = 'hub-biz';
-      else if (hubKey === 'Science & Space') activeHubId = 'hub-sci';
-      else if (hubKey === 'Tutorials & Guides') activeHubId = 'hub-tut';
-      else if (hubKey === 'Newsletter') activeHubId = 'hub-news';
-
-      const activeBtn = document.getElementById(activeHubId);
-      if (activeBtn) activeBtn.className = "px-3 py-1.5 rounded-md bg-brandCyan text-black font-black text-[11px] uppercase tracking-wider transition shrink-0";
 
       const conf = HUB_CONFIG[hubKey] || HUB_CONFIG.all;
-      document.getElementById('cat-banner-tag').innerText = currentLang === 'pt' ? conf.tag_pt : conf.tag_en;
-      document.getElementById('cat-banner-title').innerText = currentLang === 'pt' ? conf.title_pt : conf.title_en;
-      document.getElementById('cat-banner-desc').innerText = currentLang === 'pt' ? conf.desc_pt : conf.desc_en;
+      const tagEl = document.getElementById('cat-banner-tag');
+      const titleEl = document.getElementById('cat-banner-title');
+      const descEl = document.getElementById('cat-banner-desc');
+      if (tagEl) tagEl.innerText = currentLang === 'pt' ? conf.tag_pt : conf.tag_en;
+      if (titleEl) titleEl.innerText = currentLang === 'pt' ? conf.title_pt : conf.title_en;
+      if (descEl) descEl.innerText = currentLang === 'pt' ? conf.desc_pt : conf.desc_en;
 
       renderArticles();
 
@@ -1075,7 +1039,7 @@
         .replace(/^### (.*$)/gim, '<h3>$1</h3>')
         .replace(/^## (.*$)/gim, '<h2>$1</h2>')
         .replace(/^# (.*$)/gim, '<h1>$1</h1>')
-        .replace(/^\> (.*$)/gim, 'blockquote>$1</blockquote>')
+        .replace(/^\> (.*$)/gim, '<blockquote>$1</blockquote>')
         .replace(/\*\*(.*)\*\*/gim, '<strong>$1</strong>')
         .replace(/\*(.*)\*/gim, '<em>$1</em>')
         .replace(/\n$/gim, '<br />')
@@ -1204,16 +1168,6 @@
         document.getElementById('prompt-code').innerText = '"Atue como Engenheiro Sênior de QA e Segurança. Analise o código a seguir procurando vulnerabilidades de injeção, memory leaks e gargalos de latência. Forneça a versão corrigida acompanhada da justificativa técnica."';
         document.getElementById('btn-copy-prompt').innerText = "📋 COPIAR PROMPT";
         document.getElementById('top-title').innerText = "🔥 MAIS LIDAS DA SEMANA";
-        document.getElementById('hub-all').innerText = "TODOS (20)";
-        document.getElementById('hub-win').innerText = "🪟 WINDOWS & PC (2)";
-        document.getElementById('hub-lin').innerText = "🐧 LINUX & OPEN-SOURCE (2)";
-        document.getElementById('hub-app').innerText = "🍏 APPLE & IOS (3)";
-        document.getElementById('hub-and').innerText = "🤖 ANDROID (3)";
-        document.getElementById('hub-ai').innerText = "🧠 IA & MODELOS (3)";
-        document.getElementById('hub-biz').innerText = "🏢 NEGÓCIOS (3)";
-        document.getElementById('hub-sci').innerText = "🔬 CIÊNCIA (2)";
-        document.getElementById('hub-tut').innerText = "🛠️ TUTORIAIS (2)";
-        document.getElementById('hub-news').innerText = "📬 DOMINGO";
         document.getElementById('dnav-all').innerText = "Feed Geral";
         document.getElementById('dnav-lead').innerHTML = "<span>⚡ Radar LLMs</span>";
         document.getElementById('dnav-win').innerText = "Windows & PC";
@@ -1272,16 +1226,6 @@
         document.getElementById('prompt-code').innerText = '"Act as a Principal QA and Security Engineer. Analyze the following code for injection vectors, memory leaks, and latency bottlenecks. Provide the refactored code alongside technical justification."';
         document.getElementById('btn-copy-prompt').innerText = "📋 COPY PROMPT";
         document.getElementById('top-title').innerText = "🔥 TOP DISPATCHES";
-        document.getElementById('hub-all').innerText = "ALL (20)";
-        document.getElementById('hub-win').innerText = "🪟 WINDOWS & PC (2)";
-        document.getElementById('hub-lin').innerText = "🐧 LINUX & OPEN-SOURCE (2)";
-        document.getElementById('hub-app').innerText = "🍏 APPLE & IOS (3)";
-        document.getElementById('hub-and').innerText = "🤖 ANDROID (3)";
-        document.getElementById('hub-ai').innerText = "🧠 AI & MODELS (3)";
-        document.getElementById('hub-biz').innerText = "🏢 BUSINESS (3)";
-        document.getElementById('hub-sci').innerText = "🔬 SCIENCE (2)";
-        document.getElementById('hub-tut').innerText = "🛠️ TUTORIALS (2)";
-        document.getElementById('hub-news').innerText = "📬 SUNDAY WIRE";
         document.getElementById('dnav-all').innerText = "All Feed";
         document.getElementById('dnav-lead').innerHTML = "<span>⚡ LLM Radar</span>";
         document.getElementById('dnav-win').innerText = "Windows & PC";
