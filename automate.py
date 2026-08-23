@@ -13,7 +13,7 @@ MODELS = [
     "gemini-1.5-pro"
 ]
 
-# Feeds de referência: Brasil + Internacional
+# Feeds de referência: Brasil + Internacional (incluindo Windows e Linux)
 FEEDS = [
     # Nacionais e Foco no Brasil
     "https://canaltech.com.br/rss/",
@@ -21,14 +21,16 @@ FEEDS = [
     "https://olhardigital.com.br/feed/",
     "https://www.inovacaotecnologica.com.br/boletim/rss.xml",
     "https://mittechreview.com.br/feed/",
-    # Internacionais
+    # Internacionais (Apple, Android, Windows, Linux, Startups, IA)
+    "https://www.windowscentral.com/rss.xml",
+    "https://www.phoronix.com/phoronix-rss.php",
+    "https://www.omgubuntu.co.uk/feed",
+    "https://9to5mac.com/feed/",
+    "https://9to5google.com/feed/",
     "https://www.theverge.com/rss/index.xml",
     "https://techcrunch.com/feed/",
     "https://www.wired.com/feed/rss",
-    "https://www.economist.com/science-and-technology/rss.xml",
-    "https://9to5mac.com/feed/",
-    "https://9to5google.com/feed/",
-    "https://feeds.arstechnica.com/arstechnica/index"
+    "https://www.economist.com/science-and-technology/rss.xml"
 ]
 
 def fetch_latest_news():
@@ -79,7 +81,7 @@ def call_gemini_api(prompt):
 
 def generate_bilingual_post(news_item):
     prompt = f"""
-    You are the Senior Editorial Director for 'CorticFlow', a premier technology and innovation publication covering AI, Apple, Android, Gadgets, Startups, Science, and Tutorials.
+    You are the Senior Editorial Director for 'CorticFlow', an authoritative technology publication covering AI, Apple, Android, Windows, Linux, Startups, Science, and Developer Tutorials.
     
     Based on this raw news lead:
     - Title: {news_item['title']}
@@ -89,12 +91,14 @@ def generate_bilingual_post(news_item):
     Write a comprehensive, engaging, high-authority journalistic article (800-1200+ words) in TWO languages: English and Portuguese.
     
     Categorize into one of these exact tracks:
-    - "AI & Models" (LLMs, neural networks, agents)
+    - "Windows & PC" (Copilot+ PCs, Windows 11/12, ARM processors, hardware, gaming PCs)
+    - "Linux & Open-Source" (Linux distros, kernel updates, Docker, cloud servers, open-source AI)
     - "Apple & iOS" (iPhone, iOS, Mac, Apple Intelligence, Apple hardware)
     - "Android & Gadgets" (Android smartphones, foldables, chips, wearable gadgets, reviews)
+    - "AI & Models" (LLMs, neural networks, reasoning agents)
     - "Business & Startups" (Venture capital, Big Tech earnings, telecom, market trends)
     - "Science & Space" (Scientific breakthroughs, physics, space, deep tech, energy)
-    - "Tutorials & Prompts" (Prompt engineering, how-to guides, actionable developer workflows)
+    - "Tutorials & Prompts" (Prompt engineering, how-to guides, actionable workflows)
 
     Return strictly as valid JSON with keys:
     "slug", "category", "title_en", "content_en", "title_pt", "content_pt".
@@ -123,7 +127,7 @@ def save_posts(data):
 if __name__ == "__main__":
     os.makedirs("content/en", exist_ok=True)
     os.makedirs("content/pt", exist_ok=True)
-    print("🚀 CorticFlow Bot: Buscando notícias nos 12 feeds nacionais e globais...")
+    print("🚀 CorticFlow Bot: Buscando notícias em todas as plataformas...")
     news = fetch_latest_news()
     success_count = 0
     for item in news[:4]:
