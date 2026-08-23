@@ -139,11 +139,11 @@
     </div>
   </header>
 
-  <!-- Hero Section Modular -->
+  <!-- Hero Section Modular com Imagens em Todos os Destaques -->
   <section class="max-w-7xl mx-auto px-4 pt-8 pb-10 w-full">
     <div class="grid lg:grid-cols-12 gap-6">
       
-      <!-- Matéria 1 de Capa -->
+      <!-- Matéria 1 de Capa Principal (Esquerda) -->
       <div class="lg:col-span-7 bg-brandCard verge-border rounded-3xl overflow-hidden glow-verge cursor-pointer group flex flex-col justify-between" onclick="openArticleByIndex(0)">
         <div class="h-72 sm:h-96 relative overflow-hidden bg-slate-900">
           <img src="https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&w=1200&q=80" alt="Hero Lead" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
@@ -168,39 +168,55 @@
         </div>
       </div>
 
-      <!-- Secundárias -->
+      <!-- Duas Janelas da Direita com Fotos de Fundo -->
       <div class="lg:col-span-5 flex flex-col gap-6">
-        <div class="bg-brandCard verge-border rounded-3xl p-6 glow-verge cursor-pointer group flex-1 flex flex-col justify-between" onclick="openArticleByIndex(6)">
-          <div>
-            <div class="flex items-center justify-between mb-2">
-              <span class="text-[9px] font-black px-2 py-0.5 rounded bg-brandBlue/10 text-brandBlue border border-brandBlue/20 uppercase tracking-widest font-mono">WINDOWS & PC</span>
-              <span class="text-[10px] font-mono text-slate-500">6 MIN</span>
+        
+        <!-- Janela 1: Apple & iOS -->
+        <div class="bg-brandCard verge-border rounded-3xl overflow-hidden glow-verge cursor-pointer group flex flex-col justify-between relative min-h-[220px] flex-1" onclick="openArticleByIndex(3)">
+          <img src="https://images.unsplash.com/photo-1517336714731-489689fd1ca8?auto=format&fit=crop&w=800&q=80" alt="Apple & iOS" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 opacity-40">
+          <div class="absolute inset-0 bg-gradient-to-t from-brandCard via-brandCard/80 to-brandCard/30"></div>
+          <div class="relative z-10 p-6 flex flex-col justify-between h-full">
+            <div>
+              <div class="flex items-center justify-between mb-2">
+                <span id="hero-right1-cat" class="text-[9px] font-black px-2.5 py-0.5 rounded bg-brandPurple/30 text-white border border-brandPurple/40 uppercase tracking-widest font-mono backdrop-blur-md">🍏 APPLE & IOS</span>
+                <span class="text-[10px] font-mono text-slate-300 font-bold">6 MIN</span>
+              </div>
+              <h3 id="hero-right1-title" class="text-lg sm:text-xl font-extrabold text-white verge-title group-hover:text-brandCyan transition-colors leading-snug mb-2">
+                Apple Intelligence e os Novos Chips M-Series: O Futuro do Hardware no iOS e Mac
+              </h3>
+              <p id="hero-right1-desc" class="text-slate-300 text-xs sm:text-sm line-clamp-2 leading-relaxed">
+                Como a Apple está integrando modelos neurais locais diretamente na NPU dos novos iPhones e Macs para privacidade total e zero latência.
+              </p>
             </div>
-            <h3 class="text-lg sm:text-xl font-extrabold text-white verge-title group-hover:text-brandCyan transition-colors leading-snug mb-2">
-              Copilot+ PCs e a Transição para Processadores ARM no Windows
-            </h3>
-            <p class="text-slate-400 text-xs sm:text-sm line-clamp-2 leading-relaxed">
-              Como a nova emulação Prism e os chips de 45+ TOPS NPU transformaram a autonomia e a eficiência dos notebooks Windows.
-            </p>
+            <div id="hero-right1-btn" class="text-xs font-bold text-brandCyan pt-3 border-t border-brandBorder/60 flex items-center gap-1 group-hover:translate-x-1 transition-transform">
+              Ler Análise Apple →
+            </div>
           </div>
-          <div class="text-xs font-bold text-brandCyan pt-3 border-t border-brandBorder/60 flex items-center gap-1">Ler Análise →</div>
         </div>
 
-        <div class="bg-brandCard verge-border rounded-3xl p-6 glow-verge cursor-pointer group flex-1 flex flex-col justify-between" onclick="openArticleByIndex(8)">
-          <div>
-            <div class="flex items-center justify-between mb-2">
-              <span class="text-[9px] font-black px-2 py-0.5 rounded bg-brandOrange/10 text-brandOrange border border-brandOrange/20 uppercase tracking-widest font-mono">LINUX & SERVIDORES</span>
-              <span class="text-[10px] font-mono text-slate-500">7 MIN</span>
+        <!-- Janela 2: Windows & PC -->
+        <div class="bg-brandCard verge-border rounded-3xl overflow-hidden glow-verge cursor-pointer group flex flex-col justify-between relative min-h-[220px] flex-1" onclick="openArticleByIndex(6)">
+          <img src="https://images.unsplash.com/photo-1588872657578-7efd1f1555ed?auto=format&fit=crop&w=800&q=80" alt="Windows & PC" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 opacity-40">
+          <div class="absolute inset-0 bg-gradient-to-t from-brandCard via-brandCard/80 to-brandCard/30"></div>
+          <div class="relative z-10 p-6 flex flex-col justify-between h-full">
+            <div>
+              <div class="flex items-center justify-between mb-2">
+                <span id="hero-right2-cat" class="text-[9px] font-black px-2.5 py-0.5 rounded bg-brandBlue/30 text-white border border-brandBlue/40 uppercase tracking-widest font-mono backdrop-blur-md">🪟 WINDOWS & PC</span>
+                <span class="text-[10px] font-mono text-slate-300 font-bold">6 MIN</span>
+              </div>
+              <h3 id="hero-right2-title" class="text-lg sm:text-xl font-extrabold text-white verge-title group-hover:text-brandCyan transition-colors leading-snug mb-2">
+                Copilot+ PCs e a Transição para Processadores ARM no Windows
+              </h3>
+              <p id="hero-right2-desc" class="text-slate-300 text-xs sm:text-sm line-clamp-2 leading-relaxed">
+                Como a nova emulação Prism e os chips de 45+ TOPS NPU transformaram a autonomia e a eficiência dos notebooks Windows.
+              </p>
             </div>
-            <h3 class="text-lg sm:text-xl font-extrabold text-white verge-title group-hover:text-brandCyan transition-colors leading-snug mb-2">
-              A Ascensão do Linux em Servidores de IA e Ambientes de Nuvem
-            </h3>
-            <p class="text-slate-400 text-xs sm:text-sm line-clamp-2 leading-relaxed">
-              Por que o ecossistema de kernels Linux em tempo real e orquestração Docker se tornou a espinha dorsal de todo treinamento de IA.
-            </p>
+            <div id="hero-right2-btn" class="text-xs font-bold text-brandCyan pt-3 border-t border-brandBorder/60 flex items-center gap-1 group-hover:translate-x-1 transition-transform">
+              Ler Análise PC →
+            </div>
           </div>
-          <div class="text-xs font-bold text-brandCyan pt-3 border-t border-brandBorder/60 flex items-center gap-1">Ler Artigo Técnico →</div>
         </div>
+
       </div>
 
     </div>
@@ -329,25 +345,25 @@
               <span class="text-[10px] font-mono text-slate-500">9 min • Infraestrutura</span>
             </div>
           </div>
+          <div class="flex items-start gap-3 cursor-pointer group" onclick="openArticleByIndex(3)">
+            <span class="text-2xl font-black text-brandPurple font-mono">02</span>
+            <div>
+              <h5 class="text-xs font-bold text-slate-200 group-hover:text-brandCyan transition leading-snug">Apple Intelligence e a Nova Linha M-Series</h5>
+              <span class="text-[10px] font-mono text-slate-500">6 min • Apple & iOS</span>
+            </div>
+          </div>
           <div class="flex items-start gap-3 cursor-pointer group" onclick="openArticleByIndex(6)">
-            <span class="text-2xl font-black text-brandBlue font-mono">02</span>
+            <span class="text-2xl font-black text-brandBlue font-mono">03</span>
             <div>
               <h5 class="text-xs font-bold text-slate-200 group-hover:text-brandCyan transition leading-snug">Copilot+ PCs e a Transição para Processadores ARM</h5>
               <span class="text-[10px] font-mono text-slate-500">6 min • Windows & PC</span>
             </div>
           </div>
           <div class="flex items-start gap-3 cursor-pointer group" onclick="openArticleByIndex(8)">
-            <span class="text-2xl font-black text-brandOrange font-mono">03</span>
+            <span class="text-2xl font-black text-brandOrange font-mono">04</span>
             <div>
               <h5 class="text-xs font-bold text-slate-200 group-hover:text-brandCyan transition leading-snug">A Ascensão do Linux em Servidores de IA</h5>
               <span class="text-[10px] font-mono text-slate-500">7 min • Linux</span>
-            </div>
-          </div>
-          <div class="flex items-start gap-3 cursor-pointer group" onclick="openArticleByIndex(3)">
-            <span class="text-2xl font-black text-brandPurple font-mono">04</span>
-            <div>
-              <h5 class="text-xs font-bold text-slate-200 group-hover:text-brandCyan transition leading-snug">Apple Intelligence e a Nova Linha M-Series</h5>
-              <span class="text-[10px] font-mono text-slate-500">6 min • Apple & iOS</span>
             </div>
           </div>
         </div>
@@ -1059,7 +1075,7 @@
         .replace(/^### (.*$)/gim, '<h3>$1</h3>')
         .replace(/^## (.*$)/gim, '<h2>$1</h2>')
         .replace(/^# (.*$)/gim, '<h1>$1</h1>')
-        .replace(/^\> (.*$)/gim, '<blockquote>$1</blockquote>')
+        .replace(/^\> (.*$)/gim, 'blockquote>$1</blockquote>')
         .replace(/\*\*(.*)\*\*/gim, '<strong>$1</strong>')
         .replace(/\*(.*)\*/gim, '<em>$1</em>')
         .replace(/\n$/gim, '<br />')
@@ -1156,6 +1172,18 @@
         document.getElementById('masthead-sub').innerText = "O Fluxo da Tecnologia, Inovação e Inteligência Artificial";
         document.getElementById('search-input').placeholder = "Filtrar matérias...";
         document.getElementById('ticker-text').innerText = "⚡ [Windows] Copilot+ PCs e transição para ARM • [Linux] Novos kernels e aceleração de IA • [Apple] Apple Intelligence e chips M-Series • [Android] Smartphones dobráveis e IA on-device • [Startups] Investimentos bilionários em semicondutores";
+        
+        // Hero Right Cards
+        document.getElementById('hero-right1-cat').innerText = "🍏 APPLE & IOS";
+        document.getElementById('hero-right1-title').innerText = "Apple Intelligence e os Novos Chips M-Series: O Futuro do Hardware no iOS e Mac";
+        document.getElementById('hero-right1-desc').innerText = "Como a Apple está integrando modelos neurais locais diretamente na NPU dos novos iPhones e Macs para privacidade total e zero latência.";
+        document.getElementById('hero-right1-btn').innerText = "Ler Análise Apple →";
+
+        document.getElementById('hero-right2-cat').innerText = "🪟 WINDOWS & PC";
+        document.getElementById('hero-right2-title').innerText = "Copilot+ PCs e a Transição para Processadores ARM no Windows";
+        document.getElementById('hero-right2-desc').innerText = "Como a nova emulação Prism e os chips de 45+ TOPS NPU transformaram a autonomia e a eficiência dos notebooks Windows.";
+        document.getElementById('hero-right2-btn').innerText = "Ler Análise PC →";
+
         document.getElementById('newsletter-title').innerText = "CorticFlow Semanal";
         document.getElementById('newsletter-sub').innerText = "Todo domingo às 20h, receba a compilação executiva e o tutorial da semana no seu e-mail.";
         document.getElementById('newsletter-input').placeholder = "Seu melhor e-mail";
@@ -1212,6 +1240,18 @@
         document.getElementById('masthead-sub').innerText = "The Stream of Tech, Innovation and Artificial Intelligence";
         document.getElementById('search-input').placeholder = "Filter dispatches...";
         document.getElementById('ticker-text').innerText = "⚡ [Windows] Copilot+ PCs & ARM architecture • [Linux] Next-gen kernels & AI acceleration • [Apple] Apple Intelligence & M-Series silicon • [Android] Foldable smartphones & on-device AI • [Startups] Capital investments in semiconductors";
+        
+        // Hero Right Cards
+        document.getElementById('hero-right1-cat').innerText = "🍏 APPLE & IOS";
+        document.getElementById('hero-right1-title').innerText = "Apple Intelligence & Next-Gen M-Series Silicon: The On-Device AI Architecture";
+        document.getElementById('hero-right1-desc').innerText = "How Cupertino engineered unified memory and neural engines to process multimodal intelligence locally on iPhone and Mac.";
+        document.getElementById('hero-right1-btn').innerText = "Read Apple Analysis →";
+
+        document.getElementById('hero-right2-cat').innerText = "🪟 WINDOWS & PC";
+        document.getElementById('hero-right2-title').innerText = "Copilot+ PCs & The Windows ARM Architecture Shift";
+        document.getElementById('hero-right2-desc').innerText = "How the Prism emulation layer and 45+ TOPS dedicated NPUs transformed Windows laptop battery life and performance.";
+        document.getElementById('hero-right2-btn').innerText = "Read PC Analysis →";
+
         document.getElementById('newsletter-title').innerText = "CorticFlow Weekly";
         document.getElementById('newsletter-sub').innerText = "Every Sunday at 8 PM, receive executive AI curation and deep-dive technical guides directly in your inbox.";
         document.getElementById('newsletter-input').placeholder = "Enter your email address";
