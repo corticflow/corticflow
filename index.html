@@ -410,16 +410,40 @@
     </div>
   </div>
 
-  <!-- Rodapé -->
-  <footer class="border-t border-slate-200 dark:border-brandBorder py-14 bg-white dark:bg-black text-slate-500 text-xs mt-auto">
-    <div class="max-w-7xl mx-auto px-4 grid sm:grid-cols-2 md:grid-cols-4 gap-8 mb-10">
-      <div>
-        <div class="flex items-center gap-2 mb-3 text-slate-950 dark:text-white font-extrabold text-lg">
+  <!-- Rodapé Profissional & Elegante (3 Colunas com Instagram Integrado) -->
+  <footer class="border-t border-slate-200 dark:border-brandBorder py-12 bg-white dark:bg-black text-slate-500 text-xs mt-auto">
+    <div class="max-w-7xl mx-auto px-4 grid sm:grid-cols-2 md:grid-cols-3 gap-8 mb-10">
+      
+      <!-- Coluna 1: Marca & Redes -->
+      <div class="space-y-3">
+        <div class="flex items-center gap-2 text-slate-950 dark:text-white font-extrabold text-lg">
           <span class="w-6 h-6 bg-brandCyan text-black flex items-center justify-center text-xs font-black transform -skew-x-6">C</span>
           CORTIC//FLOW
         </div>
-        <p id="footer-about" class="text-slate-600 dark:text-slate-400 text-xs leading-relaxed">O fluxo da tecnologia, inovação e inteligência artificial. Portal independente de notícias, análises de produtos e tutoriais autônomos.</p>
+        <p id="footer-about" class="text-slate-600 dark:text-slate-400 text-xs leading-relaxed max-w-sm">
+          O fluxo da tecnologia, inovação e inteligência artificial. Portal independente de notícias, análises aprofundadas de hardware e tutoriais práticos.
+        </p>
+
+        <!-- Botões Sociais com Ícone do Instagram -->
+        <div class="pt-2 flex items-center gap-3">
+          <a href="https://instagram.com/corticflow" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 px-3 py-1.5 rounded-xl bg-slate-100 dark:bg-slate-900 border border-slate-300 dark:border-brandBorder text-slate-800 dark:text-slate-200 hover:text-pink-500 dark:hover:text-pink-400 hover:border-pink-500/40 transition text-xs font-mono font-bold group shadow-sm">
+            <svg class="w-4 h-4 text-pink-500 group-hover:scale-110 transition-transform" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+              <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+              <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+            </svg>
+            <span>@corticflow</span>
+          </a>
+          <a href="https://github.com/corticflow" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 px-3 py-1.5 rounded-xl bg-slate-100 dark:bg-slate-900 border border-slate-300 dark:border-brandBorder text-slate-800 dark:text-slate-200 hover:text-cyan-600 dark:hover:text-brandCyan hover:border-brandCyan/40 transition text-xs font-mono font-bold group shadow-sm">
+            <svg class="w-4 h-4 text-slate-600 dark:text-slate-400 group-hover:scale-110 transition-transform" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/>
+            </svg>
+            <span>GitHub</span>
+          </a>
+        </div>
       </div>
+
+      <!-- Coluna 2: Editorias -->
       <div>
         <h4 id="footer-cat-title" class="text-slate-950 dark:text-white font-bold mb-3 uppercase tracking-widest text-[10px] font-mono">EDITORIAS</h4>
         <ul class="space-y-2">
@@ -430,21 +454,21 @@
           <li><button onclick="selectHub('AI & Models', true)" class="hover:text-cyan-600 dark:hover:text-brandCyan transition">IA & Modelos</button></li>
         </ul>
       </div>
+
+      <!-- Coluna 3: Institucional & Contato -->
       <div>
-        <h4 id="footer-inst-title" class="text-slate-950 dark:text-white font-bold mb-3 uppercase tracking-widest text-[10px] font-mono">INSTITUCIONAL</h4>
+        <h4 id="footer-inst-title" class="text-slate-950 dark:text-white font-bold mb-3 uppercase tracking-widest text-[10px] font-mono">INSTITUCIONAL & CONTATO</h4>
         <ul class="space-y-2">
           <li><a href="privacy.html" id="fnav-priv" class="hover:text-cyan-600 dark:hover:text-brandCyan transition">Política de Privacidade</a></li>
           <li><a href="terms.html" id="fnav-terms" class="hover:text-slate-700 dark:hover:text-slate-300 transition">Termos de Uso</a></li>
-          <li><a href="mailto:corticflow@gmail.com" class="hover:text-slate-700 dark:hover:text-slate-300 transition">Contato: corticflow@gmail.com</a></li>
-          <li><a href="https://github.com/corticflow" target="_blank" class="hover:text-slate-700 dark:hover:text-slate-300 transition">Repositório GitHub ↗</a></li>
+          <li><a href="mailto:corticflow@gmail.com" class="hover:text-slate-700 dark:hover:text-slate-300 transition">corticflow@gmail.com</a></li>
+          <li><a href="https://instagram.com/corticflow" target="_blank" rel="noopener noreferrer" class="hover:text-pink-500 transition inline-flex items-center gap-1.5">Instagram: @corticflow ↗</a></li>
         </ul>
       </div>
-      <div>
-        <h4 id="footer-sun-title" class="text-slate-950 dark:text-white font-bold mb-3 uppercase tracking-widest text-[10px] font-mono">EDIÇÃO DE DOMINGO</h4>
-        <p id="footer-sun-desc" class="text-slate-600 dark:text-slate-400 text-xs mb-2">Entregue todo domingo às 20h pelo pipeline autônomo do Gemini.</p>
-        <span class="inline-block px-2 py-0.5 rounded bg-slate-100 dark:bg-slate-900 text-cyan-700 dark:text-brandCyan border border-cyan-500/20 dark:border-brandCyan/20 text-[10px] font-mono">100% Serverless Architecture</span>
-      </div>
+
     </div>
+    
+    <!-- Linha Inferior de Copyright -->
     <div class="max-w-7xl mx-auto px-4 pt-6 border-t border-slate-200 dark:border-slate-900 flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-left text-slate-500">
       <div id="footer-copy">© 2026 <strong>CorticFlow</strong>. Todos os direitos reservados.</div>
       <div class="font-mono text-[10px]">Plataforma Independente de Tecnologia & Inovação</div>
@@ -1358,13 +1382,11 @@ From distributed Kubernetes clusters to low-latency kernel scheduling, Linux rem
         document.getElementById('dnav-sci').innerText = "Ciência";
         document.getElementById('dnav-tut').innerText = "Tutoriais";
         document.getElementById('dnav-news').innerText = "Edição de Domingo";
-        document.getElementById('footer-about').innerText = "O fluxo da tecnologia, inovação e inteligência artificial. Portal independente de notícias, análises de produtos e tutoriais autônomos.";
+        document.getElementById('footer-about').innerText = "O fluxo da tecnologia, inovação e inteligência artificial. Portal independente de notícias, análises aprofundadas de hardware e tutoriais práticos.";
         document.getElementById('footer-cat-title').innerText = "EDITORIAS";
-        document.getElementById('footer-inst-title').innerText = "INSTITUCIONAL";
+        document.getElementById('footer-inst-title').innerText = "INSTITUCIONAL & CONTATO";
         document.getElementById('fnav-priv').innerText = "Política de Privacidade";
         document.getElementById('fnav-terms').innerText = "Termos de Uso";
-        document.getElementById('footer-sun-title').innerText = "EDIÇÃO DE DOMINGO";
-        document.getElementById('footer-sun-desc').innerText = "Entregue todo domingo às 20h pelo pipeline autônomo do Gemini.";
         document.getElementById('footer-copy').innerHTML = "© 2026 <strong>CorticFlow</strong>. Todos os direitos reservados.";
       } else {
         btnEn.className = "px-2 py-0.5 rounded bg-brandCyan text-slate-950 font-black transition";
@@ -1418,11 +1440,9 @@ From distributed Kubernetes clusters to low-latency kernel scheduling, Linux rem
         document.getElementById('dnav-news').innerText = "Sunday Edition";
         document.getElementById('footer-about').innerText = "The stream of tech, innovation, and artificial intelligence. Independent technology media publication.";
         document.getElementById('footer-cat-title').innerText = "SECTIONS";
-        document.getElementById('footer-inst-title').innerText = "CORPORATE";
+        document.getElementById('footer-inst-title').innerText = "CORPORATE & CONTACT";
         document.getElementById('fnav-priv').innerText = "Privacy Policy";
         document.getElementById('fnav-terms').innerText = "Terms of Service";
-        document.getElementById('footer-sun-title').innerText = "SUNDAY DISPATCH";
-        document.getElementById('footer-sun-desc').innerText = "Delivered every Sunday at 8:00 PM BRT via Gemini autonomous pipeline.";
         document.getElementById('footer-copy').innerHTML = "© 2026 <strong>CorticFlow</strong>. All rights reserved.";
       }
 
