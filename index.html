@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>CorticFlow — O Fluxo da Tecnologia, Inovação e Inteligência Artificial</title>
   <meta name="description" content="Portal internacional de tecnologia: Windows, Linux, Apple, Android, startups, IA, benchmarks e tutoriais.">
+  <meta name="google-site-verification" content="43zcGSljLsHVe02k10h5cw8RD1YOL_NODxaqsoRaT28" />
   <link rel="icon" type="image/jpeg" href="favicon.jpg.jpeg" onerror="this.href='favicon.jpg'">
 
   <!-- Tailwind CSS & Markdown Parser -->
@@ -696,7 +697,7 @@
           category: "Tutorials & Guides",
           date: "Guide",
           excerpt: "A complete step-by-step walkthrough on building serverless content pipelines with GitHub Actions, Gemini API, and static site deployment.",
-          content: "## Engineering Serverless AI Workflows\n\nDeploying production-grade autonomous content workflows no longer requires dedicated cloud servers."
+          content: "## Engineering Serverless AI Workflows\n\nDeploying production-grade autonomous content workflows no longer requires expensive dedicated cloud servers."
         },
         {
           title: "Advanced Prompt Engineering: Structuring Institutional System Prompts",
@@ -708,8 +709,7 @@
       ]
     };
 
-    // Inicializa o banco imediatamente
-    allCurrentArticles = ARTICLES_DATA['pt'];
+    let allCurrentArticles = ARTICLES_DATA['pt'];
 
     function getCategoryBanner(category) {
       if (category.includes('Windows') || category.includes('PC')) return 'cat-tools.jpeg';
@@ -818,7 +818,6 @@
 
       renderArticles();
 
-      // Só rola se o usuário tiver clicado propositalmente em um botão de menu
       if (shouldScroll) {
         const feedEl = document.getElementById('feed-container');
         if (feedEl) feedEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
