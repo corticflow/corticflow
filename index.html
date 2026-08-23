@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>CorticFlow — O Fluxo da Inteligência Artificial e Tecnologia</title>
   <meta name="description" content="Portal internacional de notícias e tutoriais práticos de Inteligência Artificial e Tecnologia.">
-  <link rel="icon" type="image/jpeg" href="assets/favicon.jpg">
+  <link rel="icon" type="image/jpeg" href="favicon.jpg.jpeg" onerror="this.href='favicon.jpg'">
 
   <!-- Tailwind CSS & Markdown Parser -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -63,9 +63,9 @@
     </div>
   </header>
 
-  <!-- Hero Section com Imagem de Fundo -->
+  <!-- Hero Section com Imagem hero.jpeg -->
   <section class="relative py-16 px-4 text-center border-b border-brandBorder overflow-hidden bg-slate-950/60 relative">
-    <img src="assets/hero.jpg" alt="Hero Banner" class="absolute inset-0 w-full h-full object-cover opacity-20 pointer-events-none" onerror="this.style.display='none'">
+    <img src="hero.jpeg" alt="Hero Banner" class="absolute inset-0 w-full h-full object-cover opacity-25 pointer-events-none" onerror="if(!this.dataset.t1){this.dataset.t1='1'; this.src='hero.jpg';} else {this.style.display='none';}">
     
     <div class="max-w-4xl mx-auto relative z-10">
       <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-slate-900/80 border border-brandCyan/40 text-brandCyan text-xs font-semibold mb-6">
@@ -94,7 +94,7 @@
       </button>
     </div>
 
-    <!-- Grid onde as matérias aparecem com imagens -->
+    <!-- Grid onde as matérias aparecem -->
     <div id="articles-grid" class="grid md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
 
     <!-- Espaço para Google AdSense -->
@@ -197,10 +197,10 @@
     };
 
     function getCategoryBanner(category) {
-      if (category.includes('AI') || category.includes('Model')) return 'assets/cat-ai.jpg';
-      if (category.includes('Tutorial') || category.includes('Guide')) return 'assets/cat-tutorials.jpg';
-      if (category.includes('Business') || category.includes('Startup') || category.includes('Mercado')) return 'assets/cat-business.jpg';
-      return 'assets/cat-tools.jpg';
+      if (category.includes('AI') || category.includes('Model')) return 'cat-ai.jpeg';
+      if (category.includes('Tutorial') || category.includes('Guide')) return 'cat-tutorials.jpeg';
+      if (category.includes('Business') || category.includes('Startup') || category.includes('Mercado')) return 'cat-business.jpeg';
+      return 'cat-tools.jpeg';
     }
 
     function renderArticles(articles) {
@@ -208,15 +208,15 @@
       grid.innerHTML = '';
 
       articles.forEach(art => {
-        const bannerUrl = getCategoryBanner(art.category);
+        const bannerFilename = getCategoryBanner(art.category);
         const card = document.createElement('article');
         card.className = "bg-brandCard border border-brandBorder rounded-2xl overflow-hidden glow-hover flex flex-col justify-between cursor-pointer group";
         card.onclick = () => openArticle(art.title, art.category, art.date, art.content);
         card.innerHTML = `
           <div>
-            <!-- Imagem de Capa do Card -->
+            <!-- Imagem com o nome e formato exato do seu repositório -->
             <div class="h-44 bg-slate-800 relative overflow-hidden">
-              <img src="${bannerUrl}" alt="${art.category}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" onerror="this.parentElement.classList.add('bg-gradient-to-br','from-slate-800','to-brandCard'); this.style.display='none';">
+              <img src="${bannerFilename}" alt="${art.category}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" onerror="if(!this.dataset.t1){this.dataset.t1='1'; this.src='assets/${bannerFilename}';} else {this.style.display='none'; this.parentElement.classList.add('bg-gradient-to-br','from-slate-800','to-brandCard');}">
               <div class="absolute inset-0 bg-gradient-to-t from-brandCard via-transparent to-transparent"></div>
               <span class="absolute top-3 left-3 px-2.5 py-1 rounded bg-brandDark/85 backdrop-blur-md border border-brandCyan/30 text-brandCyan text-[10px] font-bold tracking-wider uppercase">${art.category}</span>
             </div>
