@@ -9,7 +9,7 @@ import feedparser
 GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY")
 
 if not GEMINI_API_KEY:
-    print("ERRO CRÍTICO: Secret GEMINI_API_KEY não encontrado no ambiente do GitHub.")
+    print("ERRO CRÍTICO: Secret GEMINI_API_KEY não encontrado.")
     sys.exit(1)
 
 HEADERS = {
@@ -17,9 +17,9 @@ HEADERS = {
 }
 
 FEEDS = [
-    {"url": "https://venturebeat.com/category/ai/feed/", "category": "IA & Modelos"},
-    {"url": "https://techcrunch.com/category/artificial-intelligence/feed/", "category": "Mercado & Big Techs"},
-    {"url": "https://www.theverge.com/rss/ai-artificial-intelligence/index.xml", "category": "Hardware & Inovação"}
+    {"url": "https://venturebeat.com/category/ai/feed/", "category": "Hardware & Chips", "badge": "Hardware"},
+    {"url": "https://techcrunch.com/category/artificial-intelligence/feed/", "category": "Mercado & Big Techs", "badge": "Mercado"},
+    {"url": "https://www.theverge.com/rss/ai-artificial-intelligence/index.xml", "category": "IA & Modelos", "badge": "Inteligência Artificial"}
 ]
 
 def coletar_noticias():
@@ -38,7 +38,8 @@ def coletar_noticias():
                         "titulo": title,
                         "link": link,
                         "resumo": summary_clean[:600],
-                        "categoria": item["category"]
+                        "categoria": item["category"],
+                        "badge": item["badge"]
                     })
         except Exception as e:
             print(f"Aviso no feed {item['url']}: {e}")
@@ -49,45 +50,25 @@ def calcular_tempo_leitura(texto):
     minutos = max(1, math.ceil(palavras / 200))
     return minutos, palavras
 
-def gerar_post_gemini(noticia):
-    data_hoje = datetime.date.today().strftime("%Y-%m-%d")
-    
+def gerar_artigo_completo(noticia):
     prompt = f"""Você é o Editor-Chefe e Especialista Sênior em Tecnologia e Inteligência Artificial do portal CorticFlow.
-Sua missão é redigir um artigo investigativo, técnico e aprofundado em português (estilo Ars Technica, MIT Technology Review e SemiAnalysis).
+Sua missão é redigir um artigo longo, técnico e aprofundado em português sobre esta notícia.
 
-DADOS DA NOTÍCIA:
-- Título: {noticia['titulo']}
-- Categoria: {noticia['categoria']}
-- Fonte: {noticia['link']}
-- Resumo Base: {noticia['resumo']}
+Título: {noticia['titulo']}
+Categoria: {noticia['categoria']}
+Fonte: {noticia['link']}
+Resumo: {noticia['resumo']}
 
-REGRAS RÍGIDAS DE EXTENSÃO E ESTRUTURA (OBRIGATÓRIO: MÍNIMO 1.200 PALAVRAS):
-Você DEVE desenvolver cada uma das seções abaixo com riqueza de detalhes, sem atalhos ou resumos curtos:
-
-# [Título Jornalístico Impactante e Exclusivo]
-
-## 1. O Ponto de Inflexão e Contexto Histórico (Mínimo 3 parágrafos longos)
-- Explique em detalhes o que foi anunciado e por que este anúncio ocorre neste momento.
-- Descreva o cenário tecnológico anterior, as limitações que existiam e o que motivou essa inovação.
-
-## 2. Engenharia e Arquitetura Sob o Capô (Mínimo 4 parágrafos longos + 1 Tabela Comparativa em Markdown)
-- Explique a mecânica técnica fundamental (hardware, tensores, microarquitetura, algoritmos, pesos, consumo elétrico, latência ou throughput).
-- Compare com as tecnologias concorrentes do mercado em uma tabela Markdown detalhada com métricas e tradeoffs.
-
-## 3. Disputa de Mercado e Impacto nos Ecossistemas (Mínimo 3 parágrafos longos)
-- Quem ganha e quem perde com este movimento (Nvidia, OpenAI, Google, Meta, Apple, Microsoft, startups e devs).
-- Como isso altera a relação de custos (OpEx/CapEx) e a dependência de fornecedores.
-
-## 4. Guia Prático para Engenheiros e Empresas (Mínimo 3 parágrafos longos)
-- Casos de uso reais e cenários onde essa solução deve (ou não deve) ser adotada.
-- Possíveis gargalos de implementação, migração e boas práticas recomendadas de engenharia.
-
-## 5. O Veredito CorticFlow e Perspectiva Futura (Mínimo 2 parágrafos reflexivos)
-- Conclusão analítica e prospectiva sobre os próximos 6 a 12 meses.
+ESTRUTURA OBRIGATÓRIA (LONG-FORM - MÍNIMO 1.200 PALAVRAS):
+1. <h2> O Ponto de Inflexão (Contexto Histórico) — Mínimo 3 parágrafos densos.
+2. <h2> Engenharia & Arquitetura Sob o Capô — Mínimo 4 parágrafos técnicos detalhando métricas, tradeoffs e funcionamento.
+3. <h2> Disputa de Mercado e Impacto nos Ecossistemas — Mínimo 3 parágrafos sobre Big Techs, startups e devs.
+4. <h2> Guia Prático e Lições de Engenharia — Mínimo 3 parágrafos de boas práticas e aplicação real.
+5. <h2> O Veredito CorticFlow — Conclusão analítica de mercado para os próximos meses.
 
 IMPORTANTE:
-- Desenvolva cada parágrafo com explicações completas.
-- Não inclua frontmatter YAML na sua resposta. Comece direto pelo título #."""
+- Escreva o corpo do artigo diretamente em tags HTML limpas (<h2>, <p>, <ul>, <li>, <strong>).
+- Não use blocos de código ```html. Retorne apenas o conteúdo HTML interno do artigo."""
 
     payload = {
         "contents": [{"parts": [{"text": prompt}]}],
@@ -96,58 +77,90 @@ IMPORTANTE:
 
     models = ["gemini-1.5-flash", "gemini-2.0-flash", "gemini-1.5-pro"]
     for model in models:
-        endpoint = f"https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent?key={GEMINI_API_KEY}"
+        endpoint = f"[https://generativelanguage.googleapis.com/v1beta/models/](https://generativelanguage.googleapis.com/v1beta/models/){model}:generateContent?key={GEMINI_API_KEY}"
         try:
             res = requests.post(endpoint, json=payload, headers={"Content-Type": "application/json"}, timeout=60)
             if res.status_code == 200:
                 data = res.json()
-                corpo = data["candidates"][0]["content"]["parts"][0]["text"]
-                corpo = re.sub(r'^```markdown\s*', '', corpo)
-                corpo = re.sub(r'^```\s*', '', corpo)
-                corpo = re.sub(r'\s*```$', '', corpo)
-                
-                h1_match = re.search(r'^#\s+(.+)$', corpo, re.MULTILINE)
-                titulo_artigo = h1_match.group(1).replace('"', '').strip() if h1_match else noticia['titulo'].replace('"', '').strip()
-                
-                minutos_leitura, total_palavras = calcular_tempo_leitura(corpo)
-                slug_limpo = re.sub(r'[^a-zA-Z0-9]+', '-', titulo_artigo.lower()).strip('-')[:60]
-                
-                frontmatter = f"""---
-title: "{titulo_artigo}"
-date: {data_hoje}
-category: "{noticia['categoria']}"
-tags: ["Inteligência Artificial", "Tecnologia", "Inovação", "Engenharia"]
-slug: "{slug_limpo}"
-author: "CorticFlow Editorial"
-reading_time: "{minutos_leitura} min de leitura"
-word_count: {total_palavras}
-source_url: "{noticia['link']}"
----
-
-"""
-                return frontmatter + corpo
-            else:
-                print(f"Tentativa {model} retornou status {res.status_code}")
+                html_body = data["candidates"][0]["content"]["parts"][0]["text"]
+                html_body = re.sub(r'^```html\s*', '', html_body)
+                html_body = re.sub(r'^```\s*', '', html_body)
+                html_body = re.sub(r'\s*```$', '', html_body)
+                return html_body
         except Exception as err:
             print(f"Erro em {model}: {err}")
     return None
 
+def atualizar_index_html(artigos_gerados):
+    if not os.path.exists("index.html"):
+        print("index.html não encontrado na raiz.")
+        return
+
+    with open("index.html", "r", encoding="utf-8") as f:
+        html = f.read()
+
+    cards_html = ""
+    data_hoje = datetime.date.today().strftime("%d/%m/%Y")
+
+    for i, item in enumerate(artigos_gerados):
+        minutos, palavras = calcular_tempo_leitura(item["corpo_html"])
+        cards_html += f"""
+        <article class="cortic-card" style="background: #0f172a; border: 1px solid #1e293b; border-radius: 12px; padding: 28px; margin-bottom: 32px; box-shadow: 0 4px 20px rgba(0,0,0,0.3);">
+            <div style="display: flex; gap: 12px; align-items: center; margin-bottom: 12px;">
+                <span style="background: #00E5FF; color: #0B0F19; font-weight: bold; font-size: 12px; padding: 4px 10px; border-radius: 20px; text-transform: uppercase;">{item['badge']}</span>
+                <span style="color: #94a3b8; font-size: 14px;">📅 {data_hoje} • ⏱️ {minutos} min de leitura ({palavras} palavras)</span>
+            </div>
+            <h2 style="color: #FFFFFF; font-size: 24px; margin-top: 0; line-height: 1.3;">{item['titulo']}</h2>
+            <div class="article-body" style="color: #cbd5e1; font-size: 16px; line-height: 1.8; margin-top: 20px;">
+                {item['corpo_html']}
+            </div>
+            <div style="margin-top: 24px; padding-top: 16px; border-top: 1px solid #334155; font-size: 13px; color: #64748b;">
+                Fonte Original: <a href="{item['link']}" target="_blank" style="color: #00E5FF; text-decoration: none;">{item['link']}</a>
+            </div>
+        </article>
+        """
+
+    # Injetar dentro da seção de artigos do index.html
+    if "<!-- POSTS_CONTAINER -->" in html:
+        novo_html = re.sub(
+            r'<!-- POSTS_CONTAINER -->.*?<!-- END_POSTS_CONTAINER -->',
+            f'<!-- POSTS_CONTAINER -->\n{cards_html}\n<!-- END_POSTS_CONTAINER -->',
+            html,
+            flags=re.DOTALL
+        )
+    elif "<main" in html:
+        # Substitui o conteúdo da tag main
+        novo_html = re.sub(
+            r'(<main[^>]*>).*?(</main>)',
+            f'\\1\n<div style="max-width: 900px; margin: 0 auto; padding: 20px;">\n{cards_html}\n</div>\n\\2',
+            html,
+            flags=re.DOTALL
+        )
+    else:
+        novo_html = html
+
+    with open("index.html", "w", encoding="utf-8") as f:
+        f.write(novo_html)
+    print("index.html atualizado com sucesso com as novas matérias long-form!")
+
 def main():
     os.makedirs("content/posts", exist_ok=True)
     noticias = coletar_noticias()
-    data_str = datetime.date.today().strftime("%Y%m%d")
-    
-    gerados = 0
-    for i, noticia in enumerate(noticias):
-        conteudo = gerar_post_gemini(noticia)
-        if conteudo:
-            filename = f"content/posts/{data_str}-artigo-{i+1}.md"
-            with open(filename, "w", encoding="utf-8") as f:
-                f.write(conteudo)
-            print(f"Post denso gerado ({filename})")
-            gerados += 1
-            
-    print(f"Total de posts criados: {gerados}")
+    artigos_gerados = []
+
+    for noticia in noticias:
+        corpo = gerar_artigo_completo(noticia)
+        if corpo:
+            artigos_gerados.append({
+                "titulo": noticia["titulo"],
+                "link": noticia["link"],
+                "badge": noticia["badge"],
+                "corpo_html": corpo
+            })
+
+    if artigos_gerados:
+        atualizar_index_html(artigos_gerados)
+        print(f"Total de {len(artigos_gerados)} matérias longas inseridas no site.")
 
 if __name__ == "__main__":
     main()
