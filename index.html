@@ -1809,5 +1809,88 @@ document.addEventListener('DOMContentLoaded', () => {
     box-shadow: 0 18px 36px -10px rgba(0, 0, 0, 0.85), 0 0 22px rgba(0, 229, 255, 0.18) !important;
   }
 </style>
+  <!-- ==================================================== -->
+<!-- JS SÊNIOR: FILTRO INTELIGENTE DA ARENA DE BENCHMARKS -->
+<!-- ==================================================== -->
+<style>
+  /* Transição Suave de Fade para as Linhas da Tabela */
+  .benchmark-row {
+    transition: opacity 0.25s ease-in-out, transform 0.25s ease-in-out;
+  }
+  .benchmark-row.fade-out {
+    opacity: 0 !important;
+    transform: translateY(4px);
+  }
+  /* Destaque Visual do Botão Ativo */
+  .benchmark-btn-active {
+    background-color: #00E5FF !important;
+    color: #0B0F19 !important;
+    border-color: #00E5FF !important;
+    box-shadow: 0 0 14px rgba(0, 229, 255, 0.45) !important;
+    font-weight: 800 !important;
+  }
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  // Localiza os botões e linhas da tabela no DOM
+  const allButtons = document.querySelectorAll('button, [role="button"], a');
+  const tableRows = document.querySelectorAll('table tbody tr');
+
+  if (!tableRows.length) return;
+
+  // Identifica automaticamente os botões da Arena de Benchmarks pelo texto
+  const filterButtons = Array.from(allButtons).filter(btn => {
+    const txt = btn.innerText.toLowerCase().trim();
+    return txt.includes('geral') || txt.includes('todos') || txt.includes('raciocínio') || txt.includes('código') || txt.includes('open-source') || txt.includes('open source');
+  });
+
+  if (!filterButtons.length) return;
+
+  // Adiciona a classe de transição em todas as linhas
+  tableRows.forEach(row => row.classList.add('benchmark-row'));
+
+  filterButtons.forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.preventDefault();
+
+      // 1. Atualiza o estado visual dos botões
+      filterButtons.forEach(b => b.classList.remove('benchmark-btn-active'));
+      btn.classList.add('benchmark-btn-active');
+
+      const filter = (btn.getAttribute('data-filter') || btn.innerText).toLowerCase().trim();
+
+      // 2. Filtra com animação suave de fade
+      tableRows.forEach(row => {
+        const rowText = row.innerText.toLowerCase();
+        const rowCategory = (row.getAttribute('data-category') || '').toLowerCase();
+
+        const isGeneral = filter.includes('geral') || filter.includes('todos');
+        const isReasoning = (filter.includes('raciocínio') || filter.includes('código') || filter.includes('code')) && 
+                            (rowText.includes('raciocínio') || rowText.includes('código') || rowText.includes('code') || rowCategory.includes('reasoning'));
+        const isOpenSource = (filter.includes('open-source') || filter.includes('open source')) && 
+                             (rowText.includes('open-source') || rowText.includes('open source') || rowCategory.includes('opensource') || rowCategory.includes('open-source'));
+
+        if (isGeneral || isReasoning || isOpenSource) {
+          row.style.display = '';
+          setTimeout(() => {
+            row.classList.remove('fade-out');
+            row.style.opacity = '1';
+          }, 10);
+        } else {
+          row.classList.add('fade-out');
+          row.style.opacity = '0';
+          setTimeout(() => {
+            if (row.classList.contains('fade-out')) {
+              row.style.display = 'none';
+            }
+          }, 250);
+        }
+      });
+    });
+  });
+});
+</script>
+<!-- ==================================================== -->
 </body>
 </html>
