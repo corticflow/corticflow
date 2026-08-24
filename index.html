@@ -1746,5 +1746,35 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 </script>
 <!-- ============================================== -->
+  <!-- Gradiente Animado no Logo e no Título Principal -->
+<style>
+@keyframes corticGradientShift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+.animated-gradient-text {
+  background: linear-gradient(90deg, #00E5FF, #8B5CF6, #38BDF8, #A855F7, #00E5FF) !important;
+  background-size: 250% auto !important;
+  -webkit-background-clip: text !important;
+  background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+  color: #00E5FF;
+  animation: corticGradientShift 5s ease infinite !important;
+  display: inline-block;
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  // Aplica automaticamente no logotipo
+  document.querySelectorAll('.logo-text, .brand-title, [class*="logo"]').forEach(el => {
+    el.classList.add('animated-gradient-text');
+  });
+  // Aplica automaticamente no título principal (Hero)
+  const h1 = document.querySelector('h1');
+  if (h1) h1.classList.add('animated-gradient-text');
+});
+</script>
 </body>
 </html>
