@@ -1649,5 +1649,61 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 });
 </script>
+  <!-- ============================================== -->
+<!-- RECURSOS: BARRA DE LEITURA + VOLTAR AO TOPO   -->
+<!-- ============================================== -->
+
+<!-- 1. Elementos Visuais -->
+<div id="reading-progress-bar" style="position: fixed; top: 0; left: 0; height: 3px; width: 0%; background: linear-gradient(90deg, #00E5FF, #8B5CF6); z-index: 9999; box-shadow: 0 0 10px rgba(0, 229, 255, 0.7); transition: width 0.1s ease-out;"></div>
+
+<button id="back-to-top-btn" aria-label="Voltar ao Topo" style="position: fixed; bottom: 25px; right: 25px; width: 44px; height: 44px; border-radius: 50%; background: rgba(19, 27, 46, 0.85); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border: 1px solid rgba(0, 229, 255, 0.3); color: #00E5FF; font-size: 18px; display: flex; align-items: center; justify-content: center; cursor: pointer; opacity: 0; pointer-events: none; transition: opacity 0.3s ease, transform 0.2s ease, border-color 0.2s ease; z-index: 900; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);">
+    ▲
+</button>
+
+<!-- 2. Estilos de Hover do Botão -->
+<style>
+    #back-to-top-btn:hover {
+        transform: translateY(-3px);
+        border-color: #00E5FF;
+        box-shadow: 0 0 15px rgba(0, 229, 255, 0.5);
+    }
+</style>
+
+<!-- 3. Lógica JavaScript de Rolagem -->
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const progressBar = document.getElementById('reading-progress-bar');
+    const backToTopBtn = document.getElementById('back-to-top-btn');
+
+    window.addEventListener('scroll', () => {
+        const scrollTop = window.scrollY || document.documentElement.scrollTop;
+        const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+
+        // Atualiza a Barra de Progresso no Topo (0% a 100%)
+        if (scrollHeight > 0) {
+            const progress = (scrollTop / scrollHeight) * 100;
+            progressBar.style.width = progress + '%';
+        }
+
+        // Exibe o Botão "Voltar ao Topo" após rolar 300px
+        if (scrollTop > 300) {
+            backToTopBtn.style.opacity = '1';
+            backToTopBtn.style.pointerEvents = 'auto';
+        } else {
+            backToTopBtn.style.opacity = '0';
+            backToTopBtn.style.pointerEvents = 'none';
+        }
+    });
+
+    // Clique suave para retornar ao topo
+    backToTopBtn.addEventListener('click', () => {
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
+    });
+});
+</script>
+<!-- ============================================== -->
 </body>
 </html>
