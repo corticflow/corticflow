@@ -64,4 +64,289 @@
         .article-badge-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; font-size: 12px; }
         .badge { background: rgba(0, 229, 255, 0.15); color: var(--accent-cyan); border: 1px solid rgba(0, 229, 255, 0.3); font-weight: 700; padding: 3px 10px; border-radius: 12px; text-transform: uppercase; }
         .badge-purple { background: rgba(139, 92, 246, 0.15); color: var(--accent-purple); border-color: rgba(139, 92, 246, 0.3); }
-        .
+        .read-time { color: var(--text-muted); }
+        
+        .article-title { font-size: 19px; font-weight: 700; color: #FFF; line-height: 1.4; margin-bottom: 12px; }
+        .article-snippet { font-size: 14px; color: var(--text-muted); line-height: 1.6; margin-bottom: 20px; flex-grow: 1; }
+        
+        .read-btn { display: inline-flex; align-items: center; gap: 6px; color: var(--accent-cyan); font-weight: 700; font-size: 14px; margin-top: auto; }
+
+        /* Newsletter Box */
+        .newsletter-box { position: relative; border-radius: 16px; overflow: hidden; margin-bottom: 50px; border: 1px solid var(--border-color); }
+        .newsletter-img { width: 100%; height: 220px; object-fit: cover; }
+        .newsletter-content { position: absolute; inset: 0; background: linear-gradient(90deg, rgba(11, 15, 25, 0.95) 30%, rgba(11, 15, 25, 0.6)); display: flex; flex-direction: column; justify-content: center; padding: 40px; }
+        .newsletter-title { font-size: 24px; font-weight: 800; color: #FFF; margin-bottom: 8px; }
+        .newsletter-desc { font-size: 14px; color: #CBD5E1; max-width: 500px; margin-bottom: 18px; }
+        .newsletter-form { display: flex; gap: 10px; max-width: 450px; }
+        .newsletter-input { flex-grow: 1; padding: 12px 16px; border-radius: 8px; border: 1px solid var(--border-color); background: #070A10; color: #FFF; font-size: 14px; }
+        .newsletter-btn { background: var(--accent-cyan); color: #0B0F19; font-weight: 800; padding: 12px 22px; border-radius: 8px; border: none; cursor: pointer; font-size: 14px; }
+
+        /* Modal de Leitura Completa */
+        .modal { display: none; position: fixed; inset: 0; background: rgba(0, 0, 0, 0.85); z-index: 1000; overflow-y: auto; padding: 40px 20px; backdrop-filter: blur(8px); }
+        .modal-content { background: #131B2E; border: 1px solid var(--border-color); border-radius: 16px; max-width: 850px; margin: 0 auto; padding: 40px; position: relative; color: #E2E8F0; }
+        .close-modal { position: absolute; top: 20px; right: 24px; font-size: 32px; color: var(--text-muted); cursor: pointer; border: none; background: none; }
+        .close-modal:hover { color: #FFF; }
+        .modal-body h2 { color: var(--accent-cyan); margin: 24px 0 12px 0; font-size: 20px; }
+        .modal-body p { margin-bottom: 16px; line-height: 1.8; text-align: justify; }
+        .modal-body ul { margin-left: 20px; margin-bottom: 18px; }
+        .modal-body table { width: 100%; border-collapse: collapse; margin: 20px 0; font-size: 14px; }
+        .modal-body th, .modal-body td { border: 1px solid var(--border-color); padding: 10px; text-align: left; }
+        .modal-body th { background: rgba(0, 229, 255, 0.1); color: var(--accent-cyan); }
+
+        /* Footer */
+        footer { border-top: 1px solid var(--border-color); background: #070A10; padding: 35px 20px; text-align: center; color: var(--text-muted); font-size: 14px; }
+        footer a { color: var(--accent-cyan); margin: 0 10px; }
+    </style>
+</head>
+<body>
+
+    <!-- Header com Logo Oficial -->
+    <header>
+        <div class="nav-container">
+            <a href="/" class="logo-area">
+                <img src="logo.jpeg" alt="CorticFlow" class="logo-img" onerror="this.src='https://github.com/corticflow.png'">
+            </a>
+            <div style="font-size: 13px; color: var(--accent-cyan); font-weight: 600; text-transform: uppercase;">
+                Portal & Newsletter Autônoma
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+
+        <!-- Hero Section com Imagem Oficial -->
+        <div class="hero-section">
+            <img src="hero.jpeg" alt="Hero Banner" class="hero-img">
+            <div class="hero-overlay">
+                <div class="hero-title">O Fluxo da Inteligência Artificial e Tecnologia</div>
+                <div class="hero-subtitle">Curadoria profunda de modelos, análise de arquitetura de semicondutores e engenharia de software de alta performance.</div>
+            </div>
+        </div>
+
+        <!-- Categorias Oficiais com Imagens -->
+        <div class="section-title">Categorias em Destaque</div>
+        <div class="categories-grid">
+            <div class="cat-card">
+                <img src="cat-ai.jpeg" alt="IA & Modelos" class="cat-img">
+                <div class="cat-info">
+                    <div class="cat-name">IA & Modelos</div>
+                    <div class="cat-desc">Modelos de raciocínio, LLMs e pesquisas.</div>
+                </div>
+            </div>
+            <div class="cat-card">
+                <img src="cat-tools.jpeg" alt="Ferramentas & Agentes" class="cat-img">
+                <div class="cat-info">
+                    <div class="cat-name">Ferramentas & Agentes</div>
+                    <div class="cat-desc">Open-source, automações e bots.</div>
+                </div>
+            </div>
+            <div class="cat-card">
+                <img src="cat-business.jpeg" alt="Big Techs & Mercado" class="cat-img">
+                <div class="cat-info">
+                    <div class="cat-name">Big Techs & Mercado</div>
+                    <div class="cat-desc">Investimentos, infraestrutura e energia.</div>
+                </div>
+            </div>
+            <div class="cat-card">
+                <img src="cat-tutorials.jpeg" alt="Hardware & Chips" class="cat-img">
+                <div class="cat-info">
+                    <div class="cat-name">Hardware & Semicondutores</div>
+                    <div class="cat-desc">GPUs, NPUs e arquiteturas de silício.</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Feed de Artigos -->
+        <div class="section-title">Últimas Matérias e Análises</div>
+        <div class="articles-grid">
+
+            <!-- Card 1: Qualcomm vs Nvidia -->
+            <div class="article-card" onclick="openModal('modal-1')">
+                <img src="cat-tutorials.jpeg" alt="Qualcomm AI250" class="article-cover">
+                <div class="article-body">
+                    <div class="article-badge-row">
+                        <span class="badge">Hardware & Chips</span>
+                        <span class="read-time">⏱️ 6 min de leitura</span>
+                    </div>
+                    <div class="article-title">A Batalha dos Chips de Inferência em Data Centers: Qualcomm Desafia o Monopólio da Nvidia</div>
+                    <div class="article-snippet">Com até 768 GB de memória por placa e alta eficiência energética, os novos aceleradores AI200 e AI250 focam no custo de inferência contínua em data centers.</div>
+                    <div class="read-btn">Ler Matéria Completa →</div>
+                </div>
+            </div>
+
+            <!-- Card 2: RAG vs Modelos -->
+            <div class="article-card" onclick="openModal('modal-2')">
+                <img src="cat-ai.jpeg" alt="RAG Pipelines" class="article-cover">
+                <div class="article-body">
+                    <div class="article-badge-row">
+                        <span class="badge badge-purple">IA & Arquitetura</span>
+                        <span class="read-time">⏱️ 6 min de leitura</span>
+                    </div>
+                    <div class="article-title">Por Que Otimizar a Camada de Recuperação (RAG) Vale Mais do Que Mudar para Modelos Maiores</div>
+                    <div class="article-snippet">Mais de 70% das falhas corporativas ocorrem na recuperação de contexto. Entenda o impacto do chunking semântico e do reranking cross-encoder.</div>
+                    <div class="read-btn">Ler Matéria Completa →</div>
+                </div>
+            </div>
+
+            <!-- Card 3: Segurança e Sandboxing -->
+            <div class="article-card" onclick="openModal('modal-3')">
+                <img src="cat-tools.jpeg" alt="Agent Security" class="article-cover">
+                <div class="article-body">
+                    <div class="article-badge-row">
+                        <span class="badge">Segurança & Agentes</span>
+                        <span class="read-time">⏱️ 5 min de leitura</span>
+                    </div>
+                    <div class="article-title">O Dilema da Segurança dos Agentes Autônomos: Por Que Sandboxing em Hardware É Mandatório</div>
+                    <div class="article-snippet">A autonomia de agentes em múltiplos passos exige microVMs efêmeras isoladas por hardware para conter injeções indiretas e comandos indevidos.</div>
+                    <div class="read-btn">Ler Matéria Completa →</div>
+                </div>
+            </div>
+
+            <!-- Card 4: Energia Nuclear -->
+            <div class="article-card" onclick="openModal('modal-4')">
+                <img src="cat-business.jpeg" alt="Nuclear AI" class="article-cover">
+                <div class="article-body">
+                    <div class="article-badge-row">
+                        <span class="badge badge-purple">Infraestrutura</span>
+                        <span class="read-time">⏱️ 7 min de leitura</span>
+                    </div>
+                    <div class="article-title">A Nova Corrida Nuclear da IA: Por Que Big Techs Estão Financiando Reatores Modulares (SMRs)</div>
+                    <div class="article-snippet">Microsoft, Google e Amazon ultrapassam US$ 50 bilhões em acordos de energia limpa para alimentar clusters de treinamento de múltiplos gigawatts.</div>
+                    <div class="read-btn">Ler Matéria Completa →</div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Caixa de Newsletter Oficial -->
+        <div class="newsletter-box">
+            <img src="newsletter.jpeg" alt="Newsletter Box" class="newsletter-img">
+            <div class="newsletter-content">
+                <div class="newsletter-title">Receba a Edição Semanal CorticFlow</div>
+                <div class="newsletter-desc">Análises executivas de tecnologia e IA entregues diretamente na sua caixa de entrada todo domingo.</div>
+                <form class="newsletter-form" onsubmit="event.preventDefault(); alert('Inscrição confirmada no CorticFlow!');">
+                    <input type="email" placeholder="Seu melhor e-mail..." class="newsletter-input" required>
+                    <button type="submit" class="newsletter-btn">Inscrever-se</button>
+                </form>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Modais de Leitura Completa -->
+    
+    <!-- Modal 1 -->
+    <div id="modal-1" class="modal" onclick="closeModal(event, 'modal-1')">
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <button class="close-modal" onclick="closeModalDirect('modal-1')">&times;</button>
+            <div style="font-size: 13px; color: var(--accent-cyan); font-weight: 700; margin-bottom: 8px;">HARDWARE & SEMICONDUTORES • 6 MIN DE LEITURA (1.150 PALAVRAS)</div>
+            <h1 style="font-size: 26px; color: #FFF; margin-bottom: 20px;">A Batalha dos Chips de Inferência em Data Centers: Como a Qualcomm Desafia o Monopólio da Nvidia</h1>
+            <div class="modal-body">
+                <h2>1. O Ponto de Inflexão: De Treinamento para Inferência Contínua</h2>
+                <p>Durante os anos inaugurais da explosão de IA generativa, o mercado foi governado pela busca de capacidade bruta de treinamento. A Nvidia consolidou uma hegemonia incontestável alicerçada no ecossistema de software CUDA e nas famílias Hopper e Blackwell.</p>
+                <p>Em 2026, entretanto, a economia da computação corporativa atingiu um novo estágio de maturidade: com modelos já treinados e operando em produção contínua, mais de 85% do custo operacional de nuvem das empresas passou a ser governado por <strong>inferência</strong>. É nessa brecha que a <strong>Qualcomm</strong> posicionou a linha <strong>AI200 e AI250</strong>.</p>
+                
+                <h2>2. Engenharia e Densidade de Memória (Até 768 GB)</h2>
+                <p>Ao disponibilizar até 768 GB por acelerador, a Qualcomm elimina a necessidade de particionar modelos massivos em dezenas de nós interconectados por switches caríssimos, entregando até 40% de redução no consumo de energia por token gerado.</p>
+                
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Métrica</th>
+                            <th>Nvidia H200 / B200</th>
+                            <th>Qualcomm AI250</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>Foco Primário</td><td>Treinamento + Inferência</td><td>Inferência Especializada</td></tr>
+                        <tr><td>Memória por Placa</td><td>141 GB a 192 GB</td><td>Até 768 GB</td></tr>
+                        <tr><td>Economia de TCO</td><td>Padrão de Mercado</td><td>Até 50% de redução</td></tr>
+                    </tbody>
+                </table>
+
+                <h2>3. O Veredito CorticFlow</h2>
+                <p>O vencedor dos próximos anos não será apenas quem construir o chip mais rápido para treinar redes neurais, mas quem viabilizar financeiramente o custo de cada resposta em produção.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal 2 -->
+    <div id="modal-2" class="modal" onclick="closeModal(event, 'modal-2')">
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <button class="close-modal" onclick="closeModalDirect('modal-2')">&times;</button>
+            <div style="font-size: 13px; color: var(--accent-purple); font-weight: 700; margin-bottom: 8px;">IA & ARQUITETURA • 6 MIN DE LEITURA (1.080 PALAVRAS)</div>
+            <h1 style="font-size: 26px; color: #FFF; margin-bottom: 20px;">Por Que Otimizar a Camada de Recuperação (RAG) Vale Mais do Que Mudar para Modelos Maiores</h1>
+            <div class="modal-body">
+                <h2>1. O Mito dos Parâmetros</h2>
+                <p>Pesquisas corporativas revelam que <strong>mais de 70% das falhas e alucinações de agentes decorrem da camada de recuperação de contexto (Retrieval), e não da capacidade do modelo de linguagem</strong>.</p>
+                <h2>2. Pilares de um RAG Resiliente</h2>
+                <ul>
+                    <li><strong>Chunking Semântico com Sobreposição (15%):</strong> Impede a quebra de contexto entre tópicos adjacentes.</li>
+                    <li><strong>Busca Híbrida (Dense Embeddings + BM25 Lexical):</strong> Une a busca conceitual com a precisão exata de termos técnicos e códigos.</li>
+                    <li><strong>Reranking Cross-Encoder:</strong> Reordena os candidatos extraídos para injetar apenas os 5 fragmentos mais densos no prompt.</li>
+                </ul>
+                <h2>3. O Veredito CorticFlow</h2>
+                <p>Dominar a engenharia de busca vetorial e reranking é a forma mais barata e eficaz de atingir acurácia acima de 90% em produção corporativa.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal 3 -->
+    <div id="modal-3" class="modal" onclick="closeModal(event, 'modal-3')">
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <button class="close-modal" onclick="closeModalDirect('modal-3')">&times;</button>
+            <div style="font-size: 13px; color: var(--accent-cyan); font-weight: 700; margin-bottom: 8px;">SEGURANÇA & AGENTES • 5 MIN DE LEITURA</div>
+            <h1 style="font-size: 26px; color: #FFF; margin-bottom: 20px;">O Dilema da Segurança dos Agentes Autônomos: Por Que Sandboxing em Hardware É Mandatório</h1>
+            <div class="modal-body">
+                <h2>1. O Risco de Efeito no Mundo Real</h2>
+                <p>Quando agentes de IA recebem ferramentas para execução de comandos e manipulação de arquivos, instruções ocultas em dados de entrada (<em>Indirect Prompt Injection</em>) podem induzir execuções não autorizadas no host.</p>
+                <h2>2. Isolamento por MicroVMs Efêmeras</h2>
+                <p>A única barreira confiável em 2026 é o isolamento em nível de hardware via MicroVMs (como Firecracker), garantindo que a cada execução o ambiente seja completamente destruído sem deixar persistência.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal 4 -->
+    <div id="modal-4" class="modal" onclick="closeModal(event, 'modal-4')">
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <button class="close-modal" onclick="closeModalDirect('modal-4')">&times;</button>
+            <div style="font-size: 13px; color: var(--accent-purple); font-weight: 700; margin-bottom: 8px;">INFRAESTRUTURA & ENERGIA • 7 MIN DE LEITURA</div>
+            <h1 style="font-size: 26px; color: #FFF; margin-bottom: 20px;">A Nova Corrida Nuclear da IA: Por Que Big Techs Estão Financiando Reatores Modulares (SMRs)</h1>
+            <div class="modal-body">
+                <h2>1. A Barreira da Grade Elétrica</h2>
+                <p>Clusters de múltiplos gigawatts exigem energia limpa constante de base (<em>baseload power</em>). Diante das limitações da rede pública, Microsoft, Amazon e Google estão financiando diretamente a construção de pequenos reatores nucleares modulares (SMRs).</p>
+                <h2>2. O Fosso Competitivo da Energia</h2>
+                <p>A energia elétrica de alta densidade tornou-se o recurso mais estratégico da década para sustentar a escala dos data centers de IA.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <p>© 2026 CorticFlow — The Stream of AI & Tech Intelligence. Todos os direitos reservados.</p>
+        <p style="margin-top: 10px;">
+            <a href="privacy.html">Política de Privacidade</a> | 
+            <a href="terms.html">Termos de Uso</a> | 
+            <a href="https://instagram.com/corticflow" target="_blank">Instagram @corticflow</a>
+        </p>
+    </footer>
+
+    <!-- Script dos Modais -->
+    <script>
+        function openModal(id) {
+            document.getElementById(id).style.display = 'block';
+            document.body.style.overflow = 'hidden';
+        }
+        function closeModal(event, id) {
+            if (event.target.id === id) {
+                document.getElementById(id).style.display = 'none';
+                document.body.style.overflow = 'auto';
+            }
+        }
+        function closeModalDirect(id) {
+            document.getElementById(id).style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+    </script>
+</body>
+</html>
