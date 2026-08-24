@@ -2,6 +2,7 @@ import os
 import sys
 import datetime
 import re
+import math
 import requests
 import feedparser
 
@@ -36,61 +37,79 @@ def coletar_noticias():
                     artigos.append({
                         "titulo": title,
                         "link": link,
-                        "resumo": summary_clean[:500],
+                        "resumo": summary_clean[:600],
                         "categoria": item["category"]
                     })
         except Exception as e:
             print(f"Aviso no feed {item['url']}: {e}")
     return artigos[:4]
 
+def calcular_tempo_leitura(texto):
+    palavras = len(re.findall(r'\w+', texto))
+    minutos = max(1, math.ceil(palavras / 200))
+    return minutos, palavras
+
 def gerar_post_gemini(noticia):
     data_hoje = datetime.date.today().strftime("%Y-%m-%d")
-    prompt = f"""Você é o editor sênior do CorticFlow (portal de IA e Tecnologia).
-Escreva um artigo técnico e aprofundado em português sobre esta notícia:
+    
+    prompt = f"""Você é o Editor-Chefe e Especialista Sênior em Tecnologia e Inteligência Artificial do portal CorticFlow.
+Sua missão é transformar esta notícia em um artigo aprofundado, envolvente, rico em detalhes técnicos e com alto valor editorial.
 
-Título: {noticia['titulo']}
-Categoria: {noticia['categoria']}
-Fonte Original: {noticia['link']}
-Resumo: {noticia['resumo']}
+DADOS DA NOTÍCIA:
+- Título Base: {noticia['titulo']}
+- Categoria: {noticia['categoria']}
+- Fonte de Origem: {noticia['link']}
+- Resumo Preliminar: {noticia['resumo']}
 
-Estrutura obrigatória:
-1. No topo, inclua EXATAMENTE o frontmatter YAML entre '---':
----
-title: "{noticia['titulo'].replace('\"', '')}"
-date: {data_hoje}
-category: "{noticia['categoria']}"
-tags: ["Inteligência Artificial", "Tecnologia", "Inovação"]
-slug: "{re.sub(r'[^a-zA-Z0-9]+', '-', noticia['titulo'].lower())[:60]}"
-source_url: "{noticia['link']}"
----
-
-2. Corpo do artigo em Markdown (500 a 700 palavras):
-- Introdução contextualizando o anúncio.
-- Análise técnica detalhada dos impactos práticos e de engenharia.
-- Relevância para o mercado corporativo e desenvolvedores.
-- Pílula técnica ou lição prática derivada da notícia.
-- Conclusão com a visão do CorticFlow.
-
-Retorne APENAS o conteúdo Markdown puro."""
+DIRETRIZES RIGOROSAS DE REDAÇÃO (LONG-FORM):
+1. Extensão e Densidade: O texto deve ser substancial e detalhado (entre 900 e 1.400 palavras), explorando todos os ângulos da notícia com fluidez e profundidade.
+2. Estrutura Obrigatória do Artigo:
+   - # [Título Jornalístico Impactante e Exclusivo]
+   - ## O Ponto de Inflexão (Lead & Contexto Histórico): O que exatamente foi anunciado, por que este momento é crítico e o que existia antes.
+   - ## Engenharia & Arquitetura Sob o Capô: Como a tecnologia/modelo/chip funciona internamente. Explique termos técnicos, tradeoffs de latência/custo/hardware e métricas comparativas.
+   - ## O Tabuleiro do Mercado e Impacto na Indústria: Quem ganha, quem perde, implicações para desenvolvedores, startups e Big Techs (OpenAI, Google, Nvidia, Meta, Apple).
+   - ## Cenários Práticos & Aplicação no Mundo Real: Casos de uso práticos, potenciais gargalos de adoção e boas práticas de integração.
+   - ## O Veredito CorticFlow: Uma análise prospectiva e provocativa sobre o que esperar nos próximos 6 a 12 meses.
+3. Tom e Estilo: Profissional, analítico, direto ao ponto, elegante e informativo. Use subtítulos claros, bullet points para listas técnicas e formatação rica em Markdown.
+4. Restrição: Não inclua frontmatter YAML na sua resposta. Retorne estritamente o conteúdo do artigo em Markdown começando pelo título #."""
 
     payload = {
         "contents": [{"parts": [{"text": prompt}]}],
-        "generationConfig": {"temperature": 0.7, "maxOutputTokens": 2048}
+        "generationConfig": {"temperature": 0.7, "maxOutputTokens": 4096}
     }
 
-    # Modelos com fallback automático
     models = ["gemini-1.5-flash", "gemini-2.0-flash", "gemini-1.5-pro"]
     for model in models:
         endpoint = f"https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent?key={GEMINI_API_KEY}"
         try:
-            res = requests.post(endpoint, json=payload, headers={"Content-Type": "application/json"}, timeout=30)
+            res = requests.post(endpoint, json=payload, headers={"Content-Type": "application/json"}, timeout=45)
             if res.status_code == 200:
                 data = res.json()
-                texto = data["candidates"][0]["content"]["parts"][0]["text"]
-                texto = re.sub(r'^```markdown\s*', '', texto)
-                texto = re.sub(r'^```\s*', '', texto)
-                texto = re.sub(r'\s*```$', '', texto)
-                return texto
+                corpo = data["candidates"][0]["content"]["parts"][0]["text"]
+                corpo = re.sub(r'^```markdown\s*', '', corpo)
+                corpo = re.sub(r'^```\s*', '', corpo)
+                corpo = re.sub(r'\s*```$', '', corpo)
+                
+                h1_match = re.search(r'^#\s+(.+)$', corpo, re.MULTILINE)
+                titulo_artigo = h1_match.group(1).replace('"', '').strip() if h1_match else noticia['titulo'].replace('"', '').strip()
+                
+                minutos_leitura, total_palavras = calcular_tempo_leitura(corpo)
+                slug_limpo = re.sub(r'[^a-zA-Z0-9]+', '-', titulo_artigo.lower()).strip('-')[:60]
+                
+                frontmatter = f"""---
+title: "{titulo_artigo}"
+date: {data_hoje}
+category: "{noticia['categoria']}"
+tags: ["Inteligência Artificial", "Tecnologia", "Inovação", "Engenharia"]
+slug: "{slug_limpo}"
+author: "CorticFlow Editorial"
+reading_time: "{minutos_leitura} min de leitura"
+word_count: {total_palavras}
+source_url: "{noticia['link']}"
+---
+
+"""
+                return frontmatter + corpo
             else:
                 print(f"Tentativa {model} retornou status {res.status_code}")
         except Exception as err:
@@ -109,7 +128,7 @@ def main():
             filename = f"content/posts/{data_str}-artigo-{i+1}.md"
             with open(filename, "w", encoding="utf-8") as f:
                 f.write(conteudo)
-            print(f"Post gerado com sucesso: {filename}")
+            print(f"Post gerado: {filename}")
             gerados += 1
             
     print(f"Total de posts criados: {gerados}")
