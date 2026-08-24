@@ -1,0 +1,44 @@
+name: Publicacao Diaria Autonoma CorticFlow
+
+on:
+  schedule:
+    # Executa diariamente às 08:00 BRT (11:00 UTC)
+    - cron: '0 11 * * *'
+  workflow_dispatch: # Permite disparo manual com 1 clique
+
+permissions:
+  contents: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout do Repositório
+        uses: actions/checkout@v4
+
+      - name: Configurar Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Instalar Dependências
+        run: |
+          pip install google-genai feedparser requests
+
+      - name: Executar Gerador de Artigos
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: |
+          python scripts/generate_and_publish.py
+
+      - name: Fazer Commit e Publicar no Site
+        run: |
+          git config --global user.name "CorticFlow Bot"
+          git config --global user.email "bot@corticflow.com"
+          git add content/posts/
+          if git diff --staged --quiet; then
+            echo "Nenhum novo artigo para commitar."
+          else
+            git commit -m "chore(content): publicacao automatica de artigos [skip ci]"
+            git push
+          fi
