@@ -328,12 +328,14 @@
         <div id="sidebar-news-tag" class="flex items-center gap-2 mb-2 text-brandPurple font-mono font-bold text-[10px] tracking-widest uppercase">
           <span>📬</span> DISPARO DIRETO NA CAIXA DE ENTRADA
         </div>
-        <h3 id="newsletter-title" class="text-xl font-extrabold text-slate-950 dark:text-white mb-2">CorticFlow Semanal</h3>
-        <p id="newsletter-sub" class="text-slate-600 dark:text-slate-400 text-xs mb-4 leading-relaxed">Todo domingo às 20h, receba a compilação executiva e o tutorial da semana no seu e-mail.</p>
-        <form class="space-y-3" onsubmit="event.preventDefault(); alert(currentLang === 'pt' ? 'Inscrição confirmada no CorticFlow!' : 'Subscription confirmed on CorticFlow!');">
-          <input id="newsletter-input" type="email" placeholder="Seu melhor e-mail" required class="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-brandBorder text-slate-900 dark:text-white text-xs focus:outline-none focus:border-brandCyan transition font-mono">
-          <button id="newsletter-btn" type="submit" class="w-full py-2.5 rounded-xl bg-brandCyan hover:bg-cyan-300 text-black font-black text-xs uppercase tracking-wider transition font-mono">Inscrever-se Grátis</button>
-        </form>
+        <div style="background: linear-gradient(rgba(11, 15, 25, 0.85), rgba(11, 15, 25, 0.85)), url('newsletter.jpeg') center/cover no-repeat; border-radius: 16px; padding: 24px; border: 1px solid rgba(255, 255, 255, 0.1);">
+          <h3 id="newsletter-title" class="text-xl font-extrabold text-slate-950 dark:text-white mb-2">CorticFlow Semanal</h3>
+          <p id="newsletter-sub" class="text-slate-600 dark:text-slate-400 text-xs mb-4 leading-relaxed">Todo domingo às 20h, receba a compilação executiva e o tutorial da semana no seu e-mail.</p>
+          <form class="space-y-3" onsubmit="event.preventDefault(); alert(currentLang === 'pt' ? 'Inscrição confirmada no CorticFlow!' : 'Subscription confirmed on CorticFlow!');">
+            <input id="newsletter-input" type="email" placeholder="Seu melhor e-mail" required class="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-brandBorder text-slate-900 dark:text-white text-xs focus:outline-none focus:border-brandCyan transition font-mono">
+            <button id="newsletter-btn" type="submit" class="w-full py-2.5 rounded-xl bg-brandCyan hover:bg-cyan-300 text-black font-black text-xs uppercase tracking-wider transition font-mono">Inscrever-se Grátis</button>
+          </form>
+        </div>
       </div>
 
       <!-- Prompt da Semana -->
