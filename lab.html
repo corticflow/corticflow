@@ -274,4 +274,102 @@
         function createParticles() {
             const particleCount = 1200;
             const particleGeo = new THREE.BufferGeometry();
-            const positions = new Float32
+            const positions = new Float32Array(particleCount * 3);
+
+            for (let i = 0; i < particleCount * 3; i += 3) {
+                positions[i] = (Math.random() - 0.5) * 35;
+                positions[i + 1] = (Math.random() - 0.5) * 35;
+                positions[i + 2] = (Math.random() - 0.5) * 35;
+            }
+
+            particleGeo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+
+            const particleMat = new THREE.PointsMaterial({
+                color: 0x00E5FF,
+                size: 0.05,
+                transparent: true,
+                opacity: 0.6
+            });
+
+            particleSystem = new THREE.Points(particleGeo, particleMat);
+            scene.add(particleSystem);
+        }
+
+        function changeShape(index, btn) {
+            createCentralMesh(shapes[index].geom());
+            document.getElementById('geo-name').innerText = shapes[index].name;
+
+            document.querySelectorAll('.hud-btn').forEach(b => {
+                if (b !== document.getElementById('wire-btn')) b.classList.remove('active');
+            });
+            btn.classList.add('active');
+        }
+
+        function toggleWireframe(btn) {
+            isWireframe = !isWireframe;
+            if (currentMesh) currentMesh.material.wireframe = isWireframe;
+            btn.innerText = `Wireframe: ${isWireframe ? 'ON' : 'OFF'}`;
+            btn.classList.toggle('active', isWireframe);
+        }
+
+        function setupInteraction() {
+            window.addEventListener('mousedown', (e) => { isDragging = true; previousMousePosition = { x: e.clientX, y: e.clientY }; });
+            window.addEventListener('mouseup', () => { isDragging = false; });
+            window.addEventListener('mousemove', (e) => {
+                if (isDragging && currentMesh) {
+                    const deltaX = e.clientX - previousMousePosition.x;
+                    const deltaY = e.clientY - previousMousePosition.y;
+                    currentMesh.rotation.y += deltaX * 0.006;
+                    currentMesh.rotation.x += deltaY * 0.006;
+                }
+                previousMousePosition = { x: e.clientX, y: e.clientY };
+            });
+
+            window.addEventListener('touchstart', (e) => {
+                if (e.touches.length === 1) {
+                    isDragging = true;
+                    previousMousePosition = { x: e.touches[0].clientX, y: e.touches[0].clientY };
+                }
+            });
+            window.addEventListener('touchend', () => { isDragging = false; });
+            window.addEventListener('touchmove', (e) => {
+                if (isDragging && currentMesh && e.touches.length === 1) {
+                    const deltaX = e.touches[0].clientX - previousMousePosition.x;
+                    const deltaY = e.touches[0].clientY - previousMousePosition.y;
+                    currentMesh.rotation.y += deltaX * 0.006;
+                    currentMesh.rotation.x += deltaY * 0.006;
+                    previousMousePosition = { x: e.touches[0].clientX, y: e.touches[0].clientY };
+                }
+            });
+
+            window.addEventListener('wheel', (e) => {
+                camera.position.z += e.deltaY * 0.003;
+                camera.position.z = Math.min(Math.max(camera.position.z, 3), 12);
+            });
+        }
+
+        function onWindowResize() {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        }
+
+        function animate() {
+            requestAnimationFrame(animate);
+
+            if (currentMesh && !isDragging) {
+                currentMesh.rotation.x += 0.003;
+                currentMesh.rotation.y += 0.005;
+            }
+
+            if (particleSystem) {
+                particleSystem.rotation.y -= 0.0008;
+            }
+
+            renderer.render(scene, camera);
+        }
+
+        window.onload = init;
+    </script>
+</body>
+</html>
