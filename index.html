@@ -1599,5 +1599,55 @@ From distributed Kubernetes clusters to low-latency kernel scheduling, Linux rem
       setLanguage('pt');
     });
   </script>
+  <!-- Micro-interação: Efeito 3D Tilt nos Cards -->
+<style>
+  .tilt-card {
+    transition: transform 0.15s cubic-bezier(0.2, 0.8, 0.4, 1), box-shadow 0.25s ease !important;
+    transform-style: preserve-3d;
+    will-change: transform, box-shadow;
+  }
+  @media (hover: hover) and (pointer: fine) {
+    .tilt-card:hover {
+      box-shadow: 0 16px 36px -8px rgba(0, 229, 255, 0.18), 0 10px 20px -6px rgba(0, 0, 0, 0.5) !important;
+    }
+  }
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  // Executa apenas em computadores com mouse (ignora mobile/touch)
+  if (!window.matchMedia('(hover: hover) and (pointer: fine)').matches) return;
+
+  const cards = document.querySelectorAll('article, .article-card, [class*="card"]');
+
+  cards.forEach(card => {
+    if (card.offsetHeight < 120) return; // ignora botões pequenos
+    card.classList.add('tilt-card');
+    let rafId = null;
+
+    card.addEventListener('mousemove', (e) => {
+      if (rafId) cancelAnimationFrame(rafId);
+
+      rafId = requestAnimationFrame(() => {
+        const rect = card.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        const centerX = rect.width / 2;
+        const centerY = rect.height / 2;
+
+        const rotateX = ((y - centerY) / centerY) * -5;
+        const rotateY = ((x - centerX) / centerX) * 5;
+
+        card.style.transform = `perspective(1000px) rotateX(${rotateX.toFixed(2)}deg) rotateY(${rotateY.toFixed(2)}deg) scale3d(1.015, 1.015, 1.015)`;
+      });
+    });
+
+    card.addEventListener('mouseleave', () => {
+      if (rafId) cancelAnimationFrame(rafId);
+      card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)';
+    });
+  });
+});
+</script>
 </body>
 </html>
