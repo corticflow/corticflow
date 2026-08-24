@@ -171,7 +171,7 @@
       <button onclick="selectHub('Business & Startups', true); toggleMobileMenu();" class="block w-full text-left py-2 px-3 rounded hover:bg-slate-100 dark:hover:bg-slate-900 text-slate-800 dark:text-slate-200">🏢 Mercado & Startups</button>
       <button onclick="selectHub('Science & Space', true); toggleMobileMenu();" class="block w-full text-left py-2 px-3 rounded hover:bg-slate-100 dark:hover:bg-slate-900 text-slate-800 dark:text-slate-200">🔬 Ciência & Futuro</button>
       <button onclick="selectHub('Tutorials & Guides', true); toggleMobileMenu();" class="block w-full text-left py-2 px-3 rounded hover:bg-slate-100 dark:hover:bg-slate-900 text-slate-800 dark:text-slate-200">🛠️ Tutoriais & Prompts</button>
-      <button onclick="selectHub('Newsletter', true); toggleMobileMenu();" class="block w-full text-left py-2 px-3 rounded hover:bg-slate-100 dark:hover:bg-slate-900 text-brandPurple">📬 Edições de Domingo</button>
+      <button onclick="selectHub('Newsletter', true); toggleMobileMenu();" class="block w-full text-left py-2 px-3 rounded hover:bg-slate-100 dark:hover:bg-slate-900 text-brandPurple">📬 Edição de Domingo</button>
     </div>
   </header>
 
@@ -185,7 +185,7 @@
           <img src="https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&w=1200&q=80" alt="Hero Lead" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
           <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
           <span id="feat-tag" class="absolute top-4 left-4 px-3.5 py-1 rounded bg-brandPurple text-white text-[10px] font-black uppercase tracking-widest font-mono shadow-md">
-            MATÉRIA DE CAPA
+            EDIÇÃO DE DOMINGO
           </span>
         </div>
         <div class="p-6 sm:p-8">
@@ -362,28 +362,28 @@
             <span class="text-2xl font-black text-cyan-700 dark:text-brandCyan font-mono">01</span>
             <div>
               <h5 class="text-xs font-bold text-slate-800 dark:text-slate-200 group-hover:text-cyan-700 dark:group-hover:text-brandCyan transition leading-snug">A Batalha Energética da IA e os Data Centers de 60GW</h5>
-              <span class="text-[10px] font-mono text-slate-500">10 min • Infraestrutura</span>
+              <span class="text-[10px] font-mono text-slate-500">10 min • Edição de Domingo</span>
+            </div>
+          </div>
+          <div class="flex items-start gap-3 cursor-pointer group" onclick="openArticleByIndex(1)">
+            <span class="text-2xl font-black text-brandPurple font-mono">02</span>
+            <div>
+              <h5 class="text-xs font-bold text-slate-800 dark:text-slate-200 group-hover:text-cyan-700 dark:group-hover:text-brandCyan transition leading-snug">CorticFlow Weekly #01: Raciocínio Profundo e Energia</h5>
+              <span class="text-[10px] font-mono text-slate-500">9 min • Edição de Domingo</span>
             </div>
           </div>
           <div class="flex items-start gap-3 cursor-pointer group" onclick="openArticleByIndex(3)">
-            <span class="text-2xl font-black text-brandPurple font-mono">02</span>
+            <span class="text-2xl font-black text-blue-600 dark:text-brandBlue font-mono">03</span>
             <div>
               <h5 class="text-xs font-bold text-slate-800 dark:text-slate-200 group-hover:text-cyan-700 dark:group-hover:text-brandCyan transition leading-snug">Apple Intelligence e a Nova Linha M-Series</h5>
               <span class="text-[10px] font-mono text-slate-500">8 min • Apple & iOS</span>
             </div>
           </div>
           <div class="flex items-start gap-3 cursor-pointer group" onclick="openArticleByIndex(6)">
-            <span class="text-2xl font-black text-blue-600 dark:text-brandBlue font-mono">03</span>
+            <span class="text-2xl font-black text-brandOrange font-mono">04</span>
             <div>
               <h5 class="text-xs font-bold text-slate-800 dark:text-slate-200 group-hover:text-cyan-700 dark:group-hover:text-brandCyan transition leading-snug">Copilot+ PCs e a Transição para Processadores ARM</h5>
               <span class="text-[10px] font-mono text-slate-500">7 min • Windows & PC</span>
-            </div>
-          </div>
-          <div class="flex items-start gap-3 cursor-pointer group" onclick="openArticleByIndex(8)">
-            <span class="text-2xl font-black text-brandOrange font-mono">04</span>
-            <div>
-              <h5 class="text-xs font-bold text-slate-800 dark:text-slate-200 group-hover:text-cyan-700 dark:group-hover:text-brandCyan transition leading-snug">A Ascensão do Linux em Servidores de IA</h5>
-              <span class="text-[10px] font-mono text-slate-500">9 min • Linux</span>
             </div>
           </div>
         </div>
@@ -607,14 +607,14 @@
       "Science & Space": { tag_pt: "CIÊNCIA & ESPAÇO", tag_en: "SCIENCE & SPACE", title_pt: "Inovação Tecnológica, Física, Espaço e Energia", title_en: "Deep Tech, Physics, Space Exploration & Energy", desc_pt: "Descobertas científicas, semicondutores neuromórficos, computação quântica e novas engenharias.", desc_en: "Breakthrough physics discoveries, neuromorphic chips, quantum computing, and aerospace engineering." },
       "AI & Models": { tag_pt: "IA & MODELOS", tag_en: "AI & MODELS", title_pt: "Modelos de Linguagem, Raciocínio e Pesos Abertos", title_en: "Frontier LLMs, Reasoning & Open-Weights", desc_pt: "Análises técnicas sobre as arquiteturas neurais que estão redefinindo a inteligência artificial.", desc_en: "Technical breakthroughs on neural architectures shaping the future of autonomous systems." },
       "Tutorials & Guides": { tag_pt: "TUTORIAIS & GUIAS", tag_en: "TUTORIALS & GUIDES", title_pt: "Engenharia de Prompt e Automações Práticas", title_en: "Prompt Engineering & Actionable Automation", desc_pt: "Passo a passo didático para construir agentes, pipelines serverless e prompts estruturados.", desc_en: "Hands-on engineering blueprints for deploying production-ready serverless AI agents." },
-      Newsletter: { tag_pt: "EDIÇÃO DE DOMINGO", tag_en: "SUNDAY DISPATCH", title_pt: "Edições Semanais de Domingo", title_en: "Sunday Executive Newsletters", desc_pt: "Compilados consolidados de fim de semana gerados autonomamente todo domingo às 20h.", desc_en: "Weekly executive digests and actionable evergreen tutorials delivered every Sunday at 8 PM." }
+      Newsletter: { tag_pt: "EDIÇÃO DE DOMINGO", tag_en: "SUNDAY DISPATCH", title_pt: "Edições Semanais de Domingo", title_en: "Sunday Executive Newsletters", desc_pt: "Compilados consolidados e ensaios aprofundados publicados aos domingos.", desc_en: "Weekly executive digests and actionable evergreen deep-dives published every Sunday." }
     };
 
     const ARTICLES_DATA = {
       pt: [
         {
           title: "A Batalha Energética da IA: Como os Data Centers de 60GW Estão Redesenhando o Mapa Global",
-          category: "Business & Startups",
+          category: "Edição de Domingo",
           date: "10 min de leitura",
           readTime: "10 min de leitura",
           image: "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&w=800&q=80",
@@ -655,11 +655,34 @@ O principal obstáculo não é fabricar os chips, mas conectá-los à rede de al
 
 ### 3. A Nova Cartografia dos Investimentos Globais
 
-A busca desenfreada por eletricidade barata, estável e livre de carbono está redefinindo o mapa dos investimentos internacionais. Regiões com matriz hidrelétrica abundante ou excesso de geração renovável — como o interior dos Estados Unidos, o Norte da Europa e o **Brasil** — estão se tornando polos estratégicos de hiperescala.
+A busca desenfreada por eletricidade barata, estável e livre de carbono está redefinindo o mapa dos investimentos internacionais. Regiões com matriz hidrelétrica abundante ou excesso de geração renovável — como o interior dos Estados Unidos, o Norte da Europa e o **Brasil** — estão se transformando em polos estratégicos de hiperescala.
 
 ### Conclusão e Perspectivas
 
 A vitória na próxima fase da revolução da IA não pertencerá necessariamente a quem desenvolver o modelo mais inteligente, mas à corporação que dominar a logística de fornecimento de eletricidade em escala de gigawatts e a engenharia de resfriamento térmico de alta densidade.`
+        },
+        {
+          title: "CorticFlow Weekly #01: Raciocínio Profundo, Escapes de Sandbox e Energia Nuclear",
+          category: "Edição de Domingo",
+          date: "9 min de leitura",
+          readTime: "9 min de leitura",
+          image: "https://images.unsplash.com/photo-1620712943543-bcc4688e7485?auto=format&fit=crop&w=800&q=80",
+          excerpt: "O compilado executivo de fim de semana: a transição para computação em tempo de inferência, testes de segurança em agentes e o avanço dos contratos atômicos.",
+          content: `## Síntese Executiva da Semana
+
+Bem-vindo à primeira edição consolidada do **CorticFlow Weekly**. Todo domingo, reunimos os avanços mais importantes de tecnologia, silício e inteligência artificial em uma análise aprofundada pronta para tomada de decisões estratégicas.
+
+---
+
+### 1. Os Três Pilares da Semana
+1. **Aceleração da Computação em Tempo de Inferência (Test-Time Compute):** Modelos modernos deixam de ser papagaios probabilísticos para alocar tempo extra de computação pensando, validando hipóteses e testando código antes de emitir a resposta.
+2. **Segurança de Agentes em Ambientes Reais:** Descobertas recentes reforçam que agentes com permissões amplas de execução precisam de sandboxes isolados por hardware e validações criptográficas de integridade.
+3. **Contratos Diretos de Energia (PPAs Nucleares):** Big Techs assinam parcerias de longo prazo para garantir megawatts dedicados diretamente de usinas nucleares.
+
+---
+
+### 2. O Tutorial Evergreen da Semana: Prompts Determinísticos
+Para garantir que LLMs operem sem alucinações em sistemas de produção, utilize delimitações XML rígidas, instruções negativas explícitas e esquemas JSON estruturados que garantem saídas compatíveis com APIs.`
         },
         {
           title: "O Paradoxo da Produtividade: Por Que a IA Não Está Destruindo os Empregos de Escritório",
@@ -1072,7 +1095,7 @@ Um prompt amador gera respostas vagas e alucinações. Um prompt bem estruturado
       en: [
         {
           title: "The AI Power Battle: How 60GW Data Centers Are Reshaping the Global Map",
-          category: "Business & Startups",
+          category: "Sunday Dispatch",
           date: "10 min read",
           readTime: "10 min read",
           image: "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&w=800&q=80",
@@ -1082,6 +1105,17 @@ Um prompt amador gera respostas vagas e alucinações. Um prompt bem estruturado
 Artificial intelligence scaling is now bound by physical megawatt grid capacity rather than algorithmic constraints.
 
 The projected power consumption of dedicated AI data centers will double to over **60GW by 2030**, forcing hyperscalers like Microsoft, Amazon, Google, and Meta to sign multi-billion-dollar direct nuclear energy purchase agreements.`
+        },
+        {
+          title: "CorticFlow Weekly #01: Deep Reasoning, Sandbox Escapes & Nuclear Deals",
+          category: "Sunday Dispatch",
+          date: "9 min read",
+          readTime: "9 min read",
+          image: "https://images.unsplash.com/photo-1620712943543-bcc4688e7485?auto=format&fit=crop&w=800&q=80",
+          excerpt: "The executive weekend briefing: test-time compute scaling, agent red-teaming, and long-term atomic energy infrastructure pacts.",
+          content: `## Executive Weekend Synthesis
+
+Welcome to the inaugural edition of the **CorticFlow Weekly**. Every Sunday, we synthesize the most impactful breakthroughs in silicon architecture, model reasoning, and hardware infrastructure.`
         },
         {
           title: "The Productivity Paradox: Why AI Isn't Destroying White-Collar Jobs",
@@ -1134,8 +1168,8 @@ From distributed Kubernetes clusters to low-latency kernel scheduling, Linux rem
 
     const FALLBACK_IMAGES = [
       "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&w=800&q=80",
+      "https://images.unsplash.com/photo-1620712943543-bcc4688e7485?auto=format&fit=crop&w=800&q=80",
       "https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=800&q=80",
-      "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?auto=format&fit=crop&w=800&q=80",
       "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?auto=format&fit=crop&w=800&q=80",
       "https://images.unsplash.com/photo-1593508512255-86ab42a8e620?auto=format&fit=crop&w=800&q=80",
       "https://images.unsplash.com/photo-1592750475338-74b7b21085ab?auto=format&fit=crop&w=800&q=80",
@@ -1146,13 +1180,13 @@ From distributed Kubernetes clusters to low-latency kernel scheduling, Linux rem
       "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?auto=format&fit=crop&w=800&q=80",
       "https://images.unsplash.com/photo-1598327105666-5b89351aff97?auto=format&fit=crop&w=800&q=80",
       "https://images.unsplash.com/photo-1508685096489-7aacd43bd3b1?auto=format&fit=crop&w=800&q=80",
-      "https://images.unsplash.com/photo-1620712943543-bcc4688e7485?auto=format&fit=crop&w=800&q=80",
       "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&w=800&q=80",
       "https://images.unsplash.com/photo-1535223289827-42f1e9919769?auto=format&fit=crop&w=800&q=80",
       "https://images.unsplash.com/photo-1635070041078-e363dbe005cb?auto=format&fit=crop&w=800&q=80",
       "https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=800&q=80",
       "https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=800&q=80",
-      "https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=800&q=80"
+      "https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=800&q=80",
+      "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?auto=format&fit=crop&w=800&q=80"
     ];
 
     function toggleMobileMenu() {
@@ -1253,6 +1287,9 @@ From distributed Kubernetes clusters to low-latency kernel scheduling, Linux rem
         const hub = currentHub.toLowerCase();
         list = list.filter(a => {
           const cat = (a.category || '').toLowerCase();
+          if (hub.includes('news') || hub.includes('domingo') || hub.includes('newsletter')) {
+            return cat.includes('domingo') || cat.includes('newsletter') || cat.includes('dispatch') || cat.includes('weekly') || cat.includes('capa');
+          }
           if (hub.includes('windows') && (cat.includes('windows') || cat.includes('pc'))) return true;
           if (hub.includes('linux') && (cat.includes('linux') || cat.includes('open'))) return true;
           if (hub.includes('apple') && (cat.includes('apple') || cat.includes('ios'))) return true;
@@ -1261,7 +1298,6 @@ From distributed Kubernetes clusters to low-latency kernel scheduling, Linux rem
           if (hub.includes('business') && (cat.includes('business') || cat.includes('startup') || cat.includes('mercado') || cat.includes('the economist'))) return true;
           if (hub.includes('science') && (cat.includes('science') || cat.includes('space') || cat.includes('ciência'))) return true;
           if (hub.includes('tutorial') && (cat.includes('tutorial') || cat.includes('guide') || cat.includes('prompt'))) return true;
-          if (hub.includes('news') && (cat.includes('destaque') || cat.includes('editorial') || cat.includes('the economist'))) return true;
           return cat.includes(hub);
         });
       }
@@ -1463,7 +1499,7 @@ From distributed Kubernetes clusters to low-latency kernel scheduling, Linux rem
         document.getElementById('lbtn-all').innerText = "GERAL";
         document.getElementById('lbtn-rea').innerText = "RACIOCÍNIO & CÓDIGO";
         document.getElementById('lbtn-opn').innerText = "OPEN-SOURCE";
-        document.getElementById('feat-tag').innerText = "MATÉRIA DE CAPA";
+        document.getElementById('feat-tag').innerText = "EDIÇÃO DE DOMINGO";
         document.getElementById('feat-date').innerText = "INVESTIGAÇÃO ESPECIAL • 10 MIN DE LEITURA";
         document.getElementById('feat-btn').innerText = "Ler Ensaio Completo";
         document.getElementById('prompt-tag').innerText = "PROMPT DA SEMANA";
@@ -1519,7 +1555,7 @@ From distributed Kubernetes clusters to low-latency kernel scheduling, Linux rem
         document.getElementById('lbtn-all').innerText = "OVERALL";
         document.getElementById('lbtn-rea').innerText = "REASONING & CODE";
         document.getElementById('lbtn-opn').innerText = "OPEN-WEIGHTS";
-        document.getElementById('feat-tag').innerText = "FEATURED COVER STORY";
+        document.getElementById('feat-tag').innerText = "SUNDAY DISPATCH";
         document.getElementById('feat-date').innerText = "SPECIAL INVESTIGATION • 10 MIN READ";
         document.getElementById('feat-btn').innerText = "Read Full Story";
         document.getElementById('prompt-tag').innerText = "PROMPT OF THE WEEK";
