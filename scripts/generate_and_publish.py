@@ -53,36 +53,52 @@ def gerar_post_gemini(noticia):
     data_hoje = datetime.date.today().strftime("%Y-%m-%d")
     
     prompt = f"""Você é o Editor-Chefe e Especialista Sênior em Tecnologia e Inteligência Artificial do portal CorticFlow.
-Sua missão é transformar esta notícia em um artigo aprofundado, envolvente, rico em detalhes técnicos e com alto valor editorial.
+Sua missão é redigir um artigo investigativo, técnico e aprofundado em português (estilo Ars Technica, MIT Technology Review e SemiAnalysis).
 
 DADOS DA NOTÍCIA:
-- Título Base: {noticia['titulo']}
+- Título: {noticia['titulo']}
 - Categoria: {noticia['categoria']}
-- Fonte de Origem: {noticia['link']}
-- Resumo Preliminar: {noticia['resumo']}
+- Fonte: {noticia['link']}
+- Resumo Base: {noticia['resumo']}
 
-DIRETRIZES RIGOROSAS DE REDAÇÃO (LONG-FORM):
-1. Extensão e Densidade: O texto deve ser substancial e detalhado (entre 900 e 1.400 palavras), explorando todos os ângulos da notícia com fluidez e profundidade.
-2. Estrutura Obrigatória do Artigo:
-   - # [Título Jornalístico Impactante e Exclusivo]
-   - ## O Ponto de Inflexão (Lead & Contexto Histórico): O que exatamente foi anunciado, por que este momento é crítico e o que existia antes.
-   - ## Engenharia & Arquitetura Sob o Capô: Como a tecnologia/modelo/chip funciona internamente. Explique termos técnicos, tradeoffs de latência/custo/hardware e métricas comparativas.
-   - ## O Tabuleiro do Mercado e Impacto na Indústria: Quem ganha, quem perde, implicações para desenvolvedores, startups e Big Techs (OpenAI, Google, Nvidia, Meta, Apple).
-   - ## Cenários Práticos & Aplicação no Mundo Real: Casos de uso práticos, potenciais gargalos de adoção e boas práticas de integração.
-   - ## O Veredito CorticFlow: Uma análise prospectiva e provocativa sobre o que esperar nos próximos 6 a 12 meses.
-3. Tom e Estilo: Profissional, analítico, direto ao ponto, elegante e informativo. Use subtítulos claros, bullet points para listas técnicas e formatação rica em Markdown.
-4. Restrição: Não inclua frontmatter YAML na sua resposta. Retorne estritamente o conteúdo do artigo em Markdown começando pelo título #."""
+REGRAS RÍGIDAS DE EXTENSÃO E ESTRUTURA (OBRIGATÓRIO: MÍNIMO 1.200 PALAVRAS):
+Você DEVE desenvolver cada uma das seções abaixo com riqueza de detalhes, sem atalhos ou resumos curtos:
+
+# [Título Jornalístico Impactante e Exclusivo]
+
+## 1. O Ponto de Inflexão e Contexto Histórico (Mínimo 3 parágrafos longos)
+- Explique em detalhes o que foi anunciado e por que este anúncio ocorre neste momento.
+- Descreva o cenário tecnológico anterior, as limitações que existiam e o que motivou essa inovação.
+
+## 2. Engenharia e Arquitetura Sob o Capô (Mínimo 4 parágrafos longos + 1 Tabela Comparativa em Markdown)
+- Explique a mecânica técnica fundamental (hardware, tensores, microarquitetura, algoritmos, pesos, consumo elétrico, latência ou throughput).
+- Compare com as tecnologias concorrentes do mercado em uma tabela Markdown detalhada com métricas e tradeoffs.
+
+## 3. Disputa de Mercado e Impacto nos Ecossistemas (Mínimo 3 parágrafos longos)
+- Quem ganha e quem perde com este movimento (Nvidia, OpenAI, Google, Meta, Apple, Microsoft, startups e devs).
+- Como isso altera a relação de custos (OpEx/CapEx) e a dependência de fornecedores.
+
+## 4. Guia Prático para Engenheiros e Empresas (Mínimo 3 parágrafos longos)
+- Casos de uso reais e cenários onde essa solução deve (ou não deve) ser adotada.
+- Possíveis gargalos de implementação, migração e boas práticas recomendadas de engenharia.
+
+## 5. O Veredito CorticFlow e Perspectiva Futura (Mínimo 2 parágrafos reflexivos)
+- Conclusão analítica e prospectiva sobre os próximos 6 a 12 meses.
+
+IMPORTANTE:
+- Desenvolva cada parágrafo com explicações completas.
+- Não inclua frontmatter YAML na sua resposta. Comece direto pelo título #."""
 
     payload = {
         "contents": [{"parts": [{"text": prompt}]}],
-        "generationConfig": {"temperature": 0.7, "maxOutputTokens": 4096}
+        "generationConfig": {"temperature": 0.7, "maxOutputTokens": 8192}
     }
 
     models = ["gemini-1.5-flash", "gemini-2.0-flash", "gemini-1.5-pro"]
     for model in models:
         endpoint = f"https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent?key={GEMINI_API_KEY}"
         try:
-            res = requests.post(endpoint, json=payload, headers={"Content-Type": "application/json"}, timeout=45)
+            res = requests.post(endpoint, json=payload, headers={"Content-Type": "application/json"}, timeout=60)
             if res.status_code == 200:
                 data = res.json()
                 corpo = data["candidates"][0]["content"]["parts"][0]["text"]
@@ -128,7 +144,7 @@ def main():
             filename = f"content/posts/{data_str}-artigo-{i+1}.md"
             with open(filename, "w", encoding="utf-8") as f:
                 f.write(conteudo)
-            print(f"Post gerado: {filename}")
+            print(f"Post denso gerado ({filename})")
             gerados += 1
             
     print(f"Total de posts criados: {gerados}")
