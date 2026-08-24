@@ -1892,5 +1892,57 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 </script>
 <!-- ==================================================== -->
+  <!-- ======================================================= -->
+<!-- JS: FEEDBACK VERDE DE 2 SEGUNDOS NO BOTÃO COPIAR PROMPT -->
+<!-- ======================================================= -->
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  // Localiza os botões de copiar do site
+  const allButtons = document.querySelectorAll('button, [role="button"], .copy-btn');
+
+  allButtons.forEach(btn => {
+    if (btn.innerText.toLowerCase().includes('copiar')) {
+      btn.addEventListener('click', async (e) => {
+        // Encontra o texto do código do prompt
+        const container = btn.closest('section, div, article') || document;
+        const codeElement = container.querySelector('pre, code, textarea, [class*="prompt"]') || btn.previousElementSibling;
+        const promptText = codeElement ? (codeElement.value || codeElement.innerText) : '';
+
+        try {
+          if (promptText) {
+            await navigator.clipboard.writeText(promptText.trim());
+          }
+
+          // 1. Guarda o estado original do botão
+          const originalHTML = btn.innerHTML;
+          const originalColor = btn.style.color;
+          const originalBorder = btn.style.borderColor;
+          const originalBg = btn.style.backgroundColor;
+
+          // 2. Altera para o feedback verde tecnológico
+          btn.innerHTML = '✓ Copiado!';
+          btn.style.color = '#10B981'; // Verde Tecnológico
+          btn.style.borderColor = '#10B981';
+          btn.style.backgroundColor = 'rgba(16, 185, 129, 0.15)';
+          btn.style.boxShadow = '0 0 14px rgba(16, 185, 129, 0.4)';
+
+          // 3. Reverte ao estado original após exatamente 2 segundos
+          setTimeout(() => {
+            btn.innerHTML = originalHTML;
+            btn.style.color = originalColor;
+            btn.style.borderColor = originalBorder;
+            btn.style.backgroundColor = originalBg;
+            btn.style.boxShadow = '';
+          }, 2000);
+
+        } catch (err) {
+          console.warn('Erro ao copiar:', err);
+        }
+      });
+    }
+  });
+});
+</script>
+<!-- ======================================================= -->
 </body>
 </html>
