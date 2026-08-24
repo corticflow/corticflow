@@ -1705,5 +1705,45 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 </script>
 <!-- ============================================== -->
+  <!-- ============================================== -->
+<!-- VANTA.JS: REDE NEURAL 3D SUTIL NO PLANO DE FUNDO -->
+<!-- ============================================== -->
+
+<!-- 1. CDNs Three.js e Vanta.Net -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
+
+<!-- 2. Container Fixo de Fundo -->
+<div id="vanta-background" style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -1; pointer-events: none; opacity: 0.35;"></div>
+
+<!-- 3. Inicialização e Regra de Bloqueio Mobile -->
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    // Cancela execução em celulares, telas touch e modo de economia de energia
+    const isMobile = window.innerWidth < 768 || !window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    
+    if (isMobile || prefersReducedMotion) return;
+
+    if (window.VANTA && window.VANTA.NET) {
+        VANTA.NET({
+            el: "#vanta-background",
+            mouseControls: true,
+            touchControls: false,
+            gyroControls: false,
+            minHeight: 200.00,
+            minWidth: 200.00,
+            scale: 1.00,
+            scaleMobile: 1.00,
+            color: 0x475569,           /* Cor cinza discreta para linhas e nós */
+            backgroundColor: 0x0b0f19,  /* Cor exata do modo escuro CorticFlow */
+            points: 7.00,               /* Densidade reduzida para manter a tela limpa */
+            maxDistance: 16.00,         /* Alcance curto das conexões */
+            spacing: 20.00              /* Espaçamento amplo entre os pontos */
+        });
+    }
+});
+</script>
+<!-- ============================================== -->
 </body>
 </html>
