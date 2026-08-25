@@ -1966,5 +1966,90 @@ document.addEventListener('DOMContentLoaded', () => {
     opacity: 0.85;
   }
 </style>
+  <!-- ==================================================== -->
+<!-- JS SÊNIOR: FILTRO DA ARENA DE BENCHMARKS COM FADE    -->
+<!-- ==================================================== -->
+<style>
+  /* Transição Suave de Fade para as Linhas */
+  .benchmark-row {
+    transition: opacity 0.2s ease-in-out, transform 0.2s ease-in-out;
+  }
+  .benchmark-row-hidden {
+    display: none !important;
+  }
+  .benchmark-row-fadeout {
+    opacity: 0 !important;
+    transform: scale(0.98);
+  }
+  /* Estilo do Botão Ativo */
+  .benchmark-active-btn {
+    background-color: #00E5FF !important;
+    color: #0B0F19 !important;
+    border-color: #00E5FF !important;
+    box-shadow: 0 0 14px rgba(0, 229, 255, 0.45) !important;
+    font-weight: 800 !important;
+  }
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const buttons = document.querySelectorAll('button, .filter-btn, [role="button"]');
+  const rows = document.querySelectorAll('table tbody tr');
+
+  if (!rows.length) return;
+
+  // Localiza os botões da Arena de Benchmarks
+  const filterBtns = Array.from(buttons).filter(b => {
+    const t = b.innerText.toLowerCase().trim();
+    return t.includes('geral') || t.includes('todos') || t.includes('raciocínio') || t.includes('código') || t.includes('open-source') || t.includes('open source');
+  });
+
+  if (!filterBtns.length) return;
+
+  // Adiciona classe de transição em todas as linhas da tabela
+  rows.forEach(row => row.classList.add('benchmark-row'));
+
+  filterBtns.forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.preventDefault();
+
+      // 1. Atualiza visual do botão selecionado
+      filterBtns.forEach(b => b.classList.remove('benchmark-active-btn'));
+      btn.classList.add('benchmark-active-btn');
+
+      const filter = btn.innerText.toLowerCase().trim();
+
+      // 2. Filtra as linhas com animação de fade
+      rows.forEach(row => {
+        const text = row.innerText.toLowerCase();
+        const categoryAttr = (row.getAttribute('data-category') || '').toLowerCase();
+
+        const isGeneral = filter.includes('geral') || filter.includes('todos');
+        const isReasoning = (filter.includes('raciocínio') || filter.includes('código')) &&
+                            (text.includes('raciocínio') || text.includes('código') || text.includes('code') || categoryAttr.includes('reasoning'));
+        const isOpenSource = (filter.includes('open-source') || filter.includes('open source')) &&
+                             (text.includes('open-source') || text.includes('open source') || categoryAttr.includes('opensource'));
+
+        if (isGeneral || isReasoning || isOpenSource) {
+          row.classList.remove('benchmark-row-hidden');
+          setTimeout(() => {
+            row.classList.remove('benchmark-row-fadeout');
+            row.style.opacity = '1';
+          }, 10);
+        } else {
+          row.classList.add('benchmark-row-fadeout');
+          row.style.opacity = '0';
+          setTimeout(() => {
+            if (row.classList.contains('benchmark-row-fadeout')) {
+              row.classList.add('benchmark-row-hidden');
+            }
+          }, 200);
+        }
+      });
+    });
+  });
+});
+</script>
+<!-- ==================================================== -->
 </body>
 </html>
