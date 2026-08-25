@@ -2267,5 +2267,45 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 </script>
 <!-- ==================================================== -->
+  <!-- ==================================================== -->
+<!-- JS: NAVEGAÇÃO LIMPA E RESET AO CLICAR NO LOGOTIPO   -->
+<!-- ==================================================== -->
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  // Localiza o link do logotipo no cabeçalho
+  const logoLink = document.querySelector('#main-logo-link, header a[href="index.html"], header a[href="./"], header .logo-area');
+
+  if (logoLink) {
+    logoLink.addEventListener('click', (e) => {
+      // Se houver alguma hashtag ou filtro na URL, limpa antes de recarregar
+      if (window.location.hash) {
+        history.replaceState(null, null, 'index.html');
+      }
+      window.location.href = 'index.html';
+    });
+  }
+});
+</script>
+<!-- ==================================================== -->
+  <!-- ======================================================= -->
+<!-- JS AUTOMÁTICO: AJUSTA O LINK DO LOGO PARA INDEX.HTML   -->
+<!-- ======================================================= -->
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  // Localiza automaticamente o primeiro link dentro do cabeçalho (Logotipo)
+  const logoLink = document.querySelector('header a, nav a, .logo-area, [class*="brand"] a');
+  
+  if (logoLink) {
+    logoLink.setAttribute('href', 'index.html');
+    logoLink.addEventListener('click', (e) => {
+      e.preventDefault();
+      // Limpa qualquer hashtag da URL e recarrega a página inicial limpa
+      history.replaceState(null, null, 'index.html');
+      window.location.href = 'index.html';
+    });
+  }
+});
+</script>
+<!-- ======================================================= -->
 </body>
 </html>
