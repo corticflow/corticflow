@@ -172,7 +172,7 @@
       <button onclick="selectHub('Business & Startups', true); toggleMobileMenu();" class="block w-full text-left py-2 px-3 rounded hover:bg-slate-100 dark:hover:bg-slate-900 text-slate-800 dark:text-slate-200">🏢 Mercado & Startups</button>
       <button onclick="selectHub('Science & Space', true); toggleMobileMenu();" class="block w-full text-left py-2 px-3 rounded hover:bg-slate-100 dark:hover:bg-slate-900 text-slate-800 dark:text-slate-200">🔬 Ciência & Futuro</button>
       <button onclick="selectHub('Tutorials & Guides', true); toggleMobileMenu();" class="block w-full text-left py-2 px-3 rounded hover:bg-slate-100 dark:hover:bg-slate-900 text-slate-800 dark:text-slate-200">🛠️ Tutoriais & Prompts</button>
-      <button onclick="selectHub('Newsletter', true); toggleMobileMenu();" class="block w-full text-left py-2 px-3 rounded hover:bg-slate-100 dark:hover:bg-slate-900 text-brandPurple">📬 Edição de Domingo</button>
+      <button onclick="selectHub('Newsletter', true); toggleMobileMenu();" class="block w-full text-left py-2 px-3 rounded hover:bg-slate-100 dark:hover:bg-slate-900 text-brandPurple">📬 Destaques</button>
     </div>
   </header>
 
@@ -365,14 +365,14 @@
             <span class="text-2xl font-black text-cyan-700 dark:text-brandCyan font-mono">01</span>
             <div>
               <h5 class="text-xs font-bold text-slate-800 dark:text-slate-200 group-hover:text-cyan-700 dark:group-hover:text-brandCyan transition leading-snug">A Batalha Energética da IA e os Data Centers de 60GW</h5>
-              <span class="text-[10px] font-mono text-slate-500">10 min • Edição de Domingo</span>
+              <span class="text-[10px] font-mono text-slate-500">10 min • Destaqueso</span>
             </div>
           </div>
           <div class="flex items-start gap-3 cursor-pointer group" onclick="openArticleByIndex(1)">
             <span class="text-2xl font-black text-brandPurple font-mono">02</span>
             <div>
               <h5 class="text-xs font-bold text-slate-800 dark:text-slate-200 group-hover:text-cyan-700 dark:group-hover:text-brandCyan transition leading-snug">CorticFlow Weekly #01: Raciocínio Profundo e Energia</h5>
-              <span class="text-[10px] font-mono text-slate-500">9 min • Edição de Domingo</span>
+              <span class="text-[10px] font-mono text-slate-500">9 min • Destaques</span>
             </div>
           </div>
           <div class="flex items-start gap-3 cursor-pointer group" onclick="openArticleByIndex(3)">
@@ -611,14 +611,14 @@
       "Science & Space": { tag_pt: "CIÊNCIA & ESPAÇO", tag_en: "SCIENCE & SPACE", title_pt: "Inovação Tecnológica, Física, Espaço e Energia", title_en: "Deep Tech, Physics, Space Exploration & Energy", desc_pt: "Descobertas científicas, semicondutores neuromórficos, computação quântica e novas engenharias.", desc_en: "Breakthrough physics discoveries, neuromorphic chips, quantum computing, and aerospace engineering." },
       "AI & Models": { tag_pt: "IA & MODELOS", tag_en: "AI & MODELS", title_pt: "Modelos de Linguagem, Raciocínio e Pesos Abertos", title_en: "Frontier LLMs, Reasoning & Open-Weights", desc_pt: "Análises técnicas sobre as arquiteturas neurais que estão redefinindo a inteligência artificial.", desc_en: "Technical breakthroughs on neural architectures shaping the future of autonomous systems." },
       "Tutorials & Guides": { tag_pt: "TUTORIAIS & GUIAS", tag_en: "TUTORIALS & GUIDES", title_pt: "Engenharia de Prompt e Automações Práticas", title_en: "Prompt Engineering & Actionable Automation", desc_pt: "Passo a passo didático para construir agentes, pipelines serverless e prompts estruturados.", desc_en: "Hands-on engineering blueprints for deploying production-ready serverless AI agents." },
-      Newsletter: { tag_pt: "EDIÇÃO DE DOMINGO", tag_en: "SUNDAY DISPATCH", title_pt: "Edições Semanais de Domingo", title_en: "Sunday Executive Newsletters", desc_pt: "Compilados consolidados e ensaios aprofundados publicados aos domingos.", desc_en: "Weekly executive digests and actionable evergreen deep-dives published every Sunday." }
+      Newsletter: { tag_pt: "Destaques", tag_en: "SUNDAY DISPATCH", title_pt: "Edições Semanais de Domingo", title_en: "Sunday Executive Newsletters", desc_pt: "Compilados consolidados e ensaios aprofundados publicados aos domingos.", desc_en: "Weekly executive digests and actionable evergreen deep-dives published every Sunday." }
     };
 
     const ARTICLES_DATA = {
       pt: [
         {
           title: "A Batalha Energética da IA: Como os Data Centers de 60GW Estão Redesenhando o Mapa Global",
-          category: "Edição de Domingo",
+          category: "Destaques",
           date: "10 min de leitura",
           readTime: "10 min de leitura",
           image: "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&w=800&q=80",
@@ -667,7 +667,7 @@ A vitória na próxima fase da revolução da IA não pertencerá necessariament
         },
         {
           title: "CorticFlow Weekly #01: Raciocínio Profundo, Escapes de Sandbox e Energia Nuclear",
-          category: "Edição de Domingo",
+          category: "Destaques",
           date: "9 min de leitura",
           readTime: "9 min de leitura",
           image: "https://images.unsplash.com/photo-1620712943543-bcc4688e7485?auto=format&fit=crop&w=800&q=80",
@@ -1503,7 +1503,7 @@ From distributed Kubernetes clusters to low-latency kernel scheduling, Linux rem
         document.getElementById('lbtn-all').innerText = "GERAL";
         document.getElementById('lbtn-rea').innerText = "RACIOCÍNIO & CÓDIGO";
         document.getElementById('lbtn-opn').innerText = "OPEN-SOURCE";
-        document.getElementById('feat-tag').innerText = "EDIÇÃO DE DOMINGO";
+        document.getElementById('feat-tag').innerText = "Destaques";
         document.getElementById('feat-date').innerText = "INVESTIGAÇÃO ESPECIAL • 10 MIN DE LEITURA";
         document.getElementById('feat-btn').innerText = "Ler Ensaio Completo";
         document.getElementById('prompt-tag').innerText = "PROMPT DA SEMANA";
@@ -1523,7 +1523,7 @@ From distributed Kubernetes clusters to low-latency kernel scheduling, Linux rem
         document.getElementById('dnav-biz').innerText = "Negócios";
         document.getElementById('dnav-sci').innerText = "Ciência";
         document.getElementById('dnav-tut').innerText = "Tutoriais";
-        document.getElementById('dnav-news').innerText = "Edição de Domingo";
+        document.getElementById('dnav-news').innerText = "Destaques";
         document.getElementById('footer-about').innerText = "O fluxo da tecnologia, inovação e inteligência artificial. Portal independente de notícias, análises aprofundadas de hardware e tutoriais práticos.";
         document.getElementById('footer-cat-title').innerText = "EDITORIAS";
         document.getElementById('footer-inst-title').innerText = "INSTITUCIONAL & CONTATO";
