@@ -2051,5 +2051,178 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 </script>
 <!-- ==================================================== -->
+  <!-- ==================================================== -->
+<!-- MENU HAMBÚRGUER & DRAWER LATERAL MOBILE (CORTICFLOW) -->
+<!-- ==================================================== -->
+
+<!-- 1. Fundo Escuro com Efeito Blur (Overlay) -->
+<div id="cortic-drawer-overlay" class="cortic-overlay" onclick="toggleCorticMenu()"></div>
+
+<!-- 2. Menu Lateral Deslizante (Drawer) -->
+<aside id="cortic-mobile-drawer" class="cortic-drawer">
+  <div class="drawer-header">
+    <div style="display: flex; align-items: center; gap: 10px;">
+      <img src="https://github.com/corticflow.png" alt="Logo" style="width: 32px; height: 32px; border-radius: 50%; border: 2px solid #00E5FF;">
+      <span style="font-weight: 800; font-size: 18px; color: #FFF; letter-spacing: -0.5px;">Cortic<span style="color: #00E5FF;">Flow</span></span>
+    </div>
+    <button class="drawer-close-btn" onclick="toggleCorticMenu()" aria-label="Fechar Menu">&times;</button>
+  </div>
+
+  <div class="drawer-content">
+    <div style="font-size: 11px; font-weight: 700; color: #00E5FF; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 12px;">Editorias & Navegação</div>
+    
+    <nav class="drawer-nav">
+      <a href="#destaques" onclick="toggleCorticMenu()">⚡ Destaques de Hoje</a>
+      <a href="#ia-modelos" onclick="toggleCorticMenu()">🧠 IA & Modelos</a>
+      <a href="#hardware" onclick="toggleCorticMenu()">💻 Hardware & Chips</a>
+      <a href="#open-source" onclick="toggleCorticMenu()">🛠️ Open-Source & Agentes</a>
+      <a href="#mercado" onclick="toggleCorticMenu()">🏢 Big Techs & Mercado</a>
+      <a href="lab.html" class="drawer-highlight-link">🧪 Lab 3D // Experimento ✨</a>
+      <a href="#newsletter" onclick="toggleCorticMenu()">📬 Newsletter Semanal</a>
+    </nav>
+  </div>
+
+  <div class="drawer-footer">
+    <a href="privacy.html" style="margin-right: 14px;">Privacidade</a>
+    <a href="terms.html">Termos</a>
+    <div style="margin-top: 8px; font-size: 12px; color: #64748B;">© 2026 CorticFlow</div>
+  </div>
+</aside>
+
+<!-- 3. Estilos CSS (Transição Suave e Blur) -->
+<style>
+  .cortic-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.75);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    z-index: 9998;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .cortic-overlay.active {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .cortic-drawer {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 290px;
+    max-width: 85vw;
+    height: 100vh;
+    background: #0D1322;
+    border-left: 1px solid rgba(0, 229, 255, 0.2);
+    box-shadow: -10px 0 35px rgba(0, 0, 0, 0.8);
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    transform: translateX(100%);
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .cortic-drawer.active {
+    transform: translateX(0);
+  }
+
+  .drawer-header {
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  }
+  .drawer-close-btn {
+    background: none;
+    border: none;
+    color: #94A3B8;
+    font-size: 28px;
+    cursor: pointer;
+    line-height: 1;
+  }
+  .drawer-close-btn:hover { color: #00E5FF; }
+
+  .drawer-content {
+    padding: 24px 20px;
+    flex-grow: 1;
+    overflow-y: auto;
+  }
+  .drawer-nav a {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 14px;
+    color: #CBD5E1;
+    font-size: 15px;
+    font-weight: 600;
+    text-decoration: none;
+    border-radius: 10px;
+    margin-bottom: 6px;
+    transition: all 0.2s;
+  }
+  .drawer-nav a:hover {
+    background: rgba(0, 229, 255, 0.1);
+    color: #00E5FF;
+    transform: translateX(4px);
+  }
+  .drawer-highlight-link {
+    background: rgba(0, 229, 255, 0.12) !important;
+    border: 1px solid rgba(0, 229, 255, 0.3) !important;
+    color: #00E5FF !important;
+    margin-top: 10px !important;
+    margin-bottom: 10px !important;
+  }
+  .drawer-highlight-link:hover {
+    background: #00E5FF !important;
+    color: #0B0F19 !important;
+    box-shadow: 0 0 15px rgba(0, 229, 255, 0.4);
+  }
+
+  .drawer-footer {
+    padding: 20px;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    font-size: 13px;
+  }
+  .drawer-footer a { color: #94A3B8; text-decoration: none; }
+  .drawer-footer a:hover { color: #00E5FF; }
+</style>
+
+<!-- 4. Lógica JavaScript para Ativar no Clique do ☰ -->
+<script>
+function toggleCorticMenu() {
+  const drawer = document.getElementById('cortic-mobile-drawer');
+  const overlay = document.getElementById('cortic-drawer-overlay');
+  if (drawer && overlay) {
+    drawer.classList.toggle('active');
+    overlay.classList.toggle('active');
+    document.body.style.overflow = drawer.classList.contains('active') ? 'hidden' : '';
+  }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  // Conecta o gatilho a qualquer botão de menu hambúrguer ☰ no site
+  const menuButtons = document.querySelectorAll('#menu-btn, .menu-btn, button[aria-label*="menu"], [class*="hamburger"]');
+  
+  menuButtons.forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.preventDefault();
+      toggleCorticMenu();
+    });
+  });
+
+  // Identifica botão contendo o ícone ☰
+  document.querySelectorAll('button').forEach(btn => {
+    if (btn.innerText.includes('☰')) {
+      btn.addEventListener('click', (e) => {
+        e.preventDefault();
+        toggleCorticMenu();
+      });
+    }
+  });
+});
+</script>
+<!-- ==================================================== -->
 </body>
 </html>
