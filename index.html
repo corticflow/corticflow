@@ -2307,5 +2307,43 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 </script>
 <!-- ======================================================= -->
+  <!-- ==================================================== -->
+<!-- JS: RENDERIZADOR AUTOMÁTICO DE MATÉRIAS DO FEED      -->
+<!-- ==================================================== -->
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  fetch('posts.json?v=' + Date.now())
+    .then(res => res.json())
+    .then(posts => {
+      if (!posts || !posts.length) return;
+
+      const grid = document.querySelector('.articles-grid, [class*="articles"], .grid');
+      if (!grid) return;
+
+      grid.innerHTML = '';
+
+      posts.forEach(post => {
+        const card = document.createElement('article');
+        card.className = 'article-card';
+        card.style.cursor = 'pointer';
+        card.innerHTML = `
+          <img src="${post.img}" alt="${post.titulo}" class="article-cover" style="width: 100%; height: 180px; object-fit: cover;">
+          <div class="article-body" style="padding: 20px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; font-size: 12px;">
+              <span class="badge" style="background: rgba(0, 229, 255, 0.15); color: #00E5FF; padding: 3px 10px; border-radius: 12px; font-weight: 700;">${post.categoria}</span>
+              <span style="color: #94A3B8;">⏱️ ${post.tempo_leitura}</span>
+            </div>
+            <h3 style="font-size: 18px; font-weight: 700; color: #FFF; line-height: 1.4; margin-bottom: 10px;">${post.titulo}</h3>
+            <p style="font-size: 14px; color: #94A3B8; line-height: 1.6; margin-bottom: 16px;">${post.resumo}</p>
+            <div style="color: #00E5FF; font-weight: 700; font-size: 13px;">Ler Matéria Completa →</div>
+          </div>
+        `;
+        grid.appendChild(card);
+      });
+    })
+    .catch(err => console.log('Feed padrão em exibição.'));
+});
+</script>
+<!-- ==================================================== -->
 </body>
 </html>
