@@ -26,7 +26,7 @@ jobs:
         run: |
           pip install requests feedparser
 
-      - name: Executar Gerador e Atualizador do Site
+      - name: Executar Gerador de Artigos
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
         run: |
@@ -40,6 +40,6 @@ jobs:
           if git diff --staged --quiet; then
             echo "Nenhuma alteração para commitar."
           else
-            git commit -m "chore(site): atualizacao automatica de materias e index.html [skip ci]"
+            git commit -m "chore(content): publicacao de artigos e posts.json [skip ci]"
             git push origin main
           fi
