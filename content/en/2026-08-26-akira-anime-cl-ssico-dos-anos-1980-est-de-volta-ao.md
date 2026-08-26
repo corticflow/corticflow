@@ -11,6 +11,6 @@ Lan&ccedil;ado originalmente em 1988 sob comando do diretor Katsuhiro Otomo, a a
 
 ### Impact & Analysis
 
-This development marks a significant update in the Windows & PC landscape, redefining industry standards.
+This development marks a significant update in the Windows & PC landscape.
 
 *Original source: [https://canaltech.com.br/entretenimento/akira-anime-classico-dos-anos-1980-esta-de-volta-aos-cinemas/](https://canaltech.com.br/entretenimento/akira-anime-classico-dos-anos-1980-esta-de-volta-aos-cinemas/)*

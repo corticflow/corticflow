@@ -11,6 +11,6 @@ Conhecido por seu trabalho na com&eacute;dia, Black foi associado a um projeto d
 
 ### Análise de Impacto e Engenharia
 
-Este anúncio traz desdobramentos importantes para o ecossistema de Windows & PC, elevando o nível de inovação no mercado global.
+Este anúncio traz desdobramentos importantes para o ecossistema de Windows & PC.
 
 *Fonte original: [https://canaltech.com.br/entretenimento/jack-black-quase-viveu-o-lanterna-verde-em-filme-com-luta-contra-pikachu/](https://canaltech.com.br/entretenimento/jack-black-quase-viveu-o-lanterna-verde-em-filme-com-luta-contra-pikachu/)*

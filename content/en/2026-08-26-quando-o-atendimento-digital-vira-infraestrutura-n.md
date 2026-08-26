@@ -11,6 +11,6 @@ O post Quando o atendimento digital vira infraestrutura no setor elétrico apare
 
 ### Impact & Analysis
 
-This development marks a significant update in the AI & Models landscape, redefining industry standards.
+This development marks a significant update in the AI & Models landscape.
 
 *Original source: [https://mittechreview.com.br/quando-o-atendimento-digital-vira-infraestrutura-no-setor-eletrico/](https://mittechreview.com.br/quando-o-atendimento-digital-vira-infraestrutura-no-setor-eletrico/)*
