@@ -11,6 +11,6 @@ O post Criação de vieses e estereótipos é maior com IA apareceu primeiro em 
 
 ### Impact & Analysis
 
-This development marks a significant update in the AI & Models landscape.
+This development marks an important update in the AI & Models landscape.
 
 *Original source: [https://mittechreview.com.br/criacao-de-vieses-e-estereotipos-e-maior-com-ia/](https://mittechreview.com.br/criacao-de-vieses-e-estereotipos-e-maior-com-ia/)*

@@ -11,6 +11,6 @@ O post Série Eleições: o eleitor entre o real e o fabricado apareceu primeiro
 
 ### Impact & Analysis
 
-This development marks a significant update in the AI & Models landscape.
+This development marks an important update in the AI & Models landscape.
 
 *Original source: [https://mittechreview.com.br/eleicoes-inteligencia-artificial-deepfakes-confianca-eleitor/](https://mittechreview.com.br/eleicoes-inteligencia-artificial-deepfakes-confianca-eleitor/)*
