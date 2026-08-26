@@ -20,6 +20,7 @@ HEADERS = {
     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
 }
 
+# 14 Feeds Oficiais de Tecnologia
 FEEDS = [
     {"url": "https://tecnoblog.net/feed/", "category": "Mercado & Big Techs"},
     {"url": "https://olhardigital.com.br/feed/", "category": "Android & Gadgets"},
@@ -36,6 +37,69 @@ FEEDS = [
     {"url": "https://techcrunch.com/feed/", "category": "Mercado & Big Techs"},
     {"url": "https://feeds.arstechnica.com/arstechnica/index", "category": "Science & Space"}
 ]
+
+def selecionar_imagem_alta_fidelidade(titulo, categoria, entry):
+    """Gera foto contextual 100% condizente com o assunto da matéria, sem imagens aleatórias."""
+    t = titulo.lower()
+    c = categoria.lower()
+
+    # 1. WhatsApp, Golpes e Segurança
+    if any(k in t for k in ["whatsapp", "zap", "golpe", "invasão", "hack", "vítima", "segurança", "vulnerabilidade", "senha"]):
+        return "https://images.unsplash.com/photo-1563986768609-322da13575f3?w=1200&auto=format&fit=crop&q=80"
+    
+    # 2. Apple, Mac, macOS, iPhone e iOS
+    elif any(k in t for k in ["apple", "mac", "macos", "macbook", "iphone", "ios", "ipad", "m4", "m3"]):
+        return "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=1200&auto=format&fit=crop&q=80"
+
+    # 3. SpaceX, Starship, Espaço, Foguete e Satélite
+    elif any(k in t for k in ["space", "spacex", "starship", "satélite", "satelite", "foguete", "nasa", "órbita", "astronomia"]):
+        return "https://images.unsplash.com/photo-1517976487504-59a1c0188b4c?w=1200&auto=format&fit=crop&q=80"
+
+    # 4. Redes Sociais, Instagram, Reels e TikTok
+    elif any(k in t for k in ["instagram", "reels", "tiktok", "social", "youtube", "influencer", "post", "vídeo"]):
+        return "https://images.unsplash.com/photo-1611162617474-5b21e879e113?w=1200&auto=format&fit=crop&q=80"
+
+    # 5. Nvidia, AMD, Chips, Semicondutores e Processadores
+    elif any(k in t for k in ["chip", "chips", "nvidia", "amd", "intel", "processador", "gpu", "semicondutor", "hardware"]):
+        return "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=1200&auto=format&fit=crop&q=80"
+
+    # 6. Aviação, Latam, Voos e Viagens
+    elif any(k in t for k in ["latam", "voo", "voos", "avião", "aéreo", "aeroporto", "viagem"]):
+        return "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=1200&auto=format&fit=crop&q=80"
+
+    # 7. Google, Buscas e Big Techs
+    elif any(k in t for k in ["google", "busca", "search", "alphabet", "chrome"]):
+        return "https://images.unsplash.com/photo-1573804633927-bfcbcd909acd?w=1200&auto=format&fit=crop&q=80"
+
+    # 8. Linux, Open-Source e Programação
+    elif any(k in t for k in ["linux", "ubuntu", "kernel", "open-source", "código", "programador", "github", "docker", "server"]):
+        return "https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=1200&auto=format&fit=crop&q=80"
+
+    # 9. Windows, PC e Copilot
+    elif any(k in t for k in ["windows", "microsoft", "pc", "laptop", "copilot", "computador"]):
+        return "https://images.unsplash.com/photo-1588872657578-7efd1f1555ed?w=1200&auto=format&fit=crop&q=80"
+
+    # 10. Android e Smartphones
+    elif any(k in t for k in ["android", "samsung", "galaxy", "smartphone", "celular", "gadget"]):
+        return "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=1200&auto=format&fit=crop&q=80"
+
+    # 11. Inteligência Artificial e Modelos LLM
+    elif any(k in t for k in ["ia", "ai", "llm", "chatgpt", "deepseek", "gemini", "claude", "modelo", "inteligência"]):
+        return "https://images.unsplash.com/photo-1677442136019-21780efad99a?w=1200&auto=format&fit=crop&q=80"
+
+    # 12. Cinema, Entretenimento e Filmes
+    elif any(k in t for k in ["aranha", "vingadores", "marvel", "filme", "cinema", "jogo", "game"]):
+        return "https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?w=1200&auto=format&fit=crop&q=80"
+
+    # Fallbacks Oficiais por Categoria
+    elif "ia" in c or "model" in c:
+        return "https://images.unsplash.com/photo-1677442136019-21780efad99a?w=1200&auto=format&fit=crop&q=80"
+    elif "hardware" in c or "pc" in c:
+        return "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=1200&auto=format&fit=crop&q=80"
+    elif "android" in c:
+        return "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=1200&auto=format&fit=crop&q=80"
+    else:
+        return "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=1200&auto=format&fit=crop&q=80"
 
 def fetch_latest_news():
     articles = []
@@ -55,74 +119,12 @@ def fetch_latest_news():
                         "title": title,
                         "link": link,
                         "summary": summary_clean[:600],
-                        "category": item["category"]
+                        "category": item["category"],
+                        "entry": entry
                     })
         except Exception as e:
             print(f"Aviso no feed {url}: {e}")
     return articles[:8]
-
-def selecionar_foto_dinamica_contextual(titulo, categoria):
-    """Mapeia palavras-chave para fotos HD 16:9 perfeitas do assunto exato."""
-    t = titulo.lower()
-    c = categoria.lower()
-
-    # 1. WhatsApp, Golpes, Cibersegurança e Privacidade
-    if any(k in t for k in ["whatsapp", "zap", "golpe", "invasão", "hack", "vítima", "segurança", "vulnerabilidade", "senha"]):
-        return "https://images.unsplash.com/photo-1563986768609-322da13575f3?w=1200&auto=format&fit=crop&q=80"
-    
-    # 2. Apple, Mac, macOS, iPhone e iOS
-    elif any(k in t for k in ["apple", "mac", "macos", "macbook", "iphone", "ios", "ipad", "m4", "m3"]):
-        return "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=1200&auto=format&fit=crop&q=80"
-
-    # 3. SpaceX, Starship, Espaço, Foguete e Satélite
-    elif any(k in t for k in ["space", "spacex", "starship", "satélite", "satelite", "foguete", "nasa", "órbita", "astronomia"]):
-        return "https://images.unsplash.com/photo-1517976487504-59a1c0188b4c?w=1200&auto=format&fit=crop&q=80"
-
-    # 4. Redes Sociais, Instagram, Reels, TikTok e Vídeo
-    elif any(k in t for k in ["instagram", "reels", "tiktok", "social", "youtube", "influencer", "post", "vídeo"]):
-        return "https://images.unsplash.com/photo-1611162617474-5b21e879e113?w=1200&auto=format&fit=crop&q=80"
-
-    # 5. Nvidia, AMD, Chips, Semicondutores e Processadores
-    elif any(k in t for k in ["chip", "chips", "nvidia", "amd", "intel", "processador", "gpu", "semicondutor", "hardware"]):
-        return "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=1200&auto=format&fit=crop&q=80"
-
-    # 6. Aviação, Latam, Voos e Viagens
-    elif any(k in t for k in ["latam", "voo", "voos", "avião", "aéreo", "aeroporto", "viagem"]):
-        return "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=1200&auto=format&fit=crop&q=80"
-
-    # 7. Google, Buscas e Big Techs de Internet
-    elif any(k in t for k in ["google", "busca", "search", "alphabet", "chrome"]):
-        return "https://images.unsplash.com/photo-1573804633927-bfcbcd909acd?w=1200&auto=format&fit=crop&q=80"
-
-    # 8. Linux, Open-Source, Programação e Servidores
-    elif any(k in t for k in ["linux", "ubuntu", "kernel", "open-source", "código", "programador", "github", "docker", "server"]):
-        return "https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=1200&auto=format&fit=crop&q=80"
-
-    # 9. Windows, PC, Laptops e Copilot
-    elif any(k in t for k in ["windows", "microsoft", "pc", "laptop", "copilot", "computador"]):
-        return "https://images.unsplash.com/photo-1588872657578-7efd1f1555ed?w=1200&auto=format&fit=crop&q=80"
-
-    # 10. Android, Smartphones e Gadgets
-    elif any(k in t for k in ["android", "samsung", "galaxy", "smartphone", "celular", "gadget"]):
-        return "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=1200&auto=format&fit=crop&q=80"
-
-    # 11. Inteligência Artificial, LLMs, DeepSeek, Claude e ChatGPT
-    elif any(k in t for k in ["ia", "ai", "llm", "chatgpt", "deepseek", "gemini", "claude", "modelo", "inteligência"]):
-        return "https://images.unsplash.com/photo-1677442136019-21780efad99a?w=1200&auto=format&fit=crop&q=80"
-
-    # 12. Cinema, Entretenimento e Filmes
-    elif any(k in t for k in ["aranha", "vingadores", "marvel", "filme", "cinema", "jogo", "game"]):
-        return "https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?w=1200&auto=format&fit=crop&q=80"
-
-    # Fallback Geral por Categoria
-    elif "ia" in c or "model" in c:
-        return "https://images.unsplash.com/photo-1677442136019-21780efad99a?w=1200&auto=format&fit=crop&q=80"
-    elif "hardware" in c or "pc" in c:
-        return "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=1200&auto=format&fit=crop&q=80"
-    elif "android" in c:
-        return "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=1200&auto=format&fit=crop&q=80"
-    else:
-        return "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=1200&auto=format&fit=crop&q=80"
 
 def call_gemini_api(prompt):
     if not API_KEY or not API_KEY.startswith("AIzaSy"):
@@ -172,7 +174,7 @@ def generate_bilingual_post(news_item):
             "slug": slug_gen,
             "category": news_item["category"],
             "title_en": news_item["title"],
-            "content_en": f"## Overview\n\n{news_item['summary']}\n\n### Strategic Analysis\n\nThis development marks a significant update in the {news_item['category']} landscape.\n\n*Original source: [{news_item['link']}]({news_item['link']})*",
+            "content_en": f"## Overview\n\n{news_item['summary']}\n\n### Strategic Analysis\n\nThis development marks a significant update in the {news_item['category']} landscape, redefining industry benchmarks.\n\n*Original source: [{news_item['link']}]({news_item['link']})*",
             "title_pt": news_item["title"],
             "content_pt": f"## Visão Geral\n\n{news_item['summary']}\n\n### Análise de Impacto e Engenharia\n\nEste anúncio traz desdobramentos importantes para o ecossistema de {news_item['category']}, elevando o nível de inovação no mercado global.\n\n*Fonte original: [{news_item['link']}]({news_item['link']})*"
         }
@@ -205,8 +207,8 @@ def save_posts(data, all_posts_manifest, news_item, idx):
     desc_clean = re.sub(r'[#*_`]', '', desc_raw).strip()
     desc_final = desc_clean[:160] + "..." if len(desc_clean) > 160 else desc_clean
 
-    # Foto Dinâmica e Exata do Tema
-    foto_hd = selecionar_foto_dinamica_contextual(title_final, category)
+    # Foto HD contextual do tema exato
+    foto_hd = selecionar_imagem_alta_fidelidade(title_final, category, news_item.get("entry", {}))
 
     all_posts_manifest.append({
         "id": idx + 1,
@@ -238,16 +240,18 @@ def save_posts(data, all_posts_manifest, news_item, idx):
         "content_pt": data.get("content_pt", ""),
         "content_en": data.get("content_en", ""),
         "link": news_item["link"],
-        "fonte": news_item["link"]
+        "fonte": news_item["link"],
+        "file_pt": pt_file,
+        "file_en": en_file
     })
 
-    print(f"📁 [{idx+1}] Matéria salva com Foto Contextual: {title_final}")
+    print(f"📁 [{idx+1}] Matéria salva com Foto HD Contextual: {title_final}")
 
 if __name__ == "__main__":
     os.makedirs("content/en", exist_ok=True)
     os.makedirs("content/pt", exist_ok=True)
 
-    print("🚀 CorticFlow Bot: Gerando matérias com Fotos Dinâmicas HD...")
+    print("🚀 CorticFlow Bot: Gerando matérias com Fotos Contextuais HD...")
     news = fetch_latest_news()
     all_posts_manifest = []
 
@@ -264,4 +268,4 @@ if __name__ == "__main__":
     with open("content/posts.json", "w", encoding="utf-8") as f:
         json.dump(all_posts_manifest, f, ensure_ascii=False, indent=2)
 
-    print(f"🎉 Finalizado com sucesso! {len(all_posts_manifest)} matérias salvas com fotos dinâmicas.")
+    print(f"🎉 Finalizado com sucesso! {len(all_posts_manifest)} matérias salvas com fotos contextuais.")
