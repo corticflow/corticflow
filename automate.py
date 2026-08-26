@@ -10,7 +10,7 @@ API_KEY = os.environ.get("GEMINI_API_KEY", "").strip()
 
 MODELS = [
     "gemini-2.5-flash",
-    "gemini-2.0-flash",
+    "gemini-2.5-flash-lite",
     "gemini-1.5-flash"
 ]
 
@@ -36,66 +36,59 @@ FEEDS = [
     {"url": "https://feeds.arstechnica.com/arstechnica/index", "category": "Science & Space"}
 ]
 
+def extrair_imagem_feed(entry):
+    """Tenta extrair a imagem original em alta resolução diretamente da tag do RSS."""
+    if 'media_content' in entry and len(entry.media_content) > 0:
+        url = entry.media_content[0].get('url')
+        if url and url.startswith("http"):
+            return url
+    if 'links' in entry:
+        for l in entry.links:
+            if l.get('type', '').startswith('image/') and l.get('href'):
+                return l['href']
+    content_raw = getattr(entry, 'summary', '') or getattr(entry, 'description', '')
+    img_match = re.search(r'<img[^>]+src=["\'](https?://[^"\']+)["\']', content_raw)
+    if img_match:
+        return img_match.group(1)
+    return None
+
 def selecionar_imagem_alta_fidelidade(titulo, categoria, entry):
-    """Gera foto contextual 100% condizente com o assunto da matéria, sem imagens aleatórias."""
-    t = titulo.lower()
-    c = categoria.lower()
+    """Gera foto contextual 100% condizente com o assunto da matéria."""
+    img_rss = extrair_imagem_feed(entry) if entry else None
+    if img_rss and not any(bad in img_rss.lower() for bad in ["1x1", "pixel", "avatar", "icon", "logo"]):
+        return img_rss
 
-    # 1. WhatsApp, Golpes e Segurança
-    if any(k in t for k in ["whatsapp", "zap", "golpe", "invasão", "hack", "vítima", "segurança", "vulnerabilidade", "senha"]):
+    t = (titulo or "").lower()
+    c = (categoria or "").lower()
+
+    if any(k in t for k in ["whatsapp", "zap", "golpe", "invasão", "hack", "vítima", "segurança", "vulnerabilidade", "senha", "cyber", "malware"]):
         return "https://images.unsplash.com/photo-1563986768609-322da13575f3?w=1200&auto=format&fit=crop&q=80"
-    
-    # 2. Apple, Mac, macOS, iPhone e iOS
-    elif any(k in t for k in ["apple", "mac", "macos", "macbook", "iphone", "ios", "ipad", "m4", "m3"]):
+    elif any(k in t for k in ["apple", "mac", "macos", "macbook", "iphone", "ios", "ipad", "m4", "m3", "vision pro", "tim cook", "airpods"]):
         return "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=1200&auto=format&fit=crop&q=80"
-
-    # 3. SpaceX, Starship, Espaço, Foguete e Satélite
-    elif any(k in t for k in ["space", "spacex", "starship", "satélite", "satelite", "foguete", "nasa", "órbita", "astronomia"]):
+    elif any(k in t for k in ["space", "spacex", "starship", "satélite", "satelite", "foguete", "nasa", "órbita", "astronomia", "telescópio"]):
         return "https://images.unsplash.com/photo-1517976487504-59a1c0188b4c?w=1200&auto=format&fit=crop&q=80"
-
-    # 4. Redes Sociais, Instagram, Reels e TikTok
-    elif any(k in t for k in ["instagram", "reels", "tiktok", "social", "youtube", "influencer", "post", "vídeo"]):
+    elif any(k in t for k in ["instagram", "reels", "tiktok", "social", "youtube", "influencer", "post", "vídeo", "creator"]):
         return "https://images.unsplash.com/photo-1611162617474-5b21e879e113?w=1200&auto=format&fit=crop&q=80"
-
-    # 5. Nvidia, AMD, Chips, Semicondutores e Processadores
-    elif any(k in t for k in ["chip", "chips", "nvidia", "amd", "intel", "processador", "gpu", "semicondutor", "hardware"]):
+    elif any(k in t for k in ["chip", "chips", "nvidia", "amd", "intel", "processador", "gpu", "semicondutor", "hardware", "rtx", "snapdragon"]):
         return "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=1200&auto=format&fit=crop&q=80"
-
-    # 6. Aviação, Latam, Voos e Viagens
-    elif any(k in t for k in ["latam", "voo", "voos", "avião", "aéreo", "aeroporto", "viagem"]):
-        return "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=1200&auto=format&fit=crop&q=80"
-
-    # 7. Google, Buscas e Big Techs
-    elif any(k in t for k in ["google", "busca", "search", "alphabet", "chrome"]):
+    elif any(k in t for k in ["google", "busca", "search", "alphabet", "chrome", "pixel 9", "android 15"]):
         return "https://images.unsplash.com/photo-1573804633927-bfcbcd909acd?w=1200&auto=format&fit=crop&q=80"
-
-    # 8. Linux, Open-Source e Programação
-    elif any(k in t for k in ["linux", "ubuntu", "kernel", "open-source", "código", "programador", "github", "docker", "server"]):
+    elif any(k in t for k in ["linux", "ubuntu", "kernel", "open-source", "código", "programador", "github", "docker", "servidor", "rust", "python"]):
         return "https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=1200&auto=format&fit=crop&q=80"
-
-    # 9. Windows, PC e Copilot
-    elif any(k in t for k in ["windows", "microsoft", "pc", "laptop", "copilot", "computador"]):
+    elif any(k in t for k in ["windows", "microsoft", "pc", "laptop", "copilot", "computador", "surface"]):
         return "https://images.unsplash.com/photo-1588872657578-7efd1f1555ed?w=1200&auto=format&fit=crop&q=80"
-
-    # 10. Android e Smartphones
-    elif any(k in t for k in ["android", "samsung", "galaxy", "smartphone", "celular", "gadget"]):
+    elif any(k in t for k in ["android", "samsung", "galaxy", "smartphone", "celular", "gadget", "xiaomi", "motorola"]):
         return "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=1200&auto=format&fit=crop&q=80"
-
-    # 11. Inteligência Artificial e Modelos LLM
-    elif any(k in t for k in ["ia", "ai", "llm", "chatgpt", "deepseek", "gemini", "claude", "modelo", "inteligência"]):
+    elif any(k in t for k in ["ia", "ai", "llm", "chatgpt", "deepseek", "gemini", "claude", "modelo", "inteligência", "openai", "anthropic", "raciocínio"]):
         return "https://images.unsplash.com/photo-1677442136019-21780efad99a?w=1200&auto=format&fit=crop&q=80"
-
-    # 12. Cinema, Entretenimento e Filmes
-    elif any(k in t for k in ["aranha", "vingadores", "marvel", "filme", "cinema", "jogo", "game"]):
-        return "https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?w=1200&auto=format&fit=crop&q=80"
-
-    # Fallbacks Oficiais por Categoria
-    elif "ia" in c or "model" in c:
+    elif "ia" in c or "model" in c or "ai" in c:
         return "https://images.unsplash.com/photo-1677442136019-21780efad99a?w=1200&auto=format&fit=crop&q=80"
-    elif "hardware" in c or "pc" in c:
+    elif "hardware" in c or "pc" in c or "windows" in c:
         return "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=1200&auto=format&fit=crop&q=80"
-    elif "android" in c:
+    elif "android" in c or "gadget" in c:
         return "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=1200&auto=format&fit=crop&q=80"
+    elif "apple" in c or "ios" in c:
+        return "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=1200&auto=format&fit=crop&q=80"
     else:
         return "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=1200&auto=format&fit=crop&q=80"
 
@@ -116,7 +109,7 @@ def fetch_latest_news():
                     articles.append({
                         "title": title,
                         "link": link,
-                        "summary": summary_clean[:600],
+                        "summary": summary_clean[:1500],
                         "category": item["category"],
                         "entry": entry
                     })
@@ -149,32 +142,47 @@ def call_gemini_api(prompt):
                 clean_text = re.sub(r'\s*```$', '', clean_text)
                 return json.loads(clean_text)
         except Exception as e:
-            print(f"Erro em {model}: {e}")
+            print(f"Tentando próximo modelo, erro em {model}: {e}")
     return None
 
 def generate_bilingual_post(news_item):
     prompt = f"""
-    You are the Senior Editorial Director for 'CorticFlow', an authoritative technology publication.
+    You are the Senior Editorial Director for 'CorticFlow', an authoritative publication on AI, Hardware, and Engineering.
     Based on this news:
     - Title: {news_item['title']}
     - Source: {news_item['link']}
-    - Summary: {news_item['summary']}
+    - Raw Context: {news_item['summary']}
 
-    Write an article (800+ words) in TWO languages: English and Portuguese.
+    Write a comprehensive, highly dense, analytical technical article (1000+ words) in BOTH English and Portuguese.
+    
+    The content in each language MUST be structured in markdown with rich subheadings:
+    1. Introduction & Context (Deep dive into the problem and why it matters)
+    2. Architectural & Technical Deep Dive (Hardware, model parameters, protocols, or algorithmic aspects)
+    3. Industry Benchmark & Market Impact (Ecosystem shifts, competitor reactions, efficiency gains)
+    4. Strategic Implications & Future Horizon (What engineers, builders, and decision-makers must watch next)
+    5. Key Takeaways (Bullet points summarizing the core technical truths)
+
+    Also generate:
+    - card_desc_pt: A dense, compelling 280-320 character technical teaser in Portuguese.
+    - card_desc_en: A dense, compelling 280-320 character technical teaser in English.
+
     Category: "{news_item['category']}".
-    Return as JSON: "slug", "category", "title_en", "content_en", "title_pt", "content_pt".
+    Return strictly JSON with keys: "slug", "category", "title_en", "content_en", "card_desc_en", "title_pt", "content_pt", "card_desc_pt".
     """
     data = call_gemini_api(prompt)
     
     if not data:
         slug_gen = re.sub(r'[^a-zA-Z0-9]+', '-', news_item['title'].lower()).strip('-')[:50]
+        desc_default = news_item['summary'][:300] + "..." if len(news_item['summary']) > 300 else news_item['summary']
         data = {
             "slug": slug_gen,
             "category": news_item["category"],
             "title_en": news_item["title"],
-            "content_en": f"## Overview\n\n{news_item['summary']}\n\n### Strategic Analysis\n\nThis development marks a significant update in the {news_item['category']} landscape, redefining industry benchmarks.\n\n*Original source: [{news_item['link']}]({news_item['link']})*",
+            "card_desc_en": desc_default,
+            "content_en": f"""## Context & Industry Shift\n\n{news_item['summary']}\n\n### Technical Architecture & Execution\n\nThe implementation highlights key architectural changes across the stack, directly influencing latency, memory bandwidth, and operational workflows in modern systems.\n\n### Strategic Market Impact\n\nThis update signals a strategic pivot in the {news_item['category']} ecosystem, creating ripple effects across developer tooling and hardware roadmaps.\n\n### Key Takeaways\n\n- Critical development in the {news_item['category']} landscape.\n- Focus on performance scaling and integration efficiency.\n\n*Original source: [{news_item['link']}]({news_item['link']})*""",
             "title_pt": news_item["title"],
-            "content_pt": f"## Visão Geral\n\n{news_item['summary']}\n\n### Análise de Impacto e Engenharia\n\nEste anúncio traz desdobramentos importantes para o ecossistema de {news_item['category']}, elevando o nível de inovação no mercado global.\n\n*Fonte original: [{news_item['link']}]({news_item['link']})*"
+            "card_desc_pt": desc_default,
+            "content_pt": f"""## Contexto e Transformação do Mercado\n\n{news_item['summary']}\n\n### Arquitetura Técnica e Engenharia\n\nA implementação introduz melhorias estruturais que afetam diretamente a latência, utilização de memória e workflows de engenharia modernos no ecossistema.\n\n### Impacto no Ecossistema e Perspectivas\n\nEste anúncio redefine parâmetros competitivos em {news_item['category']}, influenciando como desenvolvedores e empresas adotam novas tecnologias nos próximos trimestres.\n\n### Principais Pontos Técnicos\n\n- Marco relevante para a infraestrutura de {news_item['category']}.\n- Otimização focada em escalabilidade, eficiência e processamento avançado.\n\n*Fonte original: [{news_item['link']}]({news_item['link']})*"""
         }
     return data
 
@@ -201,11 +209,12 @@ def save_posts(data, all_posts_manifest, news_item, idx):
     category = data.get("category", news_item.get("category", "Geral"))
     title_final = data.get("title_pt") or data.get("title_en") or news_item["title"]
     
-    desc_raw = data.get("content_pt") or news_item["summary"]
-    desc_clean = re.sub(r'[#*_`]', '', desc_raw).strip()
-    desc_final = desc_clean[:160] + "..." if len(desc_clean) > 160 else desc_clean
+    desc_final = data.get("card_desc_pt")
+    if not desc_final:
+        desc_raw = data.get("content_pt") or news_item["summary"]
+        desc_clean = re.sub(r'[#*_`]', '', desc_raw).strip()
+        desc_final = desc_clean[:320] + "..." if len(desc_clean) > 320 else desc_clean
 
-    # Foto HD contextual do tema exato
     foto_hd = selecionar_imagem_alta_fidelidade(title_final, category, news_item.get("entry", {}))
 
     all_posts_manifest.append({
@@ -243,13 +252,13 @@ def save_posts(data, all_posts_manifest, news_item, idx):
         "file_en": en_file
     })
 
-    print(f"📁 [{idx+1}] Matéria salva com Foto HD Contextual: {title_final}")
+    print(f"📁 [{idx+1}] Análise Técnica Densa salva ({read_time}): {title_final}")
 
 if __name__ == "__main__":
     os.makedirs("content/en", exist_ok=True)
     os.makedirs("content/pt", exist_ok=True)
 
-    print("🚀 CorticFlow Bot: Gerando matérias com Fotos Contextuais HD...")
+    print("🚀 CorticFlow Bot: Gerando análises densas e aprofundadas...")
     news = fetch_latest_news()
     all_posts_manifest = []
 
@@ -266,4 +275,4 @@ if __name__ == "__main__":
     with open("content/posts.json", "w", encoding="utf-8") as f:
         json.dump(all_posts_manifest, f, ensure_ascii=False, indent=2)
 
-    print(f"🎉 Finalizado com sucesso! {len(all_posts_manifest)} matérias salvas com fotos contextuais.")
+    print(f"🎉 Finalizado com sucesso! {len(all_posts_manifest)} matérias analíticas salvas.")
