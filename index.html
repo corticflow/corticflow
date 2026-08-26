@@ -2345,5 +2345,66 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 </script>
 <!-- ==================================================== -->
+  <!-- ==================================================== -->
+<!-- CSS: GRADE ESPAÇOSA E LARGURA CORRETA DOS CARDS     -->
+<!-- ==================================================== -->
+<style>
+  /* Grade de Notícias (3 cards por linha no PC, 1 no Celular) */
+  .articles-grid, 
+  #posts-grid, 
+  #articles-container,
+  main .grid,
+  [class*="grid"] {
+    display: grid !important;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)) !important;
+    gap: 24px !important;
+    width: 100% !important;
+    max-width: 1200px !important;
+    margin: 30px auto !important;
+  }
+
+  /* Formato dos Cards */
+  .article-card, 
+  article {
+    min-width: 300px !important;
+    width: 100% !important;
+    background: #11141E !important;
+    border: 1px solid #202636 !important;
+    border-radius: 16px !important;
+    overflow: hidden !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: space-between !important;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4) !important;
+  }
+
+  /* Capas das Matérias */
+  .article-card img, 
+  article img {
+    width: 100% !important;
+    height: 190px !important;
+    object-fit: cover !important;
+    border-radius: 16px 16px 0 0 !important;
+    display: block !important;
+    background: #1E293B !important;
+  }
+
+  /* Texto e Espaçamentos */
+  .article-card h3, 
+  article h3 {
+    font-size: 17px !important;
+    line-height: 1.4 !important;
+    margin: 12px 0 8px 0 !important;
+    color: #FFFFFF !important;
+    font-weight: 700 !important;
+  }
+
+  .article-card p, 
+  article p {
+    font-size: 13.5px !important;
+    line-height: 1.6 !important;
+    color: #94A3B8 !important;
+  }
+</style>
 </body>
 </html>
