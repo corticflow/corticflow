@@ -18,7 +18,7 @@ HEADERS = {
     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
 }
 
-# 14 Fontes Oficiais CorticFlow (Nacionais + Internacionais)
+# 14 Feeds Oficiais CorticFlow
 FEEDS = [
     "https://tecnoblog.net/feed/",
     "https://olhardigital.com.br/feed/",
@@ -81,7 +81,6 @@ def call_gemini_api(prompt):
                 result = res.json()
                 raw_text = result["candidates"][0]["content"]["parts"][0]["text"].strip()
                 
-                # Limpa marcações markdown para evitar erro de JSON
                 clean_text = re.sub(r'^```json\s*', '', raw_text)
                 clean_text = re.sub(r'^```\s*', '', clean_text)
                 clean_text = re.sub(r'\s*```$', '', clean_text)
