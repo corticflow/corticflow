@@ -20,20 +20,20 @@ HEADERS = {
 }
 
 FEEDS = [
-    {"url": "https://tecnoblog.net/feed/", "category": "Mercado & Big Techs"},
-    {"url": "https://olhardigital.com.br/feed/", "category": "Android & Gadgets"},
-    {"url": "https://mittechreview.com.br/feed/", "category": "AI & Models"},
-    {"url": "https://canaltech.com.br/rss/", "category": "Windows & PC"},
-    {"url": "https://venturebeat.com/category/ai/feed/", "category": "AI & Models"},
-    {"url": "https://thedecoder.com/feed/", "category": "AI & Models"},
-    {"url": "https://www.windowscentral.com/rss.xml", "category": "Windows & PC"},
-    {"url": "https://www.phoronix.com/phoronix-rss.php", "category": "Linux & Open-Source"},
-    {"url": "https://www.omgubuntu.co.uk/feed", "category": "Linux & Open-Source"},
-    {"url": "https://9to5mac.com/feed/", "category": "Apple & iOS"},
-    {"url": "https://9to5google.com/feed/", "category": "Android & Gadgets"},
-    {"url": "https://www.theverge.com/rss/index.xml", "category": "Business & Startups"},
-    {"url": "https://techcrunch.com/feed/", "category": "Business & Startups"},
-    {"url": "https://feeds.arstechnica.com/arstechnica/index", "category": "Science & Space"}
+    {"url": "https://tecnoblog.net/feed/", "category": "Mercado & Big Techs", "fallback_img": "cat-business.jpeg"},
+    {"url": "https://olhardigital.com.br/feed/", "category": "Android & Gadgets", "fallback_img": "cat-tutorials.jpeg"},
+    {"url": "https://mittechreview.com.br/feed/", "category": "AI & Models", "fallback_img": "cat-ai.jpeg"},
+    {"url": "https://canaltech.com.br/rss/", "category": "Windows & PC", "fallback_img": "cat-tutorials.jpeg"},
+    {"url": "https://venturebeat.com/category/ai/feed/", "category": "AI & Models", "fallback_img": "cat-ai.jpeg"},
+    {"url": "https://thedecoder.com/feed/", "category": "AI & Models", "fallback_img": "cat-ai.jpeg"},
+    {"url": "https://www.windowscentral.com/rss.xml", "category": "Windows & PC", "fallback_img": "cat-tutorials.jpeg"},
+    {"url": "https://www.phoronix.com/phoronix-rss.php", "category": "Linux & Open-Source", "fallback_img": "cat-tools.jpeg"},
+    {"url": "https://www.omgubuntu.co.uk/feed", "category": "Linux & Open-Source", "fallback_img": "cat-tools.jpeg"},
+    {"url": "https://9to5mac.com/feed/", "category": "Apple & iOS", "fallback_img": "cat-business.jpeg"},
+    {"url": "https://9to5google.com/feed/", "category": "Android & Gadgets", "fallback_img": "cat-tutorials.jpeg"},
+    {"url": "https://www.theverge.com/rss/index.xml", "category": "Mercado & Big Techs", "fallback_img": "cat-business.jpeg"},
+    {"url": "https://techcrunch.com/feed/", "category": "Mercado & Big Techs", "fallback_img": "cat-business.jpeg"},
+    {"url": "https://feeds.arstechnica.com/arstechnica/index", "category": "Science & Space", "fallback_img": "cat-tutorials.jpeg"}
 ]
 
 def fetch_latest_news():
@@ -54,17 +54,17 @@ def fetch_latest_news():
                         "title": title,
                         "link": link,
                         "summary": summary_clean[:500],
-                        "category": item["category"]
+                        "category": item["category"],
+                        "fallback_img": item["fallback_img"]
                     })
         except Exception as e:
             print(f"Aviso no feed {url}: {e}")
     return articles[:8]
 
-def gerar_capa_dinamica_ia(titulo, categoria):
-    """Gera uma URL de capa 16:9 única por IA para cada matéria."""
-    prompt_visual = f"Futuristic technology visual of {titulo}, category {categoria}, dark slate background, glowing neon cyan and purple accents, high tech concept art, 8k resolution, cinematic 16:9"
-    encoded = urllib.parse.quote(prompt_visual)
-    return f"https://image.pollinations.ai/prompt/{encoded}?width=1200&height=630&nologo=true&model=flux"
+def gerar_capa_ia(titulo, categoria, seed_num):
+    prompt_visual = f"Futuristic technology visual of {titulo}, {categoria}, dark slate background, glowing neon cyan and purple accents, high tech concept art, 8k resolution, cinematic 16:9"
+    encoded = urllib.parse.quote(prompt_visual[:200])
+    return f"https://image.pollinations.ai/prompt/{encoded}?width=1200&height=630&nologo=true&seed={seed_num}&model=flux"
 
 def call_gemini_api(prompt):
     if not API_KEY or not API_KEY.startswith("AIzaSy"):
@@ -104,7 +104,7 @@ def generate_bilingual_post(news_item):
 
     Write an article (800+ words) in TWO languages: English and Portuguese.
     Category: "{news_item['category']}".
-    Return as JSON: "slug", "category", "title_en", "content_en", "title_pt", "content_pt".
+    Return as JSON with keys: "slug", "category", "title_en", "content_en", "title_pt", "content_pt".
     """
     data = call_gemini_api(prompt)
     
@@ -114,13 +114,13 @@ def generate_bilingual_post(news_item):
             "slug": slug_gen,
             "category": news_item["category"],
             "title_en": news_item["title"],
-            "content_en": f"## Overview\n\n{news_item['summary']}\n\n### Impact & Analysis\n\nThis development marks a significant update in the {news_item['category']} landscape.\n\n*Original source: [{news_item['link']}]({news_item['link']})*",
+            "content_en": f"## Overview\n\n{news_item['summary']}\n\n### Impact & Analysis\n\nThis development in {news_item['category']} marks a significant advancement in modern technology.\n\n*Original source: [{news_item['link']}]({news_item['link']})*",
             "title_pt": news_item["title"],
-            "content_pt": f"## Visão Geral\n\n{news_item['summary']}\n\n### Análise de Impacto e Engenharia\n\nEste anúncio traz desdobramentos importantes para o ecossistema de {news_item['category']}.\n\n*Fonte original: [{news_item['link']}]({news_item['link']})*"
+            "content_pt": f"## Visão Geral\n\n{news_item['summary']}\n\n### Análise de Impacto e Engenharia\n\nEste anúncio em {news_item['category']} traz desdobramentos importantes para o ecossistema tecnológico global.\n\n*Fonte original: [{news_item['link']}]({news_item['link']})*"
         }
     return data
 
-def save_posts(data, all_posts_manifest, news_item):
+def save_posts(data, all_posts_manifest, news_item, idx):
     today = datetime.datetime.now().strftime("%Y-%m-%d")
     slug = data.get("slug", "tech-dispatch")
     slug_clean = re.sub(r'[^a-zA-Z0-9]+', '-', slug.lower()).strip('-')[:60]
@@ -142,16 +142,23 @@ def save_posts(data, all_posts_manifest, news_item):
     read_time = f"{max(1, math.ceil(words_pt / 200))} min"
     category = data.get("category", news_item.get("category", "Geral"))
     title_final = data.get("title_pt") or data.get("title_en") or news_item["title"]
-    desc_final = (data.get("content_pt") or news_item["summary"]).replace("#", "").strip()[:180] + "..."
+    
+    desc_raw = data.get("content_pt") or news_item["summary"]
+    desc_clean = re.sub(r'[#*_`]', '', desc_raw).strip()
+    desc_final = desc_clean[:160] + "..." if len(desc_clean) > 160 else desc_clean
 
-    # Gera a URL da capa dinâmica exclusiva para esta matéria
-    cover_image_url = gerar_capa_dinamica_ia(title_final, category)
+    cover_image = gerar_capa_ia(title_final, category, idx + 1)
 
+    # Preenche rigorosamente TODOS os nomes de campos para zerar o undefined
     all_posts_manifest.append({
-        "id": len(all_posts_manifest) + 1,
+        "id": idx + 1,
         "slug": slug_clean,
         "title": title_final,
+        "titulo": title_final,
         "title_pt": title_final,
+        "titulo_pt": title_final,
+        "headline": title_final,
+        "name": title_final,
         "title_en": data.get("title_en", title_final),
         "category": category,
         "categoria": category,
@@ -161,42 +168,49 @@ def save_posts(data, all_posts_manifest, news_item):
         "readTime": read_time,
         "read_time": read_time,
         "tempo_leitura": read_time,
-        "image": cover_image_url,
-        "img": cover_image_url,
-        "cover": cover_image_url,
+        "tempo": read_time,
+        "image": cover_image,
+        "img": cover_image,
+        "cover": cover_image,
+        "imagem": cover_image,
         "desc": desc_final,
+        "description": desc_final,
+        "descricao": desc_final,
+        "resumo": desc_final,
+        "subtitulo": desc_final,
+        "subtitle": desc_final,
+        "snippet": desc_final,
         "summary": desc_final,
         "content": data.get("content_pt", ""),
         "content_pt": data.get("content_pt", ""),
         "content_en": data.get("content_en", ""),
         "link": news_item["link"],
+        "fonte": news_item["link"],
         "file_pt": pt_file,
         "file_en": en_file
     })
 
-    print(f"📁 Artigo salvo com capa dinâmica: {title_final}")
+    print(f"📁 [{idx+1}] Post salvo: {title_final}")
 
 if __name__ == "__main__":
     os.makedirs("content/en", exist_ok=True)
     os.makedirs("content/pt", exist_ok=True)
 
-    print("🚀 CorticFlow Bot: Buscando notícias e gerando capas dinâmicas...")
+    print("🚀 CorticFlow Bot: Gerando matérias e capas dinâmicas...")
     news = fetch_latest_news()
-    success_count = 0
     all_posts_manifest = []
 
-    for item in news[:8]:
+    for i, item in enumerate(news[:8]):
         try:
             post_data = generate_bilingual_post(item)
             if post_data and isinstance(post_data, dict):
-                save_posts(post_data, all_posts_manifest, item)
-                success_count += 1
+                save_posts(post_data, all_posts_manifest, item, i)
         except Exception as e:
-            print(f"Erro ao processar item: {e}")
+            print(f"Erro no item {i+1}: {e}")
 
     with open("posts.json", "w", encoding="utf-8") as f:
         json.dump(all_posts_manifest, f, ensure_ascii=False, indent=2)
     with open("content/posts.json", "w", encoding="utf-8") as f:
         json.dump(all_posts_manifest, f, ensure_ascii=False, indent=2)
 
-    print(f"🎉 Finalizado com sucesso! {success_count} matérias com capas dinâmicas geradas.")
+    print(f"🎉 Finalizado com sucesso! {len(all_posts_manifest)} matérias com títulos e capas geradas.")
