@@ -2,8 +2,7 @@ name: Publicacao Diaria Autonoma CorticFlow
 
 on:
   schedule:
-    # Executa diariamente às 06:00 BRT (09:00 UTC)
-    - cron: '0 9 * * *'
+    - cron: '0 9 * * *' # Executa diariamente às 06:00 BRT
   workflow_dispatch:
 
 permissions:
@@ -27,11 +26,11 @@ jobs:
         run: |
           pip install requests feedparser
 
-      - name: Executar Gerador de Artigos
+      - name: Executar Gerador de Artigos CorticFlow
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
         run: |
-          python scripts/generate_and_publish.py
+          python automate.py
 
       - name: Fazer Commit e Publicar no Site
         run: |
@@ -41,6 +40,6 @@ jobs:
           if git diff --staged --quiet; then
             echo "Nenhuma alteração para commitar."
           else
-            git commit -m "chore(content): publicacao automatica matinal de artigos [skip ci]"
+            git commit -m "chore(content): publicacao automatica de artigos bilingues [skip ci]"
             git push origin main
           fi
