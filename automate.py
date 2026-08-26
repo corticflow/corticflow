@@ -5,19 +5,26 @@ import requests
 import feedparser
 import re
 import math
+import urllib.parse
 
 API_KEY = os.environ.get("GEMINI_API_KEY", "").strip()
 
+# Modelos de Última Geração (Prioridade Máxima para Gemini 3.7 e 3.5)
 MODELS = [
-    "gemini-1.5-flash",
+    "gemini-3.7-flash",
+    "gemini-3.5-flash-lite",
+    "gemini-3.6-flash",
+    "gemini-2.5-flash",
+    "gemini-2.5-pro",
     "gemini-2.0-flash",
-    "gemini-1.5-pro"
+    "gemini-1.5-flash"
 ]
 
 HEADERS = {
     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
 }
 
+# 14 Feeds Oficiais CorticFlow
 FEEDS = [
     {"url": "https://tecnoblog.net/feed/", "category": "Mercado & Big Techs"},
     {"url": "https://olhardigital.com.br/feed/", "category": "Android & Gadgets"},
@@ -59,31 +66,10 @@ def fetch_latest_news():
             print(f"Aviso no feed {url}: {e}")
     return articles[:8]
 
-def selecionar_capa_hd(titulo, categoria):
-    """Seleciona fotografia editorial em altíssima definição (HD) baseada no tema exato da notícia."""
-    t = titulo.lower()
-    c = categoria.lower()
-
-    if "space" in t or "starship" in t or "satélite" in t or "satelite" in t or "espaço" in t or "nasa" in t:
-        return "https://images.unsplash.com/photo-1517976487504-59a1c0188b4c?w=1200&auto=format&fit=crop&q=80" # Foguete / Espaço
-    elif "whatsapp" in t or "golpe" in t or "segurança" in t or "invasão" in t or "hack" in t or "vítima" in t:
-        return "https://images.unsplash.com/photo-1563986768609-322da13575f3?w=1200&auto=format&fit=crop&q=80" # Cibersegurança / Celular
-    elif "instagram" in t or "reels" in t or "tiktok" in t or "social" in t or "foto" in t:
-        return "https://images.unsplash.com/photo-1611162617474-5b21e879e113?w=1200&auto=format&fit=crop&q=80" # Social Media
-    elif "voo" in t or "latam" in t or "avião" in t or "aéreo" in t:
-        return "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=1200&auto=format&fit=crop&q=80" # Aviação / Conexão
-    elif "chip" in t or "nvidia" in t or "amd" in t or "hardware" in t or "semicondutor" in t:
-        return "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=1200&auto=format&fit=crop&q=80" # Semicondutores / Circuitos
-    elif "ia" in c or "ai" in c or "model" in c or "deep learning" in t or "llm" in t or "robô" in t:
-        return "https://images.unsplash.com/photo-1677442136019-21780efad99a?w=1200&auto=format&fit=crop&q=80" # IA / Córtex Neural
-    elif "windows" in c or "pc" in c or "microsoft" in t:
-        return "https://images.unsplash.com/photo-1588872657578-7efd1f1555ed?w=1200&auto=format&fit=crop&q=80" # Laptop / PC
-    elif "linux" in c or "open-source" in c or "dev" in t or "código" in t:
-        return "https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=1200&auto=format&fit=crop&q=80" # Programação / Código
-    elif "android" in c or "gadget" in c or "smartphone" in t or "celular" in t:
-        return "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=1200&auto=format&fit=crop&q=80" # Smartphone
-    else:
-        return "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=1200&auto=format&fit=crop&q=80" # Tecnologia Global
+def gerar_capa_ia_dinamica(titulo, categoria, seed_id):
+    prompt_visual = f"Futuristic technology 3D concept art of {titulo}, {categoria}, dark slate background, glowing electric cyan and neon purple accents, 8k resolution, cinematic 16:9, octane render"
+    encoded = urllib.parse.quote(prompt_visual[:220])
+    return f"https://image.pollinations.ai/prompt/{encoded}?width=1200&height=630&nologo=true&seed={seed_id}&model=flux"
 
 def call_gemini_api(prompt):
     if not API_KEY or not API_KEY.startswith("AIzaSy"):
@@ -100,6 +86,7 @@ def call_gemini_api(prompt):
 
     for model in MODELS:
         url = f"https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent?key={API_KEY}"
+        print(f"Tentando gerar com: {model}...")
         try:
             res = requests.post(url, json=payload, headers={"Content-Type": "application/json"}, timeout=60)
             if res.status_code == 200:
@@ -108,7 +95,10 @@ def call_gemini_api(prompt):
                 clean_text = re.sub(r'^```json\s*', '', raw_text)
                 clean_text = re.sub(r'^```\s*', '', clean_text)
                 clean_text = re.sub(r'\s*```$', '', clean_text)
+                print(f"✅ Sucesso com {model}!")
                 return json.loads(clean_text)
+            else:
+                print(f"Status {res.status_code} no modelo {model}")
         except Exception as e:
             print(f"Erro em {model}: {e}")
     return None
@@ -133,7 +123,7 @@ def generate_bilingual_post(news_item):
             "slug": slug_gen,
             "category": news_item["category"],
             "title_en": news_item["title"],
-            "content_en": f"## Overview\n\n{news_item['summary']}\n\n### Impact & Analysis\n\nThis development marks an important update in the {news_item['category']} landscape.\n\n*Original source: [{news_item['link']}]({news_item['link']})*",
+            "content_en": f"## Overview\n\n{news_item['summary']}\n\n### Strategic Analysis\n\nThis development marks a significant update in the {news_item['category']} landscape.\n\n*Original source: [{news_item['link']}]({news_item['link']})*",
             "title_pt": news_item["title"],
             "content_pt": f"## Visão Geral\n\n{news_item['summary']}\n\n### Análise de Impacto e Engenharia\n\nEste anúncio traz desdobramentos importantes para o ecossistema de {news_item['category']}, elevando o nível de inovação no mercado global.\n\n*Fonte original: [{news_item['link']}]({news_item['link']})*"
         }
@@ -161,13 +151,9 @@ def save_posts(data, all_posts_manifest, news_item, idx):
     read_time = f"{max(1, math.ceil(words_pt / 200))} min"
     category = data.get("category", news_item.get("category", "Geral"))
     title_final = data.get("title_pt") or data.get("title_en") or news_item["title"]
-    
-    desc_raw = data.get("content_pt") or news_item["summary"]
-    desc_clean = re.sub(r'[#*_`]', '', desc_raw).strip()
-    desc_final = desc_clean[:160] + "..." if len(desc_clean) > 160 else desc_clean
+    desc_final = (data.get("content_pt") or news_item["summary"]).replace("#", "").strip()[:180] + "..."
 
-    # Foto Editorial 4K HD
-    cover_image_hd = selecionar_capa_hd(title_final, category)
+    dynamic_cover_url = gerar_capa_ia_dinamica(title_final, category, idx + 1)
 
     all_posts_manifest.append({
         "id": idx + 1,
@@ -187,37 +173,28 @@ def save_posts(data, all_posts_manifest, news_item, idx):
         "readTime": read_time,
         "read_time": read_time,
         "tempo_leitura": read_time,
-        "tempo": read_time,
-        "image": cover_image_hd,
-        "img": cover_image_hd,
-        "cover": cover_image_hd,
-        "imagem": cover_image_hd,
+        "image": dynamic_cover_url,
+        "img": dynamic_cover_url,
+        "cover": dynamic_cover_url,
+        "imagem": dynamic_cover_url,
         "desc": desc_final,
         "description": desc_final,
         "descricao": desc_final,
         "resumo": desc_final,
-        "subtitulo": desc_final,
-        "subtitle": desc_final,
-        "snippet": desc_final,
-        "summary": desc_final,
         "content": data.get("content_pt", ""),
         "content_pt": data.get("content_pt", ""),
         "content_en": data.get("content_en", ""),
-        "corpo": data.get("content_pt", ""),
-        "corpo_pt": data.get("content_pt", ""),
         "link": news_item["link"],
-        "fonte": news_item["link"],
-        "file_pt": pt_file,
-        "file_en": en_file
+        "fonte": news_item["link"]
     })
 
-    print(f"📁 [{idx+1}] Matéria salva com Capa HD: {title_final}")
+    print(f"📁 [{idx+1}] Matéria gerada: {title_final}")
 
 if __name__ == "__main__":
     os.makedirs("content/en", exist_ok=True)
     os.makedirs("content/pt", exist_ok=True)
 
-    print("🚀 CorticFlow Bot: Gerando matérias com Capas HD...")
+    print("🚀 CorticFlow Bot: Gerando matérias com Gemini 3.7 / 3.5...")
     news = fetch_latest_news()
     all_posts_manifest = []
 
@@ -234,4 +211,4 @@ if __name__ == "__main__":
     with open("content/posts.json", "w", encoding="utf-8") as f:
         json.dump(all_posts_manifest, f, ensure_ascii=False, indent=2)
 
-    print(f"🎉 Finalizado com sucesso! {len(all_posts_manifest)} matérias com capas HD salvas.")
+    print(f"🎉 Finalizado com sucesso! {len(all_posts_manifest)} matérias salvas com os novos modelos.")
