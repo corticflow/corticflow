@@ -10,6 +10,6 @@ For a quarter century, the Google search box has been one of the most recognizab
 
 ### Análise de Impacto e Engenharia
 
-Este anúncio traz desdobramentos importantes para o ecossistema de AI & Models.
+Este anúncio em AI & Models traz desdobramentos importantes para o ecossistema tecnológico global.
 
 *Fonte original: [https://venturebeat.com/technology/google-just-redesigned-the-search-box-for-the-first-time-in-25-years-heres-why-it-matters-more-than-you-think](https://venturebeat.com/technology/google-just-redesigned-the-search-box-for-the-first-time-in-25-years-heres-why-it-matters-more-than-you-think)*

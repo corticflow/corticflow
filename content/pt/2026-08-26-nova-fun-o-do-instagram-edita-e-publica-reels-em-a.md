@@ -11,6 +11,6 @@ A fun&ccedil;&atilde;o est&aacute; dispon&iacute;vel apenas no app para iOS e j&
 
 ### Análise de Impacto e Engenharia
 
-Este anúncio traz desdobramentos importantes para o ecossistema de Windows & PC.
+Este anúncio em Windows & PC traz desdobramentos importantes para o ecossistema tecnológico global.
 
 *Fonte original: [https://canaltech.com.br/apps/nova-funcao-do-instagram-edita-e-publica-reels-em-apenas-10-segundos/](https://canaltech.com.br/apps/nova-funcao-do-instagram-edita-e-publica-reels-em-apenas-10-segundos/)*

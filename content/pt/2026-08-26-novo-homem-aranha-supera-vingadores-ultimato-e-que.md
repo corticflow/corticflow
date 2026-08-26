@@ -11,6 +11,6 @@ Atualmente com US$ 2,2 bilh&otilde;es arrecadados mundialmente, o novo filme do 
 
 ### Análise de Impacto e Engenharia
 
-Este anúncio traz desdobramentos importantes para o ecossistema de Windows & PC.
+Este anúncio em Windows & PC traz desdobramentos importantes para o ecossistema tecnológico global.
 
 *Fonte original: [https://canaltech.com.br/entretenimento/novo-homem-aranha-supera-vingadores-ultimato-e-quebra-recorde-impressionante/](https://canaltech.com.br/entretenimento/novo-homem-aranha-supera-vingadores-ultimato-e-quebra-recorde-impressionante/)*

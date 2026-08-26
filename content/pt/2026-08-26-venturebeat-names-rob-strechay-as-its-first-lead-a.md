@@ -10,6 +10,6 @@ Rob Strechay, until recently managing director and principal analyst at theCUBE 
 
 ### Análise de Impacto e Engenharia
 
-Este anúncio traz desdobramentos importantes para o ecossistema de AI & Models.
+Este anúncio em AI & Models traz desdobramentos importantes para o ecossistema tecnológico global.
 
 *Fonte original: [https://venturebeat.com/ai/venturebeat-names-rob-strechay-as-its-first-lead-analyst-expanding-its-enterprise-ai-research-push](https://venturebeat.com/ai/venturebeat-names-rob-strechay-as-its-first-lead-analyst-expanding-its-enterprise-ai-research-push)*
