@@ -5,17 +5,13 @@ import requests
 import feedparser
 import re
 import math
-import urllib.parse
 
 API_KEY = os.environ.get("GEMINI_API_KEY", "").strip()
 
-# Modelos de Última Geração (Prioridade Máxima para Gemini 3.7 e 3.5)
 MODELS = [
     "gemini-3.7-flash",
     "gemini-3.5-flash-lite",
-    "gemini-3.6-flash",
     "gemini-2.5-flash",
-    "gemini-2.5-pro",
     "gemini-2.0-flash",
     "gemini-1.5-flash"
 ]
@@ -24,7 +20,6 @@ HEADERS = {
     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
 }
 
-# 14 Feeds Oficiais CorticFlow
 FEEDS = [
     {"url": "https://tecnoblog.net/feed/", "category": "Mercado & Big Techs"},
     {"url": "https://olhardigital.com.br/feed/", "category": "Android & Gadgets"},
@@ -66,10 +61,68 @@ def fetch_latest_news():
             print(f"Aviso no feed {url}: {e}")
     return articles[:8]
 
-def gerar_capa_ia_dinamica(titulo, categoria, seed_id):
-    prompt_visual = f"Futuristic technology 3D concept art of {titulo}, {categoria}, dark slate background, glowing electric cyan and neon purple accents, 8k resolution, cinematic 16:9, octane render"
-    encoded = urllib.parse.quote(prompt_visual[:220])
-    return f"https://image.pollinations.ai/prompt/{encoded}?width=1200&height=630&nologo=true&seed={seed_id}&model=flux"
+def selecionar_foto_dinamica_contextual(titulo, categoria):
+    """Mapeia palavras-chave para fotos HD 16:9 perfeitas do assunto exato."""
+    t = titulo.lower()
+    c = categoria.lower()
+
+    # 1. WhatsApp, Golpes, Cibersegurança e Privacidade
+    if any(k in t for k in ["whatsapp", "zap", "golpe", "invasão", "hack", "vítima", "segurança", "vulnerabilidade", "senha"]):
+        return "https://images.unsplash.com/photo-1563986768609-322da13575f3?w=1200&auto=format&fit=crop&q=80"
+    
+    # 2. Apple, Mac, macOS, iPhone e iOS
+    elif any(k in t for k in ["apple", "mac", "macos", "macbook", "iphone", "ios", "ipad", "m4", "m3"]):
+        return "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=1200&auto=format&fit=crop&q=80"
+
+    # 3. SpaceX, Starship, Espaço, Foguete e Satélite
+    elif any(k in t for k in ["space", "spacex", "starship", "satélite", "satelite", "foguete", "nasa", "órbita", "astronomia"]):
+        return "https://images.unsplash.com/photo-1517976487504-59a1c0188b4c?w=1200&auto=format&fit=crop&q=80"
+
+    # 4. Redes Sociais, Instagram, Reels, TikTok e Vídeo
+    elif any(k in t for k in ["instagram", "reels", "tiktok", "social", "youtube", "influencer", "post", "vídeo"]):
+        return "https://images.unsplash.com/photo-1611162617474-5b21e879e113?w=1200&auto=format&fit=crop&q=80"
+
+    # 5. Nvidia, AMD, Chips, Semicondutores e Processadores
+    elif any(k in t for k in ["chip", "chips", "nvidia", "amd", "intel", "processador", "gpu", "semicondutor", "hardware"]):
+        return "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=1200&auto=format&fit=crop&q=80"
+
+    # 6. Aviação, Latam, Voos e Viagens
+    elif any(k in t for k in ["latam", "voo", "voos", "avião", "aéreo", "aeroporto", "viagem"]):
+        return "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=1200&auto=format&fit=crop&q=80"
+
+    # 7. Google, Buscas e Big Techs de Internet
+    elif any(k in t for k in ["google", "busca", "search", "alphabet", "chrome"]):
+        return "https://images.unsplash.com/photo-1573804633927-bfcbcd909acd?w=1200&auto=format&fit=crop&q=80"
+
+    # 8. Linux, Open-Source, Programação e Servidores
+    elif any(k in t for k in ["linux", "ubuntu", "kernel", "open-source", "código", "programador", "github", "docker", "server"]):
+        return "https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=1200&auto=format&fit=crop&q=80"
+
+    # 9. Windows, PC, Laptops e Copilot
+    elif any(k in t for k in ["windows", "microsoft", "pc", "laptop", "copilot", "computador"]):
+        return "https://images.unsplash.com/photo-1588872657578-7efd1f1555ed?w=1200&auto=format&fit=crop&q=80"
+
+    # 10. Android, Smartphones e Gadgets
+    elif any(k in t for k in ["android", "samsung", "galaxy", "smartphone", "celular", "gadget"]):
+        return "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=1200&auto=format&fit=crop&q=80"
+
+    # 11. Inteligência Artificial, LLMs, DeepSeek, Claude e ChatGPT
+    elif any(k in t for k in ["ia", "ai", "llm", "chatgpt", "deepseek", "gemini", "claude", "modelo", "inteligência"]):
+        return "https://images.unsplash.com/photo-1677442136019-21780efad99a?w=1200&auto=format&fit=crop&q=80"
+
+    # 12. Cinema, Entretenimento e Filmes
+    elif any(k in t for k in ["aranha", "vingadores", "marvel", "filme", "cinema", "jogo", "game"]):
+        return "https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?w=1200&auto=format&fit=crop&q=80"
+
+    # Fallback Geral por Categoria
+    elif "ia" in c or "model" in c:
+        return "https://images.unsplash.com/photo-1677442136019-21780efad99a?w=1200&auto=format&fit=crop&q=80"
+    elif "hardware" in c or "pc" in c:
+        return "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=1200&auto=format&fit=crop&q=80"
+    elif "android" in c:
+        return "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=1200&auto=format&fit=crop&q=80"
+    else:
+        return "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=1200&auto=format&fit=crop&q=80"
 
 def call_gemini_api(prompt):
     if not API_KEY or not API_KEY.startswith("AIzaSy"):
@@ -86,7 +139,6 @@ def call_gemini_api(prompt):
 
     for model in MODELS:
         url = f"https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent?key={API_KEY}"
-        print(f"Tentando gerar com: {model}...")
         try:
             res = requests.post(url, json=payload, headers={"Content-Type": "application/json"}, timeout=60)
             if res.status_code == 200:
@@ -95,10 +147,7 @@ def call_gemini_api(prompt):
                 clean_text = re.sub(r'^```json\s*', '', raw_text)
                 clean_text = re.sub(r'^```\s*', '', clean_text)
                 clean_text = re.sub(r'\s*```$', '', clean_text)
-                print(f"✅ Sucesso com {model}!")
                 return json.loads(clean_text)
-            else:
-                print(f"Status {res.status_code} no modelo {model}")
         except Exception as e:
             print(f"Erro em {model}: {e}")
     return None
@@ -151,9 +200,13 @@ def save_posts(data, all_posts_manifest, news_item, idx):
     read_time = f"{max(1, math.ceil(words_pt / 200))} min"
     category = data.get("category", news_item.get("category", "Geral"))
     title_final = data.get("title_pt") or data.get("title_en") or news_item["title"]
-    desc_final = (data.get("content_pt") or news_item["summary"]).replace("#", "").strip()[:180] + "..."
+    
+    desc_raw = data.get("content_pt") or news_item["summary"]
+    desc_clean = re.sub(r'[#*_`]', '', desc_raw).strip()
+    desc_final = desc_clean[:160] + "..." if len(desc_clean) > 160 else desc_clean
 
-    dynamic_cover_url = gerar_capa_ia_dinamica(title_final, category, idx + 1)
+    # Foto Dinâmica e Exata do Tema
+    foto_hd = selecionar_foto_dinamica_contextual(title_final, category)
 
     all_posts_manifest.append({
         "id": idx + 1,
@@ -173,10 +226,10 @@ def save_posts(data, all_posts_manifest, news_item, idx):
         "readTime": read_time,
         "read_time": read_time,
         "tempo_leitura": read_time,
-        "image": dynamic_cover_url,
-        "img": dynamic_cover_url,
-        "cover": dynamic_cover_url,
-        "imagem": dynamic_cover_url,
+        "image": foto_hd,
+        "img": foto_hd,
+        "cover": foto_hd,
+        "imagem": foto_hd,
         "desc": desc_final,
         "description": desc_final,
         "descricao": desc_final,
@@ -188,13 +241,13 @@ def save_posts(data, all_posts_manifest, news_item, idx):
         "fonte": news_item["link"]
     })
 
-    print(f"📁 [{idx+1}] Matéria gerada: {title_final}")
+    print(f"📁 [{idx+1}] Matéria salva com Foto Contextual: {title_final}")
 
 if __name__ == "__main__":
     os.makedirs("content/en", exist_ok=True)
     os.makedirs("content/pt", exist_ok=True)
 
-    print("🚀 CorticFlow Bot: Gerando matérias com Gemini 3.7 / 3.5...")
+    print("🚀 CorticFlow Bot: Gerando matérias com Fotos Dinâmicas HD...")
     news = fetch_latest_news()
     all_posts_manifest = []
 
@@ -211,4 +264,4 @@ if __name__ == "__main__":
     with open("content/posts.json", "w", encoding="utf-8") as f:
         json.dump(all_posts_manifest, f, ensure_ascii=False, indent=2)
 
-    print(f"🎉 Finalizado com sucesso! {len(all_posts_manifest)} matérias salvas com os novos modelos.")
+    print(f"🎉 Finalizado com sucesso! {len(all_posts_manifest)} matérias salvas com fotos dinâmicas.")
