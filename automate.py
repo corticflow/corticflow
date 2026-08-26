@@ -36,6 +36,18 @@ FEEDS = [
     {"url": "https://feeds.arstechnica.com/arstechnica/index", "category": "Science & Space", "img": "cat-tutorials.jpeg"}
 ]
 
+IMG_MAP = {
+    "Windows & PC": "cat-tutorials.jpeg",
+    "Linux & Open-Source": "cat-tools.jpeg",
+    "Apple & iOS": "cat-business.jpeg",
+    "Android & Gadgets": "cat-tutorials.jpeg",
+    "AI & Models": "cat-ai.jpeg",
+    "Business & Startups": "cat-business.jpeg",
+    "Science & Space": "cat-tutorials.jpeg",
+    "Tutorials & Prompts": "cat-tutorials.jpeg",
+    "Mercado & Big Techs": "cat-business.jpeg"
+}
+
 def fetch_latest_news():
     articles = []
     for item in FEEDS:
@@ -63,7 +75,6 @@ def fetch_latest_news():
 
 def call_gemini_api(prompt):
     if not API_KEY or not API_KEY.startswith("AIzaSy"):
-        print("Aviso: Chave GEMINI_API_KEY precisa ser padrão AIzaSy... usando fallback.")
         return None
 
     payload = {
@@ -104,20 +115,19 @@ def generate_bilingual_post(news_item):
     """
     data = call_gemini_api(prompt)
     
-    # Fallback automático: Garante que as matérias sejam criadas mesmo se a API falhar
     if not data:
         slug_gen = re.sub(r'[^a-zA-Z0-9]+', '-', news_item['title'].lower()).strip('-')[:50]
         data = {
             "slug": slug_gen,
             "category": news_item["category"],
             "title_en": news_item["title"],
-            "content_en": f"## Overview\n\n{news_item['summary']}\n\n### Impact & Analysis\n\nThis development marks a significant update in the {news_item['category']} landscape, redefining industry standards.\n\n*Original source: [{news_item['link']}]({news_item['link']})*",
+            "content_en": f"## Overview\n\n{news_item['summary']}\n\n### Impact & Analysis\n\nThis development marks a significant update in the {news_item['category']} landscape.\n\n*Original source: [{news_item['link']}]({news_item['link']})*",
             "title_pt": news_item["title"],
-            "content_pt": f"## Visão Geral\n\n{news_item['summary']}\n\n### Análise de Impacto e Engenharia\n\nEste anúncio traz desdobramentos importantes para o ecossistema de {news_item['category']}, elevando o nível de inovação no mercado global.\n\n*Fonte original: [{news_item['link']}]({news_item['link']})*"
+            "content_pt": f"## Visão Geral\n\n{news_item['summary']}\n\n### Análise de Impacto e Engenharia\n\nEste anúncio traz desdobramentos importantes para o ecossistema de {news_item['category']}.\n\n*Fonte original: [{news_item['link']}]({news_item['link']})*"
         }
     return data
 
-def save_posts(data, all_posts_manifest):
+def save_posts(data, all_posts_manifest, news_item):
     today = datetime.datetime.now().strftime("%Y-%m-%d")
     slug = data.get("slug", "tech-dispatch")
     slug_clean = re.sub(r'[^a-zA-Z0-9]+', '-', slug.lower()).strip('-')[:60]
@@ -137,16 +147,35 @@ def save_posts(data, all_posts_manifest):
 
     words_pt = len(re.findall(r'\w+', data.get("content_pt", "")))
     read_time = f"{max(1, math.ceil(words_pt / 200))} min"
+    category = data.get("category", news_item.get("category", "Geral"))
+    img_file = IMG_MAP.get(category, news_item.get("img", "cat-ai.jpeg"))
+    title_final = data.get("title_pt") or data.get("title_en") or news_item["title"]
+    desc_final = (data.get("content_pt") or news_item["summary"]).replace("#", "").strip()[:180] + "..."
 
+    # Preenche 100% dos nomes possíveis de campos para eliminar qualquer 'undefined'
     all_posts_manifest.append({
+        "id": len(all_posts_manifest) + 1,
         "slug": slug_clean,
+        "title": title_final,
+        "title_pt": title_final,
+        "title_en": data.get("title_en", title_final),
+        "category": category,
+        "categoria": category,
+        "badge": category,
         "date": today,
-        "category": data.get("category", "Geral"),
+        "data": today,
+        "readTime": read_time,
         "read_time": read_time,
-        "title_pt": data.get("title_pt", ""),
-        "title_en": data.get("title_en", ""),
+        "tempo_leitura": read_time,
+        "image": img_file,
+        "img": img_file,
+        "cover": img_file,
+        "desc": desc_final,
+        "summary": desc_final,
+        "content": data.get("content_pt", ""),
         "content_pt": data.get("content_pt", ""),
         "content_en": data.get("content_en", ""),
+        "link": news_item["link"],
         "file_pt": pt_file,
         "file_en": en_file
     })
@@ -166,7 +195,7 @@ if __name__ == "__main__":
         try:
             post_data = generate_bilingual_post(item)
             if post_data and isinstance(post_data, dict):
-                save_posts(post_data, all_posts_manifest)
+                save_posts(post_data, all_posts_manifest, item)
                 success_count += 1
         except Exception as e:
             print(f"Erro ao processar item: {e}")
@@ -176,4 +205,4 @@ if __name__ == "__main__":
     with open("content/posts.json", "w", encoding="utf-8") as f:
         json.dump(all_posts_manifest, f, ensure_ascii=False, indent=2)
 
-    print(f"🎉 Finalizado com sucesso! {success_count} matérias geradas e posts.json populado!")
+    print(f"🎉 Finalizado com sucesso! {success_count} matérias geradas.")
