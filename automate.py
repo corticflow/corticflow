@@ -13,24 +13,26 @@ MODELS = [
     "gemini-1.5-pro"
 ]
 
-# Feeds de referência: Brasil + Internacional (incluindo Windows e Linux)
+# Feeds de referência: Seleção de Inteligência Artificial, Big Techs e Hardware
 FEEDS = [
-    # Nacionais e Foco no Brasil
-    "https://canaltech.com.br/rss/",
-    "https://tecnoblog.net/feed/",
-    "https://olhardigital.com.br/feed/",
-    "https://www.inovacaotecnologica.com.br/boletim/rss.xml",
-    "https://mittechreview.com.br/feed/",
-    # Internacionais (Apple, Android, Windows, Linux, Startups, IA)
-    "https://www.windowscentral.com/rss.xml",
-    "https://www.phoronix.com/phoronix-rss.php",
-    "https://www.omgubuntu.co.uk/feed",
-    "https://9to5mac.com/feed/",
-    "https://9to5google.com/feed/",
+    # Inteligência Artificial e Deep Learning
+    "https://venturebeat.com/feed/",
+    "https://thedecoder.com/feed/",
+    "https://www.technologyreview.com/feed/",
+    
+    # Grandes Portais Globais (Furos de Mercado e Big Techs)
     "https://www.theverge.com/rss/index.xml",
     "https://techcrunch.com/feed/",
     "https://www.wired.com/feed/rss",
-    "https://www.economist.com/science-and-technology/rss.xml"
+    
+    # Hardware Puro, Chips e Infraestrutura Open-Source
+    "https://feeds.arstechnica.com/arstechnica/index",
+    "https://thenewstack.io/feed/",
+    "https://news.ycombinator.com/rss",
+    
+    # Mercado Nacional (Para Atualizações Gerais e de Telecom)
+    "https://tecnoblog.net/feed/",
+    "https://olhardigital.com.br/feed/"
 ]
 
 def fetch_latest_news():
