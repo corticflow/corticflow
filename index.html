@@ -23,33 +23,74 @@
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
   <!-- Tailwind CSS & Markdown Parser -->
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-  <script>
-    tailwind.config = {
-      darkMode: 'class',
-      theme: {
-        extend: {
-          fontFamily: {
-            sans: ['Plus Jakarta Sans', 'system-ui', 'sans-serif'],
-            display: ['Plus Jakarta Sans', 'sans-serif'],
-            mono: ['JetBrains Mono', 'monospace']
-          },
-          colors: {
-            brandDark: '#080A0F',
-            brandCard: '#11141E',
-            brandBorder: '#202636',
-            brandCyan: '#00E5FF',
-            brandPurple: '#E024C3',
-            brandYellow: '#FEE75C',
-            brandGreen: '#22C55E',
-            brandBlue: '#3B82F6',
-            brandOrange: '#F97316'
-          }
+  <!-- ==================================================== -->
+<!-- JS CIRÚRGICO: RENDERIZA ARTIGOS SEM QUEBRAR O DESIGN -->
+<!-- ==================================================== -->
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  fetch('posts.json?v=' + Date.now())
+    .then(res => res.json())
+    .then(posts => {
+      if (!posts || !posts.length) return;
+
+      // Localiza especificamente a seção de matérias/publicações
+      let feedContainer = null;
+      const allSections = document.querySelectorAll('section, div');
+      
+      for (let sec of allSections) {
+        const heading = sec.querySelector('h2, h3, h4');
+        if (heading && (heading.innerText.includes('Publicações') || heading.innerText.includes('Notícias') || heading.innerText.includes('Matérias') || heading.innerText.includes('Destaques'))) {
+          feedContainer = sec.querySelector('.grid, [class*="grid"]') || sec;
+          break;
         }
       }
-    }
-  </script>
+
+      // Se não achar por título, busca pelo container com mais cards
+      if (!feedContainer) {
+        feedContainer = document.querySelector('.articles-grid, #articles-container, #posts-grid');
+      }
+
+      if (!feedContainer) return;
+
+      // Limpa apenas os cards antigos de notícia
+      feedContainer.innerHTML = '';
+
+      posts.forEach(post => {
+        const card = document.createElement('article');
+        card.className = 'group relative flex flex-col justify-between p-6 rounded-2xl bg-white dark:bg-[#11141E] border border-slate-200 dark:border-[#202636] hover:border-[#00E5FF]/40 shadow-sm hover:shadow-lg transition-all duration-300';
+        
+        card.innerHTML = `
+          <div>
+            <div class="flex items-center justify-between gap-2 mb-3">
+              <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] font-extrabold uppercase tracking-wider bg-[#00E5FF]/10 text-cyan-600 dark:text-[#00E5FF] border border-[#00E5FF]/20 font-mono">
+                ${post.category || 'Tecnologia'}
+              </span>
+              <span class="text-xs text-slate-500 dark:text-slate-400 font-mono">⏱️ ${post.read_time || '5 min'}</span>
+            </div>
+            <h3 class="text-lg font-extrabold text-slate-900 dark:text-white leading-snug mb-2.5 group-hover:text-cyan-600 dark:group-hover:text-[#00E5FF] transition-colors">
+              ${post.title_pt || post.title_en}
+            </h3>
+            <p class="text-xs text-slate-600 dark:text-slate-400 leading-relaxed line-clamp-3 mb-4">
+              ${(post.content_pt || post.content_en || '').replace(/#+\s/g, '').substring(0, 160)}...
+            </p>
+          </div>
+          <div class="pt-4 border-t border-slate-100 dark:border-[#202636]/80 flex items-center justify-between text-xs font-mono">
+            <span class="text-slate-400 dark:text-slate-500">📅 ${post.date || 'Hoje'}</span>
+            <span class="text-cyan-600 dark:text-[#00E5FF] font-bold group-hover:translate-x-1 transition-transform inline-flex items-center gap-1">
+              Ler Artigo →
+            </span>
+          </div>
+        `;
+
+        feedContainer.appendChild(card);
+      });
+      console.log(`✅ ${posts.length} matérias renderizadas com sucesso!`);
+    })
+    .catch(err => console.log('Aviso:', err));
+});
+</script>
+<!-- ==================================================== -->
+
   <style>
     body { font-family: 'Plus Jakarta Sans', sans-serif; transition: background-color 0.3s, color 0.3s; }
     .glow-verge { transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1); }
