@@ -9,8 +9,8 @@ category: "AI & Models"
 Processo de contratação pode prejudicar a diversidade 
 O post Criação de vieses e estereótipos é maior com IA apareceu primeiro em MIT Technology Review - Brasil.
 
-### Impact & Analysis
+### Strategic Analysis
 
-This development marks an important update in the AI & Models landscape.
+This development marks a significant update in the AI & Models landscape.
 
 *Original source: [https://mittechreview.com.br/criacao-de-vieses-e-estereotipos-e-maior-com-ia/](https://mittechreview.com.br/criacao-de-vieses-e-estereotipos-e-maior-com-ia/)*
