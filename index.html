@@ -2406,5 +2406,88 @@ document.addEventListener('DOMContentLoaded', () => {
     color: #94A3B8 !important;
   }
 </style>
+  <!-- ==================================================== -->
+<!-- LEITOR OFICIAL DE MATÉRIAS (ABERTURA COM 1 CLIQUE)   -->
+<!-- ==================================================== -->
+<div id="cortic-reading-modal" style="display: none; position: fixed; inset: 0; background: rgba(0, 0, 0, 0.92); z-index: 99999; overflow-y: auto; padding: 24px 16px; backdrop-filter: blur(12px);" onclick="closeCorticReader(event)">
+  <div style="background: #11141E; border: 1px solid #202636; border-radius: 20px; max-width: 800px; margin: 20px auto; padding: 32px; position: relative; color: #E2E8F0; box-shadow: 0 25px 60px rgba(0,0,0,0.9);" onclick="event.stopPropagation()">
+    
+    <button onclick="closeCorticReaderDirect()" style="position: absolute; top: 16px; right: 20px; font-size: 32px; color: #94A3B8; background: none; border: none; cursor: pointer; line-height: 1;" onmouseover="this.style.color='#00E5FF'" onmouseout="this.style.color='#94A3B8'">&times;</button>
+    
+    <div id="reader-cat" style="display: inline-block; font-size: 11px; font-family: monospace; font-weight: 800; text-transform: uppercase; color: #00E5FF; background: rgba(0, 229, 255, 0.12); padding: 3px 10px; border-radius: 12px; border: 1px solid rgba(0, 229, 255, 0.3); margin-bottom: 12px;"></div>
+    
+    <img id="reader-img" src="" alt="" style="width: 100%; height: 260px; object-fit: cover; border-radius: 12px; margin-bottom: 18px; border: 1px solid #202636; display: block;" onerror="this.src='cat-ai.jpeg'">
+    
+    <h1 id="reader-title" style="font-size: 24px; font-weight: 800; color: #FFF; line-height: 1.35; margin-bottom: 14px;"></h1>
+    
+    <div id="reader-meta" style="font-size: 12px; font-family: monospace; color: #94A3B8; margin-bottom: 24px; padding-bottom: 14px; border-bottom: 1px solid #202636;"></div>
+    
+    <div id="reader-body" style="font-size: 15px; line-height: 1.8; color: #CBD5E1;"></div>
+    
+    <div style="margin-top: 30px; padding-top: 18px; border-top: 1px solid #202636; display: flex; justify-content: space-between; align-items: center;">
+      <a id="reader-source" href="#" target="_blank" style="color: #00E5FF; font-size: 13px; font-weight: 700; text-decoration: none;">Acessar Fonte Original ↗</a>
+      <button onclick="closeCorticReaderDirect()" style="background: rgba(255,255,255,0.1); color: #FFF; border: 1px solid rgba(255,255,255,0.2); padding: 8px 20px; border-radius: 10px; font-size: 13px; font-weight: 600; cursor: pointer;">Fechar</button>
+    </div>
+  </div>
+</div>
+
+<script>
+let globalCorticPosts = [];
+
+function openCorticPost(idx) {
+  const post = globalCorticPosts[idx];
+  if (!post) return;
+
+  document.getElementById('reader-cat').innerText = post.category || post.categoria || 'Tecnologia';
+  document.getElementById('reader-title').innerText = post.title_pt || post.title || post.titulo || 'Notícia';
+  document.getElementById('reader-meta').innerText = `📅 ${post.date || 'Hoje'} • ⏱️ ${post.readTime || '5 min'} • CorticFlow Editorial`;
+  
+  const imgEl = document.getElementById('reader-img');
+  imgEl.src = post.image || post.img || 'cat-ai.jpeg';
+
+  const content = post.content_pt || post.content || post.desc || '';
+  document.getElementById('reader-body').innerHTML = window.marked ? marked.parse(content) : content.replace(/\n/g, '<br>');
+  
+  const src = document.getElementById('reader-source');
+  if (post.link || post.fonte) {
+    src.href = post.link || post.fonte;
+    src.style.display = 'inline-block';
+  } else {
+    src.style.display = 'none';
+  }
+
+  document.getElementById('cortic-reading-modal').style.display = 'block';
+  document.body.style.overflow = 'hidden';
+}
+
+function closeCorticReader(e) {
+  if (e.target.id === 'cortic-reading-modal') closeCorticReaderDirect();
+}
+function closeCorticReaderDirect() {
+  document.getElementById('cortic-reading-modal').style.display = 'none';
+  document.body.style.overflow = 'auto';
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  fetch('posts.json?v=' + Date.now())
+    .then(r => r.json())
+    .then(posts => {
+      globalCorticPosts = posts;
+      
+      // Vincula o clique para abrir o leitor em cada card
+      setTimeout(() => {
+        document.querySelectorAll('.article-card, article').forEach((card, i) => {
+          card.style.cursor = 'pointer';
+          card.onclick = (e) => {
+            e.preventDefault();
+            openCorticPost(i);
+          };
+        });
+      }, 300);
+    })
+    .catch(e => console.log('Aviso:', e));
+});
+</script>
+<!-- ==================================================== -->
 </body>
 </html>
