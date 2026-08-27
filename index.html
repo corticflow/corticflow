@@ -4,7 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CorticFlow | Intelligence & Deep Tech Dispatch</title>
-    <link rel="icon" type="image/png" href="nome-da-sua-imagem.png">
+    <!-- Ícone da aba do navegador puxando o seu logo.jpeg -->
+    <link rel="icon" type="image/jpeg" href="logo.jpeg">
+    
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -93,13 +95,14 @@
     <header class="sticky top-0 z-50 glass-nav">
         <div class="max-w-[90rem] mx-auto px-6 h-20 flex items-center justify-between">
             <div class="flex items-center gap-4 cursor-pointer" onclick="location.reload()">
-                <div class="w-10 h-10 rounded-2xl bg-white flex items-center justify-center">
-                    <i data-lucide="cpu" class="w-5 h-5 text-black"></i>
+                <div class="w-10 h-10 rounded-2xl bg-white flex items-center justify-center overflow-hidden">
+                    <img src="logo.jpeg" alt="CorticFlow Logo" class="w-full h-full object-cover">
                 </div>
                 <div>
                     <span class="text-xl font-extrabold tracking-tighter text-white">CorticFlow</span>
                 </div>
             </div>
+            <!-- Seletor de Idioma -->
             <div class="flex items-center gap-2 bg-white/5 p-1 rounded-full border border-white/10">
                 <button onclick="setLang('pt')" id="btn-lang-pt" class="px-4 py-1.5 rounded-full text-xs font-bold transition-all bg-white text-black shadow-sm">PT</button>
                 <button onclick="setLang('en')" id="btn-lang-en" class="px-4 py-1.5 rounded-full text-xs font-medium transition-all text-zinc-400 hover:text-white">EN</button>
@@ -122,7 +125,7 @@
         <!-- Reader Overlay -->
         <div id="reader-view" class="fixed inset-0 z-[100] bg-[#030305]/95 backdrop-blur-2xl overflow-y-auto hidden opacity-0 transition-opacity duration-500">
             <div class="max-w-3xl mx-auto px-6 py-20 relative">
-                <button onclick="closeReader()" class="sticky top-6 left-0 mb-8 inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 hover:bg-white/20 border border-white/10 text-white font-mono text-sm transition-all">
+                <button onclick="closeReader()" id="btn-close" class="sticky top-6 left-0 mb-8 inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 hover:bg-white/20 border border-white/10 text-white font-mono text-sm transition-all">
                     <i data-lucide="arrow-left" class="w-4 h-4"></i> Fechar
                 </button>
                 <div id="reader-content" class="prose-custom"></div>
@@ -161,12 +164,19 @@
 
         function setLang(lang) {
             currentLang = lang;
+            
+            // Atualiza botões
             document.getElementById('btn-lang-pt').className = lang === 'pt' ? 'px-4 py-1.5 rounded-full text-xs font-bold transition-all bg-white text-black shadow-sm' : 'px-4 py-1.5 rounded-full text-xs font-medium transition-all text-zinc-400 hover:text-white';
             document.getElementById('btn-lang-en').className = lang === 'en' ? 'px-4 py-1.5 rounded-full text-xs font-bold transition-all bg-white text-black shadow-sm' : 'px-4 py-1.5 rounded-full text-xs font-medium transition-all text-zinc-400 hover:text-white';
             
+            // Atualiza textos estáticos
             document.getElementById('hero-title').innerText = lang === 'pt' ? 'Deep Tech & Intelligence.' : 'Deep Tech & Intelligence.';
             document.getElementById('hero-desc').innerText = lang === 'pt' ? 'O sinal mais puro sobre o avanço das IAs, open-source e mercado tech. Filtrado por agentes autônomos.' : 'The purest signal on AI advancements, open-source, and tech markets. Filtered by autonomous agents.';
+            document.getElementById('btn-close').innerHTML = lang === 'pt' ? '<i data-lucide="arrow-left" class="w-4 h-4"></i> Fechar' : '<i data-lucide="arrow-left" class="w-4 h-4"></i> Close';
+            
+            // Renderiza novamente os posts puxando o arquivo correspondente
             renderPosts();
+            lucide.createIcons();
         }
 
         function renderPosts() {
@@ -174,17 +184,18 @@
             grid.innerHTML = '';
 
             allPosts.forEach((post, index) => {
+                // AQUI: Define se vai carregar o conteúdo em PT ou EN
                 const filePath = currentLang === 'en' ? post.file_en : post.file_pt;
                 const card = document.createElement('div');
                 
-                // Lógica do Bento Grid (Tamanhos variados)
+                // Lógica do Bento Grid
                 let gridClasses = 'bento-card rounded-3xl p-8 flex flex-col justify-end cursor-pointer group ';
                 if (index === 0) {
-                    gridClasses += 'md:col-span-2 md:row-span-2 '; // Card Gigante
+                    gridClasses += 'md:col-span-2 md:row-span-2 ';
                 } else if (index === 3 || index === 4) {
-                    gridClasses += 'md:col-span-2 '; // Card Largo
+                    gridClasses += 'md:col-span-2 ';
                 } else {
-                    gridClasses += 'col-span-1 '; // Card Quadrado Normal
+                    gridClasses += 'col-span-1 ';
                 }
 
                 const bgGradient = categoryGradients[post.category] || categoryGradients['default'];
@@ -210,7 +221,6 @@
                     </div>
                 `;
                 
-                // Adiciona o efeito da luz do mouse no card (Bug corrigido aqui)
                 card.onmousemove = e => {
                     const rect = card.getBoundingClientRect(),
                           x = e.clientX - rect.left,
@@ -239,7 +249,6 @@
                 const parts = text.split('---');
                 const markdownBody = parts.length > 2 ? parts.slice(2).join('---') : text;
                 
-                // Conversor Markdown corrigido
                 let htmlContent = markdownBody
                     .replace(/^# (.*$)/gim, '<h1>$1</h1>')
                     .replace(/^## (.*$)/gim, '<h2>$1</h2>')
