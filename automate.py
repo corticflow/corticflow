@@ -6,9 +6,11 @@ import feedparser
 
 API_KEY = os.environ.get("GEMINI_API_KEY", "").strip()
 
+# Usando o modelo principal mais estável para evitar erros de rota
 MODELS = [
-    "gemini-1.5-flash",
-    "gemini-1.5-pro"
+    "gemini-2.5-flash",
+    "gemini-2.0-flash",
+    "gemini-1.5-flash"
 ]
 
 # Feeds de referência: Seleção de Inteligência Artificial, Big Techs e Hardware
@@ -51,15 +53,6 @@ def fetch_latest_news():
 def call_gemini_api(prompt):
     if not API_KEY:
         raise ValueError("ERRO: GEMINI_API_KEY não configurada!")
-        if res.status_code == 200:
-                result = res.json()
-                text = result["candidates"][0]["content"]["parts"][0]["text"]
-                
-                # Limpa as marcações do Markdown para não quebrar a leitura
-                text = text.replace("```json", "").replace("```", "").strip()
-                
-                print(f"✅ Sucesso com {model}!")
-                return json.loads(text)
 
     payload = {
         "contents": [{"parts": [{"text": prompt}]}],
@@ -79,6 +72,10 @@ def call_gemini_api(prompt):
             if res.status_code == 200:
                 result = res.json()
                 text = result["candidates"][0]["content"]["parts"][0]["text"]
+                
+                # Limpa marcações de bloco markdown caso venham na resposta
+                text = text.replace("```json", "").replace("```", "").strip()
+                
                 print(f"✅ Sucesso com {model}!")
                 return json.loads(text)
             else:
@@ -176,7 +173,6 @@ def update_posts_json():
                 "file_en": f"content/en/{filename}"
             })
             
-    # Ordena as postagens da mais recente para a mais antiga
     posts.sort(key=lambda x: x["date"], reverse=True)
     
     with open("posts.json", "w", encoding="utf-8") as f:
@@ -189,7 +185,7 @@ if __name__ == "__main__":
     print("🚀 CorticFlow Bot: Buscando notícias em todas as plataformas...")
     news = fetch_latest_news()
     success_count = 0
-    for item in news[:4]:
+    for item in news[:3]:
         try:
             post_data = generate_bilingual_post(item)
             save_posts(post_data)
@@ -197,6 +193,5 @@ if __name__ == "__main__":
         except Exception as e:
             print(f"Erro ao processar item: {e}")
 
-    # Atualiza o índice do site para que as matérias novas apareçam na home
     update_posts_json()
     print(f"🎉 Finalizado com sucesso! {success_count} matérias geradas e indexadas no site.")
