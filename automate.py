@@ -7,8 +7,8 @@ import feedparser
 API_KEY = os.environ.get("GEMINI_API_KEY", "").strip()
 
 MODELS = [
-    "gemini-1.5-flash-latest",
-    "gemini-1.5-pro-latest"
+    "gemini-1.5-flash",
+    "gemini-1.5-pro"
 ]
 
 # Feeds de referência: Seleção de Inteligência Artificial, Big Techs e Hardware
