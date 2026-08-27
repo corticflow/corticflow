@@ -7,10 +7,8 @@ import feedparser
 API_KEY = os.environ.get("GEMINI_API_KEY", "").strip()
 
 MODELS = [
-    "gemini-3.6-flash",
-    "gemini-1.5-flash",
-    "gemini-2.0-flash",
-    "gemini-1.5-pro"
+    "gemini-1.5-flash-latest",
+    "gemini-1.5-pro-latest"
 ]
 
 # Feeds de referência: Seleção de Inteligência Artificial, Big Techs e Hardware
@@ -53,6 +51,15 @@ def fetch_latest_news():
 def call_gemini_api(prompt):
     if not API_KEY:
         raise ValueError("ERRO: GEMINI_API_KEY não configurada!")
+        if res.status_code == 200:
+                result = res.json()
+                text = result["candidates"][0]["content"]["parts"][0]["text"]
+                
+                # Limpa as marcações do Markdown para não quebrar a leitura
+                text = text.replace("```json", "").replace("```", "").strip()
+                
+                print(f"✅ Sucesso com {model}!")
+                return json.loads(text)
 
     payload = {
         "contents": [{"parts": [{"text": prompt}]}],
