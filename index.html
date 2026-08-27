@@ -4,10 +4,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CorticFlow | Intelligence & Deep Tech Dispatch</title>
-    <!-- Ícone da aba do navegador puxando o seu logo.jpeg -->
-    <link rel="icon" type="image/jpeg" href="logo.jpeg">
     
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="https://github.com/corticflow.png">
+    <link rel="apple-touch-icon" href="https://github.com/corticflow.png">
+    
+    <!-- AdSense & Search Console -->
+    <meta name="google-site-verification" content="43zcGSljLsHVe02k10h5cw8RD1YOL_NODxaqsoRaT28" />
+    <meta name="google-adsense-account" content="ca-pub-6428908869375108" />
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6428908869375108" crossorigin="anonymous"></script>
+
+    <!-- Tailwind & Marked.js -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <script>
         tailwind.config = {
             darkMode: 'class',
@@ -18,178 +27,217 @@
                         mono: ['JetBrains Mono', 'monospace']
                     },
                     colors: {
-                        darkbg: '#030305'
+                        darkbg: '#030305',
+                        brandCyan: '#00E5FF',
+                        brandPurple: '#8B5CF6'
                     }
                 }
             }
         }
     </script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/lucide@latest"></script>
+
+    <!-- Three.js + Vanta.js CDN para Fundo 3D -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
+
     <style>
-        /* Fundo com ruído e gradiente escuro profundo */
         body {
             background-color: #030305;
-            background-image: 
-                radial-gradient(circle at 0% 0%, rgba(56, 189, 248, 0.05) 0%, transparent 50%),
-                radial-gradient(circle at 100% 100%, rgba(168, 85, 247, 0.05) 0%, transparent 50%);
             color: #f3f4f6;
             font-family: 'Inter', sans-serif;
             overflow-x: hidden;
         }
 
-        /* Efeito Spotlight nos Cards */
-        #posts-grid:hover > .bento-card::after {
-            opacity: 1;
-        }
+        /* Ticker Animado */
+        .ticker-wrap { overflow: hidden; white-space: nowrap; }
+        .ticker-move { display: inline-block; animation: ticker 35s linear infinite; }
+        @keyframes ticker { 0% { transform: translate3d(0, 0, 0); } 100% { transform: translate3d(-50%, 0, 0); } }
+
+        /* Bento Cards com Efeito Spotlight e Capa de Fundo */
         .bento-card {
-            background-color: rgba(255, 255, 255, 0.02);
-            border: 1px solid rgba(255, 255, 255, 0.05);
+            background-color: rgba(17, 20, 30, 0.7);
+            border: 1px solid rgba(255, 255, 255, 0.08);
             position: relative;
             overflow: hidden;
-            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.3s;
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.3s, box-shadow 0.3s;
         }
         .bento-card:hover {
-            transform: scale(0.99);
-            border-color: rgba(255, 255, 255, 0.2);
-        }
-        .bento-card::before,
-        .bento-card::after {
-            content: "";
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            transition: opacity 0.3s ease;
-            z-index: 0;
-            pointer-events: none;
-        }
-        /* A luz que segue o mouse */
-        .bento-card::before {
-            background: radial-gradient(800px circle at var(--mouse-x) var(--mouse-y), rgba(255, 255, 255, 0.06), transparent 40%);
-            opacity: 0;
-        }
-        .bento-card:hover::before {
-            opacity: 1;
+            transform: translateY(-4px);
+            border-color: rgba(0, 229, 255, 0.4);
+            box-shadow: 0 15px 35px -10px rgba(0, 229, 255, 0.2);
         }
 
         /* Nav Glass */
         .glass-nav {
-            background: rgba(3, 3, 5, 0.7);
-            backdrop-filter: blur(24px);
-            -webkit-backdrop-filter: blur(24px);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            background: rgba(3, 3, 5, 0.85);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
         }
-        
-        /* Typography Markdown */
-        .prose-custom p { margin-bottom: 1.2em; color: #a1a1aa; line-height: 1.7; }
-        .prose-custom h1 { font-size: 2.5rem; font-weight: 800; color: #fff; margin-bottom: 1rem; line-height: 1.2; }
-        .prose-custom h2 { font-size: 1.75rem; font-weight: 700; color: #e2e8f0; margin-top: 2.5rem; margin-bottom: 1rem; }
-        .prose-custom h3 { font-size: 1.25rem; font-weight: 600; color: #cbd5e1; margin-top: 2rem; margin-bottom: 0.75rem; }
-        .prose-custom strong { color: #fff; font-weight: 600; }
+
+        /* Typography do Leitor */
+        .prose-custom p { margin-bottom: 1.3em; color: #cbd5e1; line-height: 1.8; font-size: 1.05rem; }
+        .prose-custom h1 { font-size: 2.2rem; font-weight: 800; color: #fff; margin-bottom: 1rem; line-height: 1.25; }
+        .prose-custom h2 { font-size: 1.6rem; font-weight: 700; color: #00E5FF; margin-top: 2.2rem; margin-bottom: 0.8rem; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 0.4rem; }
+        .prose-custom h3 { font-size: 1.25rem; font-weight: 600; color: #8B5CF6; margin-top: 1.8rem; margin-bottom: 0.6rem; }
+        .prose-custom ul, .prose-custom ol { padding-left: 1.5rem; margin-bottom: 1.3em; color: #cbd5e1; }
+        .prose-custom li { margin-bottom: 0.5rem; }
+        .prose-custom strong { color: #fff; font-weight: 700; }
+        .prose-custom blockquote { border-left: 4px solid #8B5CF6; padding: 1rem 1.4rem; background: rgba(139, 92, 246, 0.08); border-radius: 0 12px 12px 0; margin: 1.5rem 0; color: #f1f5f9; font-style: italic; }
     </style>
 </head>
-<body class="min-h-screen flex flex-col antialiased selection:bg-cyan-500 selection:text-black">
+<body class="min-h-screen flex flex-col antialiased selection:bg-brandCyan selection:text-black">
 
-    <header class="sticky top-0 z-50 glass-nav">
-        <div class="max-w-[90rem] mx-auto px-6 h-20 flex items-center justify-between">
-            <div class="flex items-center gap-4 cursor-pointer" onclick="location.reload()">
-                <div class="w-10 h-10 rounded-2xl bg-white flex items-center justify-center overflow-hidden">
-                    <img src="logo.jpeg" alt="CorticFlow Logo" class="w-full h-full object-cover">
-                </div>
-                <div>
-                    <span class="text-xl font-extrabold tracking-tighter text-white">CorticFlow</span>
+    <!-- Container Fixo para o Vanta.js 3D no Plano de Fundo -->
+    <div id="vanta-bg" style="position: fixed; inset: 0; z-index: -1; pointer-events: none; opacity: 0.35;"></div>
+
+    <!-- 1. Top Wire Ticker: RADAR AO VIVO PISCANTE -->
+    <div class="bg-black border-b border-white/10 py-1.5 px-6 text-xs font-mono flex items-center justify-between text-zinc-400 z-50">
+        <div class="flex items-center overflow-hidden flex-1 mr-4">
+            <span class="inline-flex items-center gap-2 px-2.5 py-0.5 rounded-full bg-brandCyan/10 text-brandCyan font-extrabold uppercase tracking-widest text-[9px] mr-3 shrink-0 border border-brandCyan/30">
+                <span class="relative flex h-2 w-2">
+                    <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-brandCyan opacity-75"></span>
+                    <span class="relative inline-flex rounded-full h-2 w-2 bg-brandCyan"></span>
+                </span>
+                RADAR AO VIVO
+            </span>
+            <div class="ticker-wrap flex-1 overflow-hidden">
+                <div id="ticker-text" class="ticker-move text-zinc-300 font-medium">
+                    ⚡ [Nvidia] Arquitetura Vera CPU para Frotas de Agentes • [Modelos] GLM-5.2 lidera open-weights com 753B • [Chips] Semicondutores rumo a US$ 1 Trilhão • [Governança] Gestão financeira e circuit breakers para IA • [Startups] Investimentos bilionários em nuvem soberana
                 </div>
             </div>
-            <!-- Seletor de Idioma -->
-            <div class="flex items-center gap-2 bg-white/5 p-1 rounded-full border border-white/10">
-                <button onclick="setLang('pt')" id="btn-lang-pt" class="px-4 py-1.5 rounded-full text-xs font-bold transition-all bg-white text-black shadow-sm">PT</button>
-                <button onclick="setLang('en')" id="btn-lang-en" class="px-4 py-1.5 rounded-full text-xs font-medium transition-all text-zinc-400 hover:text-white">EN</button>
+        </div>
+
+        <!-- Botão Lab 3D e Idioma -->
+        <div class="flex items-center gap-3 shrink-0">
+            <a href="lab.html" class="hidden sm:inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-mono font-bold text-brandCyan bg-brandCyan/10 border border-brandCyan/30 hover:bg-brandCyan hover:text-black transition-all">
+                🧪 Lab 3D
+            </a>
+            <div class="flex items-center gap-1 bg-white/5 p-0.5 rounded-full border border-white/10">
+                <button onclick="setLang('pt')" id="btn-lang-pt" class="px-3 py-1 rounded-full text-[10px] font-bold transition-all bg-white text-black">PT</button>
+                <button onclick="setLang('en')" id="btn-lang-en" class="px-3 py-1 rounded-full text-[10px] font-medium transition-all text-zinc-400 hover:text-white">EN</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 2. Header Fixo -->
+    <header class="sticky top-0 z-40 glass-nav">
+        <div class="max-w-[90rem] mx-auto px-6 h-20 flex items-center justify-between">
+            <div class="flex items-center gap-4 cursor-pointer" onclick="location.reload()">
+                <div class="w-10 h-10 rounded-2xl bg-white flex items-center justify-center overflow-hidden border border-brandCyan/30 shadow-[0_0_15px_rgba(0,229,255,0.3)]">
+                    <img src="logo.jpeg" alt="CorticFlow Logo" class="w-full h-full object-cover" onerror="this.src='https://github.com/corticflow.png'">
+                </div>
+                <div>
+                    <span class="text-2xl font-extrabold tracking-tighter text-white">Cortic<span class="text-brandCyan">Flow</span></span>
+                </div>
+            </div>
+            
+            <div class="flex items-center gap-4">
+                <span class="text-xs font-mono text-zinc-400 hidden md:inline">Operação 100% em Nuvem</span>
             </div>
         </div>
     </header>
 
-    <section class="max-w-[90rem] mx-auto px-6 pt-24 pb-16 text-center sm:text-left flex flex-col xl:flex-row items-center justify-between gap-12">
+    <!-- 3. Hero Section -->
+    <section class="max-w-[90rem] mx-auto px-6 pt-16 pb-12 text-center sm:text-left flex flex-col xl:flex-row items-center justify-between gap-8">
         <div class="max-w-3xl">
-            <h1 id="hero-title" class="text-5xl sm:text-7xl font-extrabold tracking-tighter text-transparent bg-clip-text bg-gradient-to-br from-white to-zinc-500 mb-6">
-                Deep Tech & Intelligence.
+            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-mono uppercase tracking-wider bg-brandCyan/10 text-brandCyan border border-brandCyan/20 mb-4">
+                Deep Tech & AI Intelligence Dispatch
+            </div>
+            <h1 id="hero-title" class="text-4xl sm:text-6xl font-extrabold tracking-tighter text-white mb-4">
+                O Fluxo da Tecnologia, Inovação e Inteligência Artificial.
             </h1>
-            <p id="hero-desc" class="text-lg text-zinc-400 font-medium max-w-xl">
-                O sinal mais puro sobre o avanço das IAs, open-source e mercado tech. Filtrado por agentes autônomos.
+            <p id="hero-desc" class="text-base sm:text-lg text-zinc-400 font-medium max-w-2xl leading-relaxed">
+                Análises aprofundadas, dissecção de semicondutores, modelos de raciocínio e engenharia de software filtrados por agentes autônomos.
             </p>
         </div>
     </section>
 
-    <main class="max-w-[90rem] mx-auto px-6 pb-24 w-full relative">
-        <!-- Reader Overlay -->
-        <div id="reader-view" class="fixed inset-0 z-[100] bg-[#030305]/95 backdrop-blur-2xl overflow-y-auto hidden opacity-0 transition-opacity duration-500">
-            <div class="max-w-3xl mx-auto px-6 py-20 relative">
-                <button onclick="closeReader()" id="btn-close" class="sticky top-6 left-0 mb-8 inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 hover:bg-white/20 border border-white/10 text-white font-mono text-sm transition-all">
-                    <i data-lucide="arrow-left" class="w-4 h-4"></i> Fechar
+    <!-- 4. Conteúdo Principal & Grid Bento com Imagens -->
+    <main class="max-w-[90rem] mx-auto px-6 pb-24 w-full relative flex-grow">
+        
+        <!-- Reader View Overlay (Modal de Leitura Aprofundada) -->
+        <div id="reader-view" class="fixed inset-0 z-[100] bg-[#030305]/95 backdrop-blur-2xl overflow-y-auto hidden opacity-0 transition-opacity duration-300">
+            <div class="max-w-3xl mx-auto px-6 py-16 relative">
+                <button onclick="closeReader()" id="btn-close" class="sticky top-6 mb-8 inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 hover:bg-white/20 border border-white/20 text-white font-mono text-sm transition-all shadow-lg">
+                    <i data-lucide="arrow-left" class="w-4 h-4"></i> Fechar Leitura
                 </button>
                 <div id="reader-content" class="prose-custom"></div>
             </div>
         </div>
 
-        <!-- Grid Bento -->
-        <div id="posts-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 auto-rows-[300px]">
-            <!-- Injetado por JS -->
+        <!-- Grid Bento de Notícias com Imagens em Alta Resolução -->
+        <div id="posts-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5 auto-rows-[320px]">
+            <!-- Injetado por JS dinamicamente -->
         </div>
+
+        <!-- Caixa de Newsletter Oficial -->
+        <div style="background: linear-gradient(rgba(3, 3, 5, 0.85), rgba(3, 3, 5, 0.85)), url('newsletter.jpeg') center/cover no-repeat; border-radius: 24px; padding: 40px; border: 1px solid rgba(255, 255, 255, 0.1);" class="mt-16 mb-6">
+            <h3 class="text-2xl sm:text-3xl font-extrabold text-white mb-2">CorticFlow Semanal</h3>
+            <p class="text-zinc-400 text-sm mb-6 max-w-xl leading-relaxed">Receba as principais análises de tecnologia, lançamentos de IA e tutoriais práticos direto no seu e-mail.</p>
+            <form class="flex flex-col sm:flex-row gap-3 max-w-md" onsubmit="event.preventDefault(); alert('Inscrição confirmada no CorticFlow!');">
+                <input type="email" placeholder="Seu melhor e-mail..." required class="flex-grow px-4 py-3 rounded-xl bg-black/80 border border-white/20 text-white text-sm focus:outline-none focus:border-brandCyan font-mono">
+                <button type="submit" class="py-3 px-6 rounded-xl bg-brandCyan hover:bg-cyan-300 text-black font-extrabold text-xs uppercase tracking-wider transition font-mono">Inscrever-se</button>
+            </form>
+        </div>
+
     </main>
 
+    <!-- 5. Rodapé Institucional Completo -->
+    <footer class="border-t border-white/10 bg-[#030305] py-12">
+        <div class="max-w-[90rem] mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-6 text-xs font-mono text-zinc-500">
+            <div class="flex items-center gap-3">
+                <div class="w-6 h-6 rounded-lg bg-brandCyan text-black font-black flex items-center justify-center text-xs">C</div>
+                <span class="text-zinc-300 font-bold">CorticFlow</span>
+                <span>© 2026 Operação 100% em Nuvem.</span>
+            </div>
+            <div class="flex flex-wrap items-center gap-6">
+                <a href="lab.html" class="text-brandCyan font-bold hover:underline inline-flex items-center gap-1">🧪 Lab 3D</a>
+                <a href="privacy.html" class="hover:text-zinc-300 transition">Política de Privacidade</a>
+                <a href="terms.html" class="hover:text-zinc-300 transition">Termos de Uso</a>
+                <a href="mailto:corticflow@gmail.com" class="hover:text-zinc-300 transition">corticflow@gmail.com</a>
+                <a href="https://instagram.com/corticflow" target="_blank" rel="noopener noreferrer" class="hover:text-pink-400 transition inline-flex items-center gap-1">Instagram @corticflow ↗</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Lógica JS -->
     <script>
         let allPosts = [];
         let currentLang = 'pt';
 
-        // Mapeamento de cores de fundo (Mesh Gradients) por categoria
-        const categoryGradients = {
-            'AI & Models': 'bg-gradient-to-br from-indigo-900/40 via-purple-900/20 to-transparent',
-            'Windows & PC': 'bg-gradient-to-br from-blue-900/40 via-cyan-900/20 to-transparent',
-            'Apple & iOS': 'bg-gradient-to-br from-zinc-800/40 via-zinc-900/20 to-transparent',
-            'Linux & Open-Source': 'bg-gradient-to-br from-emerald-900/40 via-teal-900/20 to-transparent',
-            'Business & Startups': 'bg-gradient-to-br from-amber-900/40 via-orange-900/20 to-transparent',
-            'default': 'bg-gradient-to-br from-zinc-800/30 to-transparent'
-        };
-
         async function loadPosts() {
             try {
-                const response = await fetch('posts.json');
+                const response = await fetch('posts.json?v=' + Date.now());
                 allPosts = await response.json();
                 renderPosts();
             } catch (err) {
-                console.error(err);
+                console.error("Erro ao carregar posts:", err);
             }
         }
 
         function setLang(lang) {
             currentLang = lang;
-            
-            // Atualiza botões
-            document.getElementById('btn-lang-pt').className = lang === 'pt' ? 'px-4 py-1.5 rounded-full text-xs font-bold transition-all bg-white text-black shadow-sm' : 'px-4 py-1.5 rounded-full text-xs font-medium transition-all text-zinc-400 hover:text-white';
-            document.getElementById('btn-lang-en').className = lang === 'en' ? 'px-4 py-1.5 rounded-full text-xs font-bold transition-all bg-white text-black shadow-sm' : 'px-4 py-1.5 rounded-full text-xs font-medium transition-all text-zinc-400 hover:text-white';
-            
-            // Atualiza textos estáticos
-            document.getElementById('hero-title').innerText = lang === 'pt' ? 'Deep Tech & Intelligence.' : 'Deep Tech & Intelligence.';
-            document.getElementById('hero-desc').innerText = lang === 'pt' ? 'O sinal mais puro sobre o avanço das IAs, open-source e mercado tech. Filtrado por agentes autônomos.' : 'The purest signal on AI advancements, open-source, and tech markets. Filtered by autonomous agents.';
-            document.getElementById('btn-close').innerHTML = lang === 'pt' ? '<i data-lucide="arrow-left" class="w-4 h-4"></i> Fechar' : '<i data-lucide="arrow-left" class="w-4 h-4"></i> Close';
-            
-            // Renderiza novamente os posts puxando o arquivo correspondente
+            document.getElementById('btn-lang-pt').className = lang === 'pt' ? 'px-3 py-1 rounded-full text-[10px] font-bold transition-all bg-white text-black' : 'px-3 py-1 rounded-full text-[10px] font-medium transition-all text-zinc-400 hover:text-white';
+            document.getElementById('btn-lang-en').className = lang === 'en' ? 'px-3 py-1 rounded-full text-[10px] font-bold transition-all bg-white text-black' : 'px-3 py-1 rounded-full text-[10px] font-medium transition-all text-zinc-400 hover:text-white';
             renderPosts();
-            lucide.createIcons();
         }
 
         function renderPosts() {
             const grid = document.getElementById('posts-grid');
+            if (!grid) return;
             grid.innerHTML = '';
 
             allPosts.forEach((post, index) => {
-                // AQUI: Define se vai carregar o conteúdo em PT ou EN
-                const filePath = currentLang === 'en' ? post.file_en : post.file_pt;
+                const filePath = currentLang === 'en' ? (post.file_en || post.file_pt) : (post.file_pt || post.file_en);
+                const title = currentLang === 'en' ? (post.title_en || post.title) : (post.title_pt || post.title || post.titulo);
+                const coverImage = post.image || post.img || 'cat-ai.jpeg';
                 const card = document.createElement('div');
                 
                 // Lógica do Bento Grid
-                let gridClasses = 'bento-card rounded-3xl p-8 flex flex-col justify-end cursor-pointer group ';
+                let gridClasses = 'bento-card rounded-3xl p-7 flex flex-col justify-between cursor-pointer group ';
                 if (index === 0) {
                     gridClasses += 'md:col-span-2 md:row-span-2 ';
                 } else if (index === 3 || index === 4) {
@@ -198,43 +246,41 @@
                     gridClasses += 'col-span-1 ';
                 }
 
-                const bgGradient = categoryGradients[post.category] || categoryGradients['default'];
-                card.className = gridClasses + bgGradient;
-                card.onclick = () => openPost(filePath);
+                card.className = gridClasses;
+                card.onclick = () => openPost(filePath, post);
 
                 card.innerHTML = `
-                    <div class="relative z-10 flex flex-col h-full justify-between">
-                        <div class="flex justify-between items-start">
-                            <span class="px-3 py-1 rounded-full bg-white/10 text-white text-[10px] font-mono tracking-widest uppercase backdrop-blur-md border border-white/10">
-                                ${post.category || 'Tech'}
-                            </span>
-                            <div class="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity border border-white/10">
-                                <i data-lucide="arrow-up-right" class="w-4 h-4 text-white"></i>
-                            </div>
+                    <!-- Imagem de Fundo HD com Overlay Escuro -->
+                    <div class="absolute inset-0 z-0 bg-cover bg-center opacity-30 group-hover:opacity-50 group-hover:scale-105 transition-all duration-700" style="background-image: url('${coverImage}');"></div>
+                    <div class="absolute inset-0 z-0 bg-gradient-to-t from-[#030305] via-[#030305]/75 to-transparent"></div>
+
+                    <!-- Conteúdo do Card -->
+                    <div class="relative z-10 flex justify-between items-start">
+                        <span class="px-3 py-1 rounded-full bg-black/60 text-brandCyan text-[10px] font-mono tracking-widest uppercase backdrop-blur-md border border-brandCyan/30">
+                            ${post.category || post.categoria || 'Tech'}
+                        </span>
+                        <div class="w-8 h-8 rounded-full bg-black/50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity border border-white/20">
+                            <i data-lucide="arrow-up-right" class="w-4 h-4 text-brandCyan"></i>
                         </div>
-                        <div class="mt-8">
-                            <h2 class="text-2xl sm:text-3xl font-bold text-white mb-3 group-hover:text-cyan-200 transition-colors tracking-tight line-clamp-3">
-                                ${post.title}
-                            </h2>
-                            <p class="text-xs text-zinc-500 font-mono">${post.date}</p>
+                    </div>
+                    
+                    <div class="relative z-10 mt-6">
+                        <h2 class="text-xl ${index === 0 ? 'sm:text-3xl' : 'sm:text-xl'} font-bold text-white mb-2.5 group-hover:text-brandCyan transition-colors tracking-tight line-clamp-3">
+                            ${title}
+                        </h2>
+                        <div class="flex items-center justify-between text-xs text-zinc-400 font-mono">
+                            <span>📅 ${post.date || 'Hoje'}</span>
+                            <span>⏱️ ${post.readTime || post.read_time || '5 min'}</span>
                         </div>
                     </div>
                 `;
                 
-                card.onmousemove = e => {
-                    const rect = card.getBoundingClientRect(),
-                          x = e.clientX - rect.left,
-                          y = e.clientY - rect.top;
-                    card.style.setProperty("--mouse-x", `${x}px`);
-                    card.style.setProperty("--mouse-y", `${y}px`);
-                };
-
                 grid.appendChild(card);
             });
             lucide.createIcons();
         }
 
-        async function openPost(path) {
+        async function openPost(path, postObj) {
             const readerView = document.getElementById('reader-view');
             const readerContent = document.getElementById('reader-content');
             
@@ -244,21 +290,21 @@
             readerContent.innerHTML = '<div class="animate-pulse h-8 bg-white/10 rounded w-1/3 mb-4"></div><div class="animate-pulse h-4 bg-white/5 rounded w-full mb-2"></div>';
 
             try {
-                const res = await fetch(path);
-                const text = await res.text();
-                const parts = text.split('---');
-                const markdownBody = parts.length > 2 ? parts.slice(2).join('---') : text;
+                let markdownBody = '';
+                if (path) {
+                    const res = await fetch(path);
+                    if (res.ok) {
+                        const text = await res.text();
+                        const parts = text.split('---');
+                        markdownBody = parts.length > 2 ? parts.slice(2).join('---') : text;
+                    }
+                }
                 
-                let htmlContent = markdownBody
-                    .replace(/^# (.*$)/gim, '<h1>$1</h1>')
-                    .replace(/^## (.*$)/gim, '<h2>$1</h2>')
-                    .replace(/^### (.*$)/gim, '<h3>$1</h3>')
-                    .replace(/\*\*(.*?)\*\*/gim, '<strong>$1</strong>')
-                    .replace(/\*(.*?)\*/gim, '<em>$1</em>')
-                    .replace(/\n\n/gim, '</p><p>')
-                    .replace(/\n/gim, '<br>');
+                if (!markdownBody && postObj) {
+                    markdownBody = currentLang === 'en' ? (postObj.content_en || postObj.content) : (postObj.content_pt || postObj.content);
+                }
 
-                readerContent.innerHTML = `<p>${htmlContent}</p>`;
+                readerContent.innerHTML = window.marked ? marked.parse(markdownBody) : markdownBody;
                 lucide.createIcons();
             } catch (err) {
                 readerContent.innerHTML = '<p class="text-red-400">Erro ao carregar o artigo.</p>';
@@ -271,10 +317,27 @@
             setTimeout(() => {
                 readerView.classList.add('hidden');
                 document.body.style.overflow = 'auto';
-            }, 500);
+            }, 300);
         }
 
-        loadPosts();
+        // Inicializa o Vanta.js 3D no fundo (Desktop)
+        document.addEventListener('DOMContentLoaded', () => {
+            loadPosts();
+
+            if (window.VANTA && window.VANTA.NET && window.innerWidth >= 768) {
+                VANTA.NET({
+                    el: "#vanta-bg",
+                    mouseControls: true,
+                    touchControls: false,
+                    gyroControls: false,
+                    color: 0x475569,
+                    backgroundColor: 0x030305,
+                    points: 7.00,
+                    maxDistance: 16.00,
+                    spacing: 20.00
+                });
+            }
+        });
     </script>
 </body>
 </html>
