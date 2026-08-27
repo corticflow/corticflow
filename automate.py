@@ -6,7 +6,6 @@ import feedparser
 
 API_KEY = os.environ.get("GEMINI_API_KEY", "").strip()
 
-# Usando o modelo principal mais estável para evitar erros de rota
 MODELS = [
     "gemini-2.5-flash",
     "gemini-2.0-flash",
@@ -72,10 +71,7 @@ def call_gemini_api(prompt):
             if res.status_code == 200:
                 result = res.json()
                 text = result["candidates"][0]["content"]["parts"][0]["text"]
-                
-                # Limpa marcações de bloco markdown caso venham na resposta
                 text = text.replace("```json", "").replace("```", "").strip()
-                
                 print(f"✅ Sucesso com {model}!")
                 return json.loads(text)
             else:
@@ -125,7 +121,7 @@ def save_posts(data):
 
     pt_file = f"content/pt/{today}-{slug}.md"
     with open(pt_file, "w", encoding="utf-8") as f:
-        f.write(f"---\ntitle: \"{data['title_pt']}\"\ndata: \"{today}\"\ncategoria: \"{data['category']}\"\n---\n\n")
+        f.write(f"---\ntitle: \"{data['title_pt']}\"\ndate: \"{today}\"\ncategoria: \"{data['category']}\"\n---\n\n")
         f.write(data["content_pt"])
 
     print(f"📁 Artigos salvos: {en_file} e {pt_file}")
