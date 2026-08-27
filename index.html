@@ -1,505 +1,10 @@
-<!DOCTYPE html>
-<html lang="pt-BR" class="dark">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CorticFlow | Intelligence & Deep Tech Dispatch</title>
-    
-    <!-- Favicon -->
-    <link rel="icon" type="image/png" href="https://github.com/corticflow.png">
-    <link rel="apple-touch-icon" href="https://github.com/corticflow.png">
-    
-    <!-- AdSense & Search Console -->
-    <meta name="google-site-verification" content="43zcGSljLsHVe02k10h5cw8RD1YOL_NODxaqsoRaT28" />
-    <meta name="google-adsense-account" content="ca-pub-6428908869375108" />
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6428908869375108" crossorigin="anonymous"></script>
-
-    <!-- Tailwind & Marked.js -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-    <script>
-        tailwind.config = {
-            darkMode: 'class',
-            theme: {
-                extend: {
-                    fontFamily: {
-                        sans: ['Inter', 'system-ui', 'sans-serif'],
-                        mono: ['JetBrains Mono', 'monospace']
-                    },
-                    colors: {
-                        darkbg: '#030305',
-                        brandCyan: '#00E5FF',
-                        brandPurple: '#8B5CF6'
-                    }
-                }
-            }
-        }
-    </script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
-    <script src="https://unpkg.com/lucide@latest"></script>
-
-    <!-- Three.js + Vanta.js CDN para Fundo 3D -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
-
-    <style>
-        body {
-            background-color: #030305;
-            color: #f3f4f6;
-            font-family: 'Inter', sans-serif;
-            overflow-x: hidden;
-        }
-
-        /* Ticker Animado */
-        .ticker-wrap { overflow: hidden; white-space: nowrap; }
-        .ticker-move { display: inline-block; animation: ticker 35s linear infinite; }
-        @keyframes ticker { 0% { transform: translate3d(0, 0, 0); } 100% { transform: translate3d(-50%, 0, 0); } }
-
-        /* Bento Cards com Efeito Spotlight e Capa de Fundo */
-        .bento-card {
-            background-color: rgba(17, 20, 30, 0.7);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            position: relative;
-            overflow: hidden;
-            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.3s, box-shadow 0.3s;
-        }
-        .bento-card:hover {
-            transform: translateY(-4px);
-            border-color: rgba(0, 229, 255, 0.4);
-            box-shadow: 0 15px 35px -10px rgba(0, 229, 255, 0.2);
-        }
-
-        /* Nav Glass */
-        .glass-nav {
-            background: rgba(3, 3, 5, 0.85);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-        }
-
-        /* Typography do Leitor */
-        .prose-custom p { margin-bottom: 1.3em; color: #cbd5e1; line-height: 1.8; font-size: 1.05rem; }
-        .prose-custom h1 { font-size: 2.2rem; font-weight: 800; color: #fff; margin-bottom: 1rem; line-height: 1.25; }
-        .prose-custom h2 { font-size: 1.6rem; font-weight: 700; color: #00E5FF; margin-top: 2.2rem; margin-bottom: 0.8rem; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 0.4rem; }
-        .prose-custom h3 { font-size: 1.25rem; font-weight: 600; color: #8B5CF6; margin-top: 1.8rem; margin-bottom: 0.6rem; }
-        .prose-custom ul, .prose-custom ol { padding-left: 1.5rem; margin-bottom: 1.3em; color: #cbd5e1; }
-        .prose-custom li { margin-bottom: 0.5rem; }
-        .prose-custom strong { color: #fff; font-weight: 700; }
-        .prose-custom blockquote { border-left: 4px solid #8B5CF6; padding: 1rem 1.4rem; background: rgba(139, 92, 246, 0.08); border-radius: 0 12px 12px 0; margin: 1.5rem 0; color: #f1f5f9; font-style: italic; }
-    </style>
-</head>
-<body class="min-h-screen flex flex-col antialiased selection:bg-brandCyan selection:text-black">
-
-    <!-- Container Fixo para o Vanta.js 3D no Plano de Fundo -->
-    <div id="vanta-bg" style="position: fixed; inset: 0; z-index: -1; pointer-events: none; opacity: 0.35;"></div>
-
-    <!-- 1. Top Wire Ticker: RADAR AO VIVO PISCANTE -->
-    <div class="bg-black border-b border-white/10 py-1.5 px-6 text-xs font-mono flex items-center justify-between text-zinc-400 z-50">
-        <div class="flex items-center overflow-hidden flex-1 mr-4">
-            <span class="inline-flex items-center gap-2 px-2.5 py-0.5 rounded-full bg-brandCyan/10 text-brandCyan font-extrabold uppercase tracking-widest text-[9px] mr-3 shrink-0 border border-brandCyan/30">
-                <span class="relative flex h-2 w-2">
-                    <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-brandCyan opacity-75"></span>
-                    <span class="relative inline-flex rounded-full h-2 w-2 bg-brandCyan"></span>
-                </span>
-                RADAR AO VIVO
-            </span>
-            <div class="ticker-wrap flex-1 overflow-hidden">
-                <div id="ticker-text" class="ticker-move text-zinc-300 font-medium">
-                    ⚡ [Nvidia] Arquitetura Vera CPU para Frotas de Agentes • [Modelos] GLM-5.2 lidera open-weights com 753B • [Chips] Semicondutores rumo a US$ 1 Trilhão • [Governança] Gestão financeira e circuit breakers para IA • [Startups] Investimentos bilionários em nuvem soberana
-                </div>
-            </div>
-        </div>
-
-        <!-- Botão Lab 3D e Idioma -->
-        <div class="flex items-center gap-3 shrink-0">
-            <a href="lab.html" class="hidden sm:inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-mono font-bold text-brandCyan bg-brandCyan/10 border border-brandCyan/30 hover:bg-brandCyan hover:text-black transition-all">
-                🧪 Lab 3D
-            </a>
-            <div class="flex items-center gap-1 bg-white/5 p-0.5 rounded-full border border-white/10">
-                <button onclick="setLang('pt')" id="btn-lang-pt" class="px-3 py-1 rounded-full text-[10px] font-bold transition-all bg-white text-black">PT</button>
-                <button onclick="setLang('en')" id="btn-lang-en" class="px-3 py-1 rounded-full text-[10px] font-medium transition-all text-zinc-400 hover:text-white">EN</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- 2. Header Fixo -->
-    <header class="sticky top-0 z-40 glass-nav">
-        <div class="max-w-[90rem] mx-auto px-6 h-20 flex items-center justify-between">
-            <div class="flex items-center gap-4 cursor-pointer" onclick="location.reload()">
-                <div class="w-10 h-10 rounded-2xl bg-white flex items-center justify-center overflow-hidden border border-brandCyan/30 shadow-[0_0_15px_rgba(0,229,255,0.3)]">
-                    <img src="logo.jpeg" alt="CorticFlow Logo" class="w-full h-full object-cover" onerror="this.src='https://github.com/corticflow.png'">
-                </div>
-                <div>
-                    <span class="text-2xl font-extrabold tracking-tighter text-white">Cortic<span class="text-brandCyan">Flow</span></span>
-                </div>
-            </div>
-            
-            <div class="flex items-center gap-4">
-                <span class="text-xs font-mono text-zinc-400 hidden md:inline">Operação 100% em Nuvem</span>
-            </div>
-        </div>
-    </header>
-
-    <!-- 3. Hero Section -->
-    <section class="max-w-[90rem] mx-auto px-6 pt-16 pb-12 text-center sm:text-left flex flex-col xl:flex-row items-center justify-between gap-8">
-        <div class="max-w-3xl">
-            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-mono uppercase tracking-wider bg-brandCyan/10 text-brandCyan border border-brandCyan/20 mb-4">
-                Deep Tech & AI Intelligence Dispatch
-            </div>
-            <h1 id="hero-title" class="text-4xl sm:text-6xl font-extrabold tracking-tighter text-white mb-4">
-                O Fluxo da Tecnologia, Inovação e Inteligência Artificial.
-            </h1>
-            <p id="hero-desc" class="text-base sm:text-lg text-zinc-400 font-medium max-w-2xl leading-relaxed">
-                Análises aprofundadas, dissecção de semicondutores, modelos de raciocínio e engenharia de software filtrados por agentes autônomos.
-            </p>
-        </div>
-    </section>
-
-    <!-- 4. Conteúdo Principal & Grid Bento com Imagens -->
-    <main class="max-w-[90rem] mx-auto px-6 pb-24 w-full relative flex-grow">
-        
-        <!-- Reader View Overlay (Modal de Leitura Aprofundada) -->
-        <div id="reader-view" class="fixed inset-0 z-[100] bg-[#030305]/95 backdrop-blur-2xl overflow-y-auto hidden opacity-0 transition-opacity duration-300">
-            <div class="max-w-3xl mx-auto px-6 py-16 relative">
-                <button onclick="closeReader()" id="btn-close" class="sticky top-6 mb-8 inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 hover:bg-white/20 border border-white/20 text-white font-mono text-sm transition-all shadow-lg">
-                    <i data-lucide="arrow-left" class="w-4 h-4"></i> Fechar Leitura
-                </button>
-                <div id="reader-content" class="prose-custom"></div>
-            </div>
-        </div>
-
-        <!-- Grid Bento de Notícias com Imagens em Alta Resolução -->
-        <div id="posts-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5 auto-rows-[320px]">
-            <!-- Injetado por JS dinamicamente -->
-        </div>
-
-        <!-- Caixa de Newsletter Oficial -->
-        <div style="background: linear-gradient(rgba(3, 3, 5, 0.85), rgba(3, 3, 5, 0.85)), url('newsletter.jpeg') center/cover no-repeat; border-radius: 24px; padding: 40px; border: 1px solid rgba(255, 255, 255, 0.1);" class="mt-16 mb-6">
-            <h3 class="text-2xl sm:text-3xl font-extrabold text-white mb-2">CorticFlow Semanal</h3>
-            <p class="text-zinc-400 text-sm mb-6 max-w-xl leading-relaxed">Receba as principais análises de tecnologia, lançamentos de IA e tutoriais práticos direto no seu e-mail.</p>
-            <form class="flex flex-col sm:flex-row gap-3 max-w-md" onsubmit="event.preventDefault(); alert('Inscrição confirmada no CorticFlow!');">
-                <input type="email" placeholder="Seu melhor e-mail..." required class="flex-grow px-4 py-3 rounded-xl bg-black/80 border border-white/20 text-white text-sm focus:outline-none focus:border-brandCyan font-mono">
-                <button type="submit" class="py-3 px-6 rounded-xl bg-brandCyan hover:bg-cyan-300 text-black font-extrabold text-xs uppercase tracking-wider transition font-mono">Inscrever-se</button>
-            </form>
-        </div>
-
-    </main>
-
-    <!-- 5. Rodapé Institucional Completo -->
-    <footer class="border-t border-white/10 bg-[#030305] py-12">
-        <div class="max-w-[90rem] mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-6 text-xs font-mono text-zinc-500">
-            <div class="flex items-center gap-3">
-                <div class="w-6 h-6 rounded-lg bg-brandCyan text-black font-black flex items-center justify-center text-xs">C</div>
-                <span class="text-zinc-300 font-bold">CorticFlow</span>
-                <span>© 2026 Operação 100% em Nuvem.</span>
-            </div>
-            <div class="flex flex-wrap items-center gap-6">
-                <a href="lab.html" class="text-brandCyan font-bold hover:underline inline-flex items-center gap-1">🧪 Lab 3D</a>
-                <a href="privacy.html" class="hover:text-zinc-300 transition">Política de Privacidade</a>
-                <a href="terms.html" class="hover:text-zinc-300 transition">Termos de Uso</a>
-                <a href="mailto:corticflow@gmail.com" class="hover:text-zinc-300 transition">corticflow@gmail.com</a>
-                <a href="https://instagram.com/corticflow" target="_blank" rel="noopener noreferrer" class="hover:text-pink-400 transition inline-flex items-center gap-1">Instagram @corticflow ↗</a>
-            </div>
-        </div>
-    </footer>
-
-    <!-- Lógica JS -->
-    <script>
-        let allPosts = [];
-        let currentLang = 'pt';
-
-        async function loadPosts() {
-            try {
-                const response = await fetch('posts.json?v=' + Date.now());
-                allPosts = await response.json();
-                renderPosts();
-            } catch (err) {
-                console.error("Erro ao carregar posts:", err);
-            }
-        }
-
-        function setLang(lang) {
-            currentLang = lang;
-            document.getElementById('btn-lang-pt').className = lang === 'pt' ? 'px-3 py-1 rounded-full text-[10px] font-bold transition-all bg-white text-black' : 'px-3 py-1 rounded-full text-[10px] font-medium transition-all text-zinc-400 hover:text-white';
-            document.getElementById('btn-lang-en').className = lang === 'en' ? 'px-3 py-1 rounded-full text-[10px] font-bold transition-all bg-white text-black' : 'px-3 py-1 rounded-full text-[10px] font-medium transition-all text-zinc-400 hover:text-white';
-            renderPosts();
-        }
-
-        function renderPosts() {
-            const grid = document.getElementById('posts-grid');
-            if (!grid) return;
-            grid.innerHTML = '';
-
-            allPosts.forEach((post, index) => {
-                const filePath = currentLang === 'en' ? (post.file_en || post.file_pt) : (post.file_pt || post.file_en);
-                const title = currentLang === 'en' ? (post.title_en || post.title) : (post.title_pt || post.title || post.titulo);
-                const coverImage = post.image || post.img || 'cat-ai.jpeg';
-                const card = document.createElement('div');
-                
-                // Lógica do Bento Grid
-                let gridClasses = 'bento-card rounded-3xl p-7 flex flex-col justify-between cursor-pointer group ';
-                if (index === 0) {
-                    gridClasses += 'md:col-span-2 md:row-span-2 ';
-                } else if (index === 3 || index === 4) {
-                    gridClasses += 'md:col-span-2 ';
-                } else {
-                    gridClasses += 'col-span-1 ';
-                }
-
-                card.className = gridClasses;
-                card.onclick = () => openPost(filePath, post);
-
-                card.innerHTML = `
-                    <!-- Imagem de Fundo HD com Overlay Escuro -->
-                    <div class="absolute inset-0 z-0 bg-cover bg-center opacity-30 group-hover:opacity-50 group-hover:scale-105 transition-all duration-700" style="background-image: url('${coverImage}');"></div>
-                    <div class="absolute inset-0 z-0 bg-gradient-to-t from-[#030305] via-[#030305]/75 to-transparent"></div>
-
-                    <!-- Conteúdo do Card -->
-                    <div class="relative z-10 flex justify-between items-start">
-                        <span class="px-3 py-1 rounded-full bg-black/60 text-brandCyan text-[10px] font-mono tracking-widest uppercase backdrop-blur-md border border-brandCyan/30">
-                            ${post.category || post.categoria || 'Tech'}
-                        </span>
-                        <div class="w-8 h-8 rounded-full bg-black/50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity border border-white/20">
-                            <i data-lucide="arrow-up-right" class="w-4 h-4 text-brandCyan"></i>
-                        </div>
-                    </div>
-                    
-                    <div class="relative z-10 mt-6">
-                        <h2 class="text-xl ${index === 0 ? 'sm:text-3xl' : 'sm:text-xl'} font-bold text-white mb-2.5 group-hover:text-brandCyan transition-colors tracking-tight line-clamp-3">
-                            ${title}
-                        </h2>
-                        <div class="flex items-center justify-between text-xs text-zinc-400 font-mono">
-                            <span>📅 ${post.date || 'Hoje'}</span>
-                            <span>⏱️ ${post.readTime || post.read_time || '5 min'}</span>
-                        </div>
-                    </div>
-                `;
-                
-                grid.appendChild(card);
-            });
-            lucide.createIcons();
-        }
-
-        async function openPost(path, postObj) {
-            const readerView = document.getElementById('reader-view');
-            const readerContent = document.getElementById('reader-content');
-            
-            readerView.classList.remove('hidden');
-            setTimeout(() => readerView.classList.remove('opacity-0'), 10);
-            document.body.style.overflow = 'hidden';
-            readerContent.innerHTML = '<div class="animate-pulse h-8 bg-white/10 rounded w-1/3 mb-4"></div><div class="animate-pulse h-4 bg-white/5 rounded w-full mb-2"></div>';
-
-            try {
-                let markdownBody = '';
-                if (path) {
-                    const res = await fetch(path);
-                    if (res.ok) {
-                        const text = await res.text();
-                        const parts = text.split('---');
-                        markdownBody = parts.length > 2 ? parts.slice(2).join('---') : text;
-                    }
-                }
-                
-                if (!markdownBody && postObj) {
-                    markdownBody = currentLang === 'en' ? (postObj.content_en || postObj.content) : (postObj.content_pt || postObj.content);
-                }
-
-                readerContent.innerHTML = window.marked ? marked.parse(markdownBody) : markdownBody;
-                lucide.createIcons();
-            } catch (err) {
-                readerContent.innerHTML = '<p class="text-red-400">Erro ao carregar o artigo.</p>';
-            }
-        }
-
-        function closeReader() {
-            const readerView = document.getElementById('reader-view');
-            readerView.classList.add('opacity-0');
-            setTimeout(() => {
-                readerView.classList.add('hidden');
-                document.body.style.overflow = 'auto';
-            }, 300);
-        }
-
-        // Inicializa o Vanta.js 3D no fundo (Desktop)
-        document.addEventListener('DOMContentLoaded', () => {
-            loadPosts();
-
-            if (window.VANTA && window.VANTA.NET && window.innerWidth >= 768) {
-                VANTA.NET({
-                    el: "#vanta-bg",
-                    mouseControls: true,
-                    touchControls: false,
-                    gyroControls: false,
-                    color: 0x475569,
-                    backgroundColor: 0x030305,
-                    points: 7.00,
-                    maxDistance: 16.00,
-                    spacing: 20.00
-                });
-            }
-        });
-    </script>
-    <!-- ==================================================== -->
-<!-- GRADE COMPLETA (EXIBE TODOS OS 12 CARDS SEM ESCONDER)-->
 <!-- ==================================================== -->
-<style>
-  /* Grade Espaçosa que Exibe Todas as Matérias sem Ocultar Nenhuma */
-  #posts-grid {
-    display: grid !important;
-    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)) !important;
-    gap: 26px !important;
-    width: 100% !important;
-    max-width: 1300px !important;
-    margin: 30px auto 60px auto !important;
-  }
-
-  .cortic-card-item {
-    background: #11141E !important;
-    border: 1px solid #202636 !important;
-    border-radius: 20px !important;
-    overflow: hidden !important;
-    display: flex !important;
-    flex-direction: column !important;
-    justify-content: space-between !important;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.5) !important;
-    cursor: pointer !important;
-    transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease !important;
-  }
-  .cortic-card-item:hover {
-    transform: translateY(-5px) !important;
-    border-color: rgba(0, 229, 255, 0.45) !important;
-    box-shadow: 0 15px 35px rgba(0, 229, 255, 0.15) !important;
-  }
-
-  .cortic-card-img {
-    width: 100% !important;
-    height: 195px !important;
-    object-fit: cover !important;
-    display: block !important;
-    background: #1E293B !important;
-    border-bottom: 1px solid #202636 !important;
-  }
-</style>
-
-<!-- Modal Leitor Oficial -->
+<!-- LEITOR OFICIAL CORTICFLOW (MODAL LIMPO E BILÍNGUE)   -->
+<!-- ==================================================== -->
 <div id="cortic-reading-modal" style="display: none; position: fixed; inset: 0; background: rgba(0, 0, 0, 0.92); z-index: 99999; overflow-y: auto; padding: 24px 16px; backdrop-filter: blur(12px);" onclick="closeCorticReader(event)">
   <div style="background: #11141E; border: 1px solid #202636; border-radius: 20px; max-width: 800px; margin: 20px auto; padding: 32px; position: relative; color: #E2E8F0; box-shadow: 0 25px 60px rgba(0,0,0,0.9);" onclick="event.stopPropagation()">
+    
     <button onclick="closeCorticReaderDirect()" style="position: absolute; top: 16px; right: 20px; font-size: 32px; color: #94A3B8; background: none; border: none; cursor: pointer; line-height: 1;">&times;</button>
-    <div id="reader-cat" style="display: inline-block; font-size: 11px; font-family: monospace; font-weight: 800; text-transform: uppercase; color: #00E5FF; background: rgba(0, 229, 255, 0.12); padding: 3px 10px; border-radius: 12px; border: 1px solid rgba(0, 229, 255, 0.3); margin-bottom: 12px;"></div>
-    <img id="reader-img" src="" alt="" style="width: 100%; height: 260px; object-fit: cover; border-radius: 12px; margin-bottom: 18px; border: 1px solid #202636; display: block;" onerror="this.src='cat-ai.jpeg'">
-    <h1 id="reader-title" style="font-size: 24px; font-weight: 800; color: #FFF; line-height: 1.35; margin-bottom: 14px;"></h1>
-    <div id="reader-meta" style="font-size: 12px; font-family: monospace; color: #94A3B8; margin-bottom: 24px; padding-bottom: 14px; border-bottom: 1px solid #202636;"></div>
-    <div id="reader-body" style="font-size: 15px; line-height: 1.8; color: #CBD5E1;"></div>
-    <div style="margin-top: 30px; padding-top: 18px; border-top: 1px solid #202636; display: flex; justify-content: space-between; align-items: center;">
-      <a id="reader-source" href="#" target="_blank" style="color: #00E5FF; font-size: 13px; font-weight: 700; text-decoration: none;">Acessar Fonte Original ↗</a>
-      <button onclick="closeCorticReaderDirect()" style="background: rgba(255,255,255,0.1); color: #FFF; border: 1px solid rgba(255,255,255,0.2); padding: 8px 20px; border-radius: 10px; font-size: 13px; font-weight: 600; cursor: pointer;">Fechar</button>
-    </div>
-  </div>
-</div>
-
-<script>
-let globalCorticPosts = [];
-
-function openCorticPost(idx) {
-  const post = globalCorticPosts[idx];
-  if (!post) return;
-
-  document.getElementById('reader-cat').innerText = post.category || post.categoria || 'Tecnologia';
-  document.getElementById('reader-title').innerText = post.title_pt || post.title || post.titulo || 'Notícia';
-  document.getElementById('reader-meta').innerText = `📅 ${post.date || 'Hoje'} • ⏱️ ${post.readTime || '5 min'} • CorticFlow Editorial`;
-  
-  const imgEl = document.getElementById('reader-img');
-  imgEl.src = post.image || post.img || 'cat-ai.jpeg';
-
-  const content = post.content_pt || post.content || post.desc || '';
-  document.getElementById('reader-body').innerHTML = window.marked ? marked.parse(content) : content.replace(/\n/g, '<br>');
-  
-  const src = document.getElementById('reader-source');
-  if (post.link || post.fonte) {
-    src.href = post.link || post.fonte;
-    src.style.display = 'inline-block';
-  } else {
-    src.style.display = 'none';
-  }
-
-  document.getElementById('cortic-reading-modal').style.display = 'block';
-  document.body.style.overflow = 'hidden';
-}
-
-function closeCorticReader(e) {
-  if (e.target.id === 'cortic-reading-modal') closeCorticReaderDirect();
-}
-function closeCorticReaderDirect() {
-  document.getElementById('cortic-reading-modal').style.display = 'none';
-  document.body.style.overflow = 'auto';
-}
-
-document.addEventListener('DOMContentLoaded', () => {
-  fetch('posts.json?v=' + Date.now())
-    .then(r => r.json())
-    .then(posts => {
-      globalCorticPosts = posts;
-      const grid = document.querySelector('#posts-grid, .articles-grid, main .grid');
-      if (!grid || !posts.length) return;
-
-      grid.innerHTML = '';
-
-      posts.forEach((post, i) => {
-        const card = document.createElement('article');
-        card.className = 'cortic-card-item';
-        card.onclick = () => openCorticPost(i);
-
-        const title = post.title_pt || post.title || post.titulo || 'Notícia';
-        const desc = post.desc || post.resumo || (post.content_pt || '').substring(0, 180) + '...';
-        const img = post.image || post.img || 'cat-ai.jpeg';
-        const cat = post.category || post.categoria || 'Geral';
-        const time = post.readTime || post.read_time || '5 min';
-
-        card.innerHTML = `
-          <div>
-            <div style="position: relative; overflow: hidden;">
-              <img src="${img}" alt="${title}" class="cortic-card-img" onerror="this.src='cat-ai.jpeg'">
-              <span style="position: absolute; top: 12px; left: 12px; font-size: 10px; font-family: monospace; font-weight: 800; text-transform: uppercase; color: #00E5FF; background: rgba(0,0,0,0.8); border: 1px solid rgba(0, 229, 255, 0.4); padding: 3px 10px; border-radius: 20px; backdrop-filter: blur(8px);">
-                ${cat}
-              </span>
-            </div>
-            <div style="padding: 22px;">
-              <div style="display: flex; justify-content: space-between; font-size: 12px; font-family: monospace; color: #94A3B8; margin-bottom: 8px;">
-                <span>📅 ${post.date || 'Hoje'}</span>
-                <span>⏱️ ${time}</span>
-              </div>
-              <h3 style="font-size: 17px; font-weight: 800; color: #FFF; line-height: 1.4; margin-bottom: 10px;">
-                ${title}
-              </h3>
-              <p style="font-size: 13.5px; line-height: 1.6; color: #94A3B8;">
-                ${desc}
-              </p>
-            </div>
-          </div>
-          <div style="padding: 0 22px 20px 22px; display: flex; align-items: center; justify-content: space-between; font-size: 12px; font-family: monospace; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 12px;">
-            <span style="color: #00E5FF; font-weight: 700;">Ler Matéria Completa →</span>
-          </div>
-        `;
-
-        grid.appendChild(card);
-      });
-    })
-    .catch(e => console.log('Aviso:', e));
-});
-</script>
-<!-- ==================================================== -->
-    <!-- ==================================================== -->
-<!-- 1. BARRA DE LEITURA LUMINOSA NO TOPO                -->
-<!-- ==================================================== -->
-<div id="cortic-scroll-bar" style="position: fixed; top: 0; left: 0; height: 3.5px; width: 0%; background: linear-gradient(90deg, #00E5FF, #8B5CF6); z-index: 100000; box-shadow: 0 0 12px rgba(0, 229, 255, 0.8); transition: width 0.08s ease-out;"></div>
-
-<!-- ==================================================== -->
-<!-- 2. MODAL LEITOR MULTILÍNGUE (PT / EN)               -->
-<!-- ==================================================== -->
-<div id="cortic-reading-modal" style="display: none; position: fixed; inset: 0; background: rgba(0, 0, 0, 0.92); z-index: 99999; overflow-y: auto; padding: 24px 16px; backdrop-filter: blur(12px);" onclick="closeCorticReader(event)">
-  <div style="background: #11141E; border: 1px solid #202636; border-radius: 20px; max-width: 800px; margin: 20px auto; padding: 32px; position: relative; color: #E2E8F0; box-shadow: 0 25px 60px rgba(0,0,0,0.9);" onclick="event.stopPropagation()">
-    
-    <button onclick="closeCorticReaderDirect()" style="position: absolute; top: 16px; right: 20px; font-size: 32px; color: #94A3B8; background: none; border: none; cursor: pointer; line-height: 1;" onmouseover="this.style.color='#00E5FF'" onmouseout="this.style.color='#94A3B8'">&times;</button>
     
     <div id="reader-cat" style="display: inline-block; font-size: 11px; font-family: monospace; font-weight: 800; text-transform: uppercase; color: #00E5FF; background: rgba(0, 229, 255, 0.12); padding: 3px 10px; border-radius: 12px; border: 1px solid rgba(0, 229, 255, 0.3); margin-bottom: 12px;"></div>
     
@@ -518,25 +23,10 @@ document.addEventListener('DOMContentLoaded', () => {
   </div>
 </div>
 
-<!-- ==================================================== -->
-<!-- 3. LÓGICA DE ROLAGEM + SELETOR PT / EN AUTOMÁTICO   -->
-<!-- ==================================================== -->
 <script>
 let globalPosts = [];
 let currentLang = localStorage.getItem('cortic_lang') || 'pt';
 
-// 1. Barra de Rolagem no Topo
-window.addEventListener('scroll', () => {
-  const scrollTop = window.scrollY || document.documentElement.scrollTop;
-  const docHeight = document.documentElement.scrollHeight - window.innerHeight;
-  if (docHeight > 0) {
-    const progress = (scrollTop / docHeight) * 100;
-    const bar = document.getElementById('cortic-scroll-bar');
-    if (bar) bar.style.width = progress + '%';
-  }
-});
-
-// 2. Função de Troca de Idioma (PT / EN)
 function setLanguage(lang) {
   currentLang = lang;
   localStorage.setItem('cortic_lang', lang);
@@ -557,10 +47,8 @@ function setLanguage(lang) {
   renderFeed();
 }
 
-// Compatibilidade com possíveis chamadas de setLang()
 function setLang(lang) { setLanguage(lang); }
 
-// 3. Renderização Dinâmica no Idioma Escolhido
 function renderFeed() {
   const grid = document.querySelector('#posts-grid, .articles-grid, main .grid');
   if (!grid || !globalPosts.length) return;
@@ -572,22 +60,22 @@ function renderFeed() {
     const title = isEn ? (post.title_en || post.title) : (post.title_pt || post.title || post.titulo);
     const rawContent = isEn ? (post.content_en || post.content) : (post.content_pt || post.content || post.desc);
     
-    let desc = (rawContent || '').replace(/#+\s/g, '').replace(/\*+/g, '').trim();
+    let desc = (rawContent || '').replace(/#+\s/g, '').replace(/\*+/g, '').replace(/Visão Geral Executiva/g, '').trim();
     desc = desc.substring(0, 180) + '...';
 
     const img = post.image || post.img || 'cat-ai.jpeg';
     const cat = post.category || post.categoria || 'Tech';
-    const readTime = post.readTime || post.read_time || '5 min';
+    const readTime = post.readTime || post.read_time || '4 min';
     const btnLabel = isEn ? 'Read Full Article →' : 'Ler Matéria Completa →';
 
     const card = document.createElement('article');
-    card.className = 'cortic-card-item';
+    card.className = 'cortic-card-item bg-[#11141E] border border-[#202636] rounded-2xl overflow-hidden flex flex-col justify-between shadow-lg cursor-pointer transition-transform hover:-translate-y-1 hover:border-[#00E5FF]/40';
     card.onclick = () => openCorticArticle(i);
 
     card.innerHTML = `
       <div>
         <div style="position: relative; overflow: hidden;">
-          <img src="${img}" alt="${title}" class="cortic-card-img" onerror="this.src='cat-ai.jpeg'">
+          <img src="${img}" alt="${title}" class="w-full h-48 object-cover" onerror="this.src='cat-ai.jpeg'">
           <span style="position: absolute; top: 12px; left: 12px; font-size: 10px; font-family: monospace; font-weight: 800; text-transform: uppercase; color: #00E5FF; background: rgba(0,0,0,0.8); border: 1px solid rgba(0, 229, 255, 0.4); padding: 3px 10px; border-radius: 20px; backdrop-filter: blur(8px);">
             ${cat}
           </span>
@@ -614,7 +102,6 @@ function renderFeed() {
   });
 }
 
-// 4. Abertura do Artigo Completo no Modal
 function openCorticArticle(i) {
   const post = globalPosts[i];
   if (!post) return;
@@ -625,7 +112,7 @@ function openCorticArticle(i) {
 
   document.getElementById('reader-cat').innerText = post.category || 'Tech';
   document.getElementById('reader-title').innerText = title;
-  document.getElementById('reader-meta').innerText = `📅 ${post.date || 'Hoje'} • ⏱️ ${post.readTime || '5 min'} • CorticFlow Editorial`;
+  document.getElementById('reader-meta').innerText = `📅 ${post.date || 'Hoje'} • ⏱️ ${post.readTime || '4 min'} • CorticFlow Editorial`;
   
   const imgEl = document.getElementById('reader-img');
   imgEl.src = post.image || post.img || 'cat-ai.jpeg';
@@ -655,7 +142,6 @@ function closeCorticReaderDirect() {
   document.body.style.overflow = 'auto';
 }
 
-// 5. Inicialização com Carregamento dos Posts
 document.addEventListener('DOMContentLoaded', () => {
   fetch('posts.json?v=' + Date.now())
     .then(r => r.json())
@@ -667,5 +153,3 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 </script>
 <!-- ==================================================== -->
-</body>
-</html>
