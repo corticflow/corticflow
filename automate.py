@@ -9,21 +9,23 @@ import math
 API_KEY = os.environ.get("GEMINI_API_KEY", "").strip()
 
 MODELS = [
-    "gemini-1.5-flash",
+    "gemini-3.7-flash",
+    "gemini-3.5-flash-lite",
+    "gemini-2.5-flash",
     "gemini-2.0-flash",
-    "gemini-1.5-pro"
+    "gemini-1.5-flash"
 ]
 
 HEADERS = {
     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
 }
 
-# Bloqueio estrito de assuntos não-tecnológicos (tragédias, acidentes, crimes, esportes)
+# Bloqueio de esportes, futebol e ofertas de varejo
 TERMOS_BLOQUEADOS = [
-    "inundação", "inundacao", "enchente", "desastre", "morte", "matou", "morreu", "acidente",
-    "desaparecido", "polícia", "policia", "preso", "crime", "assalto", "nepal", "futebol",
-    "flamengo", "palmeiras", "corinthians", "brasileirão", "campeonato", "eleição", "política",
-    "famosos", "novela", "loteria", "mega-sena"
+    "futebol", "flamengo", "palmeiras", "corinthians", "são paulo", "vasco", "gremio", "inter",
+    "campeonato", "brasileirão", "libertadores", "champions league", "escalação", "gol de",
+    "placar", "jogo de hoje", "arbitragem", "cazétv", "achados", "oferta", "desconto",
+    "mercado livre", "preço imbatível", "cupom", "menor preço", "comprar", "promoção"
 ]
 
 FEEDS = [
@@ -43,53 +45,34 @@ FEEDS = [
     {"url": "https://feeds.arstechnica.com/arstechnica/index", "category": "Science & Space"}
 ]
 
-def selecionar_foto_exata(titulo, categoria):
-    """Mapeamento rigoroso de fotos de alta resolução sem erros ou logos estranhos."""
+def selecionar_foto_hd(titulo, categoria):
     t = titulo.lower()
     c = categoria.lower()
 
-    # 1. Uber, 99, Carros, Viagens, Mobilidade, GPS
-    if any(k in t for k in ["uber", "99", "corrida", "motorista", "carro", "trânsito", "viagem", "gps"]):
-        return "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=1200&auto=format&fit=crop&q=80" # Smartphone com tela de App e Mapa
-
-    # 2. WhatsApp, Mensagens, Golpes, Segurança, Hack
-    elif any(k in t for k in ["whatsapp", "zap", "golpe", "invasão", "hack", "vítima", "segurança", "senha", "privacidade"]):
-        return "https://images.unsplash.com/photo-1563986768609-322da13575f3?w=1200&auto=format&fit=crop&q=80" # Segurança Mobile
-
-    # 3. Windows, PC, Dell, Laptops, Notebooks, Copilot
-    elif any(k in t for k in ["windows", "microsoft", "pc", "laptop", "notebook", "dell", "lenovo", "acer", "desktop"]):
-        return "https://images.unsplash.com/photo-1588872657578-7efd1f1555ed?w=1200&auto=format&fit=crop&q=80" # Notebook em mesa de trabalho
-
-    # 4. Apple, Mac, macOS, MacBook, iPhone, iPad, iOS
-    elif any(k in t for k in ["apple", "mac", "macos", "macbook", "iphone", "ios", "ipad", "m4", "m3"]):
-        return "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=1200&auto=format&fit=crop&q=80" # MacBook Pro
-
-    # 5. Processadores, Chips, Semicondutores, GPU, Nvidia, AMD
-    elif any(k in t for k in ["chip", "chips", "nvidia", "amd", "intel", "processador", "gpu", "semicondutor", "hbm"]):
-        return "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=1200&auto=format&fit=crop&q=80" # Placa de Circuito / Processador
-
-    # 6. Espaço, SpaceX, Starship, Foguete, Satélite, NASA
-    elif any(k in t for k in ["space", "spacex", "starship", "satélite", "satelite", "foguete", "nasa", "órbita"]):
-        return "https://images.unsplash.com/photo-1517976487504-59a1c0188b4c?w=1200&auto=format&fit=crop&q=80" # Foguete Espacial
-
-    # 7. Redes Sociais, Instagram, Reels, TikTok, YouTube
-    elif any(k in t for k in ["instagram", "reels", "tiktok", "social", "youtube", "vídeo", "influencer"]):
-        return "https://images.unsplash.com/photo-1611162617474-5b21e879e113?w=1200&auto=format&fit=crop&q=80" # Redes Sociais
-
-    # 8. Celulares, Smartphones, Android, Galaxy
-    elif any(k in t for k in ["celular", "smartphone", "android", "galaxy", "samsung", "xiaomi", "motorola"]):
-        return "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=1200&auto=format&fit=crop&q=80" # Smartphone
-
-    # 9. Inteligência Artificial e LLMs
-    elif any(k in t for k in ["ia", "ai", "llm", "chatgpt", "deepseek", "gemini", "claude", "modelo", "inteligência"]):
-        return "https://images.unsplash.com/photo-1677442136019-21780efad99a?w=1200&auto=format&fit=crop&q=80" # Conexões Neurais
-
-    # 10. Linux e Open-Source
-    elif any(k in t for k in ["linux", "ubuntu", "kernel", "open-source", "docker", "código", "programador"]):
-        return "https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=1200&auto=format&fit=crop&q=80" # Terminal escuro
-
+    if any(k in t for k in ["memória", "memoria", "ram", "ssd", "hbm", "cxl", "armazenamento", "sk hynix"]):
+        return "https://images.unsplash.com/photo-1591799264318-7e6ef8ddb7ea?w=1200&auto=format&fit=crop&q=80"
+    elif any(k in t for k in ["celular", "smartphone", "galaxy", "dobrável", "xiaomi", "motorola"]):
+        return "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=1200&auto=format&fit=crop&q=80"
+    elif any(k in t for k in ["whatsapp", "zap", "golpe", "invasão", "hack", "segurança", "privacidade"]):
+        return "https://images.unsplash.com/photo-1563986768609-322da13575f3?w=1200&auto=format&fit=crop&q=80"
+    elif any(k in t for k in ["windows", "microsoft", "pc", "laptop", "notebook", "copilot"]):
+        return "https://images.unsplash.com/photo-1588872657578-7efd1f1555ed?w=1200&auto=format&fit=crop&q=80"
+    elif any(k in t for k in ["apple", "mac", "macos", "macbook", "iphone", "ios"]):
+        return "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=1200&auto=format&fit=crop&q=80"
+    elif any(k in t for k in ["chip", "chips", "nvidia", "amd", "intel", "processador", "gpu", "semicondutor"]):
+        return "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=1200&auto=format&fit=crop&q=80"
+    elif any(k in t for k in ["space", "spacex", "starship", "satélite", "satelite", "foguete", "nasa"]):
+        return "https://images.unsplash.com/photo-1517976487504-59a1c0188b4c?w=1200&auto=format&fit=crop&q=80"
+    elif any(k in t for k in ["instagram", "reels", "tiktok", "social", "youtube", "vídeo"]):
+        return "https://images.unsplash.com/photo-1611162617474-5b21e879e113?w=1200&auto=format&fit=crop&q=80"
+    elif any(k in t for k in ["latam", "voo", "avião", "aéreo", "viagem"]):
+        return "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=1200&auto=format&fit=crop&q=80"
+    elif any(k in t for k in ["linux", "ubuntu", "kernel", "open-source", "código", "docker"]):
+        return "https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=1200&auto=format&fit=crop&q=80"
+    elif any(k in t for k in ["ia", "ai", "llm", "chatgpt", "deepseek", "gemini", "claude"]):
+        return "https://images.unsplash.com/photo-1677442136019-21780efad99a?w=1200&auto=format&fit=crop&q=80"
     else:
-        return "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=1200&auto=format&fit=crop&q=80" # Tecnologia Global
+        return "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=1200&auto=format&fit=crop&q=80"
 
 def fetch_latest_news():
     articles = []
@@ -103,11 +86,9 @@ def fetch_latest_news():
                 link = getattr(entry, 'link', '').strip()
                 summary = getattr(entry, 'summary', '') or getattr(entry, 'description', '')
                 summary_clean = re.sub(r'<[^>]+>', '', summary).strip()
-                # Remove frases promocionais de rodapé dos feeds
-                summary_clean = re.sub(r'O post .* apareceu primeiro em .*', '', summary_clean).strip()
                 
-                texto_check = (title + " " + summary_clean).lower()
-                # Descarta tragédias, esportes e notícias fora de tecnologia
+                texto_check = (title + " " + link + " " + summary_clean).lower()
+                # Filtra ofertas e esportes
                 if any(bloq in texto_check for bloq in TERMOS_BLOQUEADOS):
                     continue
 
@@ -120,10 +101,10 @@ def fetch_latest_news():
                     })
         except Exception as e:
             print(f"Aviso no feed {url}: {e}")
-    return articles[:8]
+    return articles[:12]
 
 def call_gemini_api(prompt):
-    if not API_KEY:
+    if not API_KEY or not API_KEY.startswith("AIzaSy"):
         return None
 
     payload = {
@@ -152,37 +133,32 @@ def call_gemini_api(prompt):
 
 def generate_bilingual_post(news_item):
     prompt = f"""
-    You are the Senior Editorial Director for 'CorticFlow', an authoritative technology magazine.
-    Write an in-depth journalistic article (800-1200+ words) in TWO languages: English and Portuguese.
+    You are the Senior Editorial Director for 'CorticFlow'.
+    Write a DIRECT, FACT-FOCUSED, IN-DEPTH technology article (no generic filler sentences) in TWO languages: English and Portuguese.
     
     News Title: {news_item['title']}
     Source: {news_item['link']}
-    Summary: {news_item['summary']}
+    Raw Summary: {news_item['summary']}
     Category: "{news_item['category']}"
 
-    STRUCTURE REQUIREMENT (NO BOILERPLATE):
-    - Write multiple rich paragraphs explaining:
-      1. Context & Breakthrough
-      2. Technical Deep Dive (Architecture, specs, performance)
-      3. Ecosystem Impact (Who benefits, market dynamics)
-      4. Key Takeaways
-      5. The CorticFlow Outlook
+    EDITORIAL RULES:
+    1. Be straight to the point: Explain what happened, the exact technical specs, why it matters, and who is affected.
+    2. Do NOT use generic intro phrases like "This announcement represents an important milestone...".
+    3. Include 4 to 5 substantive paragraphs with concrete facts and data.
 
-    Return strictly as valid JSON with keys:
-    "slug", "category", "title_en", "content_en", "title_pt", "content_pt".
+    Return as JSON: "slug", "category", "title_en", "content_en", "title_pt", "content_pt".
     """
     data = call_gemini_api(prompt)
     
-    # Fallback denso e profissional (sem frases inúteis de rodapé)
     if not data:
         slug_gen = re.sub(r'[^a-zA-Z0-9]+', '-', news_item['title'].lower()).strip('-')[:50]
         data = {
             "slug": slug_gen,
             "category": news_item["category"],
             "title_en": news_item["title"],
-            "content_en": f"## Executive Summary\n\n{news_item['summary']}\n\n### Technical Analysis & Market Impact\n\nThis development marks a substantial evolution in the {news_item['category']} landscape. By expanding capabilities and refining architecture, this update sets a new operational standard across the global tech ecosystem.\n\n### Strategic Takeaways\n\n1. Enhanced efficiency and integrated workflows.\n2. Stronger ecosystem alignment for enterprise and consumer users.\n3. Increased competitive pressure across adjacent market sectors.\n\n*Original Source: [{news_item['link']}]({news_item['link']})*",
+            "content_en": f"## What Happened\n\n{news_item['summary']}\n\n### Technical Breakdown & Impact\n\nThis update directly impacts the {news_item['category']} ecosystem, introducing operational changes and new performance standards across the industry.\n\n*Full coverage: [{news_item['link']}]({news_item['link']})*",
             "title_pt": news_item["title"],
-            "content_pt": f"## Visão Geral Executiva\n\n{news_item['summary']}\n\n### Análise Técnica e Impacto de Mercado\n\nEste anúncio representa um marco relevante para o ecossistema de {news_item['category']}. A evolução das especificações e a integração da infraestrutura estabelecem novos padrões operacionais e competitivos no setor de tecnologia.\n\n### Principais Destaques Estratégicos\n\n1. Otimização de eficiência operacional e experiência do usuário.\n2. Consolidação de novas arquiteturas de software e hardware.\n3. Aceleração de padrões de mercado para a próxima geração de produtos.\n\n*Acompanhe a matéria original em: [{news_item['link']}]({news_item['link']})*"
+            "content_pt": f"## O Que Aconteceu\n\n{news_item['summary']}\n\n### Análise Técnica e Impacto Real\n\nEsta novidade impacta diretamente o segmento de {news_item['category']}, alterando padrões de mercado e trazendo desdobramentos práticos para usuários e desenvolvedores.\n\n*Acompanhe a matéria original em: [{news_item['link']}]({news_item['link']})*"
         }
     return data
 
@@ -205,16 +181,15 @@ def save_posts(data, all_posts_manifest, news_item, idx):
         f.write(data.get("content_pt", ""))
 
     words_pt = len(re.findall(r'\w+', data.get("content_pt", "")))
-    read_time = f"{max(3, math.ceil(words_pt / 180))} min"
+    read_time = f"{max(1, math.ceil(words_pt / 200))} min"
     category = data.get("category", news_item.get("category", "Geral"))
     title_final = data.get("title_pt") or data.get("title_en") or news_item["title"]
     
     desc_raw = data.get("content_pt") or news_item["summary"]
     desc_clean = re.sub(r'[#*_`]', '', desc_raw).strip()
-    desc_clean = re.sub(r'Visão Geral Executiva', '', desc_clean).strip()
-    desc_final = desc_clean[:200] + "..." if len(desc_clean) > 200 else desc_clean
+    desc_final = desc_clean[:220] + "..." if len(desc_clean) > 220 else desc_clean
 
-    foto_correta = selecionar_foto_exata(title_final, category)
+    foto_hd = selecionar_foto_hd(title_final, category)
 
     all_posts_manifest.append({
         "id": idx + 1,
@@ -234,10 +209,10 @@ def save_posts(data, all_posts_manifest, news_item, idx):
         "readTime": read_time,
         "read_time": read_time,
         "tempo_leitura": read_time,
-        "image": foto_correta,
-        "img": foto_correta,
-        "cover": foto_correta,
-        "imagem": foto_correta,
+        "image": foto_hd,
+        "img": foto_hd,
+        "cover": foto_hd,
+        "imagem": foto_hd,
         "desc": desc_final,
         "description": desc_final,
         "descricao": desc_final,
@@ -251,13 +226,13 @@ def save_posts(data, all_posts_manifest, news_item, idx):
         "file_en": en_file
     })
 
-    print(f"📁 [{idx+1}] Matéria Salva com Foto Exata: {title_final}")
+    print(f"📁 [{idx+1}] Matéria Salva: {title_final}")
 
 if __name__ == "__main__":
     os.makedirs("content/en", exist_ok=True)
     os.makedirs("content/pt", exist_ok=True)
 
-    print("🚀 CorticFlow Bot: Mineração de notícias com filtro anti-tragédias e fotos exatas...")
+    print("🚀 CorticFlow Bot: Mineração de notícias sem ofertas...")
     news = fetch_latest_news()
     all_posts_manifest = []
 
@@ -274,4 +249,4 @@ if __name__ == "__main__":
     with open("content/posts.json", "w", encoding="utf-8") as f:
         json.dump(all_posts_manifest, f, ensure_ascii=False, indent=2)
 
-    print(f"🎉 Finalizado com sucesso! {len(all_posts_manifest)} matérias salvas com compatibilidade total.")
+    print(f"🎉 Finalizado com sucesso! {len(all_posts_manifest)} matérias salvas.")
