@@ -5,15 +5,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CorticFlow | Intelligence & Deep Tech Dispatch</title>
     
-    <link rel="icon" type="image/png" href="[https://github.com/corticflow.png](https://github.com/corticflow.png)">
-    <link rel="apple-touch-icon" href="[https://github.com/corticflow.png](https://github.com/corticflow.png)">
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="https://github.com/corticflow.png">
+    <link rel="apple-touch-icon" href="https://github.com/corticflow.png">
     
+    <!-- AdSense & Search Console -->
     <meta name="google-site-verification" content="43zcGSljLsHVe02k10h5cw8RD1YOL_NODxaqsoRaT28" />
     <meta name="google-adsense-account" content="ca-pub-6428908869375108" />
-    <script async src="[https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6428908869375108](https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6428908869375108)" crossorigin="anonymous"></script>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6428908869375108" crossorigin="anonymous"></script>
 
-    <script src="[https://cdn.tailwindcss.com](https://cdn.tailwindcss.com)"></script>
-    <script src="[https://cdn.jsdelivr.net/npm/marked/marked.min.js](https://cdn.jsdelivr.net/npm/marked/marked.min.js)"></script>
+    <!-- Tailwind & Marked.js -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <script>
         tailwind.config = {
             darkMode: 'class',
@@ -24,7 +27,9 @@
                         mono: ['JetBrains Mono', 'monospace']
                     },
                     colors: {
-                        darkbg: '#030305',
+                        darkbg: '#080A0F',
+                        brandCard: '#11141E',
+                        brandBorder: '#202636',
                         brandCyan: '#00E5FF',
                         brandPurple: '#8B5CF6'
                     }
@@ -32,64 +37,99 @@
             }
         }
     </script>
-    <link href="[https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;800&family=JetBrains+Mono:wght@400;500;700&display=swap](https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;800&family=JetBrains+Mono:wght@400;500;700&display=swap)" rel="stylesheet">
-    <script src="[https://unpkg.com/lucide@latest](https://unpkg.com/lucide@latest)"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
 
-    <!-- Fundo 3D Vanta.js -->
-    <script src="[https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js](https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js)"></script>
-    <script src="[https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js](https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js)"></script>
+    <!-- Three.js + Vanta.js para Fundo 3D -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
 
     <style>
         body {
-            background-color: #030305;
+            background-color: #080A0F;
             color: #f3f4f6;
             font-family: 'Inter', sans-serif;
             overflow-x: hidden;
+            width: 100%;
         }
 
+        /* Ticker Animado */
         .ticker-wrap { overflow: hidden; white-space: nowrap; }
         .ticker-move { display: inline-block; animation: ticker 35s linear infinite; }
         @keyframes ticker { 0% { transform: translate3d(0, 0, 0); } 100% { transform: translate3d(-50%, 0, 0); } }
 
-        .bento-card {
-            background-color: rgba(17, 20, 30, 0.75);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            position: relative;
-            overflow: hidden;
-            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.3s, box-shadow 0.3s;
-        }
-        .bento-card:hover {
-            transform: translateY(-4px);
-            border-color: rgba(0, 229, 255, 0.4);
-            box-shadow: 0 15px 35px -10px rgba(0, 229, 255, 0.2);
+        /* Barra de Progresso no Topo */
+        #progress-bar {
+            position: fixed; top: 0; left: 0; height: 3.5px; width: 0%;
+            background: linear-gradient(90deg, #00E5FF, #8B5CF6);
+            z-index: 100000; box-shadow: 0 0 12px rgba(0, 229, 255, 0.8);
+            transition: width 0.08s ease-out;
         }
 
-        .glass-nav {
-            background: rgba(3, 3, 5, 0.85);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        /* Grade 100% Responsiva de Notícias */
+        #posts-grid {
+            display: grid !important;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)) !important;
+            gap: 20px !important;
+            width: 100% !important;
+            margin: 20px auto 40px auto !important;
+        }
+        @media (max-width: 640px) {
+            #posts-grid {
+                grid-template-columns: 1fr !important;
+                gap: 16px !important;
+            }
         }
 
+        /* Cards Elegantes */
+        .cortic-card {
+            background: #11141E !important;
+            border: 1px solid #202636 !important;
+            border-radius: 16px !important;
+            overflow: hidden !important;
+            display: flex !important;
+            flex-direction: column !important;
+            justify-content: space-between !important;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4) !important;
+            cursor: pointer !important;
+            transition: transform 0.2s ease, border-color 0.2s ease !important;
+        }
+        .cortic-card:hover {
+            transform: translateY(-4px) !important;
+            border-color: rgba(0, 229, 255, 0.4) !important;
+        }
+
+        .cortic-card-img {
+            width: 100% !important;
+            height: 180px !important;
+            object-fit: cover !important;
+            display: block !important;
+            background: #1E293B !important;
+            border-bottom: 1px solid #202636 !important;
+        }
+
+        /* Tipografia do Modal Leitor */
         .prose-custom p { margin-bottom: 1.3em; color: #cbd5e1; line-height: 1.8; font-size: 1.05rem; }
-        .prose-custom h1 { font-size: 2.2rem; font-weight: 800; color: #fff; margin-bottom: 1rem; line-height: 1.25; }
-        .prose-custom h2 { font-size: 1.6rem; font-weight: 700; color: #00E5FF; margin-top: 2.2rem; margin-bottom: 0.8rem; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 0.4rem; }
-        .prose-custom h3 { font-size: 1.25rem; font-weight: 600; color: #8B5CF6; margin-top: 1.8rem; margin-bottom: 0.6rem; }
+        .prose-custom h1 { font-size: 2rem; font-weight: 800; color: #fff; margin-bottom: 1rem; line-height: 1.25; }
+        .prose-custom h2 { font-size: 1.5rem; font-weight: 700; color: #00E5FF; margin-top: 2rem; margin-bottom: 0.8rem; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 0.4rem; }
+        .prose-custom h3 { font-size: 1.2rem; font-weight: 600; color: #8B5CF6; margin-top: 1.6rem; margin-bottom: 0.6rem; }
         .prose-custom ul, .prose-custom ol { padding-left: 1.5rem; margin-bottom: 1.3em; color: #cbd5e1; }
         .prose-custom li { margin-bottom: 0.5rem; }
         .prose-custom strong { color: #fff; font-weight: 700; }
-        .prose-custom blockquote { border-left: 4px solid #8B5CF6; padding: 1rem 1.4rem; background: rgba(139, 92, 246, 0.08); border-radius: 0 12px 12px 0; margin: 1.5rem 0; color: #f1f5f9; font-style: italic; }
     </style>
 </head>
-<body class="min-h-screen flex flex-col antialiased selection:bg-brandCyan selection:text-black">
+<body class="min-h-screen flex flex-col antialiased selection:bg-brandCyan selection:text-black w-full">
 
-    <!-- Fundo 3D -->
-    <div id="vanta-bg" style="position: fixed; inset: 0; z-index: -1; pointer-events: none; opacity: 0.35;"></div>
+    <!-- Barra de Progresso no Topo -->
+    <div id="progress-bar"></div>
 
-    <!-- 1. Top Wire Ticker: RADAR AO VIVO PISCANTE -->
-    <div class="bg-black border-b border-white/10 py-1.5 px-6 text-xs font-mono flex items-center justify-between text-zinc-400 z-50">
-        <div class="flex items-center overflow-hidden flex-1 mr-4">
-            <span class="inline-flex items-center gap-2 px-2.5 py-0.5 rounded-full bg-brandCyan/10 text-brandCyan font-extrabold uppercase tracking-widest text-[9px] mr-3 shrink-0 border border-brandCyan/30">
+    <!-- Container do Fundo 3D -->
+    <div id="vanta-bg" style="position: fixed; inset: 0; z-index: -1; pointer-events: none; opacity: 0.3;"></div>
+
+    <!-- 1. Top Wire Ticker (Radar ao Vivo) -->
+    <div class="bg-black border-b border-white/10 py-1.5 px-4 sm:px-6 text-xs font-mono flex items-center justify-between text-zinc-400 z-50 w-full">
+        <div class="flex items-center overflow-hidden flex-1 mr-3">
+            <span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-brandCyan/10 text-brandCyan font-extrabold uppercase tracking-widest text-[9px] mr-2 shrink-0 border border-brandCyan/30">
                 <span class="relative flex h-2 w-2">
                     <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-brandCyan opacity-75"></span>
                     <span class="relative inline-flex rounded-full h-2 w-2 bg-brandCyan"></span>
@@ -98,209 +138,236 @@
             </span>
             <div class="ticker-wrap flex-1 overflow-hidden">
                 <div id="ticker-text" class="ticker-move text-zinc-300 font-medium">
-                    ⚡ [Nvidia] Arquitetura Vera CPU para Frotas de Agentes • [Modelos] GLM-5.2 lidera open-weights com 753B • [Chips] Semicondutores rumo a US$ 1 Trilhão • [Governança] Gestão financeira e circuit breakers para IA • [Startups] Investimentos bilionários em nuvem soberana
+                    ⚡ [Nvidia] Receita recorde de US$ 96 Bi e alta de 70% • [Open-Source] Modelos MoE avançam em escala global • [Infraestrutura] Data centers adotam IA para refrigeração autônoma • [Semicondutores] Mercado rumo a US$ 1 Trilhão
                 </div>
             </div>
         </div>
 
-        <!-- Botão Lab 3D e Seletor Bilíngue -->
-        <div class="flex items-center gap-3 shrink-0">
-            <a href="lab.html" class="hidden sm:inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-mono font-bold text-brandCyan bg-brandCyan/10 border border-brandCyan/30 hover:bg-brandCyan hover:text-black transition-all">
+        <!-- Seletor de Idioma e Lab 3D -->
+        <div class="flex items-center gap-2 shrink-0">
+            <a href="lab.html" class="hidden sm:inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-mono font-bold text-brandCyan bg-brandCyan/10 border border-brandCyan/30 hover:bg-brandCyan hover:text-black transition-all">
                 🧪 Lab 3D
             </a>
             <div class="flex items-center gap-1 bg-white/5 p-0.5 rounded-full border border-white/10">
-                <button onclick="setLang('pt')" id="btn-lang-pt" class="px-3 py-1 rounded-full text-[10px] font-bold transition-all bg-white text-black">PT</button>
-                <button onclick="setLang('en')" id="btn-lang-en" class="px-3 py-1 rounded-full text-[10px] font-medium transition-all text-zinc-400 hover:text-white">EN</button>
+                <button onclick="setLang('pt')" id="btn-lang-pt" class="px-2.5 py-0.5 rounded-full text-[10px] font-bold transition-all bg-brandCyan text-black">PT</button>
+                <button onclick="setLang('en')" id="btn-lang-en" class="px-2.5 py-0.5 rounded-full text-[10px] font-medium transition-all text-zinc-400 hover:text-white">EN</button>
             </div>
         </div>
     </div>
 
-    <!-- 2. Header Fixo -->
-    <header class="sticky top-0 z-40 glass-nav">
-        <div class="max-w-[90rem] mx-auto px-6 h-20 flex items-center justify-between">
-            <div class="flex items-center gap-4 cursor-pointer" onclick="location.reload()">
-                <div class="w-10 h-10 rounded-2xl bg-white flex items-center justify-center overflow-hidden border border-brandCyan/30 shadow-[0_0_15px_rgba(0,229,255,0.3)]">
-                    <img src="logo.jpeg" alt="CorticFlow Logo" class="w-full h-full object-cover" onerror="this.src='[https://github.com/corticflow.png](https://github.com/corticflow.png)'">
+    <!-- 2. Header Fixo com Logotipo com Tamanho Calibrado -->
+    <header class="sticky top-0 z-40 bg-[#080A0F]/90 backdrop-blur-xl border-b border-white/10 w-full">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 h-16 sm:h-20 flex items-center justify-between">
+            <a href="index.html" class="flex items-center gap-3">
+                <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-white flex items-center justify-center overflow-hidden border border-brandCyan/30 shrink-0">
+                    <img src="logo.jpeg" alt="CorticFlow Logo" style="height: 38px; width: auto; object-fit: contain;" onerror="this.src='https://github.com/corticflow.png'">
                 </div>
                 <div>
-                    <span class="text-2xl font-extrabold tracking-tighter text-white">Cortic<span class="text-brandCyan">Flow</span></span>
+                    <span class="text-xl sm:text-2xl font-extrabold tracking-tighter text-white uppercase leading-none">Cortic<span class="text-brandCyan">//</span>Flow</span>
+                    <div class="text-[9px] sm:text-[10px] font-bold tracking-widest text-slate-400 uppercase font-mono mt-0.5">O Fluxo da Inteligência Artificial & Tech</div>
                 </div>
-            </div>
+            </a>
             
-            <div class="flex items-center gap-4">
-                <span class="text-xs font-mono text-zinc-400 hidden md:inline">Operação 100% em Nuvem</span>
+            <div class="flex items-center gap-3">
+                <a href="lab.html" class="sm:hidden text-xs font-mono font-bold text-brandCyan bg-brandCyan/10 px-2 py-1 rounded border border-brandCyan/30">🧪 Lab</a>
             </div>
         </div>
     </header>
 
-    <!-- 3. Hero Section -->
-    <section class="max-w-[90rem] mx-auto px-6 pt-16 pb-12 text-center sm:text-left flex flex-col xl:flex-row items-center justify-between gap-8">
-        <div class="max-w-3xl">
-            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-mono uppercase tracking-wider bg-brandCyan/10 text-brandCyan border border-brandCyan/20 mb-4">
-                Deep Tech & AI Intelligence Dispatch
-            </div>
-            <h1 id="hero-title" class="text-4xl sm:text-6xl font-extrabold tracking-tighter text-white mb-4">
+    <!-- 3. Conteúdo Principal 100% Responsivo -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 py-8 w-full flex-grow">
+        
+        <!-- Hero Section -->
+        <div class="rounded-2xl border border-white/10 bg-gradient-to-r from-brandPurple/15 to-brandCyan/15 p-6 sm:p-10 mb-8 text-center sm:text-left">
+            <span class="inline-block px-3 py-1 rounded-full text-[10px] sm:text-xs font-mono font-bold uppercase tracking-wider bg-brandCyan/15 text-brandCyan border border-brandCyan/30 mb-3">
+                ⚡ ATUALIZAÇÃO DIÁRIA & RADAR DE IA
+            </span>
+            <h1 id="hero-title" class="text-2xl sm:text-4xl md:text-5xl font-extrabold text-white leading-tight mb-3">
                 O Fluxo da Tecnologia, Inovação e Inteligência Artificial.
             </h1>
-            <p id="hero-desc" class="text-base sm:text-lg text-zinc-400 font-medium max-w-2xl leading-relaxed">
+            <p id="hero-desc" class="text-xs sm:text-base text-zinc-400 max-w-2xl leading-relaxed">
                 Análises aprofundadas, dissecção de semicondutores, modelos de raciocínio e engenharia de software filtrados por agentes autônomos.
             </p>
         </div>
-    </section>
 
-    <!-- 4. Conteúdo Principal & Grid Bento com Imagens -->
-    <main class="max-w-[90rem] mx-auto px-6 pb-24 w-full relative flex-grow">
-        
-        <!-- Reader View Overlay (Modal de Leitura Aprofundada) -->
-        <div id="reader-view" class="fixed inset-0 z-[100] bg-[#030305]/95 backdrop-blur-2xl overflow-y-auto hidden opacity-0 transition-opacity duration-300">
-            <div class="max-w-3xl mx-auto px-6 py-16 relative">
-                <button onclick="closeReader()" id="btn-close" class="sticky top-6 mb-8 inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 hover:bg-white/20 border border-white/20 text-white font-mono text-sm transition-all shadow-lg">
-                    <i data-lucide="arrow-left" class="w-4 h-4"></i> Fechar Leitura
-                </button>
-                <div id="reader-content" class="prose-custom"></div>
-            </div>
+        <!-- Título da Seção -->
+        <div class="flex items-center justify-between mb-4">
+            <h2 class="text-lg sm:text-xl font-extrabold text-white flex items-center gap-2">
+                <span class="w-2 h-2 rounded-full bg-brandCyan"></span>
+                Últimas Publicações do Dia
+            </h2>
         </div>
 
-        <!-- Grid Bento de Notícias com Imagens em Alta Resolução -->
-        <div id="posts-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5 auto-rows-[320px]">
-            <!-- Injetado por JS dinamicamente -->
+        <!-- Grade de Notícias (100% da Largura da Tela no Mobile) -->
+        <div id="posts-grid" class="w-full">
+            <!-- Cards inseridos dinamicamente pelo JS -->
         </div>
 
         <!-- Caixa de Newsletter Oficial -->
-        <div style="background: linear-gradient(rgba(3, 3, 5, 0.85), rgba(3, 3, 5, 0.85)), url('newsletter.jpeg') center/cover no-repeat; border-radius: 24px; padding: 40px; border: 1px solid rgba(255, 255, 255, 0.1);" class="mt-16 mb-6">
-            <h3 class="text-2xl sm:text-3xl font-extrabold text-white mb-2">CorticFlow Semanal</h3>
-            <p class="text-zinc-400 text-sm mb-6 max-w-xl leading-relaxed">Receba as principais análises de tecnologia, lançamentos de IA e tutoriais práticos direto no seu e-mail.</p>
+        <div style="background: linear-gradient(rgba(11, 15, 25, 0.88), rgba(11, 15, 25, 0.88)), url('newsletter.jpeg') center/cover no-repeat; border-radius: 16px; padding: 32px 24px; border: 1px solid rgba(255, 255, 255, 0.1);" class="mt-8 mb-6">
+            <h3 class="text-xl sm:text-2xl font-extrabold text-white mb-2">CorticFlow Semanal</h3>
+            <p class="text-slate-300 text-xs mb-4 max-w-xl leading-relaxed">Receba as principais análises de tecnologia, lançamentos de IA e tutoriais práticos direto no seu e-mail.</p>
             <form class="flex flex-col sm:flex-row gap-3 max-w-md" onsubmit="event.preventDefault(); alert('Inscrição confirmada no CorticFlow!');">
-                <input type="email" placeholder="Seu melhor e-mail..." required class="flex-grow px-4 py-3 rounded-xl bg-black/80 border border-white/20 text-white text-sm focus:outline-none focus:border-brandCyan font-mono">
-                <button type="submit" class="py-3 px-6 rounded-xl bg-brandCyan hover:bg-cyan-300 text-black font-extrabold text-xs uppercase tracking-wider transition font-mono">Inscrever-se</button>
+                <input type="email" placeholder="Seu melhor e-mail..." required class="flex-grow px-4 py-2.5 rounded-xl bg-slate-900/90 border border-brandBorder text-white text-xs focus:outline-none focus:border-brandCyan font-mono">
+                <button type="submit" class="py-2.5 px-5 rounded-xl bg-brandCyan hover:bg-cyan-300 text-black font-extrabold text-xs uppercase tracking-wider transition font-mono">Inscrever-se</button>
             </form>
         </div>
 
     </main>
 
-    <!-- 5. Rodapé Institucional Completo -->
-    <footer class="border-t border-white/10 bg-[#030305] py-12">
-        <div class="max-w-[90rem] mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-6 text-xs font-mono text-zinc-500">
-            <div class="flex items-center gap-3">
-                <div class="w-6 h-6 rounded-lg bg-brandCyan text-black font-black flex items-center justify-center text-xs">C</div>
-                <span class="text-zinc-300 font-bold">CorticFlow</span>
-                <span>© 2026 Operação 100% em Nuvem.</span>
+    <!-- Modal de Leitura Completa -->
+    <div id="cortic-reading-modal" style="display: none; position: fixed; inset: 0; background: rgba(0, 0, 0, 0.92); z-index: 100000; overflow-y: auto; padding: 20px 14px; backdrop-filter: blur(12px);" onclick="closeCorticReader(event)">
+        <div style="background: #11141E; border: 1px solid #202636; border-radius: 20px; max-width: 800px; margin: 20px auto; padding: 24px sm:padding: 32px; position: relative; color: #E2E8F0; box-shadow: 0 25px 60px rgba(0,0,0,0.9);" onclick="event.stopPropagation()">
+            <button onclick="closeCorticReaderDirect()" style="position: absolute; top: 14px; right: 18px; font-size: 32px; color: #94A3B8; background: none; border: none; cursor: pointer; line-height: 1;" onmouseover="this.style.color='#00E5FF'" onmouseout="this.style.color='#94A3B8'">&times;</button>
+            <div id="reader-cat" style="display: inline-block; font-size: 11px; font-family: monospace; font-weight: 800; text-transform: uppercase; color: #00E5FF; background: rgba(0, 229, 255, 0.12); padding: 3px 10px; border-radius: 12px; border: 1px solid rgba(0, 229, 255, 0.3); margin-bottom: 12px;"></div>
+            <img id="reader-img" src="" alt="" style="width: 100%; height: 220px sm:height: 260px; object-fit: cover; border-radius: 12px; margin-bottom: 18px; border: 1px solid #202636; display: block;" onerror="this.src='cat-ai.jpeg'">
+            <h1 id="reader-title" style="font-size: 20px sm:font-size: 24px; font-weight: 800; color: #FFF; line-height: 1.35; margin-bottom: 12px;"></h1>
+            <div id="reader-meta" style="font-size: 11px sm:font-size: 12px; font-family: monospace; color: #94A3B8; margin-bottom: 20px; padding-bottom: 12px; border-bottom: 1px solid #202636;"></div>
+            <div id="reader-body" class="prose-custom"></div>
+            <div style="margin-top: 26px; padding-top: 16px; border-top: 1px solid #202636; display: flex; justify-content: space-between; align-items: center;">
+                <a id="reader-source" href="#" target="_blank" style="color: #00E5FF; font-size: 13px; font-weight: 700; text-decoration: none;">Fonte Original ↗</a>
+                <button onclick="closeCorticReaderDirect()" style="background: rgba(255,255,255,0.1); color: #FFF; border: 1px solid rgba(255,255,255,0.2); padding: 8px 18px; border-radius: 10px; font-size: 12px; font-weight: 600; cursor: pointer;">Fechar</button>
             </div>
-            <div class="flex flex-wrap items-center gap-6">
-                <a href="lab.html" class="text-brandCyan font-bold hover:underline inline-flex items-center gap-1">🧪 Lab 3D</a>
-                <a href="privacy.html" class="hover:text-zinc-300 transition">Política de Privacidade</a>
-                <a href="terms.html" class="hover:text-zinc-300 transition">Termos de Uso</a>
-                <a href="mailto:corticflow@gmail.com" class="hover:text-zinc-300 transition">corticflow@gmail.com</a>
-                <a href="[https://instagram.com/corticflow](https://instagram.com/corticflow)" target="_blank" rel="noopener noreferrer" class="hover:text-pink-400 transition inline-flex items-center gap-1">Instagram @corticflow ↗</a>
+        </div>
+    </div>
+
+    <!-- 4. Rodapé Institucional Completo -->
+    <footer class="border-t border-white/10 bg-black py-10 w-full">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 flex flex-col md:flex-row justify-between items-center gap-4 text-xs font-mono text-zinc-500 text-center md:text-left">
+            <div>
+                <span class="text-zinc-300 font-bold">CorticFlow</span> — © 2026 Operação 100% em Nuvem.
+            </div>
+            <div class="flex flex-wrap justify-center items-center gap-4">
+                <a href="lab.html" class="text-brandCyan font-bold hover:underline">🧪 Lab 3D</a>
+                <a href="privacy.html" class="hover:text-zinc-300">Privacidade</a>
+                <a href="terms.html" class="hover:text-zinc-300">Termos</a>
+                <a href="mailto:corticflow@gmail.com" class="hover:text-zinc-300">Contato</a>
+                <a href="https://instagram.com/corticflow" target="_blank" rel="noopener noreferrer" class="hover:text-pink-400">Instagram @corticflow ↗</a>
             </div>
         </div>
     </footer>
 
-    <!-- Lógica JS 100% Bilíngue -->
+    <!-- Scripts de Interação -->
     <script>
-        let allPosts = [];
+        let allPostsData = [];
         let currentLang = 'pt';
 
-        async function loadPosts() {
-            try {
-                const response = await fetch('posts.json?v=' + Date.now());
-                allPosts = await response.json();
-                renderPosts();
-            } catch (err) {
-                console.error("Erro ao carregar posts:", err);
+        // 1. Barra de Leitura no Topo
+        window.addEventListener('scroll', () => {
+            const scrollTop = window.scrollY || document.documentElement.scrollTop;
+            const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+            if (docHeight > 0) {
+                document.getElementById('progress-bar').style.width = ((scrollTop / docHeight) * 100) + '%';
             }
-        }
+        });
 
+        // 2. Idioma (PT / EN)
         function setLang(lang) {
             currentLang = lang;
+            document.getElementById('btn-lang-pt').className = lang === 'pt' ? 'px-2.5 py-0.5 rounded-full text-[10px] font-bold transition-all bg-brandCyan text-black' : 'px-2.5 py-0.5 rounded-full text-[10px] font-medium transition-all text-zinc-400 hover:text-white';
+            document.getElementById('btn-lang-en').className = lang === 'en' ? 'px-2.5 py-0.5 rounded-full text-[10px] font-bold transition-all bg-brandCyan text-black' : 'px-2.5 py-0.5 rounded-full text-[10px] font-medium transition-all text-zinc-400 hover:text-white';
             
-            // Alterna os botões visuais
-            document.getElementById('btn-lang-pt').className = lang === 'pt' ? 'px-3 py-1 rounded-full text-[10px] font-bold transition-all bg-white text-black' : 'px-3 py-1 rounded-full text-[10px] font-medium transition-all text-zinc-400 hover:text-white';
-            document.getElementById('btn-lang-en').className = lang === 'en' ? 'px-3 py-1 rounded-full text-[10px] font-bold transition-all bg-white text-black' : 'px-3 py-1 rounded-full text-[10px] font-medium transition-all text-zinc-400 hover:text-white';
+            document.getElementById('hero-title').innerText = lang === 'pt' ? 'O Fluxo da Tecnologia, Inovação e Inteligência Artificial.' : 'The Stream of Technology, Innovation and Artificial Intelligence.';
+            document.getElementById('hero-desc').innerText = lang === 'pt' ? 'Análises aprofundadas, dissecção de semicondutores, modelos de raciocínio e engenharia de software filtrados por agentes autônomos.' : 'In-depth analysis, semiconductor dissections, reasoning models and software engineering filtered by autonomous agents.';
             
-            // Alterna os textos da página
-            document.getElementById('hero-title').innerText = lang === 'pt' ? 'O Fluxo da Tecnologia, Inovação e Inteligência Artificial.' : 'The Stream of AI, Innovation & Deep Tech Intelligence.';
-            document.getElementById('hero-desc').innerText = lang === 'pt' ? 'Análises aprofundadas, dissecção de semicondutores, modelos de raciocínio e engenharia de software filtrados por agentes autônomos.' : 'In-depth analysis, semiconductor architecture, reasoning models, and software engineering filtered by autonomous agents.';
-            document.getElementById('btn-close').innerHTML = lang === 'pt' ? '<i data-lucide="arrow-left" class="w-4 h-4"></i> Fechar Leitura' : '<i data-lucide="arrow-left" class="w-4 h-4"></i> Close Reader';
-
-            renderPosts();
+            renderFeed();
         }
 
-        function renderPosts() {
+        // 3. Renderização Dinâmica dos Cards
+        function renderFeed() {
             const grid = document.getElementById('posts-grid');
-            if (!grid) return;
+            if (!grid || !allPostsData.length) return;
             grid.innerHTML = '';
 
-            allPosts.forEach((post, index) => {
-                const title = currentLang === 'en' ? (post.title_en || post.title) : (post.title_pt || post.title);
-                const coverImage = post.image || post.img || 'cat-ai.jpeg';
-                const card = document.createElement('div');
-                
-                let gridClasses = 'bento-card rounded-3xl p-7 flex flex-col justify-between cursor-pointer group ';
-                if (index === 0) {
-                    gridClasses += 'md:col-span-2 md:row-span-2 ';
-                } else if (index === 3 || index === 4) {
-                    gridClasses += 'md:col-span-2 ';
-                } else {
-                    gridClasses += 'col-span-1 ';
-                }
+            allPostsData.forEach((post, i) => {
+                const isEn = (currentLang === 'en');
+                const title = isEn ? (post.title_en || post.title) : (post.title_pt || post.title || post.titulo || 'Notícia');
+                const content = isEn ? (post.content_en || post.content) : (post.content_pt || post.content || post.desc);
+                const desc = (post.desc || post.resumo || content || '').replace(/#+\s/g, '').substring(0, 160) + '...';
+                const img = post.image || post.img || 'cat-ai.jpeg';
+                const cat = post.category || post.categoria || 'Geral';
+                const time = post.readTime || post.read_time || '5 min';
+                const date = post.date || post.data || '27/08/2026';
+                const btnText = isEn ? 'Read Full Article →' : 'Ler Matéria Completa →';
 
-                card.className = gridClasses;
-                card.onclick = () => openPost(post);
+                const card = document.createElement('article');
+                card.className = 'cortic-card';
+                card.onclick = () => openCorticReader(post);
 
                 card.innerHTML = `
-                    <div class="absolute inset-0 z-0 bg-cover bg-center opacity-35 group-hover:opacity-55 group-hover:scale-105 transition-all duration-700" style="background-image: url('${coverImage}');"></div>
-                    <div class="absolute inset-0 z-0 bg-gradient-to-t from-[#030305] via-[#030305]/75 to-transparent"></div>
-
-                    <div class="relative z-10 flex justify-between items-start">
-                        <span class="px-3 py-1 rounded-full bg-black/60 text-brandCyan text-[10px] font-mono tracking-widest uppercase backdrop-blur-md border border-brandCyan/30">
-                            ${post.category || 'Tech'}
-                        </span>
-                        <div class="w-8 h-8 rounded-full bg-black/50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity border border-white/20">
-                            <i data-lucide="arrow-up-right" class="w-4 h-4 text-brandCyan"></i>
+                    <div>
+                        <div style="position: relative; overflow: hidden;">
+                            <img src="${img}" alt="${title}" class="cortic-card-img" onerror="this.src='cat-ai.jpeg'">
+                            <span style="position: absolute; top: 10px; left: 10px; font-size: 10px; font-family: monospace; font-weight: 800; text-transform: uppercase; color: #00E5FF; background: rgba(0,0,0,0.8); border: 1px solid rgba(0, 229, 255, 0.4); padding: 3px 10px; border-radius: 20px; backdrop-filter: blur(8px);">
+                                ${cat}
+                            </span>
+                        </div>
+                        <div style="padding: 20px;">
+                            <div style="display: flex; justify-content: space-between; font-size: 11px; font-family: monospace; color: #94A3B8; margin-bottom: 8px;">
+                                <span>📅 ${date}</span>
+                                <span>⏱️ ${time}</span>
+                            </div>
+                            <h3 style="font-size: 16px; font-weight: 800; color: #FFF; line-height: 1.4; margin-bottom: 8px;">
+                                ${title}
+                            </h3>
+                            <p style="font-size: 13px; line-height: 1.6; color: #94A3B8;">
+                                ${desc}
+                            </p>
                         </div>
                     </div>
-                    
-                    <div class="relative z-10 mt-6">
-                        <h2 class="text-xl ${index === 0 ? 'sm:text-3xl' : 'sm:text-xl'} font-bold text-white mb-2.5 group-hover:text-brandCyan transition-colors tracking-tight line-clamp-3">
-                            ${title}
-                        </h2>
-                        <div class="flex items-center justify-between text-xs text-zinc-400 font-mono">
-                            <span>📅 ${post.date || 'Hoje'}</span>
-                            <span>⏱️ ${post.read_time || '5 min'}</span>
-                        </div>
+                    <div style="padding: 0 20px 18px 20px; display: flex; align-items: center; justify-content: space-between; font-size: 12px; font-family: monospace; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 12px;">
+                        <span style="color: #00E5FF; font-weight: 700;">${btnText}</span>
                     </div>
                 `;
-                
+
                 grid.appendChild(card);
             });
-            lucide.createIcons();
         }
 
-        async function openPost(postObj) {
-            const readerView = document.getElementById('reader-view');
-            const readerContent = document.getElementById('reader-content');
+        // 4. Abertura do Modal de Leitura
+        function openCorticReader(post) {
+            const isEn = (currentLang === 'en');
+            const title = isEn ? (post.title_en || post.title) : (post.title_pt || post.title || post.titulo);
+            const content = isEn ? (post.content_en || post.content) : (post.content_pt || post.content || post.desc);
             
-            readerView.classList.remove('hidden');
-            setTimeout(() => readerView.classList.remove('opacity-0'), 10);
+            document.getElementById('reader-cat').innerText = post.category || 'Geral';
+            document.getElementById('reader-title').innerText = title;
+            document.getElementById('reader-meta').innerText = `📅 ${post.date || 'Hoje'} • ⏱️ ${post.readTime || '5 min'} • CorticFlow Editorial`;
+            
+            const imgEl = document.getElementById('reader-img');
+            imgEl.src = post.image || post.img || 'cat-ai.jpeg';
+
+            document.getElementById('reader-body').innerHTML = window.marked ? marked.parse(content) : content.replace(/\n/g, '<br>');
+            
+            const src = document.getElementById('reader-source');
+            if (post.link || post.fonte) {
+                src.href = post.link || post.fonte;
+                src.style.display = 'inline-block';
+            } else {
+                src.style.display = 'none';
+            }
+
+            document.getElementById('cortic-reading-modal').style.display = 'block';
             document.body.style.overflow = 'hidden';
-
-            const markdownBody = currentLang === 'en' ? (postObj.content_en || postObj.content_pt) : (postObj.content_pt || postObj.content_en);
-            readerContent.innerHTML = window.marked ? marked.parse(markdownBody) : markdownBody.replace(/\n/g, '<br>');
-            lucide.createIcons();
         }
 
-        function closeReader() {
-            const readerView = document.getElementById('reader-view');
-            readerView.classList.add('opacity-0');
-            setTimeout(() => {
-                readerView.classList.add('hidden');
-                document.body.style.overflow = 'auto';
-            }, 300);
+        function closeCorticReader(e) {
+            if (e.target.id === 'cortic-reading-modal') closeCorticReaderDirect();
+        }
+        function closeCorticReaderDirect() {
+            document.getElementById('cortic-reading-modal').style.display = 'none';
+            document.body.style.overflow = 'auto';
         }
 
+        // 5. Inicialização
         document.addEventListener('DOMContentLoaded', () => {
-            loadPosts();
+            fetch('posts.json?v=' + Date.now())
+                .then(r => r.json())
+                .then(posts => {
+                    allPostsData = posts;
+                    renderFeed();
+                })
+                .catch(e => console.log('Aviso:', e));
 
             if (window.VANTA && window.VANTA.NET && window.innerWidth >= 768) {
                 VANTA.NET({
@@ -309,7 +376,7 @@
                     touchControls: false,
                     gyroControls: false,
                     color: 0x475569,
-                    backgroundColor: 0x030305,
+                    backgroundColor: 0x080A0F,
                     points: 7.00,
                     maxDistance: 16.00,
                     spacing: 20.00
@@ -317,73 +384,5 @@
             }
         });
     </script>
-    <!-- ==================================================== -->
-<!-- LEITOR OFICIAL EM TELA CHEIA (POP-UP LIMPO)          -->
-<!-- ==================================================== -->
-<div id="reader-view" style="display: none; position: fixed; inset: 0; background: rgba(3, 3, 5, 0.95); z-index: 99999; overflow-y: auto; padding: 40px 16px; backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);" onclick="closeReader()">
-  <div style="background: #11141E; border: 1px solid #202636; border-radius: 24px; max-width: 800px; margin: 20px auto; padding: 36px; position: relative; color: #E2E8F0; box-shadow: 0 25px 60px rgba(0,0,0,0.9);" onclick="event.stopPropagation()">
-    
-    <button onclick="closeReader()" style="position: absolute; top: 16px; right: 20px; font-size: 32px; color: #94A3B8; background: none; border: none; cursor: pointer; line-height: 1;" onmouseover="this.style.color='#00E5FF'" onmouseout="this.style.color='#94A3B8'">&times;</button>
-    
-    <div id="reader-cat-badge" style="display: inline-block; font-size: 11px; font-family: monospace; font-weight: 800; text-transform: uppercase; color: #00E5FF; background: rgba(0, 229, 255, 0.12); padding: 3px 10px; border-radius: 12px; border: 1px solid rgba(0, 229, 255, 0.3); margin-bottom: 14px;"></div>
-    
-    <img id="reader-cover-img" src="" alt="" style="width: 100%; height: 260px; object-fit: cover; border-radius: 14px; margin-bottom: 20px; border: 1px solid #202636; display: block;" onerror="this.src='cat-ai.jpeg'">
-    
-    <h1 id="reader-article-title" style="font-size: 26px; font-weight: 800; color: #FFF; line-height: 1.35; margin-bottom: 14px;"></h1>
-    
-    <div id="reader-article-meta" style="font-size: 12px; font-family: monospace; color: #94A3B8; margin-bottom: 24px; padding-bottom: 14px; border-bottom: 1px solid #202636;"></div>
-    
-    <div id="reader-article-body" class="prose prose-invert max-w-none text-slate-300 space-y-4 text-base leading-relaxed"></div>
-    
-    <div style="margin-top: 36px; padding-top: 20px; border-top: 1px solid #202636; display: flex; justify-content: space-between; align-items: center;">
-      <a id="reader-article-source" href="#" target="_blank" style="color: #00E5FF; font-size: 13px; font-weight: 700; text-decoration: none;">Acessar Fonte Original ↗</a>
-      <button onclick="closeReader()" style="background: rgba(255,255,255,0.1); color: #FFF; border: 1px solid rgba(255,255,255,0.2); padding: 8px 22px; border-radius: 12px; font-size: 13px; font-weight: 600; cursor: pointer;">Fechar Leitura</button>
-    </div>
-  </div>
-</div>
-
-<script>
-let corticAllPosts = [];
-
-function openPost(path, postObj) {
-  const modal = document.getElementById('reader-view');
-  if (!modal) return;
-
-  const isEn = (currentLang === 'en');
-  const title = isEn ? (postObj?.title_en || postObj?.title) : (postObj?.title_pt || postObj?.title || postObj?.titulo);
-  const content = isEn ? (postObj?.content_en || postObj?.content) : (postObj?.content_pt || postObj?.content || postObj?.desc);
-
-  document.getElementById('reader-cat-badge').innerText = postObj?.category || postObj?.categoria || 'Tecnologia';
-  document.getElementById('reader-article-title').innerText = title || 'Notícia';
-  document.getElementById('reader-article-meta').innerText = `📅 ${postObj?.date || 'Hoje'} • ⏱️ ${postObj?.readTime || '5 min'} • CorticFlow Editorial`;
-  
-  const img = document.getElementById('reader-cover-img');
-  img.src = postObj?.image || postObj?.img || 'cat-ai.jpeg';
-
-  document.getElementById('reader-article-body').innerHTML = window.marked ? marked.parse(content || '') : (content || '').replace(/\n/g, '<br>');
-  
-  const src = document.getElementById('reader-article-source');
-  if (postObj?.link || postObj?.fonte) {
-    src.href = postObj.link || postObj.fonte;
-    src.style.display = 'inline-block';
-    src.innerText = isEn ? 'Access Original Source ↗' : 'Acessar Fonte Original ↗';
-  } else {
-    src.style.display = 'none';
-  }
-
-  modal.style.display = 'block';
-  document.body.style.overflow = 'hidden';
-}
-
-function closeReader() {
-  const modal = document.getElementById('reader-view');
-  if (modal) {
-    modal.style.display = 'none';
-    document.body.style.overflow = 'auto';
-  }
-}
-</script>
-<!-- ==================================================== -->
-    
 </body>
 </html>
