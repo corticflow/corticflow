@@ -5,18 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CorticFlow | Intelligence & Deep Tech Dispatch</title>
     
-    <!-- Favicon -->
-    <link rel="icon" type="image/png" href="https://github.com/corticflow.png">
-    <link rel="apple-touch-icon" href="https://github.com/corticflow.png">
+    <link rel="icon" type="image/png" href="[https://github.com/corticflow.png](https://github.com/corticflow.png)">
+    <link rel="apple-touch-icon" href="[https://github.com/corticflow.png](https://github.com/corticflow.png)">
     
-    <!-- Search Console & AdSense -->
     <meta name="google-site-verification" content="43zcGSljLsHVe02k10h5cw8RD1YOL_NODxaqsoRaT28" />
     <meta name="google-adsense-account" content="ca-pub-6428908869375108" />
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6428908869375108" crossorigin="anonymous"></script>
+    <script async src="[https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6428908869375108](https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6428908869375108)" crossorigin="anonymous"></script>
 
-    <!-- Tailwind & Marked.js -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="[https://cdn.tailwindcss.com](https://cdn.tailwindcss.com)"></script>
+    <script src="[https://cdn.jsdelivr.net/npm/marked/marked.min.js](https://cdn.jsdelivr.net/npm/marked/marked.min.js)"></script>
     <script>
         tailwind.config = {
             darkMode: 'class',
@@ -35,12 +32,12 @@
             }
         }
     </script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
-    <script src="https://unpkg.com/lucide@latest"></script>
+    <link href="[https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;800&family=JetBrains+Mono:wght@400;500;700&display=swap](https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;800&family=JetBrains+Mono:wght@400;500;700&display=swap)" rel="stylesheet">
+    <script src="[https://unpkg.com/lucide@latest](https://unpkg.com/lucide@latest)"></script>
 
-    <!-- Three.js + Vanta.js para Fundo 3D -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
+    <!-- Fundo 3D Vanta.js -->
+    <script src="[https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js](https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js)"></script>
+    <script src="[https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js](https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js)"></script>
 
     <style>
         body {
@@ -50,27 +47,16 @@
             overflow-x: hidden;
         }
 
-        /* Ticker Animado */
         .ticker-wrap { overflow: hidden; white-space: nowrap; }
         .ticker-move { display: inline-block; animation: ticker 35s linear infinite; }
         @keyframes ticker { 0% { transform: translate3d(0, 0, 0); } 100% { transform: translate3d(-50%, 0, 0); } }
 
-        /* Barra de Leitura no Topo */
-        #cortic-scroll-bar {
-            position: fixed; top: 0; left: 0; height: 3.5px; width: 0%;
-            background: linear-gradient(90deg, #00E5FF, #8B5CF6);
-            z-index: 100000; box-shadow: 0 0 12px rgba(0, 229, 255, 0.8);
-            transition: width 0.08s ease-out;
-        }
-
-        /* Bento Cards */
         .bento-card {
             background-color: rgba(17, 20, 30, 0.75);
             border: 1px solid rgba(255, 255, 255, 0.08);
             position: relative;
             overflow: hidden;
-            border-radius: 20px;
-            transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.3s, box-shadow 0.3s;
         }
         .bento-card:hover {
             transform: translateY(-4px);
@@ -97,13 +83,10 @@
 </head>
 <body class="min-h-screen flex flex-col antialiased selection:bg-brandCyan selection:text-black">
 
-    <!-- Barra de Rolagem no Topo -->
-    <div id="cortic-scroll-bar"></div>
-
-    <!-- Fundo 3D Vanta -->
+    <!-- Fundo 3D -->
     <div id="vanta-bg" style="position: fixed; inset: 0; z-index: -1; pointer-events: none; opacity: 0.35;"></div>
 
-    <!-- 1. Radar ao Vivo Piscando -->
+    <!-- 1. Top Wire Ticker: RADAR AO VIVO PISCANTE -->
     <div class="bg-black border-b border-white/10 py-1.5 px-6 text-xs font-mono flex items-center justify-between text-zinc-400 z-50">
         <div class="flex items-center overflow-hidden flex-1 mr-4">
             <span class="inline-flex items-center gap-2 px-2.5 py-0.5 rounded-full bg-brandCyan/10 text-brandCyan font-extrabold uppercase tracking-widest text-[9px] mr-3 shrink-0 border border-brandCyan/30">
@@ -115,19 +98,19 @@
             </span>
             <div class="ticker-wrap flex-1 overflow-hidden">
                 <div id="ticker-text" class="ticker-move text-zinc-300 font-medium">
-                    ⚡ [Nvidia] Receita atinge US$ 96.2 Bi e projeta +70% em 2027 • [Hardware] Falha GPUThor desafia memórias de IA • [Economia] Bill Gates alerta para transição de empregos cognitivos • [Infra] Eficiência térmica de data centers cresce 20% com IA
+                    ⚡ [Nvidia] Arquitetura Vera CPU para Frotas de Agentes • [Modelos] GLM-5.2 lidera open-weights com 753B • [Chips] Semicondutores rumo a US$ 1 Trilhão • [Governança] Gestão financeira e circuit breakers para IA • [Startups] Investimentos bilionários em nuvem soberana
                 </div>
             </div>
         </div>
 
-        <!-- Botão Lab 3D e Idioma -->
+        <!-- Botão Lab 3D e Seletor Bilíngue -->
         <div class="flex items-center gap-3 shrink-0">
             <a href="lab.html" class="hidden sm:inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-mono font-bold text-brandCyan bg-brandCyan/10 border border-brandCyan/30 hover:bg-brandCyan hover:text-black transition-all">
                 🧪 Lab 3D
             </a>
             <div class="flex items-center gap-1 bg-white/5 p-0.5 rounded-full border border-white/10">
-                <button onclick="setLanguage('pt')" id="btn-pt" class="px-3 py-1 rounded-full text-[10px] font-bold transition-all bg-brandCyan text-black">PT</button>
-                <button onclick="setLanguage('en')" id="btn-en" class="px-3 py-1 rounded-full text-[10px] font-medium transition-all text-zinc-400 hover:text-white">EN</button>
+                <button onclick="setLang('pt')" id="btn-lang-pt" class="px-3 py-1 rounded-full text-[10px] font-bold transition-all bg-white text-black">PT</button>
+                <button onclick="setLang('en')" id="btn-lang-en" class="px-3 py-1 rounded-full text-[10px] font-medium transition-all text-zinc-400 hover:text-white">EN</button>
             </div>
         </div>
     </div>
@@ -137,7 +120,7 @@
         <div class="max-w-[90rem] mx-auto px-6 h-20 flex items-center justify-between">
             <div class="flex items-center gap-4 cursor-pointer" onclick="location.reload()">
                 <div class="w-10 h-10 rounded-2xl bg-white flex items-center justify-center overflow-hidden border border-brandCyan/30 shadow-[0_0_15px_rgba(0,229,255,0.3)]">
-                    <img src="logo.jpeg" alt="CorticFlow Logo" class="w-full h-full object-cover" onerror="this.src='https://github.com/corticflow.png'">
+                    <img src="logo.jpeg" alt="CorticFlow Logo" class="w-full h-full object-cover" onerror="this.src='[https://github.com/corticflow.png](https://github.com/corticflow.png)'">
                 </div>
                 <div>
                     <span class="text-2xl font-extrabold tracking-tighter text-white">Cortic<span class="text-brandCyan">Flow</span></span>
@@ -151,7 +134,7 @@
     </header>
 
     <!-- 3. Hero Section -->
-    <section class="max-w-[90rem] mx-auto px-6 pt-16 pb-10 text-center sm:text-left flex flex-col xl:flex-row items-center justify-between gap-8">
+    <section class="max-w-[90rem] mx-auto px-6 pt-16 pb-12 text-center sm:text-left flex flex-col xl:flex-row items-center justify-between gap-8">
         <div class="max-w-3xl">
             <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-mono uppercase tracking-wider bg-brandCyan/10 text-brandCyan border border-brandCyan/20 mb-4">
                 Deep Tech & AI Intelligence Dispatch
@@ -165,10 +148,10 @@
         </div>
     </section>
 
-    <!-- 4. Conteúdo Principal & Grid de Matérias -->
+    <!-- 4. Conteúdo Principal & Grid Bento com Imagens -->
     <main class="max-w-[90rem] mx-auto px-6 pb-24 w-full relative flex-grow">
         
-        <!-- Modal de Leitura Completa -->
+        <!-- Reader View Overlay (Modal de Leitura Aprofundada) -->
         <div id="reader-view" class="fixed inset-0 z-[100] bg-[#030305]/95 backdrop-blur-2xl overflow-y-auto hidden opacity-0 transition-opacity duration-300">
             <div class="max-w-3xl mx-auto px-6 py-16 relative">
                 <button onclick="closeReader()" id="btn-close" class="sticky top-6 mb-8 inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 hover:bg-white/20 border border-white/20 text-white font-mono text-sm transition-all shadow-lg">
@@ -178,12 +161,12 @@
             </div>
         </div>
 
-        <!-- Grade de Notícias com Imagens -->
-        <div id="posts-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-            <!-- Cards renderizados com proteção total -->
+        <!-- Grid Bento de Notícias com Imagens em Alta Resolução -->
+        <div id="posts-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5 auto-rows-[320px]">
+            <!-- Injetado por JS dinamicamente -->
         </div>
 
-        <!-- Newsletter Oficial -->
+        <!-- Caixa de Newsletter Oficial -->
         <div style="background: linear-gradient(rgba(3, 3, 5, 0.85), rgba(3, 3, 5, 0.85)), url('newsletter.jpeg') center/cover no-repeat; border-radius: 24px; padding: 40px; border: 1px solid rgba(255, 255, 255, 0.1);" class="mt-16 mb-6">
             <h3 class="text-2xl sm:text-3xl font-extrabold text-white mb-2">CorticFlow Semanal</h3>
             <p class="text-zinc-400 text-sm mb-6 max-w-xl leading-relaxed">Receba as principais análises de tecnologia, lançamentos de IA e tutoriais práticos direto no seu e-mail.</p>
@@ -208,160 +191,103 @@
                 <a href="privacy.html" class="hover:text-zinc-300 transition">Política de Privacidade</a>
                 <a href="terms.html" class="hover:text-zinc-300 transition">Termos de Uso</a>
                 <a href="mailto:corticflow@gmail.com" class="hover:text-zinc-300 transition">corticflow@gmail.com</a>
-                <a href="https://instagram.com/corticflow" target="_blank" rel="noopener noreferrer" class="hover:text-pink-400 transition inline-flex items-center gap-1">Instagram @corticflow ↗</a>
+                <a href="[https://instagram.com/corticflow](https://instagram.com/corticflow)" target="_blank" rel="noopener noreferrer" class="hover:text-pink-400 transition inline-flex items-center gap-1">Instagram @corticflow ↗</a>
             </div>
         </div>
     </footer>
 
-    <!-- Lógica de Fallback + Renderização de Matérias -->
+    <!-- Lógica JS 100% Bilíngue -->
     <script>
-        // Matérias base garantidas de hoje (27 de Agosto) para o site nunca ficar em branco
-        const fallbackArticles = [
-            {
-                category: "Hardware & Chips",
-                title_pt: "Nvidia Divulga Resultados Históricos e Projeta Crescimento de 70% para 2027",
-                title_en: "Nvidia Reports Historic Earnings and Forecasts 70% Growth for 2027",
-                image: "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=1200&auto=format&fit=crop&q=80",
-                date: "27/08/2026",
-                readTime: "4 min",
-                desc: "Com receita trimestral recorde de US$ 96,2 bilhões, a Nvidia consolida a aceleração das plataformas Blackwell e da CPU Vera nos data centers mundiais.",
-                content_pt: "## A Escala da Infraestrutura de IA\n\nOs números apresentados pela Nvidia consolidam a computação acelerada como a infraestrutura física indispensável da economia moderna. Com margens brutas superiores a 75% no segmento de data centers corporativos, a receita total atingiu US$ 96,2 bilhões no trimestre, superando as estimativas de Wall Street.\n\n### O Impacto das Famílias Blackwell e Vera\n\nA demanda crescente por inferência e treinamento de modelos de raciocínio contínuo impulsiona a adoção de sistemas completos de rede NVLink e servidores refrigerados a líquido."
-            },
-            {
-                category: "Mercado & Big Techs",
-                title_pt: "Bill Gates Alerta para Despreparo Global Diante da Automação por IA",
-                title_en: "Bill Gates Warns World Is Dangerously Unprepared for AI Labor Upheaval",
-                image: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=1200&auto=format&fit=crop&q=80",
-                date: "27/08/2026",
-                readTime: "5 min",
-                desc: "Em nova análise executiva, Bill Gates adverte que o mercado de trabalho corporativo e a cibersegurança enfrentam um ponto de inflexão crítico.",
-                content_pt: "## A Transição do Trabalho Intelectual\n\nEm artigo divulgado nesta quarta-feira, Bill Gates alertou que a inteligência artificial generativa está substituindo funções de pensamento complexo em áreas como direito, medicina e engenharia de software muito mais rápido do que a sociedade consegue se adaptar.\n\n### Prioridade em Cibersegurança\n\nEspecialistas apontam que a automação ofensiva por agentes autônomos exige defesas em tempo real para proteger bancos, infraestruturas de energia e telecomunicações."
-            },
-            {
-                category: "Hardware & Chips",
-                title_pt: "Pesquisadores Revelam Vulnerabilidade Rowhammer em GPUs de IA",
-                title_en: "GPUThor Vulnerability Defeats ECC Protections on Modern AI GPUs",
-                image: "https://images.unsplash.com/photo-1591799264318-7e6ef8ddb7ea?w=1200&auto=format&fit=crop&q=80",
-                date: "27/08/2026",
-                readTime: "4 min",
-                desc: "A técnica batizada de GPUThor consegue induzir bit flips em memórias GDDR6 e HBM para contornar proteções ECC e obter privilégios de administrador.",
-                content_pt: "## Falha de Hardware em Ambientes Multi-Tenant\n\nEspecialistas em segurança ofensiva demonstraram que ataques elétricos repetidos em células de memória de aceleradores gráficos conseguem alterar dados confidenciais e quebrar o isolamento entre clientes em clusters de nuvem compartilhada.\n\n### Mitigações Mandatórias\n\nA aplicação de patches de firmware nos controladores de memória e o isolamento físico de hardware são os passos recomendados pela indústria."
-            },
-            {
-                category: "Android & Gadgets",
-                title_pt: "Nova Geração de Smartphones com IA On-Device e Memória CXL",
-                title_en: "Next-Gen AI On-Device Smartphones Integrate High-Bandwidth Architecture",
-                image: "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=1200&auto=format&fit=crop&q=80",
-                date: "27/08/2026",
-                readTime: "3 min",
-                desc: "Fabricantes aceleram a migração de modelos neurais para execução 100% local com chips de 3nm e privacidade total.",
-                content_pt: "## IA Local sem Envio de Dados para a Nuvem\n\nA consolidação de NPUs dedicadas de 45+ TOPS em dispositivos móveis permite tradução contínua, síntese de áudio e edição generativa de imagem instantânea com consumo mínimo de bateria."
+        let allPosts = [];
+        let currentLang = 'pt';
+
+        async function loadPosts() {
+            try {
+                const response = await fetch('posts.json?v=' + Date.now());
+                allPosts = await response.json();
+                renderPosts();
+            } catch (err) {
+                console.error("Erro ao carregar posts:", err);
             }
-        ];
+        }
 
-        let allPosts = fallbackArticles;
-        let currentLang = localStorage.getItem('cortic_lang') || 'pt';
-
-        // 1. Barra de Rolagem
-        window.addEventListener('scroll', () => {
-            const scrollTop = window.scrollY || document.documentElement.scrollTop;
-            const docHeight = document.documentElement.scrollHeight - window.innerHeight;
-            if (docHeight > 0) {
-                document.getElementById('cortic-scroll-bar').style.width = ((scrollTop / docHeight) * 100) + '%';
-            }
-        });
-
-        // 2. Seletor de Idioma
-        function setLanguage(lang) {
+        function setLang(lang) {
             currentLang = lang;
-            localStorage.setItem('cortic_lang', lang);
+            
+            // Alterna os botões visuais
+            document.getElementById('btn-lang-pt').className = lang === 'pt' ? 'px-3 py-1 rounded-full text-[10px] font-bold transition-all bg-white text-black' : 'px-3 py-1 rounded-full text-[10px] font-medium transition-all text-zinc-400 hover:text-white';
+            document.getElementById('btn-lang-en').className = lang === 'en' ? 'px-3 py-1 rounded-full text-[10px] font-bold transition-all bg-white text-black' : 'px-3 py-1 rounded-full text-[10px] font-medium transition-all text-zinc-400 hover:text-white';
+            
+            // Alterna os textos da página
+            document.getElementById('hero-title').innerText = lang === 'pt' ? 'O Fluxo da Tecnologia, Inovação e Inteligência Artificial.' : 'The Stream of AI, Innovation & Deep Tech Intelligence.';
+            document.getElementById('hero-desc').innerText = lang === 'pt' ? 'Análises aprofundadas, dissecção de semicondutores, modelos de raciocínio e engenharia de software filtrados por agentes autônomos.' : 'In-depth analysis, semiconductor architecture, reasoning models, and software engineering filtered by autonomous agents.';
+            document.getElementById('btn-close').innerHTML = lang === 'pt' ? '<i data-lucide="arrow-left" class="w-4 h-4"></i> Fechar Leitura' : '<i data-lucide="arrow-left" class="w-4 h-4"></i> Close Reader';
 
-            const btnPt = document.getElementById('btn-pt');
-            const btnEn = document.getElementById('btn-en');
-            if (btnPt && btnEn) {
-                btnPt.className = lang === 'pt' ? 'px-3 py-1 rounded-full text-[10px] font-bold transition-all bg-brandCyan text-black' : 'px-3 py-1 rounded-full text-[10px] font-medium transition-all text-zinc-400 hover:text-white';
-                btnEn.className = lang === 'en' ? 'px-3 py-1 rounded-full text-[10px] font-bold transition-all bg-brandCyan text-black' : 'px-3 py-1 rounded-full text-[10px] font-medium transition-all text-zinc-400 hover:text-white';
-            }
             renderPosts();
         }
 
-        // 3. Renderizador da Grade de Matérias
         function renderPosts() {
             const grid = document.getElementById('posts-grid');
             if (!grid) return;
             grid.innerHTML = '';
 
             allPosts.forEach((post, index) => {
-                const isEn = (currentLang === 'en');
-                const title = isEn ? (post.title_en || post.title) : (post.title_pt || post.title || post.titulo);
-                const desc = post.desc || post.summary || post.resumo || (post.content_pt || '').substring(0, 160) + '...';
-                const img = post.image || post.img || 'https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=1200&auto=format&fit=crop&q=80';
-                const cat = post.category || post.categoria || 'Tech';
-                const time = post.readTime || post.read_time || '4 min';
-                const readText = isEn ? 'Read Full Article →' : 'Ler Matéria Completa →';
+                const title = currentLang === 'en' ? (post.title_en || post.title) : (post.title_pt || post.title);
+                const coverImage = post.image || post.img || 'cat-ai.jpeg';
+                const card = document.createElement('div');
+                
+                let gridClasses = 'bento-card rounded-3xl p-7 flex flex-col justify-between cursor-pointer group ';
+                if (index === 0) {
+                    gridClasses += 'md:col-span-2 md:row-span-2 ';
+                } else if (index === 3 || index === 4) {
+                    gridClasses += 'md:col-span-2 ';
+                } else {
+                    gridClasses += 'col-span-1 ';
+                }
 
-                const card = document.createElement('article');
-                card.className = 'bento-card flex flex-col justify-between cursor-pointer p-0 group';
+                card.className = gridClasses;
                 card.onclick = () => openPost(post);
 
                 card.innerHTML = `
-                    <div>
-                        <div class="relative h-48 w-full overflow-hidden bg-slate-900">
-                            <img src="${img}" alt="${title}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" onerror="this.src='https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=1200&auto=format&fit=crop&q=80'">
-                            <span class="absolute top-3 left-3 px-2.5 py-1 rounded-full text-[10px] font-mono font-extrabold uppercase tracking-wider bg-black/80 text-brandCyan border border-brandCyan/30 backdrop-blur-md">
-                                ${cat}
-                            </span>
-                        </div>
-                        <div class="p-6">
-                            <div class="flex items-center justify-between text-xs font-mono text-zinc-400 mb-3">
-                                <span>📅 ${post.date || '27/08/2026'}</span>
-                                <span>⏱️ ${time}</span>
-                            </div>
-                            <h2 class="text-lg font-bold text-white leading-snug mb-3 group-hover:text-brandCyan transition-colors">
-                                ${title}
-                            </h2>
-                            <p class="text-xs text-zinc-400 leading-relaxed line-clamp-3">
-                                ${desc}
-                            </p>
+                    <div class="absolute inset-0 z-0 bg-cover bg-center opacity-35 group-hover:opacity-55 group-hover:scale-105 transition-all duration-700" style="background-image: url('${coverImage}');"></div>
+                    <div class="absolute inset-0 z-0 bg-gradient-to-t from-[#030305] via-[#030305]/75 to-transparent"></div>
+
+                    <div class="relative z-10 flex justify-between items-start">
+                        <span class="px-3 py-1 rounded-full bg-black/60 text-brandCyan text-[10px] font-mono tracking-widest uppercase backdrop-blur-md border border-brandCyan/30">
+                            ${post.category || 'Tech'}
+                        </span>
+                        <div class="w-8 h-8 rounded-full bg-black/50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity border border-white/20">
+                            <i data-lucide="arrow-up-right" class="w-4 h-4 text-brandCyan"></i>
                         </div>
                     </div>
-                    <div class="px-6 pb-6 pt-2 border-t border-white/5 flex items-center justify-between text-xs font-mono">
-                        <span class="text-brandCyan font-bold group-hover:translate-x-1 transition-transform inline-flex items-center gap-1">
-                            ${readText}
-                        </span>
+                    
+                    <div class="relative z-10 mt-6">
+                        <h2 class="text-xl ${index === 0 ? 'sm:text-3xl' : 'sm:text-xl'} font-bold text-white mb-2.5 group-hover:text-brandCyan transition-colors tracking-tight line-clamp-3">
+                            ${title}
+                        </h2>
+                        <div class="flex items-center justify-between text-xs text-zinc-400 font-mono">
+                            <span>📅 ${post.date || 'Hoje'}</span>
+                            <span>⏱️ ${post.read_time || '5 min'}</span>
+                        </div>
                     </div>
                 `;
+                
                 grid.appendChild(card);
             });
-            if (window.lucide) lucide.createIcons();
+            lucide.createIcons();
         }
 
-        // 4. Abertura do Modal de Leitura
-        function openPost(post) {
+        async function openPost(postObj) {
             const readerView = document.getElementById('reader-view');
             const readerContent = document.getElementById('reader-content');
-            const isEn = (currentLang === 'en');
             
-            const title = isEn ? (post.title_en || post.title) : (post.title_pt || post.title || post.titulo);
-            const content = isEn ? (post.content_en || post.content) : (post.content_pt || post.content || post.desc);
-            const cat = post.category || post.categoria || 'Tech';
-            const date = post.date || '27/08/2026';
-
-            let bodyHtml = `
-                <div class="mb-4">
-                    <span class="px-3 py-1 rounded-full text-xs font-mono font-bold uppercase bg-brandCyan/15 text-brandCyan border border-brandCyan/30">${cat}</span>
-                    <span class="text-xs font-mono text-zinc-400 ml-3">📅 ${date} • ⏱️ ${post.readTime || '4 min'} • CorticFlow Editorial</span>
-                </div>
-                <h1 class="text-3xl sm:text-4xl font-extrabold text-white mb-6 leading-tight">${title}</h1>
-                <img src="${post.image || post.img}" class="w-full h-72 object-cover rounded-2xl mb-8 border border-white/10" onerror="this.style.display='none'">
-                <div>${window.marked ? marked.parse(content) : content.replace(/\n/g, '<br>')}</div>
-            `;
-
-            readerContent.innerHTML = bodyHtml;
             readerView.classList.remove('hidden');
             setTimeout(() => readerView.classList.remove('opacity-0'), 10);
             document.body.style.overflow = 'hidden';
-            if (window.lucide) lucide.createIcons();
+
+            const markdownBody = currentLang === 'en' ? (postObj.content_en || postObj.content_pt) : (postObj.content_pt || postObj.content_en);
+            readerContent.innerHTML = window.marked ? marked.parse(markdownBody) : markdownBody.replace(/\n/g, '<br>');
+            lucide.createIcons();
         }
 
         function closeReader() {
@@ -373,22 +299,9 @@
             }, 300);
         }
 
-        // 5. Inicialização
         document.addEventListener('DOMContentLoaded', () => {
-            renderPosts();
+            loadPosts();
 
-            // Tenta buscar atualizações do posts.json
-            fetch('posts.json?v=' + Date.now())
-                .then(r => r.json())
-                .then(data => {
-                    if (data && data.length) {
-                        allPosts = data;
-                        renderPosts();
-                    }
-                })
-                .catch(e => console.log('Exibindo matérias base offline.'));
-
-            // Vanta 3D
             if (window.VANTA && window.VANTA.NET && window.innerWidth >= 768) {
                 VANTA.NET({
                     el: "#vanta-bg",
@@ -404,53 +317,5 @@
             }
         });
     </script>
-    <!-- ==================================================== -->
-<!-- AJUSTES: TICKER LEGÍVEL NO CELULAR + SELETOR PT/EN   -->
-<!-- ==================================================== -->
-<style>
-  /* Aumenta a letra do Radar ao Vivo no Celular */
-  @media (max-width: 640px) {
-    #ticker-text, .ticker-move {
-      font-size: 13px !important;
-      font-weight: 600 !important;
-      color: #FFFFFF !important;
-    }
-  }
-</style>
-
-<script>
-// Troca de Idioma 100% Funcional
-function toggleSiteLanguage(lang) {
-  localStorage.setItem('cortic_lang', lang);
-  currentLang = lang;
-
-  const btnPt = document.getElementById('btn-pt') || document.getElementById('btn-lang-pt');
-  const btnEn = document.getElementById('btn-en') || document.getElementById('btn-lang-en');
-
-  if (btnPt && btnEn) {
-    if (lang === 'pt') {
-      btnPt.className = 'px-3 py-1 rounded-full text-xs font-bold bg-[#00E5FF] text-black font-mono shadow-sm';
-      btnEn.className = 'px-3 py-1 rounded-full text-xs font-medium text-slate-400 hover:text-white font-mono';
-    } else {
-      btnEn.className = 'px-3 py-1 rounded-full text-xs font-bold bg-[#00E5FF] text-black font-mono shadow-sm';
-      btnPt.className = 'px-3 py-1 rounded-full text-xs font-medium text-slate-400 hover:text-white font-mono';
-    }
-  }
-
-  // Atualiza os cards imediatamente
-  if (typeof renderFeed === 'function') renderFeed();
-}
-
-// Conecta os botões do cabeçalho
-document.addEventListener('DOMContentLoaded', () => {
-  const btnPt = document.getElementById('btn-pt') || document.getElementById('btn-lang-pt');
-  const btnEn = document.getElementById('btn-en') || document.getElementById('btn-lang-en');
-
-  if (btnPt) btnPt.onclick = () => toggleSiteLanguage('pt');
-  if (btnEn) btnEn.onclick = () => toggleSiteLanguage('en');
-});
-</script>
-<!-- ==================================================== -->
-    
 </body>
 </html>
