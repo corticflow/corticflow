@@ -317,5 +317,73 @@
             }
         });
     </script>
+    <!-- ==================================================== -->
+<!-- LEITOR OFICIAL EM TELA CHEIA (POP-UP LIMPO)          -->
+<!-- ==================================================== -->
+<div id="reader-view" style="display: none; position: fixed; inset: 0; background: rgba(3, 3, 5, 0.95); z-index: 99999; overflow-y: auto; padding: 40px 16px; backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);" onclick="closeReader()">
+  <div style="background: #11141E; border: 1px solid #202636; border-radius: 24px; max-width: 800px; margin: 20px auto; padding: 36px; position: relative; color: #E2E8F0; box-shadow: 0 25px 60px rgba(0,0,0,0.9);" onclick="event.stopPropagation()">
+    
+    <button onclick="closeReader()" style="position: absolute; top: 16px; right: 20px; font-size: 32px; color: #94A3B8; background: none; border: none; cursor: pointer; line-height: 1;" onmouseover="this.style.color='#00E5FF'" onmouseout="this.style.color='#94A3B8'">&times;</button>
+    
+    <div id="reader-cat-badge" style="display: inline-block; font-size: 11px; font-family: monospace; font-weight: 800; text-transform: uppercase; color: #00E5FF; background: rgba(0, 229, 255, 0.12); padding: 3px 10px; border-radius: 12px; border: 1px solid rgba(0, 229, 255, 0.3); margin-bottom: 14px;"></div>
+    
+    <img id="reader-cover-img" src="" alt="" style="width: 100%; height: 260px; object-fit: cover; border-radius: 14px; margin-bottom: 20px; border: 1px solid #202636; display: block;" onerror="this.src='cat-ai.jpeg'">
+    
+    <h1 id="reader-article-title" style="font-size: 26px; font-weight: 800; color: #FFF; line-height: 1.35; margin-bottom: 14px;"></h1>
+    
+    <div id="reader-article-meta" style="font-size: 12px; font-family: monospace; color: #94A3B8; margin-bottom: 24px; padding-bottom: 14px; border-bottom: 1px solid #202636;"></div>
+    
+    <div id="reader-article-body" class="prose prose-invert max-w-none text-slate-300 space-y-4 text-base leading-relaxed"></div>
+    
+    <div style="margin-top: 36px; padding-top: 20px; border-top: 1px solid #202636; display: flex; justify-content: space-between; align-items: center;">
+      <a id="reader-article-source" href="#" target="_blank" style="color: #00E5FF; font-size: 13px; font-weight: 700; text-decoration: none;">Acessar Fonte Original ↗</a>
+      <button onclick="closeReader()" style="background: rgba(255,255,255,0.1); color: #FFF; border: 1px solid rgba(255,255,255,0.2); padding: 8px 22px; border-radius: 12px; font-size: 13px; font-weight: 600; cursor: pointer;">Fechar Leitura</button>
+    </div>
+  </div>
+</div>
+
+<script>
+let corticAllPosts = [];
+
+function openPost(path, postObj) {
+  const modal = document.getElementById('reader-view');
+  if (!modal) return;
+
+  const isEn = (currentLang === 'en');
+  const title = isEn ? (postObj?.title_en || postObj?.title) : (postObj?.title_pt || postObj?.title || postObj?.titulo);
+  const content = isEn ? (postObj?.content_en || postObj?.content) : (postObj?.content_pt || postObj?.content || postObj?.desc);
+
+  document.getElementById('reader-cat-badge').innerText = postObj?.category || postObj?.categoria || 'Tecnologia';
+  document.getElementById('reader-article-title').innerText = title || 'Notícia';
+  document.getElementById('reader-article-meta').innerText = `📅 ${postObj?.date || 'Hoje'} • ⏱️ ${postObj?.readTime || '5 min'} • CorticFlow Editorial`;
+  
+  const img = document.getElementById('reader-cover-img');
+  img.src = postObj?.image || postObj?.img || 'cat-ai.jpeg';
+
+  document.getElementById('reader-article-body').innerHTML = window.marked ? marked.parse(content || '') : (content || '').replace(/\n/g, '<br>');
+  
+  const src = document.getElementById('reader-article-source');
+  if (postObj?.link || postObj?.fonte) {
+    src.href = postObj.link || postObj.fonte;
+    src.style.display = 'inline-block';
+    src.innerText = isEn ? 'Access Original Source ↗' : 'Acessar Fonte Original ↗';
+  } else {
+    src.style.display = 'none';
+  }
+
+  modal.style.display = 'block';
+  document.body.style.overflow = 'hidden';
+}
+
+function closeReader() {
+  const modal = document.getElementById('reader-view');
+  if (modal) {
+    modal.style.display = 'none';
+    document.body.style.overflow = 'auto';
+  }
+}
+</script>
+<!-- ==================================================== -->
+    
 </body>
 </html>
