@@ -209,13 +209,13 @@
                     </div>
                 `;
                 
-                // Adiciona o efeito da luz do mouse no card
+                // Adiciona o efeito da luz do mouse no card (Bug corrigido aqui)
                 card.onmousemove = e => {
                     const rect = card.getBoundingClientRect(),
                           x = e.clientX - rect.left,
                           y = e.clientY - rect.top;
-                    card.style.setProperty("--mouse-x", \`\${x}px\`);
-                    card.style.setProperty("--mouse-y", \`\${y}px\`);
+                    card.style.setProperty("--mouse-x", `${x}px`);
+                    card.style.setProperty("--mouse-y", `${y}px`);
                 };
 
                 grid.appendChild(card);
@@ -238,7 +238,7 @@
                 const parts = text.split('---');
                 const markdownBody = parts.length > 2 ? parts.slice(2).join('---') : text;
                 
-                // Conversor Markdown corrigido (O bug do $3 agora é $1)
+                // Conversor Markdown corrigido
                 let htmlContent = markdownBody
                     .replace(/^# (.*$)/gim, '<h1>$1</h1>')
                     .replace(/^## (.*$)/gim, '<h2>$1</h2>')
