@@ -1,13 +1,13 @@
 ---
-title: "Garmin Forerunner 570 (47 mm) atinge preço imbatível no Mercado Livre"
+title: "Perplexity lança sistema de IA que roda tudo no seu PC"
 data: "2026-08-27"
 categoria: "Mercado & Big Techs"
 ---
 
 ## Visão Geral do Acontecimento
 
-Garmin Forerunner 570 possui monitoramento avançado com foco em esportes. Smartwatch com tela AMOLED e GPS multibanda tem 47% de desconto no Mercado Livre
-Garmin Forerunner 570 (47 mm) atinge preço imbatível no Mercado Livre
+Portable Computer executa agentes de IA localmente, mas exige placas de vídeo Nvidia RTX 3090 ou superior.
+Perplexity lança sistema de IA que roda tudo no seu PC
 
 ### Análise Estratégica e de Engenharia
 
@@ -19,4 +19,4 @@ Este avanço no segmento de Mercado & Big Techs representa uma transformação a
 2. Controle rigoroso de custos operacionais e consumo de computação.
 3. Reconfiguração competitiva entre grandes players e ecossistemas abertos.
 
-*Acompanhe a matéria original em: [https://tecnoblog.net/achados/garmin-forerunner-570-47-mm-atinge-preco-imbativel-no-mercado-livre/](https://tecnoblog.net/achados/garmin-forerunner-570-47-mm-atinge-preco-imbativel-no-mercado-livre/)*
+*Acompanhe a matéria original em: [https://tecnoblog.net/noticias/perplexity-lanca-sistema-de-ia-que-roda-tudo-no-seu-pc/](https://tecnoblog.net/noticias/perplexity-lanca-sistema-de-ia-que-roda-tudo-no-seu-pc/)*
