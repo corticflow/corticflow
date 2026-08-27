@@ -4,177 +4,167 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CorticFlow | Intelligence & Deep Tech Dispatch</title>
-    <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
             darkMode: 'class',
             theme: {
                 extend: {
-                    colors: {
-                        darkbg: '#050508',
-                        cardglass: 'rgba(255, 255, 255, 0.03)',
-                        borderglass: 'rgba(255, 255, 255, 0.08)'
-                    },
                     fontFamily: {
-                        sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
                         mono: ['JetBrains Mono', 'monospace']
+                    },
+                    colors: {
+                        darkbg: '#030305'
                     }
                 }
             }
         }
     </script>
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-    <!-- Lucide Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/lucide@latest"></script>
     <style>
+        /* Fundo com ruído e gradiente escuro profundo */
         body {
-            background-color: #050508;
+            background-color: #030305;
             background-image: 
-                radial-gradient(circle at 15% 20%, rgba(56, 189, 248, 0.08) 0%, transparent 40%),
-                radial-gradient(circle at 85% 80%, rgba(168, 85, 247, 0.08) 0%, transparent 40%);
-            background-attachment: fixed;
+                radial-gradient(circle at 0% 0%, rgba(56, 189, 248, 0.05) 0%, transparent 50%),
+                radial-gradient(circle at 100% 100%, rgba(168, 85, 247, 0.05) 0%, transparent 50%);
             color: #f3f4f6;
             font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
         }
-        .glass-card {
-            background: rgba(18, 18, 26, 0.6);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border: 1px solid rgba(255, 255, 255, 0.06);
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
+
+        /* Efeito Spotlight nos Cards */
+        #posts-grid:hover > .bento-card::after {
+            opacity: 1;
         }
-        .glass-card:hover {
-            border-color: rgba(56, 189, 248, 0.3);
-            box-shadow: 0 20px 40px rgba(56, 189, 248, 0.08);
+        .bento-card {
+            background-color: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.3s;
         }
+        .bento-card:hover {
+            transform: scale(0.99);
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+        .bento-card::before,
+        .bento-card::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            transition: opacity 0.3s ease;
+            z-index: 0;
+            pointer-events: none;
+        }
+        /* A luz que segue o mouse */
+        .bento-card::before {
+            background: radial-gradient(800px circle at var(--mouse-x) var(--mouse-y), rgba(255, 255, 255, 0.06), transparent 40%);
+            opacity: 0;
+        }
+        .bento-card:hover::before {
+            opacity: 1;
+        }
+
+        /* Nav Glass */
         .glass-nav {
-            background: rgba(5, 5, 8, 0.75);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+            background: rgba(3, 3, 5, 0.7);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
         }
+        
+        /* Typography Markdown */
+        .prose-custom p { margin-bottom: 1.2em; color: #a1a1aa; line-height: 1.7; }
+        .prose-custom h1 { font-size: 2.5rem; font-weight: 800; color: #fff; margin-bottom: 1rem; line-height: 1.2; }
+        .prose-custom h2 { font-size: 1.75rem; font-weight: 700; color: #e2e8f0; margin-top: 2.5rem; margin-bottom: 1rem; }
+        .prose-custom h3 { font-size: 1.25rem; font-weight: 600; color: #cbd5e1; margin-top: 2rem; margin-bottom: 0.75rem; }
+        .prose-custom strong { color: #fff; font-weight: 600; }
     </style>
 </head>
 <body class="min-h-screen flex flex-col antialiased selection:bg-cyan-500 selection:text-black">
 
-    <!-- Header / Navbar Imersiva -->
     <header class="sticky top-0 z-50 glass-nav">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
-            <div class="flex items-center gap-3 cursor-pointer" onclick="location.reload()">
-                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-cyan-500 to-purple-600 flex items-center justify-center shadow-lg shadow-cyan-500/20">
+        <div class="max-w-[90rem] mx-auto px-6 h-20 flex items-center justify-between">
+            <div class="flex items-center gap-4 cursor-pointer" onclick="location.reload()">
+                <div class="w-10 h-10 rounded-2xl bg-white flex items-center justify-center">
                     <i data-lucide="cpu" class="w-5 h-5 text-black"></i>
                 </div>
                 <div>
-                    <span class="text-xl font-bold tracking-tight text-white">Cortic<span class="text-cyan-400">Flow</span></span>
-                    <span class="block text-[10px] uppercase tracking-widest text-zinc-400 font-mono">Neural Tech Dispatch</span>
+                    <span class="text-xl font-extrabold tracking-tighter text-white">CorticFlow</span>
                 </div>
             </div>
-
-            <div class="flex items-center gap-4">
-                <!-- Seletor de Idioma -->
-                <div class="flex bg-white/5 border border-white/10 rounded-full p-1 text-xs font-mono">
-                    <button onclick="setLang('pt')" id="btn-lang-pt" class="px-3 py-1.5 rounded-full transition-all text-black bg-cyan-400 font-semibold shadow-sm">PT</button>
-                    <button onclick="setLang('en')" id="btn-lang-en" class="px-3 py-1.5 rounded-full transition-all text-zinc-400 hover:text-white">EN</button>
-                </div>
+            <div class="flex items-center gap-2 bg-white/5 p-1 rounded-full border border-white/10">
+                <button onclick="setLang('pt')" id="btn-lang-pt" class="px-4 py-1.5 rounded-full text-xs font-bold transition-all bg-white text-black shadow-sm">PT</button>
+                <button onclick="setLang('en')" id="btn-lang-en" class="px-4 py-1.5 rounded-full text-xs font-medium transition-all text-zinc-400 hover:text-white">EN</button>
             </div>
         </div>
     </header>
 
-    <!-- Hero Section -->
-    <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-12 pb-8 text-center sm:text-left flex flex-col sm:flex-row items-center justify-between gap-6">
-        <div>
-            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/20 text-cyan-400 text-xs font-mono mb-4">
-                <span class="w-2 h-2 rounded-full bg-cyan-400 animate-pulse"></span>
-                <span id="hero-badge">Autonomous AI Publication Core</span>
-            </div>
-            <h1 id="hero-title" class="text-3xl sm:text-5xl font-extrabold tracking-tight text-white max-w-2xl">
-                O fluxo contínuo da inteligência e deep tech.
+    <section class="max-w-[90rem] mx-auto px-6 pt-24 pb-16 text-center sm:text-left flex flex-col xl:flex-row items-center justify-between gap-12">
+        <div class="max-w-3xl">
+            <h1 id="hero-title" class="text-5xl sm:text-7xl font-extrabold tracking-tighter text-transparent bg-clip-text bg-gradient-to-br from-white to-zinc-500 mb-6">
+                Deep Tech & Intelligence.
             </h1>
-        </div>
-        <!-- Filtros Rápidos -->
-        <div class="flex flex-wrap gap-2 justify-center sm:justify-end max-w-md" id="category-filters">
-            <button onclick="filterCategory('all')" class="category-btn px-3.5 py-1.5 rounded-xl text-xs font-medium transition-all bg-white/10 text-white border border-white/20" data-cat="all">All Tracks</button>
-            <button onclick="filterCategory('AI & Models')" class="category-btn px-3.5 py-1.5 rounded-xl text-xs font-medium transition-all bg-white/5 text-zinc-400 border border-white/5 hover:bg-white/10 hover:text-white" data-cat="AI & Models">AI</button>
-            <button onclick="filterCategory('Windows & PC')" class="category-btn px-3.5 py-1.5 rounded-xl text-xs font-medium transition-all bg-white/5 text-zinc-400 border border-white/5 hover:bg-white/10 hover:text-white" data-cat="Windows & PC">Windows</button>
-            <button onclick="filterCategory('Linux & Open-Source')" class="category-btn px-3.5 py-1.5 rounded-xl text-xs font-medium transition-all bg-white/5 text-zinc-400 border border-white/5 hover:bg-white/10 hover:text-white" data-cat="Linux & Open-Source">Linux</button>
+            <p id="hero-desc" class="text-lg text-zinc-400 font-medium max-w-xl">
+                O sinal mais puro sobre o avanço das IAs, open-source e mercado tech. Filtrado por agentes autônomos.
+            </p>
         </div>
     </section>
 
-    <!-- Main Content / Lista de Posts -->
-    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 flex-grow w-full">
-        <!-- Visualizador de Leitura (Oculto por padrão, abre ao clicar no post) -->
-        <div id="reader-view" class="hidden mb-12 glass-card rounded-3xl p-6 sm:p-10 relative">
-            <button onclick="closeReader()" class="absolute top-6 right-6 p-2 rounded-full bg-white/5 hover:bg-white/10 border border-white/10 transition-all text-zinc-400 hover:text-white">
-                <i data-lucide="x" class="w-5 h-5"></i>
-            </button>
-            <div id="reader-content" class="prose prose-invert max-w-none">
-                <!-- Conteúdo injetado via JS -->
+    <main class="max-w-[90rem] mx-auto px-6 pb-24 w-full relative">
+        <!-- Reader Overlay -->
+        <div id="reader-view" class="fixed inset-0 z-[100] bg-[#030305]/95 backdrop-blur-2xl overflow-y-auto hidden opacity-0 transition-opacity duration-500">
+            <div class="max-w-3xl mx-auto px-6 py-20 relative">
+                <button onclick="closeReader()" class="sticky top-6 left-0 mb-8 inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 hover:bg-white/20 border border-white/10 text-white font-mono text-sm transition-all">
+                    <i data-lucide="arrow-left" class="w-4 h-4"></i> Fechar
+                </button>
+                <div id="reader-content" class="prose-custom"></div>
             </div>
         </div>
 
-        <!-- Grid de Cards de Notícias -->
-        <div id="posts-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            <!-- Os cards serão injetados aqui dinamicamente -->
-            <div class="glass-card rounded-2xl p-6 animate-pulse flex flex-col justify-between h-64">
-                <div class="h-4 bg-white/10 rounded w-1/3 mb-4"></div>
-                <div class="h-6 bg-white/10 rounded w-full mb-2"></div>
-                <div class="h-6 bg-white/10 rounded w-2/3"></div>
-                <div class="h-4 bg-white/5 rounded w-1/4 mt-6"></div>
-            </div>
+        <!-- Grid Bento -->
+        <div id="posts-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 auto-rows-[300px]">
+            <!-- Injetado por JS -->
         </div>
     </main>
 
-    <!-- Footer -->
-    <footer class="glass-nav mt-20 py-8 text-center text-xs text-zinc-500 font-mono">
-        <p>CorticFlow © 2026 — Autonomous Neural Dispatch.</p>
-    </footer>
-
-    <!-- Lógica de Frontend & Carregamento de Posts -->
     <script>
         let allPosts = [];
         let currentLang = 'pt';
-        let activeCategory = 'all';
+
+        // Mapeamento de cores de fundo (Mesh Gradients) por categoria
+        const categoryGradients = {
+            'AI & Models': 'bg-gradient-to-br from-indigo-900/40 via-purple-900/20 to-transparent',
+            'Windows & PC': 'bg-gradient-to-br from-blue-900/40 via-cyan-900/20 to-transparent',
+            'Apple & iOS': 'bg-gradient-to-br from-zinc-800/40 via-zinc-900/20 to-transparent',
+            'Linux & Open-Source': 'bg-gradient-to-br from-emerald-900/40 via-teal-900/20 to-transparent',
+            'Business & Startups': 'bg-gradient-to-br from-amber-900/40 via-orange-900/20 to-transparent',
+            'default': 'bg-gradient-to-br from-zinc-800/30 to-transparent'
+        };
 
         async function loadPosts() {
             try {
                 const response = await fetch('posts.json');
-                if (!response.ok) throw new Error('Erro ao carregar posts.json');
                 allPosts = await response.json();
                 renderPosts();
             } catch (err) {
                 console.error(err);
-                document.getElementById('posts-grid').innerHTML = `
-                    <div class="col-span-full text-center py-12 glass-card rounded-2xl">
-                        <i data-lucide="alert-circle" class="w-8 h-8 text-amber-400 mx-auto mb-3"></i>
-                        <p class="text-zinc-300 font-medium">Nenhum artigo indexado no momento ou aguardando primeiro ciclo do robô.</p>
-                    </div>
-                `;
-                lucide.createIcons();
             }
         }
 
         function setLang(lang) {
             currentLang = lang;
-            document.getElementById('btn-lang-pt').className = lang === 'pt' ? 'px-3 py-1.5 rounded-full transition-all text-black bg-cyan-400 font-semibold shadow-sm' : 'px-3 py-1.5 rounded-full transition-all text-zinc-400 hover:text-white';
-            document.getElementById('btn-lang-en').className = lang === 'en' ? 'px-3 py-1.5 rounded-full transition-all text-black bg-cyan-400 font-semibold shadow-sm' : 'px-3 py-1.5 rounded-full transition-all text-zinc-400 hover:text-white';
+            document.getElementById('btn-lang-pt').className = lang === 'pt' ? 'px-4 py-1.5 rounded-full text-xs font-bold transition-all bg-white text-black shadow-sm' : 'px-4 py-1.5 rounded-full text-xs font-medium transition-all text-zinc-400 hover:text-white';
+            document.getElementById('btn-lang-en').className = lang === 'en' ? 'px-4 py-1.5 rounded-full text-xs font-bold transition-all bg-white text-black shadow-sm' : 'px-4 py-1.5 rounded-full text-xs font-medium transition-all text-zinc-400 hover:text-white';
             
-            document.getElementById('hero-title').innerText = lang === 'pt' ? 'O fluxo contínuo da inteligência e deep tech.' : 'The continuous flow of intelligence and deep tech.';
-            document.getElementById('hero-badge').innerText = lang === 'pt' ? 'Núcleo de Publicação Autônoma por IA' : 'Autonomous AI Publication Core';
-            
-            renderPosts();
-        }
-
-        function filterCategory(cat) {
-            activeCategory = cat;
-            document.querySelectorAll('.category-btn').forEach(btn => {
-                if(btn.dataset.cat === cat) {
-                    btn.className = 'category-btn px-3.5 py-1.5 rounded-xl text-xs font-medium transition-all bg-white/10 text-white border border-white/20';
-                } else {
-                    btn.className = 'category-btn px-3.5 py-1.5 rounded-xl text-xs font-medium transition-all bg-white/5 text-zinc-400 border border-white/5 hover:bg-white/10 hover:text-white';
-                }
-            });
+            document.getElementById('hero-title').innerText = lang === 'pt' ? 'Deep Tech & Intelligence.' : 'Deep Tech & Intelligence.';
+            document.getElementById('hero-desc').innerText = lang === 'pt' ? 'O sinal mais puro sobre o avanço das IAs, open-source e mercado tech. Filtrado por agentes autônomos.' : 'The purest signal on AI advancements, open-source, and tech markets. Filtered by autonomous agents.';
             renderPosts();
         }
 
@@ -182,35 +172,52 @@
             const grid = document.getElementById('posts-grid');
             grid.innerHTML = '';
 
-            const filtered = allPosts.filter(p => activeCategory === 'all' || p.category === activeCategory);
-
-            if (filtered.length === 0) {
-                grid.innerHTML = `
-                    <div class="col-span-full text-center py-16 glass-card rounded-2xl">
-                        <p class="text-zinc-400 font-mono">Nenhum despacho encontrado nesta categoria.</p>
-                    </div>
-                `;
-                return;
-            }
-
-            filtered.forEach(post => {
+            allPosts.forEach((post, index) => {
                 const filePath = currentLang === 'en' ? post.file_en : post.file_pt;
                 const card = document.createElement('div');
-                card.className = 'glass-card rounded-2xl p-6 flex flex-col justify-between transition-all duration-300 hover:-translate-y-1 cursor-pointer group';
+                
+                // Lógica do Bento Grid (Tamanhos variados)
+                let gridClasses = 'bento-card rounded-3xl p-8 flex flex-col justify-end cursor-pointer group ';
+                if (index === 0) {
+                    gridClasses += 'md:col-span-2 md:row-span-2 '; // Card Gigante
+                } else if (index === 3 || index === 4) {
+                    gridClasses += 'md:col-span-2 '; // Card Largo
+                } else {
+                    gridClasses += 'col-span-1 '; // Card Quadrado Normal
+                }
+
+                const bgGradient = categoryGradients[post.category] || categoryGradients['default'];
+                card.className = gridClasses + bgGradient;
                 card.onclick = () => openPost(filePath);
 
                 card.innerHTML = `
-                    <div>
-                        <div class="flex items-center justify-between mb-4">
-                            <span class="px-2.5 py-1 rounded-full bg-cyan-500/10 text-cyan-400 text-[11px] font-mono border border-cyan-500/20">${post.category || 'Tech'}</span>
-                            <span class="text-xs text-zinc-500 font-mono">${post.date}</span>
+                    <div class="relative z-10 flex flex-col h-full justify-between">
+                        <div class="flex justify-between items-start">
+                            <span class="px-3 py-1 rounded-full bg-white/10 text-white text-[10px] font-mono tracking-widest uppercase backdrop-blur-md border border-white/10">
+                                ${post.category || 'Tech'}
+                            </span>
+                            <div class="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity border border-white/10">
+                                <i data-lucide="arrow-up-right" class="w-4 h-4 text-white"></i>
+                            </div>
                         </div>
-                        <h2 class="text-lg font-semibold text-white group-hover:text-cyan-300 transition-colors line-clamp-3 mb-4">${post.title}</h2>
-                    </div>
-                    <div class="flex items-center justify-between pt-4 border-t border-white/5 text-xs text-zinc-400 group-hover:text-white transition-colors">
-                        <span class="font-mono flex items-center gap-1.5">Read dispatch <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i></span>
+                        <div class="mt-8">
+                            <h2 class="text-2xl sm:text-3xl font-bold text-white mb-3 group-hover:text-cyan-200 transition-colors tracking-tight line-clamp-3">
+                                ${post.title}
+                            </h2>
+                            <p class="text-xs text-zinc-500 font-mono">${post.date}</p>
+                        </div>
                     </div>
                 `;
+                
+                // Adiciona o efeito da luz do mouse no card
+                card.onmousemove = e => {
+                    const rect = card.getBoundingClientRect(),
+                          x = e.clientX - rect.left,
+                          y = e.clientY - rect.top;
+                    card.style.setProperty("--mouse-x", \`\${x}px\`);
+                    card.style.setProperty("--mouse-y", \`\${y}px\`);
+                };
+
                 grid.appendChild(card);
             });
             lucide.createIcons();
@@ -221,50 +228,43 @@
             const readerContent = document.getElementById('reader-content');
             
             readerView.classList.remove('hidden');
-            readerContent.innerHTML = '<div class="text-center py-12 text-zinc-400 font-mono animate-pulse">Carregando fluxo neural...</div>';
-            window.scrollTo({ top: 0, behavior: 'smooth' });
+            setTimeout(() => readerView.classList.remove('opacity-0'), 10);
+            document.body.style.overflow = 'hidden';
+            readerContent.innerHTML = '<div class="animate-pulse h-8 bg-white/10 rounded w-1/3 mb-4"></div><div class="animate-pulse h-4 bg-white/5 rounded w-full mb-2"></div>';
 
             try {
                 const res = await fetch(path);
                 const text = await res.text();
-                
-                // Remove frontmatter do markdown básico para exibição
                 const parts = text.split('---');
                 const markdownBody = parts.length > 2 ? parts.slice(2).join('---') : text;
                 
-                // Conversor simples de markdown para HTML limpo
+                // Conversor Markdown corrigido (O bug do $3 agora é $1)
                 let htmlContent = markdownBody
-                    .replace(/^# (.*$)/gim, '<h1 class="text-2xl font-bold text-white mb-6">$1</h1>')
-                    .replace(/^## (.*$)/gim, '<h2 class="text-xl font-bold text-cyan-300 mt-8 mb-4">$1</h2>')
-                    .replace(/^### (.*$)/gim, '<h3 class="text-lg font-semibold text-white mt-6 mb-3">$3</h3>')
-                    .replace(/\*\*(.*?)\*\*/gim, '<strong class="text-white font-semibold">$1</strong>')
-                    .replace(/\*(.*?)\*/gim, '<em class="text-zinc-300">$1</em>')
+                    .replace(/^# (.*$)/gim, '<h1>$1</h1>')
+                    .replace(/^## (.*$)/gim, '<h2>$1</h2>')
+                    .replace(/^### (.*$)/gim, '<h3>$1</h3>')
+                    .replace(/\*\*(.*?)\*\*/gim, '<strong>$1</strong>')
+                    .replace(/\*(.*?)\*/gim, '<em>$1</em>')
+                    .replace(/\n\n/gim, '</p><p>')
                     .replace(/\n/gim, '<br>');
 
-                readerContent.innerHTML = `
-                    <div class="mb-6 pb-6 border-b border-white/10 flex items-center justify-between text-xs font-mono text-zinc-400">
-                        <button onclick="closeReader()" class="flex items-center gap-1 hover:text-white transition-colors">
-                            <i data-lucide="arrow-left" class="w-4 h-4"></i> Voltar aos feeds
-                        </button>
-                    </div>
-                    <div class="text-zinc-300 leading-relaxed space-y-4">
-                        ${htmlContent}
-                    </div>
-                `;
+                readerContent.innerHTML = `<p>${htmlContent}</p>`;
                 lucide.createIcons();
             } catch (err) {
-                readerContent.innerHTML = '<p class="text-red-400 font-mono">Erro ao carregar o conteúdo do artigo.</p>';
+                readerContent.innerHTML = '<p class="text-red-400">Erro ao carregar o artigo.</p>';
             }
         }
 
         function closeReader() {
-            document.getElementById('reader-view').classList.add('hidden');
-            window.scrollTo({ top: 0, behavior: 'smooth' });
+            const readerView = document.getElementById('reader-view');
+            readerView.classList.add('opacity-0');
+            setTimeout(() => {
+                readerView.classList.add('hidden');
+                document.body.style.overflow = 'auto';
+            }, 500);
         }
 
-        // Inicializa o sistema ao carregar a página
         loadPosts();
-        lucide.createIcons();
     </script>
 </body>
 </html>
