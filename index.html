@@ -488,5 +488,184 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 </script>
 <!-- ==================================================== -->
+    <!-- ==================================================== -->
+<!-- 1. BARRA DE LEITURA LUMINOSA NO TOPO                -->
+<!-- ==================================================== -->
+<div id="cortic-scroll-bar" style="position: fixed; top: 0; left: 0; height: 3.5px; width: 0%; background: linear-gradient(90deg, #00E5FF, #8B5CF6); z-index: 100000; box-shadow: 0 0 12px rgba(0, 229, 255, 0.8); transition: width 0.08s ease-out;"></div>
+
+<!-- ==================================================== -->
+<!-- 2. MODAL LEITOR MULTILÍNGUE (PT / EN)               -->
+<!-- ==================================================== -->
+<div id="cortic-reading-modal" style="display: none; position: fixed; inset: 0; background: rgba(0, 0, 0, 0.92); z-index: 99999; overflow-y: auto; padding: 24px 16px; backdrop-filter: blur(12px);" onclick="closeCorticReader(event)">
+  <div style="background: #11141E; border: 1px solid #202636; border-radius: 20px; max-width: 800px; margin: 20px auto; padding: 32px; position: relative; color: #E2E8F0; box-shadow: 0 25px 60px rgba(0,0,0,0.9);" onclick="event.stopPropagation()">
+    
+    <button onclick="closeCorticReaderDirect()" style="position: absolute; top: 16px; right: 20px; font-size: 32px; color: #94A3B8; background: none; border: none; cursor: pointer; line-height: 1;" onmouseover="this.style.color='#00E5FF'" onmouseout="this.style.color='#94A3B8'">&times;</button>
+    
+    <div id="reader-cat" style="display: inline-block; font-size: 11px; font-family: monospace; font-weight: 800; text-transform: uppercase; color: #00E5FF; background: rgba(0, 229, 255, 0.12); padding: 3px 10px; border-radius: 12px; border: 1px solid rgba(0, 229, 255, 0.3); margin-bottom: 12px;"></div>
+    
+    <img id="reader-img" src="" alt="" style="width: 100%; height: 260px; object-fit: cover; border-radius: 12px; margin-bottom: 18px; border: 1px solid #202636; display: block;" onerror="this.src='cat-ai.jpeg'">
+    
+    <h1 id="reader-title" style="font-size: 24px; font-weight: 800; color: #FFF; line-height: 1.35; margin-bottom: 14px;"></h1>
+    
+    <div id="reader-meta" style="font-size: 12px; font-family: monospace; color: #94A3B8; margin-bottom: 24px; padding-bottom: 14px; border-bottom: 1px solid #202636;"></div>
+    
+    <div id="reader-body" style="font-size: 15px; line-height: 1.8; color: #CBD5E1;"></div>
+    
+    <div style="margin-top: 30px; padding-top: 18px; border-top: 1px solid #202636; display: flex; justify-content: space-between; align-items: center;">
+      <a id="reader-source" href="#" target="_blank" style="color: #00E5FF; font-size: 13px; font-weight: 700; text-decoration: none;">Acessar Fonte Original ↗</a>
+      <button onclick="closeCorticReaderDirect()" id="reader-close-btn" style="background: rgba(255,255,255,0.1); color: #FFF; border: 1px solid rgba(255,255,255,0.2); padding: 8px 20px; border-radius: 10px; font-size: 13px; font-weight: 600; cursor: pointer;">Fechar</button>
+    </div>
+  </div>
+</div>
+
+<!-- ==================================================== -->
+<!-- 3. LÓGICA DE ROLAGEM + SELETOR PT / EN AUTOMÁTICO   -->
+<!-- ==================================================== -->
+<script>
+let globalPosts = [];
+let currentLang = localStorage.getItem('cortic_lang') || 'pt';
+
+// 1. Barra de Rolagem no Topo
+window.addEventListener('scroll', () => {
+  const scrollTop = window.scrollY || document.documentElement.scrollTop;
+  const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+  if (docHeight > 0) {
+    const progress = (scrollTop / docHeight) * 100;
+    const bar = document.getElementById('cortic-scroll-bar');
+    if (bar) bar.style.width = progress + '%';
+  }
+});
+
+// 2. Função de Troca de Idioma (PT / EN)
+function setLanguage(lang) {
+  currentLang = lang;
+  localStorage.setItem('cortic_lang', lang);
+
+  const btnPt = document.getElementById('btn-pt') || document.getElementById('btn-lang-pt');
+  const btnEn = document.getElementById('btn-en') || document.getElementById('btn-lang-en');
+
+  if (btnPt && btnEn) {
+    if (lang === 'pt') {
+      btnPt.className = 'px-3 py-1 rounded-full text-[10px] font-extrabold transition-all bg-[#00E5FF] text-black font-mono';
+      btnEn.className = 'px-3 py-1 rounded-full text-[10px] font-medium transition-all text-slate-400 hover:text-white font-mono';
+    } else {
+      btnEn.className = 'px-3 py-1 rounded-full text-[10px] font-extrabold transition-all bg-[#00E5FF] text-black font-mono';
+      btnPt.className = 'px-3 py-1 rounded-full text-[10px] font-medium transition-all text-slate-400 hover:text-white font-mono';
+    }
+  }
+
+  renderFeed();
+}
+
+// Compatibilidade com possíveis chamadas de setLang()
+function setLang(lang) { setLanguage(lang); }
+
+// 3. Renderização Dinâmica no Idioma Escolhido
+function renderFeed() {
+  const grid = document.querySelector('#posts-grid, .articles-grid, main .grid');
+  if (!grid || !globalPosts.length) return;
+
+  grid.innerHTML = '';
+  const isEn = (currentLang === 'en');
+
+  globalPosts.forEach((post, i) => {
+    const title = isEn ? (post.title_en || post.title) : (post.title_pt || post.title || post.titulo);
+    const rawContent = isEn ? (post.content_en || post.content) : (post.content_pt || post.content || post.desc);
+    
+    let desc = (rawContent || '').replace(/#+\s/g, '').replace(/\*+/g, '').trim();
+    desc = desc.substring(0, 180) + '...';
+
+    const img = post.image || post.img || 'cat-ai.jpeg';
+    const cat = post.category || post.categoria || 'Tech';
+    const readTime = post.readTime || post.read_time || '5 min';
+    const btnLabel = isEn ? 'Read Full Article →' : 'Ler Matéria Completa →';
+
+    const card = document.createElement('article');
+    card.className = 'cortic-card-item';
+    card.onclick = () => openCorticArticle(i);
+
+    card.innerHTML = `
+      <div>
+        <div style="position: relative; overflow: hidden;">
+          <img src="${img}" alt="${title}" class="cortic-card-img" onerror="this.src='cat-ai.jpeg'">
+          <span style="position: absolute; top: 12px; left: 12px; font-size: 10px; font-family: monospace; font-weight: 800; text-transform: uppercase; color: #00E5FF; background: rgba(0,0,0,0.8); border: 1px solid rgba(0, 229, 255, 0.4); padding: 3px 10px; border-radius: 20px; backdrop-filter: blur(8px);">
+            ${cat}
+          </span>
+        </div>
+        <div style="padding: 22px;">
+          <div style="display: flex; justify-content: space-between; font-size: 12px; font-family: monospace; color: #94A3B8; margin-bottom: 8px;">
+            <span>📅 ${post.date || 'Hoje'}</span>
+            <span>⏱️ ${readTime}</span>
+          </div>
+          <h3 style="font-size: 17px; font-weight: 800; color: #FFF; line-height: 1.4; margin-bottom: 10px;">
+            ${title}
+          </h3>
+          <p style="font-size: 13.5px; line-height: 1.6; color: #94A3B8;">
+            ${desc}
+          </p>
+        </div>
+      </div>
+      <div style="padding: 0 22px 20px 22px; display: flex; align-items: center; justify-content: space-between; font-size: 12px; font-family: monospace; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 12px;">
+        <span style="color: #00E5FF; font-weight: 700;">${btnLabel}</span>
+      </div>
+    `;
+
+    grid.appendChild(card);
+  });
+}
+
+// 4. Abertura do Artigo Completo no Modal
+function openCorticArticle(i) {
+  const post = globalPosts[i];
+  if (!post) return;
+
+  const isEn = (currentLang === 'en');
+  const title = isEn ? (post.title_en || post.title) : (post.title_pt || post.title || post.titulo);
+  const content = isEn ? (post.content_en || post.content) : (post.content_pt || post.content || post.desc);
+
+  document.getElementById('reader-cat').innerText = post.category || 'Tech';
+  document.getElementById('reader-title').innerText = title;
+  document.getElementById('reader-meta').innerText = `📅 ${post.date || 'Hoje'} • ⏱️ ${post.readTime || '5 min'} • CorticFlow Editorial`;
+  
+  const imgEl = document.getElementById('reader-img');
+  imgEl.src = post.image || post.img || 'cat-ai.jpeg';
+
+  document.getElementById('reader-body').innerHTML = window.marked ? marked.parse(content) : content.replace(/\n/g, '<br>');
+  
+  const src = document.getElementById('reader-source');
+  const closeBtn = document.getElementById('reader-close-btn');
+
+  if (src) {
+    src.href = post.link || post.fonte || '#';
+    src.innerText = isEn ? 'Access Original Source ↗' : 'Acessar Fonte Original ↗';
+  }
+  if (closeBtn) {
+    closeBtn.innerText = isEn ? 'Close' : 'Fechar';
+  }
+
+  document.getElementById('cortic-reading-modal').style.display = 'block';
+  document.body.style.overflow = 'hidden';
+}
+
+function closeCorticReader(e) {
+  if (e.target.id === 'cortic-reading-modal') closeCorticReaderDirect();
+}
+function closeCorticReaderDirect() {
+  document.getElementById('cortic-reading-modal').style.display = 'none';
+  document.body.style.overflow = 'auto';
+}
+
+// 5. Inicialização com Carregamento dos Posts
+document.addEventListener('DOMContentLoaded', () => {
+  fetch('posts.json?v=' + Date.now())
+    .then(r => r.json())
+    .then(posts => {
+      globalPosts = posts;
+      setLanguage(currentLang);
+    })
+    .catch(e => console.log('Aviso:', e));
+});
+</script>
+<!-- ==================================================== -->
 </body>
 </html>
