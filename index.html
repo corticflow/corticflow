@@ -404,5 +404,53 @@
             }
         });
     </script>
+    <!-- ==================================================== -->
+<!-- AJUSTES: TICKER LEGÍVEL NO CELULAR + SELETOR PT/EN   -->
+<!-- ==================================================== -->
+<style>
+  /* Aumenta a letra do Radar ao Vivo no Celular */
+  @media (max-width: 640px) {
+    #ticker-text, .ticker-move {
+      font-size: 13px !important;
+      font-weight: 600 !important;
+      color: #FFFFFF !important;
+    }
+  }
+</style>
+
+<script>
+// Troca de Idioma 100% Funcional
+function toggleSiteLanguage(lang) {
+  localStorage.setItem('cortic_lang', lang);
+  currentLang = lang;
+
+  const btnPt = document.getElementById('btn-pt') || document.getElementById('btn-lang-pt');
+  const btnEn = document.getElementById('btn-en') || document.getElementById('btn-lang-en');
+
+  if (btnPt && btnEn) {
+    if (lang === 'pt') {
+      btnPt.className = 'px-3 py-1 rounded-full text-xs font-bold bg-[#00E5FF] text-black font-mono shadow-sm';
+      btnEn.className = 'px-3 py-1 rounded-full text-xs font-medium text-slate-400 hover:text-white font-mono';
+    } else {
+      btnEn.className = 'px-3 py-1 rounded-full text-xs font-bold bg-[#00E5FF] text-black font-mono shadow-sm';
+      btnPt.className = 'px-3 py-1 rounded-full text-xs font-medium text-slate-400 hover:text-white font-mono';
+    }
+  }
+
+  // Atualiza os cards imediatamente
+  if (typeof renderFeed === 'function') renderFeed();
+}
+
+// Conecta os botões do cabeçalho
+document.addEventListener('DOMContentLoaded', () => {
+  const btnPt = document.getElementById('btn-pt') || document.getElementById('btn-lang-pt');
+  const btnEn = document.getElementById('btn-en') || document.getElementById('btn-lang-en');
+
+  if (btnPt) btnPt.onclick = () => toggleSiteLanguage('pt');
+  if (btnEn) btnEn.onclick = () => toggleSiteLanguage('en');
+});
+</script>
+<!-- ==================================================== -->
+    
 </body>
 </html>
