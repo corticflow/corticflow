@@ -126,6 +126,56 @@ def save_posts(data):
 
     print(f"📁 Artigos salvos: {en_file} e {pt_file}")
 
+def update_posts_json():
+    print("🔄 Atualizando arquivo posts.json...")
+    posts = []
+    pt_dir = "content/pt"
+    
+    if not os.path.exists(pt_dir):
+        return
+        
+    for filename in os.listdir(pt_dir):
+        if filename.endswith(".md"):
+            filepath = os.path.join(pt_dir, filename)
+            with open(filepath, "r", encoding="utf-8") as f:
+                content = f.read()
+            
+            title = ""
+            date_str = ""
+            category = ""
+            in_frontmatter = False
+            
+            for line in content.split('\n'):
+                if line.strip() == '---':
+                    if not in_frontmatter:
+                        in_frontmatter = True
+                        continue
+                    else:
+                        break
+                if in_frontmatter:
+                    if line.startswith('title:'):
+                        title = line.replace('title:', '').strip().strip('"').strip("'")
+                    elif line.startswith('date:') or line.startswith('data:'):
+                        date_str = line.replace('date:', '').replace('data:', '').strip().strip('"').strip("'")
+                    elif line.startswith('category:') or line.startswith('categoria:'):
+                        category = line.replace('category:', '').replace('categoria:', '').strip().strip('"').strip("'")
+            
+            posts.append({
+                "id": filename.replace('.md', ''),
+                "title": title,
+                "date": date_str,
+                "category": category,
+                "file_pt": f"content/pt/{filename}",
+                "file_en": f"content/en/{filename}"
+            })
+            
+    # Ordena as postagens da mais recente para a mais antiga
+    posts.sort(key=lambda x: x["date"], reverse=True)
+    
+    with open("posts.json", "w", encoding="utf-8") as f:
+        json.dump(posts, f, ensure_ascii=False, indent=2)
+    print("✅ posts.json gerado com sucesso!")
+
 if __name__ == "__main__":
     os.makedirs("content/en", exist_ok=True)
     os.makedirs("content/pt", exist_ok=True)
@@ -140,4 +190,6 @@ if __name__ == "__main__":
         except Exception as e:
             print(f"Erro ao processar item: {e}")
 
-    print(f"🎉 Finalizado com sucesso! {success_count} matérias geradas.")
+    # Atualiza o índice do site para que as matérias novas apareçam na home
+    update_posts_json()
+    print(f"🎉 Finalizado com sucesso! {success_count} matérias geradas e indexadas no site.")
