@@ -1,382 +1,718 @@
 <!DOCTYPE html>
 <html lang="pt-BR" class="dark">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CorticFlow | Intelligence & Deep Tech Dispatch</title>
-  <meta name="description" content="Portal internacional de tecnologia: Inteligência Artificial, Semicondutores, Apple, Windows, Linux, Startups e Benchmarks.">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CorticFlow — The Stream of AI & Tech Intelligence</title>
   
-  <!-- Verificação Google Search Console & AdSense -->
-  <meta name="google-site-verification" content="43zcGSljLsHVe02k10h5cw8RD1YOL_NODxaqsoRaT28" />
-  <meta name="google-adsense-account" content="ca-pub-6428908869375108" />
-  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6428908869375108" crossorigin="anonymous"></script>
-
-  <!-- Favicon Oficial -->
-  <link rel="icon" type="image/png" href="https://github.com/corticflow.png">
-  <link rel="apple-touch-icon" href="https://github.com/corticflow.png">
-
-  <!-- Fontes Oficiais -->
+  <!-- Favicon -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🧠</text></svg>">
+  
+  <!-- Fontes Google: Inter & JetBrains Mono -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
-
-  <!-- Tailwind CSS & Marked.js -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  
+  <!-- Tailwind CSS via CDN com configuração oficial CorticFlow -->
   <script src="https://cdn.tailwindcss.com"></script>
-  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
   <script>
     tailwind.config = {
       darkMode: 'class',
       theme: {
         extend: {
           fontFamily: {
-            sans: ['Inter', 'system-ui', 'sans-serif'],
-            mono: ['JetBrains Mono', 'monospace']
+            sans: ['Inter', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace'],
           },
           colors: {
-            brandDark: '#080A0F',
-            brandCard: '#11141E',
-            brandBorder: '#202636',
-            brandCyan: '#00E5FF',
-            brandPurple: '#8B5CF6'
+            darkSlate: '#0B0F19',
+            cardBg: '#111827',
+            corticCyan: '#00E5FF',
+            corticPurple: '#8B5CF6',
+            titanium: '#94A3B8',
           }
         }
       }
     }
   </script>
 
-  <!-- Three.js + Vanta.js (Fundo 3D) -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
-
   <style>
-    body { background-color: #080A0F; color: #f8fafc; font-family: 'Inter', sans-serif; overflow-x: hidden; }
+    body {
+      background-color: #0B0F19;
+      color: #F8FAFC;
+      font-family: 'Inter', sans-serif;
+      overflow-x: hidden;
+    }
     
-    /* Ticker Animado */
-    .ticker-wrap { overflow: hidden; white-space: nowrap; }
-    .ticker-move { display: inline-block; animation: ticker 35s linear infinite; }
-    @keyframes ticker { 0% { transform: translate3d(0, 0, 0); } 100% { transform: translate3d(-50%, 0, 0); } }
-
-    /* Barra de Progresso no Topo */
-    #progress-bar {
-      position: fixed; top: 0; left: 0; height: 3.5px; width: 0%;
-      background: linear-gradient(90deg, #00E5FF, #8B5CF6);
-      z-index: 100000; box-shadow: 0 0 12px rgba(0, 229, 255, 0.8);
-      transition: width 0.08s ease-out;
+    /* Efeito de brilho neon suave */
+    .glow-cyan {
+      box-shadow: 0 0 25px rgba(0, 229, 255, 0.2);
     }
-
-    /* Modal de Leitura Isolado (Nunca Vaza na Tela) */
-    .modal-overlay {
-      display: none;
-      position: fixed;
-      inset: 0;
-      background: rgba(0, 0, 0, 0.92);
-      z-index: 99999;
-      overflow-y: auto;
-      padding: 30px 16px;
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
+    .glow-purple {
+      box-shadow: 0 0 25px rgba(139, 92, 246, 0.2);
     }
-    .prose-reader p { margin-bottom: 1.3em; line-height: 1.8; color: #cbd5e1; font-size: 1.05rem; }
-    .prose-reader h1 { font-size: 2rem; font-weight: 800; color: #fff; margin-bottom: 1rem; line-height: 1.3; }
-    .prose-reader h2 { font-size: 1.5rem; font-weight: 700; color: #00E5FF; margin-top: 2rem; margin-bottom: 0.8rem; border-bottom: 1px solid #202636; padding-bottom: 0.4rem; }
-    .prose-reader h3 { font-size: 1.2rem; font-weight: 600; color: #8B5CF6; margin-top: 1.5rem; margin-bottom: 0.5rem; }
-    .prose-reader ul { padding-left: 1.5rem; margin-bottom: 1.2em; list-style-type: disc; color: #cbd5e1; }
-    .prose-reader strong { color: #fff; font-weight: 700; }
+    
+    /* Glassmorphism */
+    .glass-card {
+      background: rgba(17, 24, 39, 0.75);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    
+    /* Scrollbar personalizada */
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #0B0F19;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #1E293B;
+      border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #00E5FF;
+    }
   </style>
 </head>
-<body class="min-h-screen flex flex-col antialiased selection:bg-brandCyan selection:text-black">
+<body class="min-h-screen flex flex-col relative selection:bg-cyan-500 selection:text-black">
 
-  <!-- Fundo 3D Vanta -->
-  <div id="vanta-bg" style="position: fixed; inset: 0; z-index: -1; pointer-events: none; opacity: 0.35;"></div>
+  <!-- Canvas de Fundo Interativo (Rede Neural de Conexões e Pulso) -->
+  <canvas id="neural-canvas" class="fixed inset-0 pointer-events-none z-0 opacity-40"></canvas>
 
-  <!-- Barra de Leitura no Topo -->
-  <div id="progress-bar"></div>
-
-  <!-- 1. Top Wire Ticker (Radar ao Vivo) -->
-  <div class="bg-black/90 border-b border-white/10 py-1.5 px-4 md:px-6 text-xs font-mono flex items-center justify-between text-zinc-400 z-50">
-    <div class="flex items-center overflow-hidden flex-1 mr-3">
-      <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-brandCyan/10 text-brandCyan font-extrabold uppercase tracking-widest text-[9px] mr-3 shrink-0 border border-brandCyan/30">
-        <span class="w-1.5 h-1.5 rounded-full bg-brandCyan animate-ping"></span>
-        RADAR AO VIVO
-      </span>
-      <div class="ticker-wrap flex-1 overflow-hidden">
-        <div id="ticker-text" class="ticker-move text-zinc-300 font-medium">
-          ⚡ [Nvidia] Arquitetura Vera CPU para Frotas de Agentes • [Modelos] GLM-5.2 lidera open-weights com 753B • [Chips] Semicondutores rumo a US$ 1 Trilhão • [Governança] Gestão financeira e circuit breakers para IA • [Startups] Aceleração em nuvem soberana
-        </div>
-      </div>
-    </div>
-
-    <!-- Controles: Lab 3D e Idioma -->
-    <div class="flex items-center gap-2 shrink-0">
-      <a href="lab.html" class="hidden sm:inline-flex items-center gap-1 px-3 py-0.5 rounded-full text-xs font-mono font-bold text-brandCyan bg-brandCyan/10 border border-brandCyan/30 hover:bg-brandCyan hover:text-black transition">
-        🧪 Lab 3D
-      </a>
-      <div class="flex items-center bg-white/5 p-0.5 rounded-full border border-white/10 text-[10px] font-mono font-bold">
-        <button id="btn-pt" onclick="setLanguage('pt')" class="px-2.5 py-0.5 rounded-full bg-brandCyan text-black font-black">PT</button>
-        <button id="btn-en" onclick="setLanguage('en')" class="px-2.5 py-0.5 rounded-full text-zinc-400 hover:text-white">EN</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- 2. Header Fixo com Logo Travado -->
-  <header class="sticky top-0 z-40 bg-[#080A0F]/90 backdrop-blur-xl border-b border-[#202636]">
-    <div class="max-w-7xl mx-auto px-4 h-16 md:h-20 flex items-center justify-between">
-      <a href="index.html" class="flex items-center gap-3 group">
-        <div class="w-9 h-9 md:w-10 md:h-10 rounded-xl bg-white flex items-center justify-center overflow-hidden border border-brandCyan/40 shadow-[0_0_15px_rgba(0,229,255,0.3)] shrink-0">
-          <img src="logo.jpeg" alt="Logo" class="w-full h-full object-cover" onerror="this.src='https://github.com/corticflow.png'">
-        </div>
-        <div>
-          <div class="text-xl md:text-2xl font-extrabold tracking-tighter text-white uppercase leading-none">
-            Cortic<span class="text-brandCyan">Flow</span>
-          </div>
-          <div class="text-[9px] md:text-[10px] font-bold tracking-widest text-slate-400 uppercase mt-0.5 font-mono">
-            Intelligence & Deep Tech Dispatch
-          </div>
-        </div>
-      </a>
+  <!-- ==================== HEADER ==================== -->
+  <header class="sticky top-0 z-40 w-full glass-card border-b border-white/10">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
       
-      <div class="text-xs font-mono text-slate-400 hidden lg:block">
-        Operação 100% em Nuvem
+      <!-- Logotipo CorticFlow -->
+      <a href="#" onclick="resetFilter()" class="flex items-center gap-3 group">
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-cyan-500 to-purple-600 p-[2px] glow-cyan group-hover:scale-105 transition-transform">
+          <div class="w-full h-full bg-[#0B0F19] rounded-[10px] flex items-center justify-center">
+            <span class="text-xl">🧠</span>
+          </div>
+        </div>
+        <div class="flex flex-col">
+          <span class="text-2xl font-black tracking-wider text-white">
+            CORTIC<span class="text-corticCyan">FLOW</span>
+          </span>
+          <span class="text-[9px] uppercase tracking-widest text-titanium font-mono -mt-1" id="ui-tagline">
+            The Stream of AI Intelligence
+          </span>
+        </div>
+      </a>
+
+      <!-- Barra de Pesquisa e Controles -->
+      <div class="flex items-center gap-4">
+        <!-- Campo de Busca -->
+        <div class="relative hidden md:block w-64">
+          <input 
+            type="text" 
+            id="search-input" 
+            oninput="handleSearch()" 
+            placeholder="Pesquisar pautas, chips, modelos..."
+            class="w-full pl-9 pr-4 py-2 text-xs rounded-xl bg-black/40 border border-white/10 text-white placeholder-slate-500 focus:outline-none focus:border-cyan-400 font-mono transition-colors"
+          />
+          <span class="absolute left-3 top-2.5 text-xs text-slate-500">🔍</span>
+        </div>
+
+        <!-- Seletor de Idioma (PT-BR / EN-US) -->
+        <button onclick="toggleLanguage()" class="px-3 py-1.5 rounded-lg border border-white/10 bg-white/5 hover:bg-white/10 text-xs font-mono font-semibold text-corticCyan transition-colors flex items-center gap-1.5">
+          🌐 <span id="current-lang-label">PT-BR</span>
+        </button>
+
+        <!-- Botão CTA Newsletter -->
+        <a href="#newsletter" class="hidden sm:inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-gradient-to-r from-cyan-500 to-purple-600 hover:from-cyan-400 hover:to-purple-500 text-black font-bold text-xs tracking-wide uppercase transition-all glow-cyan hover:scale-[1.02]">
+          ⚡ <span id="ui-btn-newsletter">Newsletter</span>
+        </a>
       </div>
     </div>
   </header>
 
-  <!-- 3. Conteúdo Principal -->
-  <main class="max-w-7xl mx-auto px-4 py-8 md:py-12 flex-grow w-full">
-
-    <!-- Hero Section -->
-    <div class="rounded-2xl border border-[#202636] bg-gradient-to-r from-brandPurple/15 to-brandCyan/15 p-6 md:p-10 mb-10">
-      <span class="inline-block px-3 py-1 rounded-full text-xs font-mono font-bold uppercase tracking-wider bg-brandCyan/10 text-brandCyan border border-brandCyan/30 mb-3">
-        ⚡ ATUALIZAÇÃO DIÁRIA & RADAR DE IA
-      </span>
-      <h1 id="hero-title" class="text-2xl sm:text-4xl md:text-5xl font-extrabold text-white leading-tight mb-3">
-        O Fluxo da Tecnologia, Inovação e Inteligência Artificial.
-      </h1>
-      <p id="hero-desc" class="text-slate-400 text-xs sm:text-sm md:text-base max-w-2xl leading-relaxed">
-        Análises aprofundadas, dissecção de semicondutores, modelos de raciocínio e engenharia de software filtrados por agentes autônomos.
-      </p>
+  <!-- ==================== HERO SECTION ==================== -->
+  <section class="relative z-10 pt-10 pb-8 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full">
+    
+    <!-- Ticker de Pulso em Tempo Real -->
+    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-cyan-500/30 bg-cyan-500/10 text-cyan-300 text-xs font-mono mb-4">
+      <span class="w-2 h-2 rounded-full bg-cyan-400 animate-ping"></span>
+      <span id="ui-live-stream">STREAM DE INTELIGÊNCIA EM TEMPO REAL</span>
+      <span class="text-slate-500">|</span>
+      <span class="text-slate-400" id="live-date">29 de Agosto de 2026</span>
     </div>
 
-    <!-- Barra de Filtros de Categorias -->
-    <div class="flex items-center gap-2 overflow-x-auto pb-4 mb-8 text-xs font-mono scrollbar-none">
-      <button onclick="filterCat('all', this)" class="filter-btn px-3.5 py-1.5 rounded-xl bg-brandCyan text-black font-bold shrink-0">Feed Geral</button>
-      <button onclick="filterCat('AI & Models', this)" class="filter-btn px-3.5 py-1.5 rounded-xl bg-[#11141E] text-slate-300 border border-[#202636] hover:border-brandCyan transition shrink-0">🧠 IA & Modelos</button>
-      <button onclick="filterCat('Windows & PC', this)" class="filter-btn px-3.5 py-1.5 rounded-xl bg-[#11141E] text-slate-300 border border-[#202636] hover:border-brandCyan transition shrink-0">💻 Windows & PC</button>
-      <button onclick="filterCat('Apple & iOS', this)" class="filter-btn px-3.5 py-1.5 rounded-xl bg-[#11141E] text-slate-300 border border-[#202636] hover:border-brandCyan transition shrink-0">🍏 Apple & iOS</button>
-      <button onclick="filterCat('Android & Gadgets', this)" class="filter-btn px-3.5 py-1.5 rounded-xl bg-[#11141E] text-slate-300 border border-[#202636] hover:border-brandCyan transition shrink-0">📱 Android & Gadgets</button>
-      <button onclick="filterCat('Mercado', this)" class="filter-btn px-3.5 py-1.5 rounded-xl bg-[#11141E] text-slate-300 border border-[#202636] hover:border-brandCyan transition shrink-0">🏢 Big Techs & Startups</button>
-      <button onclick="filterCat('Linux', this)" class="filter-btn px-3.5 py-1.5 rounded-xl bg-[#11141E] text-slate-300 border border-[#202636] hover:border-brandCyan transition shrink-0">🛠️ Linux & Open-Source</button>
+    <!-- Título Principal com Gradiente -->
+    <h1 class="text-3xl sm:text-5xl lg:text-6xl font-extrabold text-white tracking-tight leading-tight max-w-4xl mb-4">
+      O fluxo autônomo da <span class="bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 via-purple-400 to-cyan-300">Inteligência Artificial</span> e tecnologia profunda.
+    </h1>
+    <p class="text-base sm:text-lg text-slate-400 max-w-2xl leading-relaxed mb-8" id="ui-hero-desc">
+      Curadoria diária de modelos fundacionais, semicondutores, arquitetura de agentes e infraestrutura em nuvem de hiperescala.
+    </p>
+
+    <!-- Barra de Filtro de Categorias -->
+    <div class="flex items-center gap-2 overflow-x-auto pb-2 border-b border-white/10 text-xs font-mono" id="categories-bar">
+      <button onclick="filterCategory('all')" class="cat-btn active px-4 py-2 rounded-xl border border-cyan-400 bg-cyan-500/20 text-cyan-300 font-semibold transition-all" data-cat="all">
+        ⚡ Todos (<span id="count-all">0</span>)
+      </button>
+      <button onclick="filterCategory('ai-models')" class="cat-btn px-4 py-2 rounded-xl border border-white/10 bg-white/5 text-slate-400 hover:text-white transition-all" data-cat="ai-models">
+        🧠 AI & Modelos (<span id="count-ai">0</span>)
+      </button>
+      <button onclick="filterCategory('tutorials')" class="cat-btn px-4 py-2 rounded-xl border border-white/10 bg-white/5 text-slate-400 hover:text-white transition-all" data-cat="tutorials">
+        ⚙️ Tutoriais & Agentes (<span id="count-tut">0</span>)
+      </button>
+      <button onclick="filterCategory('business')" class="cat-btn px-4 py-2 rounded-xl border border-white/10 bg-white/5 text-slate-400 hover:text-white transition-all" data-cat="business">
+        🏢 Big Techs & Mercado (<span id="count-biz">0</span>)
+      </button>
+      <button onclick="filterCategory('tools')" class="cat-btn px-4 py-2 rounded-xl border border-white/10 bg-white/5 text-slate-400 hover:text-white transition-all" data-cat="tools">
+        🛠️ Ferramentas & Dev (<span id="count-tools">0</span>)
+      </button>
+    </div>
+  </section>
+
+  <!-- ==================== GRID DE NOTÍCIAS (CARDS ALINHADOS E RICOS) ==================== -->
+  <main class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full flex-grow">
+    
+    <!-- Contador de Resultados -->
+    <div class="flex justify-between items-center mb-6">
+      <h2 class="text-xs uppercase font-mono font-bold tracking-widest text-slate-400 flex items-center gap-2">
+        <span class="w-2 h-2 rounded-full bg-purple-400"></span>
+        <span id="feed-heading">Feed Editorial Selecionado</span>
+      </h2>
+      <span class="text-xs text-slate-500 font-mono" id="feed-status">Atualizado hoje</span>
     </div>
 
-    <!-- 4. Grade de Notícias Responsiva (1 coluna no celular, 3 a 4 no PC) -->
-    <div id="posts-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mb-16 w-full">
-      <!-- Injetado dinamicamente via JS -->
+    <!-- Container dos Cards -->
+    <div id="articles-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 items-stretch">
+      <!-- Injetado dinamicamente via Javascript com layout blindado -->
     </div>
-
-    <!-- Caixa de Newsletter Oficial -->
-    <div style="background: linear-gradient(rgba(11, 15, 25, 0.88), rgba(11, 15, 25, 0.88)), url('newsletter.jpeg') center/cover no-repeat; border-radius: 20px; padding: 32px 24px; border: 1px solid rgba(255, 255, 255, 0.1);" class="mb-12">
-      <h3 class="text-xl md:text-2xl font-extrabold text-white mb-2">CorticFlow Semanal</h3>
-      <p class="text-slate-300 text-xs md:text-sm mb-5 max-w-xl leading-relaxed">Receba as principais análises de tecnologia, lançamentos de IA e tutoriais práticos direto no seu e-mail.</p>
-      <form class="flex flex-col sm:flex-row gap-3 max-w-md" onsubmit="event.preventDefault(); alert('Inscrição confirmada no CorticFlow!');">
-        <input type="email" placeholder="Seu melhor e-mail..." required class="flex-grow px-4 py-2.5 rounded-xl bg-slate-900/90 border border-brandBorder text-white text-xs focus:outline-none focus:border-brandCyan font-mono">
-        <button type="submit" class="py-2.5 px-6 rounded-xl bg-brandCyan hover:bg-cyan-300 text-black font-black text-xs uppercase tracking-wider transition font-mono">Inscrever-se</button>
-      </form>
-    </div>
-
   </main>
 
-  <!-- 5. Modal de Leitura Completa (Isolado e Oculto por Padrão) -->
-  <div id="reading-modal" class="modal-overlay" onclick="closeModal(event)">
-    <div class="bg-[#11141E] border border-brandBorder rounded-2xl max-w-3xl mx-auto p-6 md:p-10 relative text-slate-200 shadow-2xl my-8" onclick="event.stopPropagation()">
-      <button onclick="closeModalDirect()" class="absolute top-4 right-5 text-3xl text-slate-400 hover:text-brandCyan leading-none">&times;</button>
-      
-      <div id="modal-category" class="text-xs font-mono font-bold text-brandCyan uppercase tracking-widest mb-2"></div>
-      <h1 id="modal-title" class="text-2xl md:text-3xl font-extrabold text-white mb-4 leading-snug"></h1>
-      <div id="modal-meta" class="text-xs font-mono text-slate-400 mb-6 pb-4 border-b border-brandBorder"></div>
-      
-      <img id="modal-img" src="" alt="" class="w-full h-64 object-cover rounded-xl mb-6 border border-brandBorder hidden">
-      
-      <div id="modal-body" class="prose-reader space-y-4"></div>
-      
-      <div class="mt-8 pt-4 border-t border-brandBorder flex justify-between items-center text-xs font-mono">
-        <a id="modal-source" href="#" target="_blank" class="text-brandCyan font-bold hover:underline">Acessar Fonte Original ↗</a>
-        <button onclick="closeModalDirect()" class="px-5 py-2 rounded-xl bg-white/10 hover:bg-white/20 text-white font-bold transition">Fechar</button>
+  <!-- ==================== PÍLULA TÉCNICA DO DIA ==================== -->
+  <section class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">
+    <div class="glass-card rounded-3xl p-6 sm:p-8 border border-purple-500/30 glow-purple relative overflow-hidden">
+      <div class="absolute -right-10 -bottom-10 w-60 h-60 bg-purple-600/10 blur-[90px] rounded-full pointer-events-none"></div>
+
+      <div class="flex items-center justify-between mb-4">
+        <div class="flex items-center gap-2 text-xs font-mono text-purple-400">
+          <span class="w-2 h-2 rounded-full bg-purple-400 animate-pulse"></span>
+          <span>PÍLULA TÉCNICA DO DIA • ARQUITETURA DE AGENTES</span>
+        </div>
+        <span class="text-xs text-slate-500 font-mono">Edição #04</span>
+      </div>
+
+      <h3 class="text-xl sm:text-2xl font-bold text-white mb-2">
+        Padrão de Heartbeat e Gestão de Orçamento para Agentes Always-On
+      </h3>
+      <p class="text-sm text-slate-300 mb-6 leading-relaxed">
+        Com o surgimento de agentes autônomos contínuos (Persistent Mode), implemente ciclos rígidos de verificação orçamentária e poda periódica de memória episódica para evitar saturação do contexto em tarefas que duram dias.
+      </p>
+
+      <!-- Bloco de Código com Sintaxe Realçado -->
+      <div class="bg-black/70 rounded-2xl p-4 border border-white/10 font-mono text-xs text-slate-200 overflow-x-auto">
+        <pre><code class="text-cyan-300">// Padrão de Segurança para Agentes Persistentes
+async function runPersistentAgentLoop(agentSession) {
+  while (!agentSession.isInterrupted()) {
+    // 1. Trava de segurança: teto de gasto nas últimas 24h
+    if (agentSession.getCumulativeCost() > DAILY_BUDGET_LIMIT) {
+      await agentSession.sleepUntilNextBillingCycle();
+      break;
+    }
+    // 2. Executa a próxima subtarefa da esteira
+    await agentSession.executeNextQueuedTask({ timeoutMs: 45000 });
+    // 3. Compactação semântica para evitar context drift
+    await agentSession.pruneEpisodicMemory();
+  }
+}</code></pre>
       </div>
     </div>
-  </div>
+  </section>
 
-  <!-- 6. Rodapé Institucional Completo -->
-  <footer class="border-t border-white/10 bg-[#04060A] py-10 mt-auto">
-    <div class="max-w-7xl mx-auto px-4 flex flex-col md:flex-row justify-between items-center gap-4 text-xs font-mono text-slate-500">
-      <div>© 2026 CorticFlow — Operação 100% em Nuvem.</div>
-      <div class="flex flex-wrap items-center gap-5">
-        <a href="lab.html" class="text-brandCyan font-bold hover:underline">🧪 Lab 3D</a>
-        <a href="privacy.html" class="hover:text-slate-300">Privacidade</a>
-        <a href="terms.html" class="hover:text-slate-300">Termos</a>
-        <a href="mailto:corticflow@gmail.com" class="hover:text-slate-300">corticflow@gmail.com</a>
-        <a href="https://instagram.com/corticflow" target="_blank" class="hover:text-pink-400">Instagram @corticflow ↗</a>
+  <!-- ==================== CAIXA DE CAPTURA NEWSLETTER ==================== -->
+  <section id="newsletter" class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 w-full">
+    <div class="glass-card rounded-3xl p-8 sm:p-12 border border-cyan-500/30 glow-cyan relative overflow-hidden flex flex-col md:flex-row items-center justify-between gap-8">
+      
+      <div class="max-w-xl">
+        <span class="text-xs uppercase font-mono tracking-widest text-corticCyan font-bold">CorticFlow Weekly Briefing</span>
+        <h3 class="text-2xl sm:text-4xl font-extrabold text-white mt-1 mb-3">
+          Receba o resumo executivo todo domingo às 20h.
+        </h3>
+        <p class="text-sm text-slate-300 leading-relaxed">
+          Sem spam. Apenas análises aprofundadas, benchmarks reais de modelos, tutoriais de engenharia de software e os bastidores do mercado global de tecnologia.
+        </p>
+      </div>
+
+      <form onsubmit="handleSubscribe(event)" class="w-full md:w-auto flex-1 max-w-md flex flex-col sm:flex-row gap-3">
+        <input 
+          type="email" 
+          id="newsletter-email" 
+          required 
+          placeholder="Seu melhor e-mail corporativo..."
+          class="w-full px-4 py-3.5 rounded-xl bg-black/60 border border-white/15 text-white placeholder-slate-500 text-sm focus:outline-none focus:border-cyan-400 font-mono"
+        />
+        <button 
+          type="submit" 
+          class="px-6 py-3.5 rounded-xl bg-gradient-to-r from-cyan-500 to-purple-600 text-black font-bold text-sm tracking-wide uppercase hover:opacity-90 transition-opacity whitespace-nowrap glow-cyan"
+        >
+          Inscrever-se
+        </button>
+      </form>
+    </div>
+  </section>
+
+  <!-- ==================== FOOTER ==================== -->
+  <footer class="relative z-10 border-t border-white/10 bg-black/60 mt-12 py-12">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center gap-6 text-xs text-slate-500 font-mono">
+      <div class="flex items-center gap-2">
+        <span class="text-white font-bold tracking-wider">CORTICFLOW</span>
+        <span>© 2026 — The Stream of AI & Tech Intelligence.</span>
+      </div>
+      <div class="flex flex-wrap items-center gap-6 text-slate-400">
+        <a href="#" onclick="openInstitutionalModal('privacy')" class="hover:text-corticCyan transition-colors">Privacidade</a>
+        <a href="#" onclick="openInstitutionalModal('terms')" class="hover:text-corticCyan transition-colors">Termos de Uso</a>
+        <a href="#" onclick="openInstitutionalModal('about')" class="hover:text-corticCyan transition-colors">Sobre o Portal</a>
+        <a href="#" onclick="openInstitutionalModal('contact')" class="hover:text-corticCyan transition-colors">Contato & Imprensa</a>
       </div>
     </div>
   </footer>
 
-  <!-- Lógica JavaScript -->
+  <!-- ==================== MODAL DE LEITURA IMERSIVA COM FUNDO DINÂMICO ==================== -->
+  <div id="article-modal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 sm:p-6 overflow-y-auto backdrop-blur-xl bg-black/80">
+    <div class="relative w-full max-w-4xl glass-card rounded-3xl border border-cyan-500/30 p-6 sm:p-10 my-8 glow-cyan overflow-hidden max-h-[90vh] overflow-y-auto">
+      
+      <!-- Fundo de Luz Dinâmico Injetado por Categoria -->
+      <div id="modal-bg-glow" class="absolute -top-32 left-1/2 -translate-x-1/2 w-[600px] h-[300px] blur-[120px] rounded-full pointer-events-none opacity-40"></div>
+
+      <!-- Botão Fechar -->
+      <button onclick="closeModal()" class="absolute top-6 right-6 w-10 h-10 rounded-full bg-white/5 border border-white/10 hover:bg-white/10 text-white text-lg flex items-center justify-center transition-colors z-20">
+        ✕
+      </button>
+
+      <!-- Conteúdo do Artigo -->
+      <div class="relative z-10">
+        <!-- Badge + Data -->
+        <div class="flex items-center gap-3 mb-4">
+          <span id="modal-category" class="px-3 py-1 rounded-full text-xs font-semibold border font-mono"></span>
+          <span id="modal-date" class="text-xs text-slate-400 font-mono"></span>
+        </div>
+
+        <!-- Título -->
+        <h1 id="modal-title" class="text-2xl sm:text-4xl font-extrabold text-white tracking-tight leading-snug mb-6"></h1>
+
+        <!-- Box de Síntese Executiva -->
+        <div class="p-5 rounded-2xl bg-white/[0.04] border border-cyan-500/20 backdrop-blur-md mb-8">
+          <h4 class="text-xs font-bold uppercase tracking-wider text-corticCyan mb-2 flex items-center gap-2 font-mono">
+            <span>⚡</span> Síntese Executiva & Impacto
+          </h4>
+          <p id="modal-summary" class="text-sm sm:text-base text-slate-200 leading-relaxed font-sans"></p>
+        </div>
+
+        <!-- Corpo Completo da Matéria -->
+        <div id="modal-body" class="prose prose-invert max-w-none text-slate-300 text-sm sm:text-base leading-relaxed space-y-4 font-sans"></div>
+
+        <!-- Links Oficiais e Fontes -->
+        <div class="mt-10 pt-6 border-t border-white/10">
+          <h5 class="text-xs uppercase font-mono tracking-widest text-slate-400 mb-3">Fontes & Análises Oficiais:</h5>
+          <div id="modal-sources" class="flex flex-wrap gap-2"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== JAVASCRIPT: DADOS, FEEDS E INTERATIVIDADE ==================== -->
   <script>
-    let allPostsData = [];
-    let currentLang = localStorage.getItem('cortic_lang') || 'pt';
-
-    function setLanguage(lang) {
-      currentLang = lang;
-      localStorage.setItem('cortic_lang', lang);
-
-      document.getElementById('btn-pt').className = lang === 'pt' ? 'px-2.5 py-0.5 rounded-full bg-brandCyan text-black font-black' : 'px-2.5 py-0.5 rounded-full text-zinc-400 hover:text-white';
-      document.getElementById('btn-en').className = lang === 'en' ? 'px-2.5 py-0.5 rounded-full bg-brandCyan text-black font-black' : 'px-2.5 py-0.5 rounded-full text-zinc-400 hover:text-white';
-
-      renderCards(allPostsData);
-    }
-
-    function filterCat(category, btn) {
-      document.querySelectorAll('.filter-btn').forEach(b => {
-        b.className = 'filter-btn px-3.5 py-1.5 rounded-xl bg-[#11141E] text-slate-300 border border-[#202636] hover:border-brandCyan transition shrink-0';
-      });
-      btn.className = 'filter-btn px-3.5 py-1.5 rounded-xl bg-brandCyan text-black font-bold shrink-0';
-
-      if (category === 'all') {
-        renderCards(allPostsData);
-      } else {
-        const filtered = allPostsData.filter(p => (p.category || p.categoria || '').toLowerCase().includes(category.toLowerCase()));
-        renderCards(filtered);
+    // Dicionário de Cores e Gradientes por Categoria
+    const THEMES = {
+      'ai-models': {
+        label: 'AI & Modelos',
+        color: 'from-cyan-500 to-purple-600',
+        badge: 'bg-cyan-500/10 text-cyan-300 border-cyan-500/30',
+        glow: 'bg-gradient-to-r from-cyan-500/30 via-purple-600/30 to-cyan-500/20',
+        borderHover: 'hover:border-cyan-400/50'
+      },
+      'tutorials': {
+        label: 'Tutoriais & Agentes',
+        color: 'from-emerald-400 to-cyan-500',
+        badge: 'bg-emerald-500/10 text-emerald-300 border-emerald-500/30',
+        glow: 'bg-gradient-to-r from-emerald-500/30 via-cyan-500/30 to-emerald-500/20',
+        borderHover: 'hover:border-emerald-400/50'
+      },
+      'business': {
+        label: 'Big Techs & Mercado',
+        color: 'from-blue-500 to-indigo-600',
+        badge: 'bg-blue-500/10 text-blue-300 border-blue-500/30',
+        glow: 'bg-gradient-to-r from-blue-600/30 via-indigo-600/30 to-blue-500/20',
+        borderHover: 'hover:border-blue-400/50'
+      },
+      'tools': {
+        label: 'Ferramentas & Dev',
+        color: 'from-purple-500 to-pink-500',
+        badge: 'bg-purple-500/10 text-purple-300 border-purple-500/30',
+        glow: 'bg-gradient-to-r from-purple-500/30 via-pink-500/30 to-purple-500/20',
+        borderHover: 'hover:border-purple-400/50'
       }
-    }
+    };
 
-    function renderCards(posts) {
-      const grid = document.getElementById('posts-grid');
-      if (!grid) return;
+    // Base de Matérias Long-Form (Edições do CorticFlow Daily)
+    const ARTICLES = [
+      {
+        id: 1,
+        category: 'ai-models',
+        title: 'OpenAI Testa "Persistent Mode": A Transição para Agentes Always-On',
+        readingTime: '4 min',
+        date: '28/08/2026',
+        summary: 'A OpenAI iniciou a homologação do modo persistente no ecossistema Codex. O novo padrão transforma agentes de ferramentas sob demanda em serviços em segundo plano contínuos, capazes de iterar testes e refatorações sem intervenção humana.',
+        body: `
+          <p>Até o início de 2026, a interação com modelos de código e agentes seguia um ritmo transacional: o desenvolvedor enviava um comando, o agente planejava, alterava arquivos, executava testes e encerrava o processo. Com a chegada do <strong>Persistent Mode</strong>, os agentes passam a operar como <em>daemons</em> em segundo plano.</p>
+          <h4 class="text-lg font-bold text-white mt-4 mb-2">Desafios de Engenharia:</h4>
+          <ul class="list-disc pl-5 space-y-2">
+            <li><strong>Controle de Drift de Contexto:</strong> Sessões que duram dias exigem compactação semântica e descarte de memória efêmera para não degradar a precisão do modelo.</li>
+            <li><strong>Locks de Arquivos e Concorrência:</strong> A coordenação entre múltiplos subagentes no mesmo monorepo exige sistemas rígidos de versionamento e locks atômicos de código.</li>
+          </ul>
+        `,
+        sources: [
+          { name: 'ExplainX / Wired Analysis', url: 'https://explainx.ai/blog/openai-codex-persistent-mode-always-on-agents-august-2026' }
+        ]
+      },
+      {
+        id: 2,
+        category: 'business',
+        title: 'Nvidia Supera Expectativas com US$ 96,2 Bilhões no Trimestre e Projeta US$ 108 Bi',
+        readingTime: '5 min',
+        date: '27/08/2026',
+        summary: 'A fabricante superou todas as projeções de Wall Street puxada pelo comissionamento massivo de clusters Blackwell e primeiras pré-vendas da arquitetura Vera Rubin, estimando um crescimento de 70% nas vendas de chips de IA no próximo ano.',
+        body: `
+          <p>Os resultados consolidados da Nvidia reforçam que a construção da infraestrutura pesada de inteligência artificial permanece no centro dos orçamentos das maiores empresas de tecnologia do planeta. O segmento de Data Centers representou mais de 85% do faturamento total.</p>
+          <h4 class="text-lg font-bold text-white mt-4 mb-2">Principais Métricas do Balanço:</h4>
+          <ul class="list-disc pl-5 space-y-2">
+            <li><strong>Receita Trimestral:</strong> US$ 96,2 bilhões (+82% na comparação anual).</li>
+            <li><strong>Projeção Próximo Trimestre:</strong> US$ 108,0 bilhões.</li>
+            <li><strong>Transição Vera Rubin:</strong> Início das encomendas para clusters com memórias HBM4 de 8 TB/s de largura de banda.</li>
+          </ul>
+        `,
+        sources: [
+          { name: 'Morningstar Analysis', url: 'https://global.morningstar.com/en-ca/stocks/nvidia-earnings-raising-fair-value-ai-buildouts-are-accelerating' },
+          { name: 'GuruFocus Financials', url: 'https://www.gurufocus.com/news/9055714/nvidia-nvda-raises-ai-chip-sales-forecast-amidst-market-scrutiny' }
+        ]
+      },
+      {
+        id: 3,
+        category: 'tools',
+        title: 'Vulnerabilidade GPUThor Ultrapassa Proteções ECC em Aceleradores de IA',
+        readingTime: '4 min',
+        date: '27/08/2026',
+        summary: 'Pesquisadores de segurança revelam a técnica GPUThor, primeira demonstração prática de indução de falhas (Rowhammer) em memória de GPU capaz de contornar correções ECC e obter acesso root em nuvens compartilhadas.',
+        body: `
+          <p>Historicamente, memórias com Error-Correcting Code (ECC) em placas como RTX A6000, A100 e H100 eram consideradas imunes a perturbações eletromagnéticas induzidas por software. O exploit GPUThor contorna essa proteção alternando padrões de escrita em frequências extremas.</p>
+          <h4 class="text-lg font-bold text-white mt-4 mb-2">Medidas de Mitigação Recomendadas:</h4>
+          <ul class="list-disc pl-5 space-y-2">
+            <li><strong>Isolamento Físico de Nós (Single-Tenant):</strong> Evitar o compartilhamento lógico de VRAM em instâncias públicas com cargas confidenciais.</li>
+            <li><strong>Ajuste de Taxa de Refresh (Target Row Refresh):</strong> Aplicação imediata de firmware para elevar o ciclo de atualização das células de memória.</li>
+          </ul>
+        `,
+        sources: [
+          { name: 'The Hacker News', url: 'https://thehackernews.com/2026/08/gputhor-rowhammer-defeats-ecc-on-nvidia.html' }
+        ]
+      },
+      {
+        id: 4,
+        category: 'tutorials',
+        title: 'Anthropic Apresenta Framework para Agentes Operarem Dispositivos Físicos',
+        readingTime: '3 min',
+        date: '28/08/2026',
+        summary: 'Novo padrão de comunicação permite que modelos Claude controlem instrumentos laboratoriais, bancadas de teste de hardware e esteiras de automação robótica com garantias estritas de segurança em tempo real.',
+        body: `
+          <p>A expansão da IA para o mundo físico (<em>Physical AI</em>) exige novos protocolos determinísticos de controle de hardware. O framework da Anthropic estabelece pontes entre chamadas de função do modelo e atuadores industriais com latência controlada e barreiras de parada de emergência.</p>
+        `,
+        sources: [
+          { name: 'The Hindu Tech', url: 'https://www.thehindu.com/sci-tech/technology/anthropic-unveils-new-framework-allowing-ai-agents-to-operate-physical-devices/article71399166.ece' }
+        ]
+      },
+      {
+        id: 5,
+        category: 'business',
+        title: 'SK hynix Inicia Obras de Megaunidade de US$ 4 Bilhões para Memórias HBM4 nos EUA',
+        readingTime: '3 min',
+        date: '28/08/2026',
+        summary: 'A fabricante sul-coreana inicia a construção de sua fábrica de empacotamento avançado em Indiana para fornecer módulos de memória ultrarrápida HBM3e e HBM4 diretamente para hyperscalers norte-americanos.',
+        body: `
+          <p>O gargalo da computação de IA deslocou-se da litografia tradicional para o <em>Advanced Packaging</em> (CoWoS e empilhamento tridimensional de chips). A nova planta reduz a dependência de etapas logísticas na Ásia.</p>
+        `,
+        sources: [
+          { name: 'SK hynix Newsroom', url: 'https://news.skhynix.com/en/groundbreaking-ceremony-in-indiana/' }
+        ]
+      },
+      {
+        id: 6,
+        category: 'tutorials',
+        title: 'Edge AI e Robótica Física: Inferência Neural com Consumo Abaixo de 15W',
+        readingTime: '4 min',
+        date: '27/08/2026',
+        summary: 'SiMa.ai e AVerMedia demonstram módulos integrados para drones autônomos e robôs industriais capazes de rodar visão computacional e modelos de decisão sem depender de conexão com a nuvem.',
+        body: `
+          <p>Para missões industriais críticas e inspeção de infraestrutura, a latência de comunicação com data centers remotos é inviável. A combinação de chips dedicados de baixo consumo com modelos quantizados viabiliza operações 100% locais.</p>
+        `,
+        sources: [
+          { name: 'Edge AI & Vision', url: 'https://www.edge-ai-vision.com/2026/08/sima-ai-and-avermedia-to-showcase-integrated-drone-ai-solution-at-august-27-2026-drone-seminar/' }
+        ]
+      }
+    ];
+
+    let currentCategory = 'all';
+    let searchQuery = '';
+
+    // Renderização dos Cards com Layout Padronizado e Uniforme
+    function renderArticles() {
+      const grid = document.getElementById('articles-grid');
       grid.innerHTML = '';
 
-      if (!posts || !posts.length) {
-        grid.innerHTML = '<div class="col-span-full text-center py-12 text-slate-400 font-mono">Nenhuma matéria encontrada.</div>';
+      const filtered = ARTICLES.filter(art => {
+        const matchCat = (currentCategory === 'all' || art.category === currentCategory);
+        const matchSearch = (
+          art.title.toLowerCase().includes(searchQuery.toLowerCase()) || 
+          art.summary.toLowerCase().includes(searchQuery.toLowerCase())
+        );
+        return matchCat && matchSearch;
+      });
+
+      if (filtered.length === 0) {
+        grid.innerHTML = `
+          <div class="col-span-full py-16 text-center text-slate-500 font-mono text-sm">
+            Nenhuma matéria encontrada para os filtros selecionados.
+          </div>
+        `;
         return;
       }
 
-      const isEn = (currentLang === 'en');
-
-      posts.forEach((post, i) => {
-        const title = isEn ? (post.title_en || post.title) : (post.title_pt || post.title || post.titulo || 'Notícia');
-        const desc = post.desc || post.resumo || (post.content_pt || '').substring(0, 160) + '...';
-        const img = post.image || post.img || 'cat-ai.jpeg';
-        const cat = post.category || post.categoria || 'Geral';
-        const readTime = post.readTime || post.read_time || '5 min';
-        const date = post.date || post.data || 'Hoje';
-        const btnText = isEn ? 'Read Article →' : 'Ler Matéria Completa →';
+      filtered.forEach(art => {
+        const theme = THEMES[art.category] || THEMES['ai-models'];
 
         const card = document.createElement('article');
-        card.className = 'group flex flex-col justify-between bg-[#11141E] border border-[#202636] hover:border-brandCyan/50 rounded-2xl overflow-hidden shadow-lg transition-all duration-300 cursor-pointer';
-        card.onclick = () => openArticleModal(post);
+        card.className = `group relative flex flex-col justify-between h-full bg-[#111827]/85 backdrop-blur-md rounded-2xl border border-white/10 ${theme.borderHover} transition-all duration-300 overflow-hidden shadow-lg hover:shadow-cyan-500/10 hover:-translate-y-1 cursor-pointer`;
+        card.onclick = () => openModal(art.id);
 
         card.innerHTML = `
-          <div>
-            <div class="relative h-48 w-full overflow-hidden bg-slate-800">
-              <img src="${img}" alt="${title}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" onerror="this.onerror=null; this.src='cat-ai.jpeg';">
-              <span class="absolute top-3 left-3 px-2.5 py-0.5 rounded-full text-[10px] font-mono font-extrabold uppercase tracking-wider bg-black/80 text-brandCyan border border-brandCyan/40 backdrop-blur-md">
-                ${cat}
+          <!-- Fundo Gradiente Dinâmico Superior -->
+          <div class="absolute inset-0 bg-gradient-to-b ${theme.glow} opacity-30 group-hover:opacity-80 transition-opacity duration-300 pointer-events-none"></div>
+
+          <div class="p-6 relative z-10 flex flex-col flex-grow">
+            <!-- Topo: Categoria + Data -->
+            <div class="flex items-center justify-between gap-2 mb-3">
+              <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold tracking-wide border ${theme.badge} font-mono">
+                <span class="w-1.5 h-1.5 rounded-full bg-current animate-pulse"></span>
+                ${theme.label}
               </span>
+              <span class="text-xs text-slate-400 font-mono">${art.readingTime} • ${art.date}</span>
             </div>
-            <div class="p-5">
-              <div class="flex items-center justify-between text-xs font-mono text-slate-400 mb-2.5">
-                <span>📅 ${date}</span>
-                <span>⏱️ ${readTime}</span>
-              </div>
-              <h3 class="text-base font-extrabold text-white leading-snug mb-2.5 group-hover:text-brandCyan transition-colors line-clamp-2">
-                ${title}
-              </h3>
-              <p class="text-xs text-slate-400 leading-relaxed line-clamp-3">
-                ${desc}
-              </p>
-            </div>
+
+            <!-- Título com trava uniforme de 2 linhas -->
+            <h3 class="text-lg font-bold text-white group-hover:text-cyan-300 transition-colors duration-200 line-clamp-2 mb-3 leading-snug">
+              ${art.title}
+            </h3>
+
+            <!-- Resumo Enriquecido com trava uniforme de 3 linhas -->
+            <p class="text-xs sm:text-sm text-slate-300/90 line-clamp-3 leading-relaxed mb-4 flex-grow">
+              ${art.summary}
+            </p>
           </div>
-          <div class="px-5 pb-5 pt-2 border-t border-[#202636]/60 flex items-center justify-between text-xs font-mono">
-            <span class="text-brandCyan font-bold group-hover:translate-x-1 transition-transform inline-flex items-center gap-1">
-              ${btnText}
+
+          <!-- Rodapé do Card -->
+          <div class="px-6 py-4 bg-black/40 border-t border-white/5 flex items-center justify-between relative z-10">
+            <span class="text-xs text-slate-400 flex items-center gap-1 font-mono">
+              ⚡ <span>CorticFlow Editorial</span>
+            </span>
+            <span class="text-xs font-semibold text-corticCyan group-hover:text-white flex items-center gap-1 transition-colors">
+              Ler Matéria <span class="group-hover:translate-x-1 transition-transform">→</span>
             </span>
           </div>
         `;
+
         grid.appendChild(card);
       });
+
+      updateCounters();
     }
 
-    function openArticleModal(post) {
-      const modal = document.getElementById('reading-modal');
-      const isEn = (currentLang === 'en');
-      const title = isEn ? (post.title_en || post.title) : (post.title_pt || post.title || post.titulo);
-      const content = isEn ? (post.content_en || post.content) : (post.content_pt || post.content || post.desc);
-      
-      document.getElementById('modal-category').innerText = post.category || post.categoria || 'Geral';
-      document.getElementById('modal-title').innerText = title;
-      document.getElementById('modal-meta').innerText = `📅 ${post.date || 'Hoje'} • ⏱️ ${post.readTime || '5 min'} • CorticFlow Editorial`;
-      
-      const modalImg = document.getElementById('modal-img');
-      if (post.image || post.img) {
-        modalImg.src = post.image || post.img;
-        modalImg.classList.remove('hidden');
-      } else {
-        modalImg.classList.add('hidden');
-      }
+    // Atualização dos Contadores de Categorias
+    function updateCounters() {
+      document.getElementById('count-all').innerText = ARTICLES.length;
+      document.getElementById('count-ai').innerText = ARTICLES.filter(a => a.category === 'ai-models').length;
+      document.getElementById('count-tut').innerText = ARTICLES.filter(a => a.category === 'tutorials').length;
+      document.getElementById('count-biz').innerText = ARTICLES.filter(a => a.category === 'business').length;
+      document.getElementById('count-tools').innerText = ARTICLES.filter(a => a.category === 'tools').length;
+    }
 
-      document.getElementById('modal-body').innerHTML = window.marked ? marked.parse(content) : `<p>${content}</p>`;
-      
-      const sourceBtn = document.getElementById('modal-source');
-      if (post.link || post.fonte) {
-        sourceBtn.href = post.link || post.fonte;
-        sourceBtn.style.display = 'inline-block';
-      } else {
-        sourceBtn.style.display = 'none';
-      }
+    // Filtros de Categoria
+    function filterCategory(cat) {
+      currentCategory = cat;
+      document.querySelectorAll('.cat-btn').forEach(btn => {
+        if (btn.dataset.cat === cat) {
+          btn.className = "cat-btn active px-4 py-2 rounded-xl border border-cyan-400 bg-cyan-500/20 text-cyan-300 font-semibold transition-all";
+        } else {
+          btn.className = "cat-btn px-4 py-2 rounded-xl border border-white/10 bg-white/5 text-slate-400 hover:text-white transition-all";
+        }
+      });
+      renderArticles();
+    }
 
-      modal.style.display = 'block';
+    function resetFilter() {
+      filterCategory('all');
+      document.getElementById('search-input').value = '';
+      searchQuery = '';
+    }
+
+    function handleSearch() {
+      searchQuery = document.getElementById('search-input').value;
+      renderArticles();
+    }
+
+    // Abertura do Modal de Leitura com Fundo Dinâmico
+    function openModal(id) {
+      const art = ARTICLES.find(a => a.id === id);
+      if (!art) return;
+
+      const theme = THEMES[art.category] || THEMES['ai-models'];
+
+      document.getElementById('modal-bg-glow').className = `absolute -top-32 left-1/2 -translate-x-1/2 w-[600px] h-[300px] blur-[120px] rounded-full pointer-events-none opacity-40 ${theme.glow}`;
+      document.getElementById('modal-category').className = `px-3 py-1 rounded-full text-xs font-semibold border font-mono ${theme.badge}`;
+      document.getElementById('modal-category').innerText = theme.label;
+      document.getElementById('modal-date').innerText = `${art.date} • ${art.readingTime} de leitura`;
+      document.getElementById('modal-title').innerText = art.title;
+      document.getElementById('modal-summary').innerText = art.summary;
+      document.getElementById('modal-body').innerHTML = art.body;
+
+      const sourcesContainer = document.getElementById('modal-sources');
+      sourcesContainer.innerHTML = '';
+      art.sources.forEach(src => {
+        const link = document.createElement('a');
+        link.href = src.url;
+        link.target = '_blank';
+        link.rel = 'noopener noreferrer';
+        link.className = 'px-3 py-1.5 rounded-lg bg-black/50 border border-white/10 text-xs font-mono text-cyan-400 hover:text-white hover:border-cyan-400 transition-colors flex items-center gap-1';
+        link.innerHTML = `🔗 ${src.name} ↗`;
+        sourcesContainer.appendChild(link);
+      });
+
+      const modal = document.getElementById('article-modal');
+      modal.classList.remove('hidden');
       document.body.style.overflow = 'hidden';
     }
 
-    function closeModal(e) {
-      if (e.target.id === 'reading-modal') closeModalDirect();
-    }
-    function closeModalDirect() {
-      document.getElementById('reading-modal').style.display = 'none';
+    function closeModal() {
+      const modal = document.getElementById('article-modal');
+      modal.classList.add('hidden');
       document.body.style.overflow = 'auto';
     }
 
-    // Inicialização
-    document.addEventListener('DOMContentLoaded', () => {
-      fetch('posts.json?v=' + Date.now())
-        .then(r => r.json())
-        .then(data => {
-          allPostsData = data;
-          setLanguage(currentLang);
-        })
-        .catch(err => console.log('Erro ao carregar posts:', err));
+    // Fechar com ESC
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') closeModal();
+    });
 
-      // Barra de Rolagem
-      window.addEventListener('scroll', () => {
-        const scrollTop = window.scrollY;
-        const docHeight = document.documentElement.scrollHeight - window.innerHeight;
-        if (docHeight > 0) {
-          document.getElementById('progress-bar').style.width = ((scrollTop / docHeight) * 100) + '%';
-        }
-      });
+    // Inscrição Newsletter
+    function handleSubscribe(e) {
+      e.preventDefault();
+      const email = document.getElementById('newsletter-email').value;
+      alert(`Inscrição confirmada com sucesso para ${email}! Você receberá a próxima edição semanal do CorticFlow.`);
+      document.getElementById('newsletter-email').value = '';
+    }
 
-      // Fundo 3D Vanta (Desktop)
-      if (window.VANTA && window.VANTA.NET && window.innerWidth >= 768) {
-        VANTA.NET({
-          el: "#vanta-bg",
-          mouseControls: true,
-          touchControls: false,
-          gyroControls: false,
-          color: 0x475569,
-          backgroundColor: 0x080A0F,
-          points: 7.00,
-          maxDistance: 16.00,
-          spacing: 20.00
-        });
+    // Modal Institucional
+    function openInstitutionalModal(type) {
+      const titles = {
+        privacy: 'Política de Privacidade (Privacy Policy)',
+        terms: 'Termos de Uso (Terms of Service)',
+        about: 'Sobre o Portal CorticFlow',
+        contact: 'Contato & Transparência Editorial'
+      };
+      alert(`${titles[type] || 'Institucional'}\n\nConsulte o documento completo salvo no Google Drive em "03 - Estrutura do Site & Monetização".`);
+    }
+
+    // Alternador de Idioma
+    let currentLang = 'PT-BR';
+    function toggleLanguage() {
+      currentLang = currentLang === 'PT-BR' ? 'EN-US' : 'PT-BR';
+      document.getElementById('current-lang-label').innerText = currentLang;
+      if (currentLang === 'EN-US') {
+        document.getElementById('ui-tagline').innerText = 'The Stream of AI Intelligence';
+        document.getElementById('ui-live-stream').innerText = 'REAL-TIME INTELLIGENCE STREAM';
+        document.getElementById('ui-btn-newsletter').innerText = 'Newsletter';
+        document.getElementById('feed-heading').innerText = 'Selected Editorial Feed';
+      } else {
+        document.getElementById('ui-tagline').innerText = 'The Stream of AI Intelligence';
+        document.getElementById('ui-live-stream').innerText = 'STREAM DE INTELIGÊNCIA EM TEMPO REAL';
+        document.getElementById('ui-btn-newsletter').innerText = 'Newsletter';
+        document.getElementById('feed-heading').innerText = 'Feed Editorial Selecionado';
       }
+    }
+
+    // ==================== ANIMAÇÃO CANVAS DE REDE NEURAL ====================
+    const canvas = document.getElementById('neural-canvas');
+    const ctx = canvas.getContext('2d');
+    let particles = [];
+
+    function resizeCanvas() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
+
+    class Particle {
+      constructor() {
+        this.x = Math.random() * canvas.width;
+        this.y = Math.random() * canvas.height;
+        this.vx = (Math.random() - 0.5) * 0.6;
+        this.vy = (Math.random() - 0.5) * 0.6;
+        this.radius = Math.random() * 1.5 + 0.5;
+      }
+      update() {
+        this.x += this.vx;
+        this.y += this.vy;
+        if (this.x < 0 || this.x > canvas.width) this.vx *= -1;
+        if (this.y < 0 || this.y > canvas.height) this.vy *= -1;
+      }
+      draw() {
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+        ctx.fillStyle = '#00E5FF';
+        ctx.fill();
+      }
+    }
+
+    function initParticles() {
+      particles = [];
+      const count = Math.floor((canvas.width * canvas.height) / 18000);
+      for (let i = 0; i < count; i++) {
+        particles.push(new Particle());
+      }
+    }
+    initParticles();
+
+    function animate() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      for (let i = 0; i < particles.length; i++) {
+        particles[i].update();
+        particles[i].draw();
+        for (let j = i + 1; j < particles.length; j++) {
+          const dx = particles[i].x - particles[j].x;
+          const dy = particles[i].y - particles[j].y;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+          if (dist < 100) {
+            ctx.beginPath();
+            ctx.moveTo(particles[i].x, particles[i].y);
+            ctx.lineTo(particles[j].x, particles[j].y);
+            ctx.strokeStyle = `rgba(139, 92, 246, ${1 - dist / 100})`;
+            ctx.lineWidth = 0.4;
+            ctx.stroke();
+          }
+        }
+      }
+      requestAnimationFrame(animate);
+    }
+    animate();
+
+    // Inicialização da Página
+    document.addEventListener('DOMContentLoaded', () => {
+      renderArticles();
     });
   </script>
 </body>
