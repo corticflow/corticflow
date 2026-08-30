@@ -5,15 +5,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>CorticFlow — The Stream of AI & Tech Intelligence</title>
   
-  <!-- Favicon -->
   <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🧠</text></svg>">
   
-  <!-- Fontes Google: Inter & JetBrains Mono -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:ital,wght@0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
   
-  <!-- Tailwind CSS via CDN com Cores Oficiais CorticFlow -->
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
@@ -75,7 +72,6 @@
 </head>
 <body class="min-h-screen flex flex-col relative selection:bg-cyan-500 selection:text-black">
 
-  <!-- Canvas de Fundo Neural -->
   <canvas id="neural-canvas" class="fixed inset-0 pointer-events-none z-0 opacity-30"></canvas>
 
   <!-- ==================== HEADER ==================== -->
@@ -105,7 +101,7 @@
             type="text" 
             id="search-input" 
             oninput="handleSearch()" 
-            placeholder="Pesquisar pautas, semicondutores, modelos..."
+            placeholder="Pesquisar Google, Nvidia, Apple, Linux..."
             class="w-full pl-9 pr-4 py-2 text-xs rounded-xl bg-black/50 border border-white/15 text-white placeholder-slate-500 focus:outline-none focus:border-cyan-400 font-mono transition-colors"
           />
           <span class="absolute left-3 top-2.5 text-xs text-slate-500">🔍</span>
@@ -133,13 +129,25 @@
     </div>
 
     <h1 class="text-3xl sm:text-5xl lg:text-6xl font-extrabold text-white tracking-tight leading-tight max-w-5xl mb-4">
-      O fluxo autônomo da <span class="bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 via-purple-400 to-cyan-300">Inteligência Artificial</span> e tecnologia profunda.
+      O fluxo analítico de <span class="bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 via-purple-400 to-cyan-300">Inteligência Artificial</span> e alta tecnologia.
     </h1>
-    <p class="text-base sm:text-lg text-slate-300 max-w-3xl leading-relaxed mb-8" id="ui-hero-desc">
-      Cobertura analítica e de alta precisão em modelos de raciocínio, física de semicondutores, arquitetura de sistemas autônomos e infraestrutura em escala de hiperescala.
+    <p class="text-base sm:text-lg text-slate-300 max-w-3xl leading-relaxed mb-6" id="ui-hero-desc">
+      Cobertura aprofundada de anúncios, repositórios e pesquisas do ecossistema global: Google, Nvidia, Apple, Linux, OpenAI, Anthropic e DeepSeek.
     </p>
 
-    <!-- Filtros por Categoria -->
+    <!-- Radar de Gigantes de Tecnologia (Tags Rápidas) -->
+    <div class="flex flex-wrap items-center gap-2 mb-6 text-xs font-mono">
+      <span class="text-slate-500 font-bold uppercase tracking-wider mr-1">Radar:</span>
+      <button onclick="setSearchFilter('Google')" class="px-2.5 py-1 rounded-lg bg-white/5 border border-white/10 hover:border-cyan-400 text-slate-300 hover:text-white transition-all">Google AI</button>
+      <button onclick="setSearchFilter('Nvidia')" class="px-2.5 py-1 rounded-lg bg-white/5 border border-white/10 hover:border-cyan-400 text-slate-300 hover:text-white transition-all">Nvidia</button>
+      <button onclick="setSearchFilter('Apple')" class="px-2.5 py-1 rounded-lg bg-white/5 border border-white/10 hover:border-cyan-400 text-slate-300 hover:text-white transition-all">Apple Silicon</button>
+      <button onclick="setSearchFilter('DeepSeek')" class="px-2.5 py-1 rounded-lg bg-white/5 border border-white/10 hover:border-cyan-400 text-slate-300 hover:text-white transition-all">DeepSeek</button>
+      <button onclick="setSearchFilter('Anthropic')" class="px-2.5 py-1 rounded-lg bg-white/5 border border-white/10 hover:border-cyan-400 text-slate-300 hover:text-white transition-all">Anthropic</button>
+      <button onclick="setSearchFilter('OpenAI')" class="px-2.5 py-1 rounded-lg bg-white/5 border border-white/10 hover:border-cyan-400 text-slate-300 hover:text-white transition-all">OpenAI</button>
+      <button onclick="setSearchFilter('Linux')" class="px-2.5 py-1 rounded-lg bg-white/5 border border-white/10 hover:border-cyan-400 text-slate-300 hover:text-white transition-all">Linux Kernel</button>
+    </div>
+
+    <!-- Filtros de Categorias -->
     <div class="flex items-center gap-2 overflow-x-auto pb-2 border-b border-white/10 text-xs font-mono" id="categories-bar">
       <button onclick="filterCategory('all')" class="cat-btn active px-4 py-2.5 rounded-xl border border-cyan-400 bg-cyan-500/20 text-cyan-300 font-semibold transition-all whitespace-nowrap" data-cat="all">
         ⚡ Todas as Pautas (<span id="count-all">0</span>)
@@ -170,10 +178,7 @@
       <span class="text-xs text-slate-400 font-mono" id="feed-status">Long-Form • Análise Técnica</span>
     </div>
 
-    <!-- Grid de Artigos -->
-    <div id="articles-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-7 items-stretch">
-      <!-- Injetado Dinamicamente -->
-    </div>
+    <div id="articles-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-7 items-stretch"></div>
   </main>
 
   <!-- ==================== PÍLULA TÉCNICA ==================== -->
@@ -222,7 +227,7 @@ async function runPersistentAgentLoop(agentSession) {
           Receba o resumo executivo todo domingo às 20h.
         </h3>
         <p class="text-sm text-slate-300 leading-relaxed">
-          Sem ruído. Apenas análises aprofundadas, benchmarks reais de modelos, tutoriais de engenharia de software e os bastidores do mercado global de tecnologia.
+          Sem ruído. Análises aprofundadas, benchmarks reais de modelos, tutoriais de engenharia de software e os bastidores do mercado global de tecnologia.
         </p>
       </div>
 
@@ -264,17 +269,14 @@ async function runPersistentAgentLoop(agentSession) {
   <div id="article-modal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 sm:p-6 overflow-y-auto backdrop-blur-2xl bg-black/85">
     <div class="relative w-full max-w-4xl glass-card rounded-3xl border border-cyan-500/30 p-0 my-8 glow-cyan overflow-hidden max-h-[92vh] overflow-y-auto">
       
-      <!-- Banner Hero Panorâmico com Imagem Temática -->
       <div class="relative h-64 sm:h-80 w-full overflow-hidden">
         <img id="modal-cover-img" src="" alt="Capa da Matéria" class="w-full h-full object-cover object-center" />
         <div class="absolute inset-0 bg-gradient-to-t from-[#111827] via-[#111827]/60 to-transparent"></div>
         
-        <!-- Botão Fechar -->
         <button onclick="closeModal()" class="absolute top-5 right-5 w-10 h-10 rounded-full bg-black/60 border border-white/20 hover:bg-black/90 text-white text-lg flex items-center justify-center transition-colors z-20">
           ✕
         </button>
 
-        <!-- Metadados sobre a Imagem -->
         <div class="absolute bottom-6 left-6 right-6 z-10">
           <div class="flex items-center gap-3 mb-2">
             <span id="modal-category" class="px-3 py-1 rounded-full text-xs font-semibold border font-mono"></span>
@@ -284,10 +286,7 @@ async function runPersistentAgentLoop(agentSession) {
         </div>
       </div>
 
-      <!-- Conteúdo do Artigo -->
       <div class="p-6 sm:p-10 space-y-6">
-        
-        <!-- Box de Síntese Executiva -->
         <div class="p-5 rounded-2xl bg-white/[0.04] border border-cyan-500/25 backdrop-blur-md">
           <h4 class="text-xs font-bold uppercase tracking-wider text-corticCyan mb-2 flex items-center gap-2 font-mono">
             <span>⚡</span> Síntese Executiva & Impacto Macroeconômico
@@ -295,19 +294,17 @@ async function runPersistentAgentLoop(agentSession) {
           <p id="modal-summary" class="text-sm sm:text-base text-slate-200 leading-relaxed font-sans"></p>
         </div>
 
-        <!-- Corpo Completo da Matéria -->
         <div id="modal-body" class="prose prose-invert max-w-none text-slate-300 text-sm sm:text-base leading-relaxed space-y-6 font-sans"></div>
 
-        <!-- Fontes Oficiais -->
         <div class="mt-10 pt-6 border-t border-white/10">
-          <h5 class="text-xs uppercase font-mono tracking-widest text-slate-400 mb-3">Fontes Oficiais & White Papers:</h5>
+          <h5 class="text-xs uppercase font-mono tracking-widest text-slate-400 mb-3">Fontes Oficiais & Documentação:</h5>
           <div id="modal-sources" class="flex flex-wrap gap-2"></div>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- ==================== JAVASCRIPT: DADOS E INTERATIVIDADE ==================== -->
+  <!-- ==================== JAVASCRIPT: DADOS REESCRITOS ==================== -->
   <script>
     const THEMES = {
       'ai-models': {
@@ -332,210 +329,145 @@ async function runPersistentAgentLoop(agentSession) {
       }
     };
 
-    // Coleção de Artigos Densos (Long-Form) com Imagens 16:9 Geradas por IA
+    // Matérias Jornalísticas Reescritas (Deep-Dives de Google, Nvidia, Apple, Linux, OpenAI, Anthropic, DeepSeek)
     const ARTICLES = [
       {
         id: 1,
         category: 'ai-models',
-        title: 'OpenAI Testa "Persistent Mode": A Transição Paradigmática para Agentes Always-On',
+        title: 'DeepSeek Lança "DeepSeek Harness": A Aposta em Frameworks Abertos para Orquestração de Agentes',
         readingTime: '6 min',
-        date: '29/08/2026',
+        date: '30/08/2026',
         coverImage: 'https://images.unsplash.com/photo-1620712943543-bcc4688e7485?q=80&w=1200&auto=format&fit=crop',
-        summary: 'O ecossistema Codex inicia a homologação do modo persistente. O novo padrão transforma agentes de meras ferramentas transacionais sob demanda em serviços autônomos em segundo plano capazes de iterar, debugar e refatorar monorepos continuamente sem intervenção humana.',
+        summary: 'A DeepSeek apresentou o DeepSeek Harness, um framework de código aberto que desmantela os limites dos agentes de "caixa-preta", permitindo que desenvolvedores inspecionem, modifiquem tensores de decisão e controlem o raciocínio em tempo de execução.',
         body: `
           <p class="text-base text-slate-200 leading-relaxed">
-            Até meados de 2026, a interação dominante com modelos fundacionais de código permaneceu restrita a uma dinâmica estritamente síncrona: o engenheiro submetia uma instrução, o modelo formulava uma hipótese, aplicava alterações atômicas no sistema de arquivos, executava a suíte de testes e aguardava nova entrada. O <strong>Persistent Mode</strong> rompe essa barreira, introduzindo agentes com ciclos de vida desacoplados da presença ativa do desenvolvedor.
+            Em contraste direto com as soluções de agentes fechados comercializadas pelas Big Techs norte-americanas, a <strong>DeepSeek</strong> oficializou o lançamento do <em>DeepSeek Harness</em>. Trata-se de uma infraestrutura desacoplada para construção de fluxos de trabalho autônomos orientados por modelos de pesos abertos.
           </p>
 
-          <h3 class="text-xl font-bold text-white mt-6 mb-3">1. Desafios Críticos de Engenharia de Contexto</h3>
+          <h3 class="text-xl font-bold text-white mt-6 mb-3">1. A Filosofia do Sistema Aberto</h3>
           <p>
-            Manter um agente operando como um <em>daemon</em> ininterrupto impõe desafios de governança que transcendem a simples expansão da janela de contexto. Em sessões que duram múltiplos dias úteis, o acúmulo de traces de erro e logs transitórios degrada a atenção efetiva do modelo (fenômeno conhecido como <em>Context Drift</em>).
+            Em vez de encapsular a tomada de decisão em APIs proprietárias opacas, o Harness expõe a pilha de orquestração completa: controle fino sobre a alocação de KV Cache, intervenção manual em árvores de busca durante o raciocínio e execução nativa em nós de GPU locais com quantização adaptativa.
           </p>
-          <ul class="list-disc pl-5 space-y-2 text-slate-300">
-            <li><strong>Poda Semântica de Memória Episódica:</strong> O agente sintetiza aprendizados intermediários em grafos de conhecimento estruturados, descartando saídas de terminal com mais de 30 minutos de antiguidade.</li>
-            <li><strong>Locks de Concorrência em Monorepos:</strong> Para evitar que múltiplos subagentes colidam ao alterar dependências compartilhadas, implementou-se um protocolo de bloqueio atômico de arquivos baseado em árvores Merkle.</li>
-          </ul>
 
-          <h3 class="text-xl font-bold text-white mt-6 mb-3">2. Comparativo de Paradigmas de Agentes</h3>
-          <div class="overflow-x-auto my-4">
-            <table class="w-full text-left text-xs font-mono border border-white/10 rounded-xl overflow-hidden">
-              <thead class="bg-white/5 text-cyan-300">
-                <tr>
-                  <th class="p-3">Dimensão</th>
-                  <th class="p-3">Agente Transacional (2024-2025)</th>
-                  <th class="p-3">Persistent Mode (2026)</th>
-                </tr>
-              </thead>
-              <tbody class="divide-y divide-white/5 text-slate-300">
-                <tr>
-                  <td class="p-3 font-semibold text-white">Gatilho de Execução</td>
-                  <td class="p-3">Prompt explícito do usuário</td>
-                  <td class="p-3">Eventos de CI/CD, telemetria e cron autônomo</td>
-                </tr>
-                <tr>
-                  <td class="p-3 font-semibold text-white">Gestão de Falhas</td>
-                  <td class="p-3">Retorna erro e encerra processo</td>
-                  <td class="p-3">Auto-correção em loop fechado com rollback</td>
-                </tr>
-                <tr>
-                  <td class="p-3 font-semibold text-white">Retenção de Estado</td>
-                  <td class="p-3">Efêmera por sessão de chat</td>
-                  <td class="p-3">Memória de longo prazo persistida em banco vetorial</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
+          <h3 class="text-xl font-bold text-white mt-6 mb-3">2. Estrutura de Preços e Transição de Custos</h3>
+          <p>
+            Simultaneamente, a DeepSeek recalibrou suas tabelas de API para balancear a carga em horários de pico (UTC), incentivando cargas de trabalho em horários de menor tráfego com descontos agressivos por milhão de tokens.
+          </p>
 
           <h3 class="text-xl font-bold text-white mt-6 mb-3">3. Veredito Editorial CorticFlow</h3>
           <p class="border-l-2 border-cyan-400 pl-4 italic text-slate-200">
-            "A persistência de agentes desloca o papel do desenvolvedor de escrever lógica procedural para o de desenhar restrições, orçamentos computacionais e invariantes de arquitetura."
+            "A estratégia da DeepSeek transfere o poder de arquitetura dos provedores de nuvem centralizados de volta para os laboratórios de engenharia de software independentes."
           </p>
         `,
         sources: [
-          { name: 'ExplainX / Wired — OpenAI Codex Persistent Mode Analysis', url: 'https://explainx.ai/blog/openai-codex-persistent-mode-always-on-agents-august-2026' },
-          { name: 'Anthropic Agent Governance Whitepaper', url: 'https://www.thehindu.com/sci-tech/technology/anthropic-unveils-new-framework-allowing-ai-agents-to-operate-physical-devices/article71399166.ece' }
+          { name: 'DeepSeek API Changelog & Docs', url: 'https://api-docs.deepseek.com/updates/' },
+          { name: 'DeepSeek Research & Governance Dossier', url: 'https://thetricontinental.org/how-to-use-deepseek-harness/' }
         ]
       },
       {
         id: 2,
-        category: 'business',
-        title: 'A Anatomia dos US$ 96,2 Bilhões da Nvidia: Transição para Vera Rubin e o Ciclo dos Data Centers',
+        category: 'ai-models',
+        title: 'Anthropic e Salesforce Revelam Claudeforce e Padrão de Watermarking para Conformidade com a UE',
         readingTime: '5 min',
-        date: '28/08/2026',
-        coverImage: 'https://images.unsplash.com/photo-1591488320449-011701bb6704?q=80&w=1200&auto=format&fit=crop',
-        summary: 'A fabricante de semicondutores superou Wall Street puxada pelo comissionamento massivo de clusters Blackwell e primeiras pré-vendas da arquitetura Vera Rubin, estimando alta de 70% nas vendas de chips de IA no próximo ano.',
+        date: '29/08/2026',
+        coverImage: 'https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?q=80&w=1200&auto=format&fit=crop',
+        summary: 'A Anthropic expandiu sua aliança estratégica com a Salesforce com a plataforma Claudeforce e detalhou a tecnologia de marca d’água estatística para atender aos novos requisitos do EU AI Act em escala empresarial.',
         body: `
           <p class="text-base text-slate-200 leading-relaxed">
-            Diferente de ciclos históricos de semicondutores marcados por correções agudas após picos de investimento em infraestrutura, o balanço fiscal consolidado da Nvidia comprova que os investimentos em data centers de hiperescala permanecem na fase mais agressiva de expansão.
+            A convergência entre agentes autônomos de raciocínio profundo e os sistemas de registro empresarial ganha seu maior impulso com a estreia da plataforma <strong>Claudeforce</strong>. A integração permite que o Claude acesse metadados de negócios, execute fluxos de CRM e acione automações com governança estrita de permissões.
           </p>
 
-          <h3 class="text-xl font-bold text-white mt-6 mb-3">1. O Salto Arquitetural da Família Vera Rubin</h3>
+          <h3 class="text-xl font-bold text-white mt-6 mb-3">1. O Mecanismo de Watermark Criptográfico</h3>
           <p>
-            Enquanto a geração Blackwell consolidou o empacotamento dual-die com interconexão de 10 TB/s, a arquitetura Vera Rubin introduz a integração nativa com memórias <strong>HBM4 de 8 TB/s de largura de banda</strong>. Esse salto ataca frontalmente a <em>Memory Wall</em>, permitindo que clusters de inferência mantenham modelos densos de 1 trilhão de parâmetros em memória de alta velocidade com zero latência de paginação.
+            Para cumprir as diretrizes do <em>EU AI Act</em> válidas a partir de agosto de 2026, a Anthropic detalhou a implementação de assinaturas criptográficas invisíveis nos tokens gerados. O algoritmo altera sutilmente a probabilidade de seleção de sinônimos de forma matematicamente imperceptível para humanos, mas detectável por validadores institucionais.
           </p>
-
-          <div class="overflow-x-auto my-4">
-            <table class="w-full text-left text-xs font-mono border border-white/10 rounded-xl overflow-hidden">
-              <thead class="bg-white/5 text-cyan-300">
-                <tr>
-                  <th class="p-3">Métrica Financeira</th>
-                  <th class="p-3">Consenso de Wall Street</th>
-                  <th class="p-3">Resultado Reportado</th>
-                  <th class="p-3">Variação Anual (YoY)</th>
-                </tr>
-              </thead>
-              <tbody class="divide-y divide-white/5 text-slate-300">
-                <tr>
-                  <td class="p-3 font-semibold text-white">Receita Total Trimestral</td>
-                  <td class="p-3">US$ 92,0 Bilhões</td>
-                  <td class="p-3 text-cyan-300 font-bold">US$ 96,2 Bilhões</td>
-                  <td class="p-3 text-emerald-400">+122%</td>
-                </tr>
-                <tr>
-                  <td class="p-3 font-semibold text-white">Segmento Data Center</td>
-                  <td class="p-3">US$ 78,0 Bilhões</td>
-                  <td class="p-3 text-cyan-300 font-bold">US$ 84,1 Bilhões</td>
-                  <td class="p-3 text-emerald-400">+154%</td>
-                </tr>
-                <tr>
-                  <td class="p-3 font-semibold text-white">Guidance Próximo Trimestre</td>
-                  <td class="p-3">US$ 98,5 Bilhões</td>
-                  <td class="p-3 text-cyan-300 font-bold">US$ 108,0 Bilhões</td>
-                  <td class="p-3 text-emerald-400">+70% projetado</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
         `,
         sources: [
-          { name: 'Morningstar Analysis — AI Infrastructure Buildouts', url: 'https://global.morningstar.com/en-ca/stocks/nvidia-earnings-raising-fair-value-ai-buildouts-are-accelerating' },
-          { name: 'GuruFocus Financials — Q2 FY2027 Breakdown', url: 'https://www.gurufocus.com/news/9055714/nvidia-nvda-raises-ai-chip-sales-forecast-amidst-market-scrutiny' }
+          { name: 'Salesforce Press Release — Claudeforce Launch', url: 'https://www.salesforce.com/news/press-releases/2026/08/26/salesforce-and-anthropic-announce-claudeforce/' },
+          { name: 'Anthropic Newsroom — How Claude Text Watermarking Works', url: 'https://www.anthropic.com/news/claude-text-watermark' }
         ]
       },
       {
         id: 3,
-        category: 'tools',
-        title: 'Vulnerabilidade GPUThor Burlar Proteção ECC: A Ameaça de Rowhammer em Nuvens de IA',
+        category: 'business',
+        title: 'Apple Introduz Processadores M6 e M5 Ultra com Foco Massivo em Computação de Apple Intelligence',
         readingTime: '5 min',
         date: '28/08/2026',
-        coverImage: 'https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=1200&auto=format&fit=crop',
-        summary: 'Pesquisadores de segurança revelam o exploit GPUThor, primeira técnica comprovada de Rowhammer em memória de GPU capaz de corromper bits protegidos por código de correção de erro (ECC) e obter acesso root em servidores multi-tenant.',
+        coverImage: 'https://images.unsplash.com/photo-1591488320449-011701bb6704?q=80&w=1200&auto=format&fit=crop',
+        summary: 'A Apple revelou seus novos processadores M6 e M5 Ultra equipados com até 36 núcleos de CPU, 80 núcleos de GPU e 256 GB de memória unificada de alta largura de banda para rodar modelos de IA locais sem latência de nuvem.',
         body: `
           <p class="text-base text-slate-200 leading-relaxed">
-            Historicamente, aceleradores gráficos corporativos (como RTX A6000, H100 e B200) utilizavam memórias equipadas com <em>Error-Correcting Code</em> (ECC) como linha de defesa intransponível contra perturbações eletromagnéticas induzidas por software. O ataque <strong>GPUThor</strong> demonstrou que essa premissa não se sustenta mais sob cargas de estresse térmico e elétrico controladas.
+            A Apple estabeleceu uma nova referência de computação em silício ao apresentar a nova geração de chips para a linha Mac Studio e Mac mini. Os novos <strong>M6 e M5 Ultra</strong> foram projetados desde a microarquitetura para acelerar modelos fundacionais on-device do ecossistema <em>Apple Intelligence</em>.
           </p>
 
-          <h3 class="text-xl font-bold text-white mt-6 mb-3">1. Mecanismo de Inversão de Múltiplos Bits (Multi-Bit Flips)</h3>
-          <p>
-            Ao alternar padrões de leitura e escrita em frequências de nanossegundos em linhas de células de memória adjacentes na VRAM, o exploit provoca um vazamento de carga elétrica capacitiva que inverte múltiplos bits simultaneamente. Quando o número de bits alterados ultrapassa o limite de correção do algoritmo SECDED (<em>Single Error Correction, Double Error Detection</em>), o controlador de memória falha silenciosamente, abrindo brechas para escalada de privilégios.
-          </p>
-
-          <h3 class="text-xl font-bold text-white mt-6 mb-3">2. Checklist Obrigatório de Mitigação</h3>
+          <h3 class="text-xl font-bold text-white mt-6 mb-3">1. Métricas Técnicas de Silício:</h3>
           <ul class="list-disc pl-5 space-y-2 text-slate-300">
-            <li><strong>Desativação de DMA Compartilhado:</strong> Bloquear o acesso direto à memória entre instâncias virtualizadas não confiáveis.</li>
-            <li><strong>Ajuste da Taxa de Refresh (Target Row Refresh):</strong> Forçar via microcódigo taxas de atualização adaptativas mais frequentes na VRAM.</li>
-            <li><strong>Isolamento Físico Single-Tenant:</strong> Para nós de computação acelerada que processem tensores confidenciais, adotar instâncias dedicadas.</li>
+            <li><strong>Configuração de Topo:</strong> 36-core CPU e 80-core GPU com largura de banda de memória unificada superior a 800 GB/s.</li>
+            <li><strong>Neural Engine de Próxima Geração:</strong> Aceleração de tensores para processamento multimodal e execução contínua de modelos de áudio e visão.</li>
+            <li><strong>Privacidade On-Device:</strong> Modelos com suporte nativo a português, inglês e mais 14 idiomas rodando 100% isolados no hardware.</li>
           </ul>
         `,
         sources: [
-          { name: 'The Hacker News — GPUThor Rowhammer Vulnerability Analysis', url: 'https://thehackernews.com/2026/08/gputhor-rowhammer-defeats-ecc-on-nvidia.html' }
+          { name: 'Apple Newsroom — M6 & M5 Ultra Announcement', url: 'https://www.apple.com/newsroom/2026/08/apple-introduces-m6-and-m5-ultra-for-a-big-leap-in-performance-and-ai-compute/' },
+          { name: 'Apple Newsroom — Mac Mini Next-Gen Architecture', url: 'https://www.apple.com/newsroom/2026/08/apple-unveils-a-more-powerful-mac-mini-featuring-the-all-new-m6-and-m5-pro/' }
         ]
       },
       {
         id: 4,
-        category: 'tutorials',
-        title: 'Physical AI na Borda: Inferência Neural com Consumo Abaixo de 15W para Drones e Robótica',
-        readingTime: '4 min',
-        date: '27/08/2026',
-        coverImage: 'https://images.unsplash.com/photo-1508614589041-895b88991e3e?q=80&w=1200&auto=format&fit=crop',
-        summary: 'SiMa.ai e AVerMedia apresentam arquiteturas de computação de IA em borda voltadas para robôs industriais e drones de inspeção, operando modelos multimodais de visão-ação em tempo real com consumo elétrico ultrabaixo.',
+        category: 'ai-models',
+        title: 'Google Expande a "Agentic Gemini Era" com Gemini 3.5 Flash e Execução Test-Time Compute',
+        readingTime: '5 min',
+        date: '28/08/2026',
+        coverImage: 'https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=1200&auto=format&fit=crop',
+        summary: 'O Google AI atualizou sua esteira para desenvolvedores, consolidando o Gemini 3.5 Flash como motor padrão de raciocínio de alta velocidade e integrando novos recursos de reflexão estendida em buscas complexas.',
         body: `
           <p class="text-base text-slate-200 leading-relaxed">
-            A convergência entre visão computacional densa e controle agêntico em tempo real impulsiona a era da <strong>Inteligência Artificial Física</strong> (<em>Physical AI</em>). Em missões de busca e salvamento ou monitoramento de redes de transmissão elétrica, a latência inerente à comunicação com data centers remotos inviabiliza respostas em frações de segundo.
+            A estratégia do Google de acelerar a transição para agentes corporativos autônomos atingiu novo marco com o comissionamento do <strong>Gemini 3.5 Flash</strong>. O modelo atinge rendimento até quatro vezes superior em taxa de geração de tokens por segundo (TPS), viabilizando pipelines de agentes com feedback em tempo real.
           </p>
-          <h3 class="text-xl font-bold text-white mt-6 mb-3">Destaques da Arquitetura:</h3>
+          <h3 class="text-xl font-bold text-white mt-6 mb-3">Destaques da Atualização para Desenvolvedores:</h3>
           <ul class="list-disc pl-5 space-y-2 text-slate-300">
-            <li>NPU dedicada com aceleração nativa de operadores de atenção esparsa.</li>
-            <li>Consumo térmico inferior a 15W, viabilizando operação contínua em baterias de lítio padrão.</li>
-            <li>Processamento simultâneo de 4 fluxos de vídeo 4K a 60 FPS com latência determinística abaixo de 8ms.</li>
+            <li>Redução de latência de primeiro token para chamadas encadeadas de ferramentas (Function Calling).</li>
+            <li>Melhoria expressiva em tarefas de síntese de código e raciocínio matemático em tempo estendido.</li>
           </ul>
         `,
         sources: [
-          { name: 'Edge AI & Vision — SiMa.ai Platform Launch', url: 'https://www.edge-ai-vision.com/2026/08/sima-ai-and-avermedia-to-showcase-integrated-drone-ai-solution-at-august-27-2026-drone-seminar/' }
+          { name: 'Google AI for Developers — Gemini API Changelog', url: 'https://ai.google.dev/gemini-api/docs/changelog' },
+          { name: 'Google The Keyword — Agentic Gemini Era Overview', url: 'https://blog.google/innovation-and-ai/sundar-pichai-io-2026/' }
         ]
       },
       {
         id: 5,
         category: 'business',
-        title: 'SK hynix Inicia Fábrica de US$ 4 Bilhões em Indiana para Suprir Memórias HBM4',
-        readingTime: '4 min',
+        title: 'Nvidia Acelera Clusters Vera Rubin NVL72 e Balanço Histórico de US$ 96,2 Bilhões',
+        readingTime: '5 min',
         date: '28/08/2026',
-        coverImage: 'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?q=80&w=1200&auto=format&fit=crop',
-        summary: 'A gigante sul-coreana quebra o solo em sua megaunidade norte-americana de empacotamento avançado de chips, encurtando a cadeia logística para aceleradores de última geração encomendados por hyperscalers.',
+        coverImage: 'https://images.unsplash.com/photo-1508614589041-895b88991e3e?q=80&w=1200&auto=format&fit=crop',
+        summary: 'A Nvidia reportou receita recorde no trimestre e projetou US$ 108 bilhões para o período seguinte, acelerando a transição das fundições da TSMC para sistemas de memória HBM4 com 8 TB/s de largura de banda.',
         body: `
           <p class="text-base text-slate-200 leading-relaxed">
-            A fabricação de semicondutores de ponta não se restringe mais ao diâmetro de litografia na fundição de silício; o empacotamento volumétrico 3D tornou-se o elemento determinante de rendimento e custo. A nova planta em Indiana integra a cadeia de montagem direta com clientes nos Estados Unidos.
+            Os números consolidados da Nvidia reafirmam que a construção de data centers de inferência contínua é a maior obra de infraestrutura da década. A empresa anunciou que a demanda por clusters Blackwell e primeiros contratos da arquitetura <strong>Vera Rubin</strong> superam a capacidade produtiva global.
           </p>
         `,
         sources: [
-          { name: 'SK hynix Official Newsroom', url: 'https://news.skhynix.com/en/groundbreaking-ceremony-in-indiana/' }
+          { name: 'Morningstar Analysis — Nvidia Q2 FY2027 Financials', url: 'https://global.morningstar.com/en-ca/stocks/nvidia-earnings-raising-fair-value-ai-buildouts-are-accelerating' },
+          { name: 'GuruFocus Market Analysis', url: 'https://www.gurufocus.com/news/9055714/nvidia-nvda-raises-ai-chip-sales-forecast-amidst-market-scrutiny' }
         ]
       },
       {
         id: 6,
-        category: 'ai-models',
-        title: 'Benchmarking de Modelos de Raciocínio em Tempo Estendido (Test-Time Compute)',
-        readingTime: '5 min',
+        category: 'tools',
+        title: 'Vulnerabilidade GPUThor e Mitigações no Kernel Linux para vGPUs Compartilhadas',
+        readingTime: '4 min',
         date: '27/08/2026',
-        coverImage: 'https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?q=80&w=1200&auto=format&fit=crop',
-        summary: 'Novas métricas quantificam a eficiência de árvores de busca e reflexão contínua durante a inferência, redefinindo o custo por token resolvido em esteiras de engenharia de software complexas.',
+        coverImage: 'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?q=80&w=1200&auto=format&fit=crop',
+        summary: 'Ataque de Rowhammer em memória de GPU força desenvolvedores do Kernel Linux e provedores de nuvem a implementar particionamento físico estrito para evitar vazamento de tensores confidenciais entre instâncias virtuais.',
         body: `
           <p class="text-base text-slate-200 leading-relaxed">
-            A corrida de modelos fundacionais migrou do pré-treinamento massivo para a computação no momento da inferência (<em>Test-Time Compute</em>). Modelos que realizam buscas em feixe (Beam Search) dinâmicas e verificação formal de código superam arquiteturas puramente probabilísticas em taxas de acerto de primeiro ciclo.
+            A comprovação de que perturbações elétricas em VRAM conseguem inverter múltiplos bits e contornar códigos de correção de erro (ECC) alterou os protocolos de segurança para nós de inferência em nuvem multi-inquilino.
           </p>
         `,
         sources: [
-          { name: 'BenchLM Reasoning Leaderboards', url: 'https://benchlm.ai/best/reasoning-models' }
+          { name: 'The Hacker News — GPUThor Rowhammer Vulnerability', url: 'https://thehackernews.com/2026/08/gputhor-rowhammer-defeats-ecc-on-nvidia.html' }
         ]
       }
     ];
@@ -543,7 +475,6 @@ async function runPersistentAgentLoop(agentSession) {
     let currentCategory = 'all';
     let searchQuery = '';
 
-    // Renderização dos Cards com Imagens de Capa 16:9
     function renderArticles() {
       const grid = document.getElementById('articles-grid');
       grid.innerHTML = '';
@@ -560,7 +491,7 @@ async function runPersistentAgentLoop(agentSession) {
       if (filtered.length === 0) {
         grid.innerHTML = `
           <div class="col-span-full py-16 text-center text-slate-500 font-mono text-sm">
-            Nenhuma matéria encontrada para os filtros selecionados.
+            Nenhuma matéria encontrada para o filtro: "${searchQuery}".
           </div>
         `;
         return;
@@ -574,7 +505,6 @@ async function runPersistentAgentLoop(agentSession) {
         card.onclick = () => openModal(art.id);
 
         card.innerHTML = `
-          <!-- Imagem de Capa 16:9 Gerada por IA -->
           <div class="relative w-full aspect-video overflow-hidden bg-black/50">
             <img 
               src="${art.coverImage}" 
@@ -584,7 +514,6 @@ async function runPersistentAgentLoop(agentSession) {
             />
             <div class="absolute inset-0 bg-gradient-to-t from-[#111827] via-transparent to-black/30"></div>
             
-            <!-- Badge de Categoria sobre a Imagem -->
             <div class="absolute top-3 left-3 z-10">
               <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold tracking-wide border ${theme.badge} backdrop-blur-md font-mono">
                 <span class="w-1.5 h-1.5 rounded-full bg-current animate-pulse"></span>
@@ -592,7 +521,6 @@ async function runPersistentAgentLoop(agentSession) {
               </span>
             </div>
             
-            <!-- Tempo de Leitura -->
             <div class="absolute top-3 right-3 z-10">
               <span class="px-2.5 py-1 rounded-lg bg-black/60 backdrop-blur-md text-[11px] font-mono text-slate-300 border border-white/10">
                 ${art.readingTime}
@@ -600,22 +528,18 @@ async function runPersistentAgentLoop(agentSession) {
             </div>
           </div>
 
-          <!-- Corpo do Card -->
           <div class="p-6 relative z-10 flex flex-col flex-grow">
             <span class="text-xs text-slate-400 font-mono mb-2">${art.date}</span>
 
-            <!-- Título -->
             <h3 class="text-lg font-bold text-white group-hover:text-cyan-300 transition-colors duration-200 line-clamp-2 mb-3 leading-snug">
               ${art.title}
             </h3>
 
-            <!-- Resumo Editorial -->
             <p class="text-xs sm:text-sm text-slate-300/90 line-clamp-3 leading-relaxed mb-4 flex-grow">
               ${art.summary}
             </p>
           </div>
 
-          <!-- Rodapé do Card -->
           <div class="px-6 py-4 bg-black/40 border-t border-white/5 flex items-center justify-between relative z-10">
             <span class="text-xs text-slate-400 flex items-center gap-1 font-mono">
               ⚡ <span>CorticFlow Editorial</span>
@@ -652,10 +576,17 @@ async function runPersistentAgentLoop(agentSession) {
       renderArticles();
     }
 
+    function setSearchFilter(keyword) {
+      document.getElementById('search-input').value = keyword;
+      searchQuery = keyword;
+      renderArticles();
+    }
+
     function resetFilter() {
       filterCategory('all');
       document.getElementById('search-input').value = '';
       searchQuery = '';
+      renderArticles();
     }
 
     function handleSearch() {
@@ -663,7 +594,6 @@ async function runPersistentAgentLoop(agentSession) {
       renderArticles();
     }
 
-    // Modal de Leitura Long-Form
     function openModal(id) {
       const art = ARTICLES.find(a => a.id === id);
       if (!art) return;
@@ -727,7 +657,6 @@ async function runPersistentAgentLoop(agentSession) {
       }
     }
 
-    // Animação Canvas de Fundo
     const canvas = document.getElementById('neural-canvas');
     const ctx = canvas.getContext('2d');
     let particles = [];
