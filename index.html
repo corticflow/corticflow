@@ -7,10 +7,12 @@
   
   <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🧠</text></svg>">
   
+  <!-- Fontes Tipográficas: Inter & JetBrains Mono -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:ital,wght@0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
   
+  <!-- Tailwind CSS via CDN com Cores Oficiais CorticFlow -->
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
@@ -24,6 +26,7 @@
           colors: {
             darkSlate: '#0B0F19',
             cardBg: '#111827',
+            cardHover: '#17223B',
             corticCyan: '#00E5FF',
             corticPurple: '#8B5CF6',
             titanium: '#94A3B8',
@@ -42,10 +45,10 @@
     }
     
     .glow-cyan {
-      box-shadow: 0 0 25px rgba(0, 229, 255, 0.2);
+      box-shadow: 0 0 30px rgba(0, 229, 255, 0.25);
     }
     .glow-purple {
-      box-shadow: 0 0 25px rgba(139, 92, 246, 0.2);
+      box-shadow: 0 0 30px rgba(139, 92, 246, 0.25);
     }
     
     .glass-card {
@@ -53,6 +56,12 @@
       backdrop-filter: blur(16px);
       -webkit-backdrop-filter: blur(16px);
       border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    
+    .glass-card-subtle {
+      background: rgba(17, 24, 39, 0.6);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.05);
     }
     
     ::-webkit-scrollbar {
@@ -72,13 +81,15 @@
 </head>
 <body class="min-h-screen flex flex-col relative selection:bg-cyan-500 selection:text-black">
 
-  <canvas id="neural-canvas" class="fixed inset-0 pointer-events-none z-0 opacity-30"></canvas>
+  <!-- Canvas de Fundo com Conexões Neurais e Partículas -->
+  <canvas id="neural-canvas" class="fixed inset-0 pointer-events-none z-0 opacity-25"></canvas>
 
-  <!-- ==================== HEADER ==================== -->
+  <!-- ==================== HEADER (NAVEGAÇÃO PREMIUM) ==================== -->
   <header class="sticky top-0 z-40 w-full glass-card border-b border-white/10">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
       
-      <a href="#" onclick="resetFilter()" class="flex items-center gap-3 group">
+      <!-- Logotipo -->
+      <a href="#" onclick="resetFilter()" class="flex items-center gap-3.5 group">
         <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-cyan-500 to-purple-600 p-[2px] glow-cyan group-hover:scale-105 transition-transform">
           <div class="w-full h-full bg-[#0B0F19] rounded-[10px] flex items-center justify-center">
             <span class="text-xl">🧠</span>
@@ -94,19 +105,20 @@
         </div>
       </a>
 
+      <!-- Controles de Busca e Idioma -->
       <div class="flex items-center gap-4">
-        <div class="relative hidden md:block w-72">
+        <div class="relative hidden md:block w-80">
           <input 
             type="text" 
             id="search-input" 
             oninput="handleSearch()" 
             placeholder="Pesquisar Google, Nvidia, Apple, Linux..."
-            class="w-full pl-9 pr-4 py-2 text-xs rounded-xl bg-black/50 border border-white/15 text-white placeholder-slate-500 focus:outline-none focus:border-cyan-400 font-mono transition-colors"
+            class="w-full pl-9 pr-4 py-2 text-xs rounded-xl bg-black/60 border border-white/15 text-white placeholder-slate-500 focus:outline-none focus:border-cyan-400 font-mono transition-colors"
           />
           <span class="absolute left-3 top-2.5 text-xs text-slate-500">🔍</span>
         </div>
 
-        <button onclick="toggleLanguage()" class="px-3 py-1.5 rounded-lg border border-white/10 bg-white/5 hover:bg-white/10 text-xs font-mono font-semibold text-corticCyan transition-colors flex items-center gap-1.5">
+        <button onclick="toggleLanguage()" class="px-3.5 py-1.5 rounded-lg border border-white/15 bg-white/5 hover:bg-white/10 text-xs font-mono font-semibold text-corticCyan transition-colors flex items-center gap-1.5">
           🌐 <span id="current-lang-label">PT-BR</span>
         </button>
 
@@ -117,36 +129,72 @@
     </div>
   </header>
 
-  <!-- ==================== HERO SECTION ==================== -->
-  <section class="relative z-10 pt-12 pb-8 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full">
+  <!-- ==================== HERO SECTION: LEAD STORY + TRENDING STREAM ==================== -->
+  <section class="relative z-10 pt-10 pb-6 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full">
     
-    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-cyan-500/30 bg-cyan-500/10 text-cyan-300 text-xs font-mono mb-4">
+    <div class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full border border-cyan-500/30 bg-cyan-500/10 text-cyan-300 text-xs font-mono mb-6">
       <span class="w-2 h-2 rounded-full bg-cyan-400 animate-ping"></span>
       <span id="ui-live-stream">STREAM DE INTELIGÊNCIA EDITORIAL</span>
       <span class="text-slate-500">|</span>
       <span class="text-slate-400" id="live-date">30 de Agosto de 2026</span>
     </div>
 
-    <h1 class="text-3xl sm:text-5xl lg:text-6xl font-extrabold text-white tracking-tight leading-tight max-w-5xl mb-4">
-      O fluxo analítico de <span class="bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 via-purple-400 to-cyan-300">Inteligência Artificial</span> e alta tecnologia.
-    </h1>
-    <p class="text-base sm:text-lg text-slate-300 max-w-3xl leading-relaxed mb-6" id="ui-hero-desc">
-      Cobertura aprofundada de anúncios, repositórios e pesquisas do ecossistema global: Google, Nvidia, Apple, Linux, OpenAI, Anthropic e DeepSeek.
-    </p>
+    <!-- Grid do Hero (Estilo The Verge / Wired) -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 mb-8">
+      
+      <!-- Matéria Principal de Abertura (Lead Story) - 8 Colunas -->
+      <div id="lead-story-container" class="lg:col-span-8 group cursor-pointer">
+        <!-- Injetado dinamicamente com a matéria #1 -->
+      </div>
 
-    <!-- Radar de Tags Rápidas -->
-    <div class="flex flex-wrap items-center gap-2 mb-6 text-xs font-mono">
-      <span class="text-slate-500 font-bold uppercase tracking-wider mr-1">Radar:</span>
-      <button onclick="setSearchFilter('Google')" class="px-2.5 py-1 rounded-lg bg-white/5 border border-white/10 hover:border-cyan-400 text-slate-300 hover:text-white transition-all">Google AI</button>
-      <button onclick="setSearchFilter('Nvidia')" class="px-2.5 py-1 rounded-lg bg-white/5 border border-white/10 hover:border-cyan-400 text-slate-300 hover:text-white transition-all">Nvidia</button>
-      <button onclick="setSearchFilter('Apple')" class="px-2.5 py-1 rounded-lg bg-white/5 border border-white/10 hover:border-cyan-400 text-slate-300 hover:text-white transition-all">Apple Silicon</button>
-      <button onclick="setSearchFilter('DeepSeek')" class="px-2.5 py-1 rounded-lg bg-white/5 border border-white/10 hover:border-cyan-400 text-slate-300 hover:text-white transition-all">DeepSeek</button>
-      <button onclick="setSearchFilter('Anthropic')" class="px-2.5 py-1 rounded-lg bg-white/5 border border-white/10 hover:border-cyan-400 text-slate-300 hover:text-white transition-all">Anthropic</button>
-      <button onclick="setSearchFilter('OpenAI')" class="px-2.5 py-1 rounded-lg bg-white/5 border border-white/10 hover:border-cyan-400 text-slate-300 hover:text-white transition-all">OpenAI</button>
-      <button onclick="setSearchFilter('Linux')" class="px-2.5 py-1 rounded-lg bg-white/5 border border-white/10 hover:border-cyan-400 text-slate-300 hover:text-white transition-all">Linux Kernel</button>
+      <!-- Radar de Tendências em Tempo Real (Trending Stream) - 4 Colunas -->
+      <div class="lg:col-span-4 glass-card rounded-3xl p-6 border border-white/10 flex flex-col justify-between">
+        <div>
+          <div class="flex items-center justify-between pb-3 border-b border-white/10 mb-4">
+            <span class="text-xs uppercase font-mono font-bold tracking-widest text-corticCyan flex items-center gap-2">
+              <span class="w-2 h-2 rounded-full bg-cyan-400"></span> Radar de Destaques
+            </span>
+            <span class="text-[11px] font-mono text-slate-500">Ao Vivo</span>
+          </div>
+          
+          <div id="trending-list" class="space-y-4">
+            <!-- Injetado Dinamicamente -->
+          </div>
+        </div>
+
+        <div class="pt-4 mt-4 border-t border-white/10 flex items-center justify-between text-xs font-mono text-slate-400">
+          <span>⚡ Curadoria Autônoma</span>
+          <span class="text-cyan-400">Padrão Long-Form</span>
+        </div>
+      </div>
     </div>
 
-    <!-- Categorias -->
+    <!-- ==================== BARRA DE RADAR POR BIG TECH (ESTILO DAILY.DEV) ==================== -->
+    <div class="flex flex-wrap items-center gap-2 mb-6 text-xs font-mono">
+      <span class="text-slate-400 font-bold uppercase tracking-wider mr-2 flex items-center gap-1.5">
+        <span>📡</span> Empresas & Ecossistemas:
+      </span>
+      <button onclick="setSearchFilter('DeepSeek')" class="px-3 py-1.5 rounded-xl bg-white/5 border border-white/10 hover:border-cyan-400 hover:bg-cyan-500/10 text-slate-300 hover:text-white transition-all flex items-center gap-1">
+        <span>🐬</span> DeepSeek
+      </button>
+      <button onclick="setSearchFilter('Anthropic')" class="px-3 py-1.5 rounded-xl bg-white/5 border border-white/10 hover:border-purple-400 hover:bg-purple-500/10 text-slate-300 hover:text-white transition-all flex items-center gap-1">
+        <span>🎭</span> Anthropic
+      </button>
+      <button onclick="setSearchFilter('Apple')" class="px-3 py-1.5 rounded-xl bg-white/5 border border-white/10 hover:border-blue-400 hover:bg-blue-500/10 text-slate-300 hover:text-white transition-all flex items-center gap-1">
+        <span>🍏</span> Apple Silicon
+      </button>
+      <button onclick="setSearchFilter('Google')" class="px-3 py-1.5 rounded-xl bg-white/5 border border-white/10 hover:border-cyan-400 hover:bg-cyan-500/10 text-slate-300 hover:text-white transition-all flex items-center gap-1">
+        <span>🔍</span> Google AI
+      </button>
+      <button onclick="setSearchFilter('Nvidia')" class="px-3 py-1.5 rounded-xl bg-white/5 border border-white/10 hover:border-emerald-400 hover:bg-emerald-500/10 text-slate-300 hover:text-white transition-all flex items-center gap-1">
+        <span>🟢</span> Nvidia
+      </button>
+      <button onclick="setSearchFilter('Linux')" class="px-3 py-1.5 rounded-xl bg-white/5 border border-white/10 hover:border-pink-400 hover:bg-pink-500/10 text-slate-300 hover:text-white transition-all flex items-center gap-1">
+        <span>🐧</span> Linux Kernel
+      </button>
+    </div>
+
+    <!-- Filtros de Categorias -->
     <div class="flex items-center gap-2 overflow-x-auto pb-2 border-b border-white/10 text-xs font-mono" id="categories-bar">
       <button onclick="filterCategory('all')" class="cat-btn active px-4 py-2.5 rounded-xl border border-cyan-400 bg-cyan-500/20 text-cyan-300 font-semibold transition-all whitespace-nowrap" data-cat="all">
         ⚡ Todas as Pautas (<span id="count-all">0</span>)
@@ -158,7 +206,7 @@
         🏢 Semicondutores & Mercado (<span id="count-biz">0</span>)
       </button>
       <button onclick="filterCategory('tutorials')" class="cat-btn px-4 py-2.5 rounded-xl border border-white/10 bg-white/5 text-slate-400 hover:text-white transition-all whitespace-nowrap" data-cat="tutorials">
-        ⚙️ Physical AI & Engenharia (<span id="count-tut">0</span>)
+        ⚙️ Physical AI & Robótica (<span id="count-tut">0</span>)
       </button>
       <button onclick="filterCategory('tools')" class="cat-btn px-4 py-2.5 rounded-xl border border-white/10 bg-white/5 text-slate-400 hover:text-white transition-all whitespace-nowrap" data-cat="tools">
         🛡️ Cibersegurança & Hardware (<span id="count-tools">0</span>)
@@ -166,20 +214,21 @@
     </div>
   </section>
 
-  <!-- ==================== GRID DE MATÉRIAS ==================== -->
+  <!-- ==================== GRID DE MATÉRIAS (PERFEITA SIMETRIA) ==================== -->
   <main class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full flex-grow">
     <div class="flex justify-between items-center mb-6">
       <h2 class="text-xs uppercase font-mono font-bold tracking-widest text-slate-400 flex items-center gap-2">
         <span class="w-2 h-2 rounded-full bg-cyan-400"></span>
-        <span id="feed-heading">Edição Executiva em Destaque</span>
+        <span id="feed-heading">Arquivo de Matérias Long-Form</span>
       </h2>
-      <span class="text-xs text-slate-400 font-mono" id="feed-status">Long-Form • Análise Técnica</span>
+      <span class="text-xs text-slate-400 font-mono" id="feed-status">Cobertura Aprofundada</span>
     </div>
 
+    <!-- Grid de Cards com Alinhamento Perfeito -->
     <div id="articles-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-7 items-stretch"></div>
   </main>
 
-  <!-- ==================== PÍLULA TÉCNICA ==================== -->
+  <!-- ==================== PÍLULA TÉCNICA (ARS TECHNICA / THE NEW STACK STYLE) ==================== -->
   <section class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">
     <div class="glass-card rounded-3xl p-6 sm:p-8 border border-purple-500/30 glow-purple relative overflow-hidden">
       <div class="flex items-center justify-between mb-4">
@@ -197,7 +246,7 @@
         Com o surgimento de agentes autônomos contínuos (Persistent Mode), implemente ciclos rígidos de verificação orçamentária e poda periódica de memória episódica para evitar saturação do contexto em tarefas que duram dias.
       </p>
 
-      <div class="bg-black/80 rounded-2xl p-4 border border-white/10 font-mono text-xs text-slate-200 overflow-x-auto">
+      <div class="bg-black/85 rounded-2xl p-5 border border-white/10 font-mono text-xs text-slate-200 overflow-x-auto">
         <pre><code class="text-cyan-300">// Padrão de Isolamento e Segurança para Agentes Always-On
 async function runPersistentAgentLoop(agentSession) {
   while (!agentSession.isInterrupted()) {
@@ -216,7 +265,7 @@ async function runPersistentAgentLoop(agentSession) {
     </div>
   </section>
 
-  <!-- ==================== NEWSLETTER ==================== -->
+  <!-- ==================== NEWSLETTER (TECHCRUNCH STYLE) ==================== -->
   <section id="newsletter" class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 w-full">
     <div class="glass-card rounded-3xl p-8 sm:p-12 border border-cyan-500/30 glow-cyan relative overflow-hidden flex flex-col md:flex-row items-center justify-between gap-8">
       <div class="max-w-xl">
@@ -248,7 +297,7 @@ async function runPersistentAgentLoop(agentSession) {
   </section>
 
   <!-- ==================== FOOTER ==================== -->
-  <footer class="relative z-10 border-t border-white/10 bg-black/70 mt-12 py-12">
+  <footer class="relative z-10 border-t border-white/10 bg-black/75 mt-12 py-12">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center gap-6 text-xs text-slate-400 font-mono">
       <div class="flex items-center gap-2">
         <span class="text-white font-bold tracking-wider">CORTICFLOW</span>
@@ -263,15 +312,16 @@ async function runPersistentAgentLoop(agentSession) {
     </div>
   </footer>
 
-  <!-- ==================== MODAL DE LEITURA LONG-FORM ==================== -->
+  <!-- ==================== MODAL DE LEITURA LONG-FORM (WIRED STYLE) ==================== -->
   <div id="article-modal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 sm:p-6 overflow-y-auto backdrop-blur-2xl bg-black/85">
     <div class="relative w-full max-w-4xl glass-card rounded-3xl border border-cyan-500/30 p-0 my-8 glow-cyan overflow-hidden max-h-[92vh] overflow-y-auto">
       
+      <!-- Banner Hero Panorâmico -->
       <div class="relative h-64 sm:h-80 w-full overflow-hidden">
         <img id="modal-cover-img" src="" alt="Capa da Matéria" class="w-full h-full object-cover object-center" />
         <div class="absolute inset-0 bg-gradient-to-t from-[#111827] via-[#111827]/60 to-transparent"></div>
         
-        <button onclick="closeModal()" class="absolute top-5 right-5 w-10 h-10 rounded-full bg-black/60 border border-white/20 hover:bg-black/90 text-white text-lg flex items-center justify-center transition-colors z-20">
+        <button onclick="closeModal()" class="absolute top-5 right-5 w-10 h-10 rounded-full bg-black/70 border border-white/20 hover:bg-black/90 text-white text-lg flex items-center justify-center transition-colors z-20">
           ✕
         </button>
 
@@ -284,6 +334,7 @@ async function runPersistentAgentLoop(agentSession) {
         </div>
       </div>
 
+      <!-- Conteúdo com Caixa de Síntese e Corpo Long-Form -->
       <div class="p-6 sm:p-10 space-y-6">
         <div class="p-5 rounded-2xl bg-white/[0.04] border border-cyan-500/25 backdrop-blur-md">
           <h4 class="text-xs font-bold uppercase tracking-wider text-corticCyan mb-2 flex items-center gap-2 font-mono">
@@ -302,7 +353,7 @@ async function runPersistentAgentLoop(agentSession) {
     </div>
   </div>
 
-  <!-- ==================== JAVASCRIPT: CARREGAMENTO DINÂMICO ==================== -->
+  <!-- ==================== JAVASCRIPT: LÓGICA E DADOS REESCRITOS ==================== -->
   <script>
     const THEMES = {
       'ai-models': {
@@ -316,7 +367,7 @@ async function runPersistentAgentLoop(agentSession) {
         borderHover: 'hover:border-blue-400'
       },
       'tutorials': {
-        label: 'Physical AI & Engenharia',
+        label: 'Physical AI & Robótica',
         badge: 'bg-emerald-500/15 text-emerald-300 border-emerald-500/40',
         borderHover: 'hover:border-emerald-400'
       },
@@ -334,7 +385,7 @@ async function runPersistentAgentLoop(agentSession) {
       'tools': 'https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=1200&auto=format&fit=crop'
     };
 
-    // Matérias Padrão Iniciais
+    // Coleção de Matérias Long-Form Balanceadas com Tamanho Similar
     let ARTICLES = [
       {
         id: 1,
@@ -343,16 +394,30 @@ async function runPersistentAgentLoop(agentSession) {
         readingTime: '6 min',
         date: '30/08/2026',
         coverImage: 'https://images.unsplash.com/photo-1620712943543-bcc4688e7485?q=80&w=1200&auto=format&fit=crop',
-        summary: 'A DeepSeek apresentou o DeepSeek Harness, um framework aberto que desmantela os limites dos agentes de "caixa-preta", permitindo que desenvolvedores inspecionem, modifiquem tensores de decisão e controlem o raciocínio em tempo de execução.',
+        summary: 'A DeepSeek apresentou o DeepSeek Harness, um framework de código aberto que desmantela os limites dos agentes de caixa-preta, permitindo que desenvolvedores inspecionem, modifiquem tensores de decisão e controlem o raciocínio em tempo de execução.',
         body: `
           <p class="text-base text-slate-200 leading-relaxed">
-            Em contraste direto com as soluções de agentes fechados, a <strong>DeepSeek</strong> oficializou o lançamento do <em>DeepSeek Harness</em>. Trata-se de uma infraestrutura desacoplada para construção de fluxos autônomos orientados por modelos de pesos abertos.
+            Em contraste direto com as soluções de agentes fechados comercializadas pelas Big Techs norte-americanas, a <strong>DeepSeek</strong> oficializou o lançamento do <em>DeepSeek Harness</em>. Trata-se de uma infraestrutura desacoplada para construção de fluxos de trabalho autônomos orientados por modelos de pesos abertos.
           </p>
+
           <h3 class="text-xl font-bold text-white mt-6 mb-3">1. A Filosofia do Sistema Aberto</h3>
-          <p>O Harness expõe a pilha de orquestração completa: controle fino sobre a alocação de KV Cache, intervenção manual em árvores de busca durante o raciocínio e execução nativa em nós de GPU locais.</p>
+          <p>
+            Em vez de encapsular a tomada de decisão em APIs proprietárias opacas, o Harness expõe a pilha de orquestração completa: controle fino sobre a alocação de KV Cache, intervenção manual em árvores de busca durante o raciocínio e execução nativa em nós de GPU locais com quantização adaptativa.
+          </p>
+
+          <h3 class="text-xl font-bold text-white mt-6 mb-3">2. Estrutura de Preços e Transição de Custos</h3>
+          <p>
+            Simultaneamente, a DeepSeek recalibrou suas tabelas de API para balancear a carga em horários de pico (UTC), incentivando cargas de trabalho em horários de menor tráfego com descontos agressivos por milhão de tokens.
+          </p>
+
+          <h3 class="text-xl font-bold text-white mt-6 mb-3">3. Veredito Editorial CorticFlow</h3>
+          <p class="border-l-2 border-cyan-400 pl-4 italic text-slate-200">
+            "A estratégia da DeepSeek transfere o poder de arquitetura dos provedores de nuvem centralizados de volta para os laboratórios de engenharia de software independentes."
+          </p>
         `,
         sources: [
-          { name: 'DeepSeek API Changelog & Docs', url: 'https://api-docs.deepseek.com/updates/' }
+          { name: 'DeepSeek API Changelog & Docs', url: 'https://api-docs.deepseek.com/updates/' },
+          { name: 'DeepSeek Research & Governance Dossier', url: 'https://thetricontinental.org/how-to-use-deepseek-harness/' }
         ]
       },
       {
@@ -365,12 +430,17 @@ async function runPersistentAgentLoop(agentSession) {
         summary: 'A Anthropic expandiu sua aliança estratégica com a Salesforce com a plataforma Claudeforce e detalhou a tecnologia de marca d’água estatística para atender aos novos requisitos do EU AI Act em escala empresarial.',
         body: `
           <p class="text-base text-slate-200 leading-relaxed">
-            A convergência entre agentes autônomos de raciocínio profundo e os sistemas de registro empresarial ganha seu maior impulso com a estreia da plataforma <strong>Claudeforce</strong>.
+            A convergência entre agentes autônomos de raciocínio profundo e os sistemas de registro empresarial ganha seu maior impulso com a estreia da plataforma <strong>Claudeforce</strong>. A integração permite que o Claude acesse metadados de negócios, execute fluxos de CRM e acione automações com governança estrita de permissões.
+          </p>
+
+          <h3 class="text-xl font-bold text-white mt-6 mb-3">1. O Mecanismo de Watermark Criptográfico</h3>
+          <p>
+            Para cumprir as diretrizes do <em>EU AI Act</em> válidas a partir de agosto de 2026, a Anthropic detalhou a implementação de assinaturas criptográficas invisíveis nos tokens gerados. O algoritmo altera sutilmente a probabilidade de seleção de sinônimos de forma matematicamente imperceptível para humanos, mas detectável por validadores institucionais.
           </p>
         `,
         sources: [
-          { name: 'Salesforce Press Release — Claudeforce', url: 'https://www.salesforce.com/news/press-releases/2026/08/26/salesforce-and-anthropic-announce-claudeforce/' },
-          { name: 'Anthropic Newsroom — Claude Text Watermark', url: 'https://www.anthropic.com/news/claude-text-watermark' }
+          { name: 'Salesforce Press Release — Claudeforce Launch', url: 'https://www.salesforce.com/news/press-releases/2026/08/26/salesforce-and-anthropic-announce-claudeforce/' },
+          { name: 'Anthropic Newsroom — How Claude Text Watermarking Works', url: 'https://www.anthropic.com/news/claude-text-watermark' }
         ]
       },
       {
@@ -383,11 +453,19 @@ async function runPersistentAgentLoop(agentSession) {
         summary: 'A Apple revelou seus novos processadores M6 e M5 Ultra equipados com até 36 núcleos de CPU, 80 núcleos de GPU e 256 GB de memória unificada de alta largura de banda para rodar modelos de IA locais sem latência de nuvem.',
         body: `
           <p class="text-base text-slate-200 leading-relaxed">
-            A Apple estabeleceu uma nova referência de computação em silício ao apresentar a nova geração de chips para a linha Mac Studio e Mac mini. Os novos <strong>M6 e M5 Ultra</strong> foram projetados para acelerar modelos on-device do ecossistema <em>Apple Intelligence</em>.
+            A Apple estabeleceu uma nova referência de computação em silício ao apresentar a nova geração de chips para a linha Mac Studio e Mac mini. Os novos <strong>M6 e M5 Ultra</strong> foram projetados desde a microarquitetura para acelerar modelos fundacionais on-device do ecossistema <em>Apple Intelligence</em>.
           </p>
+
+          <h3 class="text-xl font-bold text-white mt-6 mb-3">1. Métricas Técnicas de Silício:</h3>
+          <ul class="list-disc pl-5 space-y-2 text-slate-300">
+            <li><strong>Configuração de Topo:</strong> 36-core CPU e 80-core GPU com largura de banda de memória unificada superior a 800 GB/s.</li>
+            <li><strong>Neural Engine de Próxima Geração:</strong> Aceleração de tensores para processamento multimodal e execução contínua de modelos de áudio e visão.</li>
+            <li><strong>Privacidade On-Device:</strong> Modelos com suporte nativo a português, inglês e mais 14 idiomas rodando 100% isolados no hardware.</li>
+          </ul>
         `,
         sources: [
-          { name: 'Apple Newsroom — M6 & M5 Ultra Announcement', url: 'https://www.apple.com/newsroom/2026/08/apple-introduces-m6-and-m5-ultra-for-a-big-leap-in-performance-and-ai-compute/' }
+          { name: 'Apple Newsroom — M6 & M5 Ultra Announcement', url: 'https://www.apple.com/newsroom/2026/08/apple-introduces-m6-and-m5-ultra-for-a-big-leap-in-performance-and-ai-compute/' },
+          { name: 'Apple Newsroom — Mac Mini Next-Gen Architecture', url: 'https://www.apple.com/newsroom/2026/08/apple-unveils-a-more-powerful-mac-mini-featuring-the-all-new-m6-and-m5-pro/' }
         ]
       },
       {
@@ -400,44 +478,113 @@ async function runPersistentAgentLoop(agentSession) {
         summary: 'O Google AI atualizou sua esteira para desenvolvedores, consolidando o Gemini 3.5 Flash como motor padrão de raciocínio de alta velocidade e integrando novos recursos de reflexão estendida em buscas complexas.',
         body: `
           <p class="text-base text-slate-200 leading-relaxed">
-            A estratégia do Google de acelerar a transição para agentes corporativos autônomos atingiu novo marco com o comissionamento do <strong>Gemini 3.5 Flash</strong>.
+            A estratégia do Google de acelerar a transição para agentes corporativos autônomos atingiu novo marco com o comissionamento do <strong>Gemini 3.5 Flash</strong>. O modelo atinge rendimento até quatro vezes superior em taxa de geração de tokens por segundo (TPS), viabilizando pipelines de agentes com feedback em tempo real.
+          </p>
+          <h3 class="text-xl font-bold text-white mt-6 mb-3">Destaques da Atualização para Desenvolvedores:</h3>
+          <ul class="list-disc pl-5 space-y-2 text-slate-300">
+            <li>Redução de latência de primeiro token para chamadas encadeadas de ferramentas (Function Calling).</li>
+            <li>Melhoria expressiva em tarefas de síntese de código e raciocínio matemático em tempo estendido.</li>
+          </ul>
+        `,
+        sources: [
+          { name: 'Google AI for Developers — Gemini API Changelog', url: 'https://ai.google.dev/gemini-api/docs/changelog' },
+          { name: 'Google The Keyword — Agentic Gemini Era Overview', url: 'https://blog.google/innovation-and-ai/sundar-pichai-io-2026/' }
+        ]
+      },
+      {
+        id: 5,
+        category: 'business',
+        title: 'Nvidia Acelera Clusters Vera Rubin NVL72 e Balanço Histórico de US$ 96,2 Bilhões',
+        readingTime: '5 min',
+        date: '28/08/2026',
+        coverImage: 'https://images.unsplash.com/photo-1508614589041-895b88991e3e?q=80&w=1200&auto=format&fit=crop',
+        summary: 'A Nvidia reportou receita recorde no trimestre e projetou US$ 108 bilhões para o período seguinte, acelerando a transição das fundições da TSMC para sistemas de memória HBM4 com 8 TB/s de largura de banda.',
+        body: `
+          <p class="text-base text-slate-200 leading-relaxed">
+            Os números consolidados da Nvidia reafirmam que a construção de data centers de inferência contínua é a maior obra de infraestrutura da década. A empresa anunciou que a demanda por clusters Blackwell e primeiros contratos da arquitetura <strong>Vera Rubin</strong> superam a capacidade produtiva global.
           </p>
         `,
         sources: [
-          { name: 'Google AI for Developers — Gemini API Changelog', url: 'https://ai.google.dev/gemini-api/docs/changelog' }
+          { name: 'Morningstar Analysis — Nvidia Q2 FY2027 Financials', url: 'https://global.morningstar.com/en-ca/stocks/nvidia-earnings-raising-fair-value-ai-buildouts-are-accelerating' },
+          { name: 'GuruFocus Market Analysis', url: 'https://www.gurufocus.com/news/9055714/nvidia-nvda-raises-ai-chip-sales-forecast-amidst-market-scrutiny' }
+        ]
+      },
+      {
+        id: 6,
+        category: 'tools',
+        title: 'Vulnerabilidade GPUThor e Mitigações no Kernel Linux para vGPUs Compartilhadas',
+        readingTime: '4 min',
+        date: '27/08/2026',
+        coverImage: 'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?q=80&w=1200&auto=format&fit=crop',
+        summary: 'Ataque de Rowhammer em memória de GPU força desenvolvedores do Kernel Linux e provedores de nuvem a implementar particionamento físico estrito para evitar vazamento de tensores confidenciais entre instâncias virtuais.',
+        body: `
+          <p class="text-base text-slate-200 leading-relaxed">
+            A comprovação de que perturbações elétricas em VRAM conseguem inverter múltiplos bits e contornar códigos de correção de erro (ECC) alterou os protocolos de segurança para nós de inferência em nuvem multi-inquilino.
+          </p>
+        `,
+        sources: [
+          { name: 'The Hacker News — GPUThor Rowhammer Vulnerability', url: 'https://thehackernews.com/2026/08/gputhor-rowhammer-defeats-ecc-on-nvidia.html' }
         ]
       }
     ];
 
-    // Carregamento Dinâmico de posts.json (com fallback automático)
-    async function loadLivePosts() {
-      try {
-        const response = await fetch('./posts.json?t=' + new Date().getTime());
-        if (response.ok) {
-          const data = await response.json();
-          if (Array.isArray(data) && data.length > 0) {
-            ARTICLES = data.map((item, idx) => ({
-              id: item.id || (idx + 1),
-              category: item.category || 'ai-models',
-              title: item.title,
-              readingTime: item.readingTime || '5 min',
-              date: item.date || '30/08/2026',
-              coverImage: item.coverImage || FALLBACK_COVERS[item.category] || FALLBACK_COVERS['ai-models'],
-              summary: item.summary,
-              body: item.body || item.body_html || '<p>Análise técnica em processamento...</p>',
-              sources: item.sources || [{ name: item.source_name || 'Fonte Oficial', url: item.source_url || '#' }]
-            }));
-            renderArticles();
-          }
-        }
-      } catch (err) {
-        console.log('Utilizando base editorial inicial.');
-      }
-    }
-
     let currentCategory = 'all';
     let searchQuery = '';
 
+    // Renderização do Lead Story e Trending List (Estilo The Verge)
+    function renderHeroSection() {
+      if (ARTICLES.length === 0) return;
+      const lead = ARTICLES[0];
+      const theme = THEMES[lead.category] || THEMES['ai-models'];
+      const cover = lead.coverImage || FALLBACK_COVERS[lead.category];
+
+      const leadContainer = document.getElementById('lead-story-container');
+      leadContainer.innerHTML = `
+        <div onclick="openModal(${lead.id})" class="relative w-full h-[420px] rounded-3xl overflow-hidden glass-card border border-white/10 hover:border-cyan-400 transition-all duration-300 shadow-2xl">
+          <img src="${cover}" alt="${lead.title}" class="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700" />
+          <div class="absolute inset-0 bg-gradient-to-t from-[#0B0F19] via-[#0B0F19]/60 to-transparent"></div>
+          
+          <div class="absolute top-5 left-5 z-10">
+            <span class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-semibold border ${theme.badge} backdrop-blur-md font-mono">
+              <span class="w-1.5 h-1.5 rounded-full bg-current animate-pulse"></span>
+              DESTAQUE PRINCIPAL • ${theme.label}
+            </span>
+          </div>
+
+          <div class="absolute bottom-6 left-6 right-6 z-10">
+            <span class="text-xs text-slate-400 font-mono">${lead.readingTime} de leitura • ${lead.date}</span>
+            <h2 class="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-white group-hover:text-cyan-300 transition-colors mt-2 mb-3 leading-tight">
+              ${lead.title}
+            </h2>
+            <p class="text-xs sm:text-sm text-slate-300 line-clamp-2 max-w-3xl leading-relaxed">
+              ${lead.summary}
+            </p>
+          </div>
+        </div>
+      `;
+
+      // Coluna Trending
+      const trendingList = document.getElementById('trending-list');
+      trendingList.innerHTML = '';
+      ARTICLES.slice(1, 4).forEach((art, idx) => {
+        const itemTheme = THEMES[art.category] || THEMES['ai-models'];
+        const div = document.createElement('div');
+        div.className = "cursor-pointer group/item pb-3 border-b border-white/5 last:border-0";
+        div.onclick = () => openModal(art.id);
+        div.innerHTML = `
+          <div class="flex items-center gap-2 mb-1">
+            <span class="text-xs font-mono font-bold text-cyan-400">#0${idx + 2}</span>
+            <span class="text-[11px] font-mono text-slate-400">${itemTheme.label}</span>
+          </div>
+          <h4 class="text-xs sm:text-sm font-semibold text-white group-hover/item:text-cyan-300 transition-colors line-clamp-2 leading-snug">
+            ${art.title}
+          </h4>
+        `;
+        trendingList.appendChild(div);
+      });
+    }
+
+    // Renderização dos Cards com Simetria Perfeita
     function renderArticles() {
       const grid = document.getElementById('articles-grid');
       grid.innerHTML = '';
@@ -469,6 +616,7 @@ async function runPersistentAgentLoop(agentSession) {
         card.onclick = () => openModal(art.id);
 
         card.innerHTML = `
+          <!-- Imagem de Capa 16:9 -->
           <div class="relative w-full aspect-video overflow-hidden bg-black/50">
             <img 
               src="${cover}" 
@@ -492,18 +640,22 @@ async function runPersistentAgentLoop(agentSession) {
             </div>
           </div>
 
+          <!-- Corpo do Card com Altura Trava e Simétrica -->
           <div class="p-6 relative z-10 flex flex-col flex-grow">
             <span class="text-xs text-slate-400 font-mono mb-2">${art.date}</span>
 
-            <h3 class="text-lg font-bold text-white group-hover:text-cyan-300 transition-colors duration-200 line-clamp-2 mb-3 leading-snug">
+            <!-- Título: Exatamente 2 Linhas -->
+            <h3 class="text-base sm:text-lg font-bold text-white group-hover:text-cyan-300 transition-colors duration-200 line-clamp-2 min-h-[3.2rem] mb-3 leading-snug">
               ${art.title}
             </h3>
 
-            <p class="text-xs sm:text-sm text-slate-300/90 line-clamp-3 leading-relaxed mb-4 flex-grow">
+            <!-- Resumo Editorial: Exatamente 3 Linhas -->
+            <p class="text-xs sm:text-sm text-slate-300/90 line-clamp-3 min-h-[3.8rem] leading-relaxed mb-4 flex-grow">
               ${art.summary}
             </p>
           </div>
 
+          <!-- Rodapé do Card -->
           <div class="px-6 py-4 bg-black/40 border-t border-white/5 flex items-center justify-between relative z-10">
             <span class="text-xs text-slate-400 flex items-center gap-1 font-mono">
               ⚡ <span>CorticFlow Editorial</span>
@@ -518,6 +670,7 @@ async function runPersistentAgentLoop(agentSession) {
       });
 
       updateCounters();
+      renderHeroSection();
     }
 
     function updateCounters() {
@@ -526,6 +679,32 @@ async function runPersistentAgentLoop(agentSession) {
       document.getElementById('count-biz').innerText = ARTICLES.filter(a => a.category === 'business').length;
       document.getElementById('count-tut').innerText = ARTICLES.filter(a => a.category === 'tutorials').length;
       document.getElementById('count-tools').innerText = ARTICLES.filter(a => a.category === 'tools').length;
+    }
+
+    // Carregamento de posts.json
+    async function loadLivePosts() {
+      try {
+        const response = await fetch('./posts.json?t=' + new Date().getTime());
+        if (response.ok) {
+          const data = await response.json();
+          if (Array.isArray(data) && data.length > 0) {
+            ARTICLES = data.map((item, idx) => ({
+              id: item.id || (idx + 1),
+              category: item.category || 'ai-models',
+              title: item.title,
+              readingTime: item.readingTime || '5 min',
+              date: item.date || '30/08/2026',
+              coverImage: item.coverImage || FALLBACK_COVERS[item.category] || FALLBACK_COVERS['ai-models'],
+              summary: item.summary,
+              body: item.body || item.body_html || '<p>Análise técnica em processamento...</p>',
+              sources: item.sources || [{ name: item.source_name || 'Fonte Oficial', url: item.source_url || '#' }]
+            }));
+            renderArticles();
+          }
+        }
+      } catch (err) {
+        console.log('Utilizando base editorial inicial.');
+      }
     }
 
     function filterCategory(cat) {
@@ -614,11 +793,11 @@ async function runPersistentAgentLoop(agentSession) {
       if (currentLang === 'EN-US') {
         document.getElementById('ui-tagline').innerText = 'The Stream of AI Intelligence';
         document.getElementById('ui-live-stream').innerText = 'EDITORIAL INTELLIGENCE STREAM';
-        document.getElementById('feed-heading').innerText = 'Featured Executive Edition';
+        document.getElementById('feed-heading').innerText = 'Long-Form Article Archive';
       } else {
         document.getElementById('ui-tagline').innerText = 'The Stream of AI Intelligence';
         document.getElementById('ui-live-stream').innerText = 'STREAM DE INTELIGÊNCIA EDITORIAL';
-        document.getElementById('feed-heading').innerText = 'Edição Executiva em Destaque';
+        document.getElementById('feed-heading').innerText = 'Arquivo de Matérias Long-Form';
       }
     }
 
