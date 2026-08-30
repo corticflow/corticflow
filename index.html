@@ -94,7 +94,6 @@
         </div>
       </a>
 
-      <!-- Controles -->
       <div class="flex items-center gap-4">
         <div class="relative hidden md:block w-72">
           <input 
@@ -135,7 +134,7 @@
       Cobertura aprofundada de anúncios, repositórios e pesquisas do ecossistema global: Google, Nvidia, Apple, Linux, OpenAI, Anthropic e DeepSeek.
     </p>
 
-    <!-- Radar de Gigantes de Tecnologia (Tags Rápidas) -->
+    <!-- Radar de Tags Rápidas -->
     <div class="flex flex-wrap items-center gap-2 mb-6 text-xs font-mono">
       <span class="text-slate-500 font-bold uppercase tracking-wider mr-1">Radar:</span>
       <button onclick="setSearchFilter('Google')" class="px-2.5 py-1 rounded-lg bg-white/5 border border-white/10 hover:border-cyan-400 text-slate-300 hover:text-white transition-all">Google AI</button>
@@ -147,7 +146,7 @@
       <button onclick="setSearchFilter('Linux')" class="px-2.5 py-1 rounded-lg bg-white/5 border border-white/10 hover:border-cyan-400 text-slate-300 hover:text-white transition-all">Linux Kernel</button>
     </div>
 
-    <!-- Filtros de Categorias -->
+    <!-- Categorias -->
     <div class="flex items-center gap-2 overflow-x-auto pb-2 border-b border-white/10 text-xs font-mono" id="categories-bar">
       <button onclick="filterCategory('all')" class="cat-btn active px-4 py-2.5 rounded-xl border border-cyan-400 bg-cyan-500/20 text-cyan-300 font-semibold transition-all whitespace-nowrap" data-cat="all">
         ⚡ Todas as Pautas (<span id="count-all">0</span>)
@@ -169,7 +168,6 @@
 
   <!-- ==================== GRID DE MATÉRIAS ==================== -->
   <main class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full flex-grow">
-    
     <div class="flex justify-between items-center mb-6">
       <h2 class="text-xs uppercase font-mono font-bold tracking-widest text-slate-400 flex items-center gap-2">
         <span class="w-2 h-2 rounded-full bg-cyan-400"></span>
@@ -257,8 +255,8 @@ async function runPersistentAgentLoop(agentSession) {
         <span>© 2026 — The Stream of AI & Tech Intelligence.</span>
       </div>
       <div class="flex flex-wrap items-center gap-6 text-slate-400">
-        <a href="#" onclick="alert('Consulte os documentos oficiais na pasta do Google Drive.')" class="hover:text-corticCyan transition-colors">Privacidade</a>
-        <a href="#" onclick="alert('Consulte os documentos oficiais na pasta do Google Drive.')" class="hover:text-corticCyan transition-colors">Termos de Uso</a>
+        <a href="privacy.html" class="hover:text-corticCyan transition-colors">Privacidade</a>
+        <a href="terms.html" class="hover:text-corticCyan transition-colors">Termos de Uso</a>
         <a href="#" onclick="alert('CorticFlow: Curadoria autônoma com governança editorial humana.')" class="hover:text-corticCyan transition-colors">Sobre Nós</a>
         <a href="#" onclick="alert('Contato editorial: editorial@corticflow.dev')" class="hover:text-corticCyan transition-colors">Contato & Imprensa</a>
       </div>
@@ -304,7 +302,7 @@ async function runPersistentAgentLoop(agentSession) {
     </div>
   </div>
 
-  <!-- ==================== JAVASCRIPT: DADOS REESCRITOS ==================== -->
+  <!-- ==================== JAVASCRIPT: CARREGAMENTO DINÂMICO ==================== -->
   <script>
     const THEMES = {
       'ai-models': {
@@ -329,39 +327,32 @@ async function runPersistentAgentLoop(agentSession) {
       }
     };
 
-    // Matérias Jornalísticas Reescritas (Deep-Dives de Google, Nvidia, Apple, Linux, OpenAI, Anthropic, DeepSeek)
-    const ARTICLES = [
+    const FALLBACK_COVERS = {
+      'ai-models': 'https://images.unsplash.com/photo-1620712943543-bcc4688e7485?q=80&w=1200&auto=format&fit=crop',
+      'business': 'https://images.unsplash.com/photo-1591488320449-011701bb6704?q=80&w=1200&auto=format&fit=crop',
+      'tutorials': 'https://images.unsplash.com/photo-1508614589041-895b88991e3e?q=80&w=1200&auto=format&fit=crop',
+      'tools': 'https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=1200&auto=format&fit=crop'
+    };
+
+    // Matérias Padrão Iniciais
+    let ARTICLES = [
       {
         id: 1,
         category: 'ai-models',
-        title: 'DeepSeek Lança "DeepSeek Harness": A Aposta em Frameworks Abertos para Orquestração de Agentes',
+        title: 'DeepSeek Lança "DeepSeek Harness": Frameworks Abertos para Orquestração de Agentes',
         readingTime: '6 min',
         date: '30/08/2026',
         coverImage: 'https://images.unsplash.com/photo-1620712943543-bcc4688e7485?q=80&w=1200&auto=format&fit=crop',
-        summary: 'A DeepSeek apresentou o DeepSeek Harness, um framework de código aberto que desmantela os limites dos agentes de "caixa-preta", permitindo que desenvolvedores inspecionem, modifiquem tensores de decisão e controlem o raciocínio em tempo de execução.',
+        summary: 'A DeepSeek apresentou o DeepSeek Harness, um framework aberto que desmantela os limites dos agentes de "caixa-preta", permitindo que desenvolvedores inspecionem, modifiquem tensores de decisão e controlem o raciocínio em tempo de execução.',
         body: `
           <p class="text-base text-slate-200 leading-relaxed">
-            Em contraste direto com as soluções de agentes fechados comercializadas pelas Big Techs norte-americanas, a <strong>DeepSeek</strong> oficializou o lançamento do <em>DeepSeek Harness</em>. Trata-se de uma infraestrutura desacoplada para construção de fluxos de trabalho autônomos orientados por modelos de pesos abertos.
+            Em contraste direto com as soluções de agentes fechados, a <strong>DeepSeek</strong> oficializou o lançamento do <em>DeepSeek Harness</em>. Trata-se de uma infraestrutura desacoplada para construção de fluxos autônomos orientados por modelos de pesos abertos.
           </p>
-
           <h3 class="text-xl font-bold text-white mt-6 mb-3">1. A Filosofia do Sistema Aberto</h3>
-          <p>
-            Em vez de encapsular a tomada de decisão em APIs proprietárias opacas, o Harness expõe a pilha de orquestração completa: controle fino sobre a alocação de KV Cache, intervenção manual em árvores de busca durante o raciocínio e execução nativa em nós de GPU locais com quantização adaptativa.
-          </p>
-
-          <h3 class="text-xl font-bold text-white mt-6 mb-3">2. Estrutura de Preços e Transição de Custos</h3>
-          <p>
-            Simultaneamente, a DeepSeek recalibrou suas tabelas de API para balancear a carga em horários de pico (UTC), incentivando cargas de trabalho em horários de menor tráfego com descontos agressivos por milhão de tokens.
-          </p>
-
-          <h3 class="text-xl font-bold text-white mt-6 mb-3">3. Veredito Editorial CorticFlow</h3>
-          <p class="border-l-2 border-cyan-400 pl-4 italic text-slate-200">
-            "A estratégia da DeepSeek transfere o poder de arquitetura dos provedores de nuvem centralizados de volta para os laboratórios de engenharia de software independentes."
-          </p>
+          <p>O Harness expõe a pilha de orquestração completa: controle fino sobre a alocação de KV Cache, intervenção manual em árvores de busca durante o raciocínio e execução nativa em nós de GPU locais.</p>
         `,
         sources: [
-          { name: 'DeepSeek API Changelog & Docs', url: 'https://api-docs.deepseek.com/updates/' },
-          { name: 'DeepSeek Research & Governance Dossier', url: 'https://thetricontinental.org/how-to-use-deepseek-harness/' }
+          { name: 'DeepSeek API Changelog & Docs', url: 'https://api-docs.deepseek.com/updates/' }
         ]
       },
       {
@@ -374,17 +365,12 @@ async function runPersistentAgentLoop(agentSession) {
         summary: 'A Anthropic expandiu sua aliança estratégica com a Salesforce com a plataforma Claudeforce e detalhou a tecnologia de marca d’água estatística para atender aos novos requisitos do EU AI Act em escala empresarial.',
         body: `
           <p class="text-base text-slate-200 leading-relaxed">
-            A convergência entre agentes autônomos de raciocínio profundo e os sistemas de registro empresarial ganha seu maior impulso com a estreia da plataforma <strong>Claudeforce</strong>. A integração permite que o Claude acesse metadados de negócios, execute fluxos de CRM e acione automações com governança estrita de permissões.
-          </p>
-
-          <h3 class="text-xl font-bold text-white mt-6 mb-3">1. O Mecanismo de Watermark Criptográfico</h3>
-          <p>
-            Para cumprir as diretrizes do <em>EU AI Act</em> válidas a partir de agosto de 2026, a Anthropic detalhou a implementação de assinaturas criptográficas invisíveis nos tokens gerados. O algoritmo altera sutilmente a probabilidade de seleção de sinônimos de forma matematicamente imperceptível para humanos, mas detectável por validadores institucionais.
+            A convergência entre agentes autônomos de raciocínio profundo e os sistemas de registro empresarial ganha seu maior impulso com a estreia da plataforma <strong>Claudeforce</strong>.
           </p>
         `,
         sources: [
-          { name: 'Salesforce Press Release — Claudeforce Launch', url: 'https://www.salesforce.com/news/press-releases/2026/08/26/salesforce-and-anthropic-announce-claudeforce/' },
-          { name: 'Anthropic Newsroom — How Claude Text Watermarking Works', url: 'https://www.anthropic.com/news/claude-text-watermark' }
+          { name: 'Salesforce Press Release — Claudeforce', url: 'https://www.salesforce.com/news/press-releases/2026/08/26/salesforce-and-anthropic-announce-claudeforce/' },
+          { name: 'Anthropic Newsroom — Claude Text Watermark', url: 'https://www.anthropic.com/news/claude-text-watermark' }
         ]
       },
       {
@@ -397,19 +383,11 @@ async function runPersistentAgentLoop(agentSession) {
         summary: 'A Apple revelou seus novos processadores M6 e M5 Ultra equipados com até 36 núcleos de CPU, 80 núcleos de GPU e 256 GB de memória unificada de alta largura de banda para rodar modelos de IA locais sem latência de nuvem.',
         body: `
           <p class="text-base text-slate-200 leading-relaxed">
-            A Apple estabeleceu uma nova referência de computação em silício ao apresentar a nova geração de chips para a linha Mac Studio e Mac mini. Os novos <strong>M6 e M5 Ultra</strong> foram projetados desde a microarquitetura para acelerar modelos fundacionais on-device do ecossistema <em>Apple Intelligence</em>.
+            A Apple estabeleceu uma nova referência de computação em silício ao apresentar a nova geração de chips para a linha Mac Studio e Mac mini. Os novos <strong>M6 e M5 Ultra</strong> foram projetados para acelerar modelos on-device do ecossistema <em>Apple Intelligence</em>.
           </p>
-
-          <h3 class="text-xl font-bold text-white mt-6 mb-3">1. Métricas Técnicas de Silício:</h3>
-          <ul class="list-disc pl-5 space-y-2 text-slate-300">
-            <li><strong>Configuração de Topo:</strong> 36-core CPU e 80-core GPU com largura de banda de memória unificada superior a 800 GB/s.</li>
-            <li><strong>Neural Engine de Próxima Geração:</strong> Aceleração de tensores para processamento multimodal e execução contínua de modelos de áudio e visão.</li>
-            <li><strong>Privacidade On-Device:</strong> Modelos com suporte nativo a português, inglês e mais 14 idiomas rodando 100% isolados no hardware.</li>
-          </ul>
         `,
         sources: [
-          { name: 'Apple Newsroom — M6 & M5 Ultra Announcement', url: 'https://www.apple.com/newsroom/2026/08/apple-introduces-m6-and-m5-ultra-for-a-big-leap-in-performance-and-ai-compute/' },
-          { name: 'Apple Newsroom — Mac Mini Next-Gen Architecture', url: 'https://www.apple.com/newsroom/2026/08/apple-unveils-a-more-powerful-mac-mini-featuring-the-all-new-m6-and-m5-pro/' }
+          { name: 'Apple Newsroom — M6 & M5 Ultra Announcement', url: 'https://www.apple.com/newsroom/2026/08/apple-introduces-m6-and-m5-ultra-for-a-big-leap-in-performance-and-ai-compute/' }
         ]
       },
       {
@@ -422,55 +400,40 @@ async function runPersistentAgentLoop(agentSession) {
         summary: 'O Google AI atualizou sua esteira para desenvolvedores, consolidando o Gemini 3.5 Flash como motor padrão de raciocínio de alta velocidade e integrando novos recursos de reflexão estendida em buscas complexas.',
         body: `
           <p class="text-base text-slate-200 leading-relaxed">
-            A estratégia do Google de acelerar a transição para agentes corporativos autônomos atingiu novo marco com o comissionamento do <strong>Gemini 3.5 Flash</strong>. O modelo atinge rendimento até quatro vezes superior em taxa de geração de tokens por segundo (TPS), viabilizando pipelines de agentes com feedback em tempo real.
-          </p>
-          <h3 class="text-xl font-bold text-white mt-6 mb-3">Destaques da Atualização para Desenvolvedores:</h3>
-          <ul class="list-disc pl-5 space-y-2 text-slate-300">
-            <li>Redução de latência de primeiro token para chamadas encadeadas de ferramentas (Function Calling).</li>
-            <li>Melhoria expressiva em tarefas de síntese de código e raciocínio matemático em tempo estendido.</li>
-          </ul>
-        `,
-        sources: [
-          { name: 'Google AI for Developers — Gemini API Changelog', url: 'https://ai.google.dev/gemini-api/docs/changelog' },
-          { name: 'Google The Keyword — Agentic Gemini Era Overview', url: 'https://blog.google/innovation-and-ai/sundar-pichai-io-2026/' }
-        ]
-      },
-      {
-        id: 5,
-        category: 'business',
-        title: 'Nvidia Acelera Clusters Vera Rubin NVL72 e Balanço Histórico de US$ 96,2 Bilhões',
-        readingTime: '5 min',
-        date: '28/08/2026',
-        coverImage: 'https://images.unsplash.com/photo-1508614589041-895b88991e3e?q=80&w=1200&auto=format&fit=crop',
-        summary: 'A Nvidia reportou receita recorde no trimestre e projetou US$ 108 bilhões para o período seguinte, acelerando a transição das fundições da TSMC para sistemas de memória HBM4 com 8 TB/s de largura de banda.',
-        body: `
-          <p class="text-base text-slate-200 leading-relaxed">
-            Os números consolidados da Nvidia reafirmam que a construção de data centers de inferência contínua é a maior obra de infraestrutura da década. A empresa anunciou que a demanda por clusters Blackwell e primeiros contratos da arquitetura <strong>Vera Rubin</strong> superam a capacidade produtiva global.
+            A estratégia do Google de acelerar a transição para agentes corporativos autônomos atingiu novo marco com o comissionamento do <strong>Gemini 3.5 Flash</strong>.
           </p>
         `,
         sources: [
-          { name: 'Morningstar Analysis — Nvidia Q2 FY2027 Financials', url: 'https://global.morningstar.com/en-ca/stocks/nvidia-earnings-raising-fair-value-ai-buildouts-are-accelerating' },
-          { name: 'GuruFocus Market Analysis', url: 'https://www.gurufocus.com/news/9055714/nvidia-nvda-raises-ai-chip-sales-forecast-amidst-market-scrutiny' }
-        ]
-      },
-      {
-        id: 6,
-        category: 'tools',
-        title: 'Vulnerabilidade GPUThor e Mitigações no Kernel Linux para vGPUs Compartilhadas',
-        readingTime: '4 min',
-        date: '27/08/2026',
-        coverImage: 'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?q=80&w=1200&auto=format&fit=crop',
-        summary: 'Ataque de Rowhammer em memória de GPU força desenvolvedores do Kernel Linux e provedores de nuvem a implementar particionamento físico estrito para evitar vazamento de tensores confidenciais entre instâncias virtuais.',
-        body: `
-          <p class="text-base text-slate-200 leading-relaxed">
-            A comprovação de que perturbações elétricas em VRAM conseguem inverter múltiplos bits e contornar códigos de correção de erro (ECC) alterou os protocolos de segurança para nós de inferência em nuvem multi-inquilino.
-          </p>
-        `,
-        sources: [
-          { name: 'The Hacker News — GPUThor Rowhammer Vulnerability', url: 'https://thehackernews.com/2026/08/gputhor-rowhammer-defeats-ecc-on-nvidia.html' }
+          { name: 'Google AI for Developers — Gemini API Changelog', url: 'https://ai.google.dev/gemini-api/docs/changelog' }
         ]
       }
     ];
+
+    // Carregamento Dinâmico de posts.json (com fallback automático)
+    async function loadLivePosts() {
+      try {
+        const response = await fetch('./posts.json?t=' + new Date().getTime());
+        if (response.ok) {
+          const data = await response.json();
+          if (Array.isArray(data) && data.length > 0) {
+            ARTICLES = data.map((item, idx) => ({
+              id: item.id || (idx + 1),
+              category: item.category || 'ai-models',
+              title: item.title,
+              readingTime: item.readingTime || '5 min',
+              date: item.date || '30/08/2026',
+              coverImage: item.coverImage || FALLBACK_COVERS[item.category] || FALLBACK_COVERS['ai-models'],
+              summary: item.summary,
+              body: item.body || item.body_html || '<p>Análise técnica em processamento...</p>',
+              sources: item.sources || [{ name: item.source_name || 'Fonte Oficial', url: item.source_url || '#' }]
+            }));
+            renderArticles();
+          }
+        }
+      } catch (err) {
+        console.log('Utilizando base editorial inicial.');
+      }
+    }
 
     let currentCategory = 'all';
     let searchQuery = '';
@@ -491,7 +454,7 @@ async function runPersistentAgentLoop(agentSession) {
       if (filtered.length === 0) {
         grid.innerHTML = `
           <div class="col-span-full py-16 text-center text-slate-500 font-mono text-sm">
-            Nenhuma matéria encontrada para o filtro: "${searchQuery}".
+            Nenhuma matéria encontrada para o filtro selecionado.
           </div>
         `;
         return;
@@ -499,6 +462,7 @@ async function runPersistentAgentLoop(agentSession) {
 
       filtered.forEach(art => {
         const theme = THEMES[art.category] || THEMES['ai-models'];
+        const cover = art.coverImage || FALLBACK_COVERS[art.category] || FALLBACK_COVERS['ai-models'];
 
         const card = document.createElement('article');
         card.className = `group relative flex flex-col justify-between h-full bg-[#111827]/90 backdrop-blur-md rounded-2xl border border-white/10 ${theme.borderHover} transition-all duration-300 overflow-hidden shadow-xl hover:shadow-cyan-500/10 hover:-translate-y-1 cursor-pointer`;
@@ -507,7 +471,7 @@ async function runPersistentAgentLoop(agentSession) {
         card.innerHTML = `
           <div class="relative w-full aspect-video overflow-hidden bg-black/50">
             <img 
-              src="${art.coverImage}" 
+              src="${cover}" 
               alt="${art.title}" 
               class="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500"
               loading="lazy"
@@ -599,8 +563,9 @@ async function runPersistentAgentLoop(agentSession) {
       if (!art) return;
 
       const theme = THEMES[art.category] || THEMES['ai-models'];
+      const cover = art.coverImage || FALLBACK_COVERS[art.category] || FALLBACK_COVERS['ai-models'];
 
-      document.getElementById('modal-cover-img').src = art.coverImage;
+      document.getElementById('modal-cover-img').src = cover;
       document.getElementById('modal-category').className = `px-3 py-1 rounded-full text-xs font-semibold border font-mono ${theme.badge}`;
       document.getElementById('modal-category').innerText = theme.label;
       document.getElementById('modal-date').innerText = `${art.date} • ${art.readingTime} de leitura aprofundada`;
@@ -657,6 +622,7 @@ async function runPersistentAgentLoop(agentSession) {
       }
     }
 
+    // Animação Neural de Fundo
     const canvas = document.getElementById('neural-canvas');
     const ctx = canvas.getContext('2d');
     let particles = [];
@@ -722,6 +688,7 @@ async function runPersistentAgentLoop(agentSession) {
 
     document.addEventListener('DOMContentLoaded', () => {
       renderArticles();
+      loadLivePosts();
     });
   </script>
 </body>
