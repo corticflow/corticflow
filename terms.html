@@ -1,55 +1,112 @@
 <!DOCTYPE html>
-<html lang="pt-BR" class="dark">
+<html lang="pt-br" class="scroll-smooth">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Termos de Uso — CorticFlow</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <style>
-    body { background-color: #0B0D13; color: #CBD5E1; font-family: system-ui, -apple-system, sans-serif; }
-    .verge-border { border: 1px solid #232838; }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Termos de Uso | CorticFlow</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+    </style>
 </head>
-<body class="min-h-screen py-12 px-4 selection:bg-cyan-400 selection:text-black">
-  <div class="max-w-4xl mx-auto bg-[#131620] verge-border rounded-3xl p-6 sm:p-12 shadow-2xl">
-    
-    <div class="flex items-center justify-between border-b border-[#232838] pb-6 mb-8">
-      <a href="index.html" class="text-2xl font-black tracking-tight text-white uppercase">
-        CORTIC<span class="text-[#00E5FF]">//</span>FLOW
-      </a>
-      <a href="index.html" class="px-4 py-2 rounded-xl bg-slate-900 text-[#00E5FF] text-xs font-bold border border-[#232838] hover:bg-slate-800 transition">
-        ← Voltar ao Início
-      </a>
-    </div>
+<body class="bg-[#0B0F19] text-slate-400 min-h-screen flex flex-col antialiased">
+    <!-- Header -->
+    <header class="border-b border-slate-800 bg-[#0B0F19]/90 backdrop-blur-md sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <div class="flex items-center space-x-2">
+                <div class="w-8 h-8 bg-indigo-600 rounded-lg flex items-center justify-center">
+                    <span class="text-white font-bold text-lg">C</span>
+                </div>
+                <span class="text-white font-bold text-xl tracking-tight">CorticFlow</span>
+            </div>
+            <nav>
+                <a href="index.html" class="text-sm font-medium text-slate-300 hover:text-white transition-colors flex items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                    </svg>
+                    Voltar à Home
+                </a>
+            </nav>
+        </div>
+    </header>
 
-    <h1 class="text-3xl sm:text-4xl font-black text-white mb-2">Termos de Uso</h1>
-    <p class="text-xs text-slate-500 font-mono mb-8">Última atualização: Agosto de 2026</p>
+    <!-- Main Content -->
+    <main class="flex-grow max-w-4xl mx-auto px-6 py-16 w-full">
+        <header class="mb-12">
+            <h1 class="text-4xl font-bold text-white mb-4">Termos de Uso</h1>
+            <p class="text-slate-500">Última atualização: Agosto de 2026</p>
+        </header>
 
-    <div class="space-y-6 text-sm sm:text-base leading-relaxed text-slate-300">
-      <section>
-        <h2 class="text-xl font-bold text-white mb-2 text-[#00E5FF]">1. Aceitação dos Termos</h2>
-        <p>Ao acessar e utilizar o portal <strong>CorticFlow</strong>, você concorda expressamente em cumprir estes Termos de Uso e todas as leis aplicáveis.</p>
-      </section>
+        <div class="space-y-12">
+            <!-- Propriedade Intelectual -->
+            <section>
+                <h2 class="text-2xl font-semibold text-white mb-4">1. Propriedade Intelectual</h2>
+                <div class="space-y-4">
+                    <p>
+                        Todo o conteúdo disponibilizado no CorticFlow, incluindo, mas não se limitando a, textos, gráficos, logotipos, ícones, imagens, clipes de áudio, downloads digitais, compilações de dados e software, é de propriedade exclusiva do CorticFlow ou de seus fornecedores de conteúdo e é protegido por leis internacionais de direitos autorais.
+                    </p>
+                    <p>
+                        A compilação de todo o conteúdo neste site é de propriedade exclusiva do CorticFlow e protegida por leis de propriedade intelectual. É proibida a reprodução, duplicação, cópia, venda ou exploração de qualquer parte do serviço sem o consentimento expresso por escrito da administração.
+                    </p>
+                </div>
+            </section>
 
-      <section>
-        <h2 class="text-xl font-bold text-white mb-2 text-[#00E5FF]">2. Natureza Editorial e Curadoria</h2>
-        <p>O <strong>CorticFlow</strong> é um portal independente de curadoria jornalística, análise técnica e educação em tecnologia e inteligência artificial. Nossas análises e tutoriais são de caráter puramente informativo e educativo, não constituindo consultoria financeira ou jurídica.</p>
-      </section>
+            <!-- Isenção de Responsabilidade -->
+            <section>
+                <h2 class="text-2xl font-semibold text-white mb-4">2. Isenção de Responsabilidade sobre Análises Financeiras e Tecnológicas</h2>
+                <div class="space-y-4">
+                    <p>
+                        As análises, dados e informações fornecidos pelo CorticFlow são destinados exclusivamente a fins informativos e educacionais. O CorticFlow não é uma corretora de valores, consultoria financeira ou entidade regulada para fornecimento de aconselhamento de investimento.
+                    </p>
+                    <p class="p-4 bg-slate-900 border-l-4 border-indigo-500 rounded-r-lg text-slate-300 italic">
+                        O desempenho passado não garante resultados futuros. O usuário é o único responsável por suas decisões financeiras e tecnológicas. Recomendamos a consulta com profissionais qualificados antes de realizar qualquer investimento ou implementação técnica crítica.
+                    </p>
+                    <p>
+                        Não garantimos a precisão, integridade ou atualidade das informações apresentadas, embora nos esforcemos para manter os dados o mais precisos possível.
+                    </p>
+                </div>
+            </section>
 
-      <section>
-        <h2 class="text-xl font-bold text-white mb-2 text-[#00E5FF]">3. Propriedade Intelectual e Citação de Fontes</h2>
-        <p>O conteúdo original publicado no CorticFlow (layout, marcas, análises derivadas e tutoriais) é de propriedade exclusiva da plataforma. Fatos públicos, dados e notícias de terceiros são creditados com hyperlinks diretos às suas fontes primárias correspondentes, sob o princípio do Uso Justo (*Fair Use*).</p>
-      </section>
+            <!-- Uso Aceitável -->
+            <section>
+                <h2 class="text-2xl font-semibold text-white mb-4">3. Uso Aceitável</h2>
+                <div class="space-y-4">
+                    <p>Ao utilizar o CorticFlow, você concorda em não:</p>
+                    <ul class="list-disc pl-6 space-y-2 text-slate-400">
+                        <li>Utilizar a plataforma para qualquer finalidade ilegal ou não autorizada.</li>
+                        <li>Tentar obter acesso não autorizado aos sistemas do CorticFlow ou redes associadas.</li>
+                        <li>Interferir ou interromper a integridade ou o desempenho do serviço.</li>
+                        <li>Praticar "scraping" ou coleta automatizada de dados sem autorização prévia por escrito.</li>
+                        <li>Transmitir qualquer vírus, malware ou código de natureza destrutiva.</li>
+                    </ul>
+                </div>
+            </section>
 
-      <section>
-        <h2 class="text-xl font-bold text-white mb-2 text-[#00E5FF]">4. Limitação de Responsabilidade</h2>
-        <p>O CorticFlow não se responsabiliza por eventuais perdas, danos ou decisões comerciais tomadas com base nas análises de mercado ou no uso de ferramentas de IA discutidas no portal.</p>
-      </section>
-    </div>
+            <!-- Links Externos -->
+            <section>
+                <h2 class="text-2xl font-semibold text-white mb-4">4. Links Externos</h2>
+                <div class="space-y-4">
+                    <p>
+                        O CorticFlow pode conter links para sites ou serviços de terceiros que não são de nossa propriedade ou controlados por nós.
+                    </p>
+                    <p>
+                        Não temos controle e não assumimos responsabilidade pelo conteúdo, políticas de privacidade ou práticas de quaisquer sites ou serviços de terceiros.
+                    </p>
+                </div>
+            </section>
+        </div>
+    </main>
 
-    <div class="mt-12 pt-6 border-t border-[#232838] text-xs text-slate-500 text-center">
-      © 2026 CorticFlow. Todos os direitos reservados.
-    </div>
-  </div>
+    <!-- Footer -->
+    <footer class="border-t border-slate-800 py-8 bg-[#0B0F19]">
+        <div class="max-w-4xl mx-auto px-6 text-center">
+            <p class="text-sm text-slate-500 mb-2">© 2026 CorticFlow. Todos os direitos reservados.</p>
+            <div class="flex justify-center space-x-6 text-xs text-slate-400">
+                <a href="privacy.html" class="hover:text-white transition-colors">Política de Privacidade</a>
+                <a href="#" class="hover:text-white transition-colors">Suporte</a>
+            </div>
+        </div>
+    </footer>
 </body>
 </html>
