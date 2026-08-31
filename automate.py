@@ -1,26 +1,31 @@
-
-
-
 import feedparser
 import json
 import os
 import google.generativeai as genai
 import random
-import time
 from datetime import datetime, timedelta
 
-# Configurações de RSS Feeds
+# Configurações de RSS Feeds (Blogs Oficiais + Perfis do X via Bridge)
 RSS_FEEDS = {
-    "Google": "https://blog.google/rss/",
-    "Nvidia": "https://nvidianews.nvidia.com/releases.xml",
-    "Apple": "https://www.apple.com/newsroom/rss-feed.rss",
-    "Linux": "https://www.linux.com/feed/",
-    "OpenAI": "https://openai.com/blog/rss.xml",
-    "Anthropic": "https://www.anthropic.com/news.rss",
-    "DeepSeek": "https://blog.deepseek.com/rss/",
+    # Portais e Blogs de Engenharia
+    "Google Blog": "https://blog.google/rss/",
+    "Nvidia News": "https://nvidianews.nvidia.com/releases.xml",
+    "Apple Newsroom": "https://www.apple.com/newsroom/rss-feed.rss",
+    "Linux.com": "https://www.linux.com/feed/",
+    "OpenAI Blog": "https://openai.com/blog/rss.xml",
+    "Anthropic News": "https://www.anthropic.com/news.rss",
+    "DeepSeek Blog": "https://blog.deepseek.com/rss/",
     "MIT Tech Review": "https://www.technologyreview.com/feed/",
     "TechCrunch": "https://techcrunch.com/feed/",
-    "Ars Technica": "https://feeds.arstechnica.com/arstechnica/index"
+    "Ars Technica": "https://feeds.arstechnica.com/arstechnica/index",
+    
+    # Perfis Oficiais no X (via OpenRSS / RSSHub)
+    "X | @OpenAI": "https://openrss.org/twitter.com/OpenAI",
+    "X | @AnthropicAI": "https://openrss.org/twitter.com/AnthropicAI",
+    "X | @deepseek_ai": "https://openrss.org/twitter.com/deepseek_ai",
+    "X | @GoogleDeepMind": "https://openrss.org/twitter.com/GoogleDeepMind",
+    "X | @NVIDIAAI": "https://openrss.org/twitter.com/NVIDIAAI",
+    "X | @Linux": "https://openrss.org/twitter.com/Linux"
 }
 
 # Pool de URLs de alta resolução 16:9 temáticas
@@ -47,18 +52,35 @@ IMAGE_POOL = [
     "https://images.unsplash.com/photo-1555664424-778a1e5e1b48?q=80&w=1600&h=900&fit=crop"
 ]
 
-def rewrite_to_long_form(model, title, summary):
-    prompt = (
-        f"Reescreva o seguinte conteúdo de notícias em um artigo de formato longo (long-form), "
-        f"mantendo um tom profissional, informativo e envolvente.\n\n"
-        f"Título: {title}\n"
-        f"Resumo Original: {summary}"
+def rewrite_to_long_form(model, source_name, title, summary):
+    is_x_post = "X |" in source_name
+    
+    context_instruction = (
+        "O conteúdo de origem é um comunicado/post rápido publicado no X (Twitter). "
+        "Expanda a informação com contexto técnico, implicações para a indústria de IA e "
+        "detalhes arquiteturais relevantes, criando um artigo aprofundado e profissional."
+        if is_x_post else
+        "Reescreva o seguinte conteúdo de notícias em um artigo analítico de formato longo (long-form)."
     )
+
+    prompt = f"""
+Atue como Editor-Chefe de Tecnologia da CorticFlow.
+{context_instruction}
+
+Fonte: {source_name}
+Título: {title}
+Resumo / Post: {summary}
+
+Estrutura desejada:
+1. Síntese Executiva / Key Takeaway no início.
+2. Contexto técnico e análise de impacto.
+3. Tom neutro, técnico e aprofundado.
+"""
     try:
         response = model.generate_content(prompt)
         return response.text.strip()
     except Exception as e:
-        print(f"Erro Gemini: {e}")
+        print(f"Erro Gemini ({source_name}): {e}")
         return summary
 
 def main():
@@ -94,12 +116,13 @@ def main():
         processed_posts = []
 
         for i, entry in enumerate(selected_entries):
+            source = entry.get('source_name', 'Tech News')
             title = entry.get('title', 'Sem Título')
             summary = entry.get('summary', entry.get('description', ''))
-            content = rewrite_to_long_form(model, title, summary)
+            content = rewrite_to_long_form(model, source, title, summary)
             
             processed_posts.append({
-                "source": entry['source_name'],
+                "source": source,
                 "title": title,
                 "link": entry.get('link', ''),
                 "image": IMAGE_POOL[i % len(IMAGE_POOL)],
@@ -108,7 +131,7 @@ def main():
 
         with open("posts.json", "w", encoding="utf-8") as f:
             json.dump(processed_posts, f, ensure_ascii=False, indent=4)
-        
+
         print(f"Sucesso: {len(processed_posts)} posts salvos.")
 
     except Exception as e:
@@ -116,4 +139,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
