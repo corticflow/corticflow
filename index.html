@@ -42,13 +42,27 @@
                 <div class="w-9 h-9 bg-gradient-to-tr from-cyan to-violet rounded-xl flex items-center justify-center text-slate-900 font-bold text-lg shadow-lg shadow-cyan/20">C</div>
                 <span class="text-2xl font-bold tracking-tighter font-display text-white">Cortic<span class="text-cyan">Flow</span></span>
             </div>
+            
             <nav class="hidden md:flex items-center gap-6 text-sm font-medium text-slate-400">
-                <a href="#artigos" class="hover:text-cyan transition-colors">Artigos</a>
-                <a href="terms.html" class="hover:text-cyan transition-colors">Termos</a>
-                <a href="privacy.html" class="hover:text-cyan transition-colors">Privacidade</a>
+                <a href="#artigos" class="hover:text-cyan transition-colors" x-text="t[currentLang].navArticles"></a>
+                <a href="terms.html" class="hover:text-cyan transition-colors" x-text="t[currentLang].navTerms"></a>
+                <a href="privacy.html" class="hover:text-cyan transition-colors" x-text="t[currentLang].navPrivacy"></a>
             </nav>
-            <div class="flex items-center gap-3">
-                <a href="#newsletter" class="bg-cyan text-slate-950 font-bold text-xs px-4 py-2 rounded-full hover:bg-white transition-all shadow-md shadow-cyan/20">Newsletter</a>
+
+            <div class="flex items-center gap-4">
+                <!-- Seletor de Idioma Bilíngue -->
+                <div class="flex items-center bg-white/5 border border-white/10 rounded-full p-1 shadow-inner">
+                    <button 
+                        @click="setLanguage('pt')" 
+                        :class="currentLang === 'pt' ? 'bg-cyan text-slate-950 font-extrabold shadow-sm' : 'text-slate-400 hover:text-white'" 
+                        class="px-3 py-1 text-xs rounded-full transition-all">PT</button>
+                    <button 
+                        @click="setLanguage('en')" 
+                        :class="currentLang === 'en' ? 'bg-cyan text-slate-950 font-extrabold shadow-sm' : 'text-slate-400 hover:text-white'" 
+                        class="px-3 py-1 text-xs rounded-full transition-all">EN</button>
+                </div>
+
+                <a href="#newsletter" class="hidden sm:inline-block bg-cyan text-slate-950 font-bold text-xs px-4 py-2 rounded-full hover:bg-white transition-all shadow-md shadow-cyan/20" x-text="t[currentLang].navNewsletter"></a>
             </div>
         </div>
     </header>
@@ -56,25 +70,21 @@
     <!-- Hero Section -->
     <section class="pt-16 pb-10 px-6 max-w-7xl mx-auto w-full">
         <div class="text-center max-w-3xl mx-auto mb-12">
-            <span class="inline-block px-3 py-1 mb-4 text-[11px] font-bold tracking-widest text-cyan uppercase bg-cyan/10 border border-cyan/20 rounded-full">
-                ⚡ Real-Time AI Intelligence
-            </span>
+            <span class="inline-block px-3 py-1 mb-4 text-[11px] font-bold tracking-widest text-cyan uppercase bg-cyan/10 border border-cyan/20 rounded-full" x-text="t[currentLang].badgeHero"></span>
             <h1 class="text-4xl md:text-6xl font-extrabold font-display text-white mb-4 tracking-tight leading-tight">
-                O nexo da revolução <span class="text-transparent bg-clip-text bg-gradient-to-r from-cyan to-violet">Cognitiva.</span>
+                <span x-text="t[currentLang].heroTitle1"></span> <span class="text-transparent bg-clip-text bg-gradient-to-r from-cyan to-violet" x-text="t[currentLang].heroTitle2"></span>
             </h1>
-            <p class="text-slate-400 text-base md:text-lg leading-relaxed">
-                Análise técnica e profunda sobre modelos de linguagem, semicondutores, sistemas autônomos e a infraestrutura que redefine o futuro.
-            </p>
+            <p class="text-slate-400 text-base md:text-lg leading-relaxed" x-text="t[currentLang].heroDesc"></p>
         </div>
 
         <!-- Filter Chips -->
         <div class="flex items-center gap-2 overflow-x-auto pb-4 custom-scrollbar mb-10 justify-start md:justify-center">
-            <template x-for="category in categories" :key="category">
+            <template x-for="cat in currentCategories" :key="cat">
                 <button 
-                    @click="activeCategory = category"
-                    :class="activeCategory === category ? 'bg-cyan text-slate-950 font-bold' : 'bg-white/5 text-slate-400 hover:text-white border border-white/10'"
+                    @click="activeCategory = cat"
+                    :class="activeCategory === cat ? 'bg-cyan text-slate-950 font-bold' : 'bg-white/5 text-slate-400 hover:text-white border border-white/10'"
                     class="px-4 py-1.5 rounded-full text-xs transition-all whitespace-nowrap"
-                    x-text="category">
+                    x-text="cat">
                 </button>
             </template>
         </div>
@@ -85,7 +95,7 @@
         <!-- Loading State -->
         <div x-show="isLoading" class="flex flex-col items-center justify-center py-20">
             <div class="w-10 h-10 border-4 border-cyan border-t-transparent rounded-full animate-spin mb-4"></div>
-            <p class="text-slate-400 text-sm font-mono">Sincronizando fluxo neural de notícias...</p>
+            <p class="text-slate-400 text-sm font-mono" x-text="t[currentLang].loadingText"></p>
         </div>
 
         <!-- Articles Grid -->
@@ -97,21 +107,21 @@
                     <div class="aspect-video w-full overflow-hidden bg-slate-900 relative">
                         <img 
                             :src="item.image" 
-                            :alt="item.title"
+                            :alt="getArticleTitle(item)"
                             class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                             onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1677442136019-21780ecad995?q=80&w=1600&h=900&fit=crop';">
                         <div class="absolute top-3 left-3">
-                            <span class="px-2.5 py-1 text-[10px] font-bold uppercase tracking-widest bg-slate-950/80 text-cyan rounded-md border border-cyan/30 backdrop-blur-md" x-text="item.tag"></span>
+                            <span class="px-2.5 py-1 text-[10px] font-bold uppercase tracking-widest bg-slate-950/80 text-cyan rounded-md border border-cyan/30 backdrop-blur-md" x-text="item.source"></span>
                         </div>
                     </div>
                     <div class="p-6 flex-1 flex flex-col justify-between">
                         <div>
                             <div class="text-[11px] text-slate-500 font-mono mb-2" x-text="item.date"></div>
-                            <h3 class="text-lg font-bold text-white group-hover:text-cyan transition-colors mb-3 leading-snug" x-text="item.title"></h3>
-                            <p class="text-slate-400 text-xs line-clamp-3 leading-relaxed mb-4" x-text="item.excerpt"></p>
+                            <h3 class="text-lg font-bold text-white group-hover:text-cyan transition-colors mb-3 leading-snug" x-text="getArticleTitle(item)"></h3>
+                            <p class="text-slate-400 text-xs line-clamp-3 leading-relaxed mb-4" x-text="getArticleExcerpt(item)"></p>
                         </div>
                         <div class="pt-4 border-t border-white/5 flex items-center justify-between text-xs font-semibold text-cyan">
-                            <span>Ler Análise Completa</span>
+                            <span x-text="t[currentLang].readMore"></span>
                             <svg class="w-4 h-4 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
                             </svg>
@@ -146,17 +156,17 @@
             <template x-if="activeDoc">
                 <div>
                     <div class="flex items-center gap-3 mb-4">
-                        <span class="px-2.5 py-1 text-[10px] font-bold uppercase tracking-widest bg-cyan/10 text-cyan border border-cyan/30 rounded" x-text="activeDoc.tag"></span>
+                        <span class="px-2.5 py-1 text-[10px] font-bold uppercase tracking-widest bg-cyan/10 text-cyan border border-cyan/30 rounded" x-text="activeDoc.source"></span>
                         <span class="text-xs text-slate-500 font-mono" x-text="activeDoc.date"></span>
                     </div>
 
-                    <h2 class="text-2xl md:text-4xl font-extrabold font-display text-white mb-6 leading-tight" x-text="activeDoc.title"></h2>
+                    <h2 class="text-2xl md:text-4xl font-extrabold font-display text-white mb-6 leading-tight" x-text="getArticleTitle(activeDoc)"></h2>
 
                     <div class="aspect-video w-full rounded-2xl overflow-hidden mb-8 border border-white/10">
-                        <img :src="activeDoc.image" :alt="activeDoc.title" class="w-full h-full object-cover">
+                        <img :src="activeDoc.image" :alt="getArticleTitle(activeDoc)" class="w-full h-full object-cover">
                     </div>
 
-                    <div class="prose prose-invert max-w-none text-slate-300 text-sm md:text-base leading-relaxed space-y-4 whitespace-pre-line" x-text="activeDoc.fullContent"></div>
+                    <div class="prose prose-invert max-w-none text-slate-300 text-sm md:text-base leading-relaxed space-y-4 whitespace-pre-line" x-text="getArticleContent(activeDoc)"></div>
 
                     <div class="mt-8 pt-6 border-t border-white/10 flex flex-col sm:flex-row justify-between items-center gap-4">
                         <a 
@@ -164,15 +174,15 @@
                             target="_blank" 
                             rel="noopener noreferrer"
                             class="text-xs text-cyan hover:underline flex items-center gap-1.5 font-mono">
-                            <span>Ver Fonte Original</span>
+                            <span x-text="t[currentLang].modalSource"></span>
                             <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
                             </svg>
                         </a>
                         <button 
                             @click="closeModal()" 
-                            class="bg-white/10 text-white hover:bg-white/20 px-5 py-2 rounded-xl text-xs font-bold transition-all">
-                            Fechar Leitura
+                            class="bg-white/10 text-white hover:bg-white/20 px-5 py-2 rounded-xl text-xs font-bold transition-all"
+                            x-text="t[currentLang].modalClose">
                         </button>
                     </div>
                 </div>
@@ -184,20 +194,18 @@
     <section id="newsletter" class="max-w-7xl mx-auto px-6 py-16 w-full">
         <div class="glass rounded-3xl p-8 md:p-14 text-center relative overflow-hidden border border-cyan/20">
             <div class="absolute -top-24 -right-24 w-64 h-64 bg-cyan/10 blur-[100px] rounded-full pointer-events-none"></div>
-            <h2 class="text-2xl md:text-4xl font-extrabold font-display text-white mb-3">CorticFlow Weekly na sua Inbox</h2>
-            <p class="text-slate-400 text-sm md:text-base max-w-lg mx-auto mb-8">
-                A síntese dos fatos mais relevantes em IA, agentes autônomos e computação avançada entregue todo domingo.
-            </p>
-            <form class="flex flex-col sm:flex-row gap-3 max-w-md mx-auto" @submit.prevent="alert('Inscrição confirmada no CorticFlow!')">
+            <h2 class="text-2xl md:text-4xl font-extrabold font-display text-white mb-3" x-text="t[currentLang].newsletterTitle"></h2>
+            <p class="text-slate-400 text-sm md:text-base max-w-lg mx-auto mb-8" x-text="t[currentLang].newsletterDesc"></p>
+            <form class="flex flex-col sm:flex-row gap-3 max-w-md mx-auto" @submit.prevent="alert(t[currentLang].newsletterSuccess)">
                 <input 
                     type="email" 
-                    placeholder="seu.email@tech.com" 
+                    :placeholder="t[currentLang].newsletterPlaceholder" 
                     required 
                     class="flex-1 bg-slate-900/90 border border-white/15 rounded-xl px-4 py-3 text-sm text-white placeholder-slate-500 outline-none focus:border-cyan transition-all">
                 <button 
                     type="submit" 
-                    class="bg-cyan text-slate-950 px-6 py-3 rounded-xl font-bold text-sm hover:bg-white transition-all shadow-lg shadow-cyan/20">
-                    Inscrever-se
+                    class="bg-cyan text-slate-950 px-6 py-3 rounded-xl font-bold text-sm hover:bg-white transition-all shadow-lg shadow-cyan/20"
+                    x-text="t[currentLang].newsletterBtn">
                 </button>
             </form>
         </div>
@@ -208,27 +216,25 @@
         <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-8 mb-10">
             <div class="col-span-1 md:col-span-2">
                 <span class="text-xl font-bold text-white font-display">Cortic<span class="text-cyan">Flow</span></span>
-                <p class="mt-3 text-slate-500 max-w-sm leading-relaxed">
-                    Decodificando a evolução técnica da inteligência artificial e semicondutores. Operação editorial com curadoria automatizada via IA.
-                </p>
+                <p class="mt-3 text-slate-500 max-w-sm leading-relaxed" x-text="t[currentLang].footerDesc"></p>
             </div>
             <div>
-                <h4 class="text-white font-bold mb-4 uppercase tracking-widest text-[11px]">Compliance & Legal</h4>
+                <h4 class="text-white font-bold mb-4 uppercase tracking-widest text-[11px]" x-text="t[currentLang].footerCompliance"></h4>
                 <ul class="space-y-2">
-                    <li><a href="privacy.html" class="hover:text-cyan transition-colors">Política de Privacidade</a></li>
-                    <li><a href="terms.html" class="hover:text-cyan transition-colors">Termos de Uso</a></li>
+                    <li><a href="privacy.html" class="hover:text-cyan transition-colors" x-text="t[currentLang].navPrivacy"></a></li>
+                    <li><a href="terms.html" class="hover:text-cyan transition-colors" x-text="t[currentLang].navTerms"></a></li>
                 </ul>
             </div>
             <div>
-                <h4 class="text-white font-bold mb-4 uppercase tracking-widest text-[11px]">Status da Esteira</h4>
+                <h4 class="text-white font-bold mb-4 uppercase tracking-widest text-[11px]" x-text="t[currentLang].footerStatus"></h4>
                 <div class="flex items-center gap-2 text-slate-300 font-mono text-[11px]">
                     <div class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></div>
-                    <span>GitHub Actions: ATIVO</span>
+                    <span x-text="t[currentLang].pipelineActive"></span>
                 </div>
             </div>
         </div>
         <div class="max-w-7xl mx-auto pt-6 border-t border-white/5 text-center text-slate-600 text-[11px]">
-            © 2026 CorticFlow Media. Todos os direitos reservados.
+            © 2026 CorticFlow Media. <span x-text="t[currentLang].rights"></span>
         </div>
     </footer>
 
@@ -236,12 +242,92 @@
     <script>
         function corticFlow() {
             return {
+                currentLang: 'pt',
                 isLoading: true,
                 isModalOpen: false,
                 activeDoc: null,
                 activeCategory: 'Todos',
-                categories: ['Todos', 'OpenAI', 'Anthropic', 'DeepSeek', 'Google', 'Nvidia', 'Apple', 'Linux'],
                 articles: [],
+
+                t: {
+                    pt: {
+                        navArticles: 'Artigos',
+                        navTerms: 'Termos de Uso',
+                        navPrivacy: 'Privacidade',
+                        navNewsletter: 'Newsletter',
+                        badgeHero: '⚡ Inteligência de IA em Tempo Real',
+                        heroTitle1: 'O nexo da revolução',
+                        heroTitle2: 'Cognitiva.',
+                        heroDesc: 'Análise técnica e profunda sobre modelos de linguagem, semicondutores, sistemas autônomos e a infraestrutura que redefine o futuro.',
+                        allCategory: 'Todos',
+                        categories: ['Todos', 'OpenAI', 'Anthropic', 'DeepSeek', 'Google', 'Nvidia', 'Apple', 'Linux'],
+                        loadingText: 'Sincronizando fluxo neural de notícias...',
+                        readMore: 'Ler Análise Completa',
+                        modalSource: 'Ver Fonte Original',
+                        modalClose: 'Fechar Leitura',
+                        newsletterTitle: 'CorticFlow Weekly na sua Inbox',
+                        newsletterDesc: 'A síntese dos fatos mais relevantes em IA, agentes autônomos e computação avançada entregue todo domingo.',
+                        newsletterPlaceholder: 'seu.email@tech.com',
+                        newsletterBtn: 'Inscrever-se',
+                        newsletterSuccess: 'Inscrição confirmada no CorticFlow!',
+                        footerDesc: 'Decodificando a evolução técnica da inteligência artificial e semicondutores. Operação editorial com curadoria automatizada via IA.',
+                        footerCompliance: 'Compliance & Legal',
+                        footerStatus: 'Status da Esteira',
+                        pipelineActive: 'GitHub Actions: ATIVO',
+                        rights: 'Todos os direitos reservados.'
+                    },
+                    en: {
+                        navArticles: 'Articles',
+                        navTerms: 'Terms of Use',
+                        navPrivacy: 'Privacy Policy',
+                        navNewsletter: 'Newsletter',
+                        badgeHero: '⚡ Real-Time AI Intelligence',
+                        heroTitle1: 'The Nexus of the',
+                        heroTitle2: 'Cognitive Shift.',
+                        heroDesc: 'Deep technical analysis on large language models, advanced semiconductors, autonomous agents, and next-gen computing infrastructure.',
+                        allCategory: 'All',
+                        categories: ['All', 'OpenAI', 'Anthropic', 'DeepSeek', 'Google', 'Nvidia', 'Apple', 'Linux'],
+                        loadingText: 'Synchronizing neural news feed...',
+                        readMore: 'Read Full Analysis',
+                        modalSource: 'View Original Source',
+                        modalClose: 'Close Article',
+                        newsletterTitle: 'CorticFlow Weekly in Your Inbox',
+                        newsletterDesc: 'The technical executive briefing on breakthrough AI architectures and chip developments delivered every Sunday.',
+                        newsletterPlaceholder: 'your.email@tech.com',
+                        newsletterBtn: 'Subscribe',
+                        newsletterSuccess: 'Subscription confirmed for CorticFlow Weekly!',
+                        footerDesc: 'Decoding the technical evolution of artificial intelligence and accelerated silicon. Autonomous AI-driven editorial pipeline.',
+                        footerCompliance: 'Compliance & Legal',
+                        footerStatus: 'Pipeline Status',
+                        pipelineActive: 'GitHub Actions: ACTIVE',
+                        rights: 'All rights reserved.'
+                    }
+                },
+
+                get currentCategories() {
+                    return this.t[this.currentLang].categories;
+                },
+
+                setLanguage(lang) {
+                    this.currentLang = lang;
+                    this.activeCategory = this.t[lang].allCategory;
+                    document.documentElement.lang = lang === 'pt' ? 'pt-BR' : 'en';
+                },
+
+                getArticleTitle(item) {
+                    if (!item) return '';
+                    return this.currentLang === 'pt' ? (item.title_pt || item.title) : (item.title_en || item.title);
+                },
+
+                getArticleExcerpt(item) {
+                    if (!item) return '';
+                    return this.currentLang === 'pt' ? (item.excerpt_pt || item.excerpt) : (item.excerpt_en || item.excerpt);
+                },
+
+                getArticleContent(item) {
+                    if (!item) return '';
+                    return this.currentLang === 'pt' ? (item.content_pt || item.fullContent) : (item.content_en || item.fullContent);
+                },
 
                 async init() {
                     this.isLoading = true;
@@ -251,28 +337,47 @@
                             const data = await response.json();
                             this.articles = data.map((item, idx) => ({
                                 id: idx + 1,
-                                title: item.title,
-                                tag: item.source || 'AI News',
+                                source: item.source || 'AI News',
                                 image: item.image || 'https://images.unsplash.com/photo-1677442136019-21780ecad995?q=80&w=1600&h=900&fit=crop',
-                                date: 'Publicação Recente',
-                                excerpt: item.content ? item.content.slice(0, 160) + '...' : '',
-                                fullContent: item.content || 'Conteúdo em processamento.',
+                                date: 'Recente',
+                                title_pt: item.title_pt || item.title,
+                                title_en: item.title_en || item.title,
+                                excerpt_pt: item.excerpt_pt || (item.content_pt ? item.content_pt.slice(0, 160) + '...' : ''),
+                                excerpt_en: item.excerpt_en || (item.content_en ? item.content_en.slice(0, 160) + '...' : ''),
+                                content_pt: item.content_pt || item.content || '',
+                                content_en: item.content_en || item.content || '',
                                 link: item.link || '#'
                             }));
                         } else {
                             throw new Error('posts.json não encontrado');
                         }
                     } catch (e) {
-                        console.warn('Carregando contingência:', e);
+                        console.warn('Carregando amostra de contingência:', e);
                         this.articles = [
                             {
                                 id: 1,
-                                title: "OpenAI Implementa Persistent Mode para Agentes Always-On",
-                                tag: "X | @OpenAI",
+                                source: "X | @OpenAI",
                                 image: "https://images.unsplash.com/photo-1677442136019-21780ecad995?q=80&w=1600&h=900&fit=crop",
                                 date: "Recente",
-                                excerpt: "A transição de modelos acionados por prompt para instâncias de execução contínua reconfigura a infraestrutura de engenharia de software.",
-                                fullContent: "O modo persistente marca a transição dos agentes de IA de utilitários de ciclo único para serviços autônomos que operam de forma contínua em repositórios e servidores de produção.",
+                                title_pt: "OpenAI Implementa Persistent Mode para Agentes Always-On",
+                                title_en: "OpenAI Deploys Persistent Mode for Always-On Autonomous Agents",
+                                excerpt_pt: "A transição de modelos acionados por prompt para instâncias contínuas reconfigura a engenharia de software.",
+                                excerpt_en: "The architectural shift from single-turn prompts to continuous execution loops transforms developer workflows.",
+                                content_pt: "O modo persistente marca a transição dos agentes de IA de utilitários de ciclo único para serviços autônomos que operam de forma contínua em servidores de produção.",
+                                content_en: "Persistent Mode represents the evolution of AI agents from single-shot prompts into continuously running background services.",
+                                link: "https://github.com/corticflow/corticflow"
+                            },
+                            {
+                                id: 2,
+                                source: "X | @NVIDIAAI",
+                                image: "https://images.unsplash.com/photo-1518770660439-4636190af475?q=80&w=1600&h=900&fit=crop",
+                                date: "Recente",
+                                title_pt: "Nvidia Acelera Transição para HBM4 em Clusters Blackwell",
+                                title_en: "Nvidia Accelerates Transition to HBM4 Memory in Blackwell Clusters",
+                                excerpt_pt: "A adoção de memórias HBM4 visa mitigar a 'Memory Wall', permitindo largura de banda superior a 8 TB/s.",
+                                excerpt_en: "HBM4 adoption overcomes the Memory Wall bottleneck, delivering extreme throughput above 8 TB/s per accelerator.",
+                                content_pt: "A nova arquitetura de memória resolve os gargalos de transferência que limitavam modelos de raciocínio de longa duração.",
+                                content_en: "Next-gen memory architecture addresses critical bandwidth limitations for massive multimodal reasoning workloads.",
                                 link: "https://github.com/corticflow/corticflow"
                             }
                         ];
@@ -282,8 +387,14 @@
                 },
 
                 get filteredArticles() {
-                    if (this.activeCategory === 'Todos') return this.articles;
-                    return this.articles.filter(a => a.tag.toLowerCase().includes(this.activeCategory.toLowerCase()) || a.title.toLowerCase().includes(this.activeCategory.toLowerCase()));
+                    const allKeyword = this.t[this.currentLang].allCategory;
+                    if (this.activeCategory === allKeyword) return this.articles;
+                    return this.articles.filter(a => {
+                        const title = this.getArticleTitle(a).toLowerCase();
+                        const source = a.source.toLowerCase();
+                        const cat = this.activeCategory.toLowerCase();
+                        return source.includes(cat) || title.includes(cat);
+                    });
                 },
 
                 openModal(doc) {
