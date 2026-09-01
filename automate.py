@@ -39,49 +39,48 @@ IMAGE_POOL = [
     "https://images.unsplash.com/photo-1507413245164-6160d8298b31?q=80&w=1600&h=900&fit=crop",
     "https://images.unsplash.com/photo-1539193143244-c83d9436d633?q=80&w=1600&h=900&fit=crop",
     "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?q=80&w=1600&h=900&fit=crop",
-    "https://images.unsplash.com/photo-1563986768609-322da13575f3?q=80&w=1600&h=900&fit=crop",
-    "https://images.unsplash.com/photo-1509062522246-3755977927d7?q=80&w=1600&h=900&fit=crop",
-    "https://images.unsplash.com/photo-1527430253228-e93688616381?q=80&w=1600&h=900&fit=crop",
-    "https://images.unsplash.com/photo-1581092160562-40aa08e78837?q=80&w=1600&h=900&fit=crop",
-    "https://images.unsplash.com/photo-1558494949-ef010911182e?q=80&w=1600&h=900&fit=crop",
-    "https://images.unsplash.com/photo-1518433278981-d57f73efe02a?q=80&w=1600&h=900&fit=crop",
-    "https://images.unsplash.com/photo-1614064641938-3bbee52942c7?q=80&w=1600&h=900&fit=crop",
-    "https://images.unsplash.com/photo-1535223289827-42f1e9919769?q=80&w=1600&h=900&fit=crop",
-    "https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=1600&h=900&fit=crop",
-    "https://images.unsplash.com/photo-1516116216624-53e697fedbea?q=80&w=1600&h=900&fit=crop",
-    "https://images.unsplash.com/photo-1555664424-778a1e5e1b48?q=80&w=1600&h=900&fit=crop"
+    "https://images.unsplash.com/photo-1563986768609-322da13575f3?q=80&w=1600&h=900&fit=crop"
 ]
 
-def rewrite_to_long_form(model, source_name, title, summary):
+def generate_bilingual_post(model, source_name, original_title, original_summary):
     is_x_post = "X |" in source_name
     
-    context_instruction = (
-        "O conteúdo de origem é um comunicado/post rápido publicado no X (Twitter). "
-        "Expanda a informação com contexto técnico, implicações para a indústria de IA e "
-        "detalhes arquiteturais relevantes, criando um artigo aprofundado e profissional."
-        if is_x_post else
-        "Reescreva o seguinte conteúdo de notícias em um artigo analítico de formato longo (long-form)."
-    )
-
     prompt = f"""
-Atue como Editor-Chefe de Tecnologia da CorticFlow.
-{context_instruction}
+Atue como Editor-Chefe de Tecnologia da plataforma CorticFlow.
+Sua tarefa é analisar o fato tecnológico abaixo e produzir DUAS versões analíticas e completas: uma em PORTUGUÊS (PT-BR) e uma em INGLÊS (EN-US).
 
 Fonte: {source_name}
-Título: {title}
-Resumo / Post: {summary}
+Título Original: {original_title}
+Resumo / Post: {original_summary}
+Origem: {"Post rápido no X (Twitter) — expanda com contexto arquitetural profundo e implicações para a indústria" if is_x_post else "Artigo de Notícia Técnica"}
 
-Estrutura desejada:
-1. Síntese Executiva / Key Takeaway no início.
-2. Contexto técnico e análise de impacto.
-3. Tom neutro, técnico e aprofundado.
+Retorne ESTRITAMENTE um objeto JSON com o seguinte schema:
+{{
+  "title_pt": "Título jornalístico e técnico em Português",
+  "title_en": "Journalistic and technical headline in English",
+  "excerpt_pt": "Resumo executivo de 2 a 3 frases em Português.",
+  "excerpt_en": "Executive summary of 2 to 3 sentences in English.",
+  "content_pt": "Análise técnica aprofundada em Português (com síntese executiva, arquitetura técnica e conclusões).",
+  "content_en": "Deep technical analysis in English (with executive takeaways, technical architecture and industry outlook)."
+}}
 """
     try:
-        response = model.generate_content(prompt)
-        return response.text.strip()
+        response = model.generate_content(
+            prompt,
+            generation_config={"response_mime_type": "application/json"}
+        )
+        data = json.loads(response.text.strip())
+        return data
     except Exception as e:
         print(f"Erro Gemini ({source_name}): {e}")
-        return summary
+        return {
+            "title_pt": original_title,
+            "title_en": original_title,
+            "excerpt_pt": original_summary[:160] + "...",
+            "excerpt_en": original_summary[:160] + "...",
+            "content_pt": original_summary,
+            "content_en": original_summary
+        }
 
 def main():
     try:
@@ -119,20 +118,25 @@ def main():
             source = entry.get('source_name', 'Tech News')
             title = entry.get('title', 'Sem Título')
             summary = entry.get('summary', entry.get('description', ''))
-            content = rewrite_to_long_form(model, source, title, summary)
+            
+            post_data = generate_bilingual_post(model, source, title, summary)
             
             processed_posts.append({
                 "source": source,
-                "title": title,
                 "link": entry.get('link', ''),
                 "image": IMAGE_POOL[i % len(IMAGE_POOL)],
-                "content": content
+                "title_pt": post_data.get("title_pt", title),
+                "title_en": post_data.get("title_en", title),
+                "excerpt_pt": post_data.get("excerpt_pt", summary[:160]),
+                "excerpt_en": post_data.get("excerpt_en", summary[:160]),
+                "content_pt": post_data.get("content_pt", summary),
+                "content_en": post_data.get("content_en", summary)
             })
 
         with open("posts.json", "w", encoding="utf-8") as f:
             json.dump(processed_posts, f, ensure_ascii=False, indent=4)
 
-        print(f"Sucesso: {len(processed_posts)} posts salvos.")
+        print(f"Sucesso: {len(processed_posts)} posts bilíngues salvos.")
 
     except Exception as e:
         print(f"Erro Fatal: {e}")
