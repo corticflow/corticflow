@@ -18,7 +18,6 @@ RSS_FEEDS = {
     "MIT Tech Review": "https://www.technologyreview.com/feed/",
     "TechCrunch": "https://techcrunch.com/feed/",
     "Ars Technica": "https://feeds.arstechnica.com/arstechnica/index",
-    
     # Perfis Oficiais no X (via OpenRSS / RSSHub)
     "X | @OpenAI": "https://openrss.org/twitter.com/OpenAI",
     "X | @AnthropicAI": "https://openrss.org/twitter.com/AnthropicAI",
@@ -44,7 +43,6 @@ IMAGE_POOL = [
 
 def generate_bilingual_post(model, source_name, original_title, original_summary):
     is_x_post = "X |" in source_name
-    
     prompt = f"""
 Atue como Editor-Chefe de Tecnologia da plataforma CorticFlow.
 Sua tarefa é analisar o fato tecnológico abaixo e produzir DUAS versões analíticas e completas: uma em PORTUGUÊS (PT-BR) e uma em INGLÊS (EN-US).
@@ -110,7 +108,6 @@ def main():
 
         random.shuffle(all_entries)
         selected_entries = all_entries[:16]
-        
         random.shuffle(IMAGE_POOL)
         processed_posts = []
 
@@ -136,7 +133,7 @@ def main():
         with open("posts.json", "w", encoding="utf-8") as f:
             json.dump(processed_posts, f, ensure_ascii=False, indent=4)
 
-        print(f"Sucesso: {len(processed_posts)} posts bilíngues salvos.")
+        print(f"Sucesso: {len(processed_posts)} posts bilíngues salvos em posts.json.")
 
     except Exception as e:
         print(f"Erro Fatal: {e}")
