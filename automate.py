@@ -2,12 +2,12 @@ import feedparser
 import json
 import os
 import time
-import base64
 import requests
 import google.generativeai as genai
 import random
 from datetime import datetime, timedelta
 import re
+import urllib.parse
 
 RSS_FEEDS = {
     "Google Blog": "https://blog.google/rss/",
@@ -26,93 +26,64 @@ RSS_FEEDS = {
     "X | @NVIDIAAI": "https://openrss.org/twitter.com/NVIDIAAI"
 }
 
-def slugify(text):
-    text = re.sub(r'[^\w\s-]', '', text).strip().lower()
-    return re.sub(r'[-\s]+', '-', text)[:50]
-
-def generate_ai_cover(api_key, image_prompt, output_path):
-    """Gera capa 16:9 via Imagen 3 com tratamento de erros silencioso"""
-    try:
-        url = f"https://generativelanguage.googleapis.com/v1beta/models/imagen-3.0-generate-002:predict?key={api_key}"
-        headers = {"Content-Type": "application/json"}
-        full_prompt = (
-            f"{image_prompt}. Hyper-detailed, 8k resolution, cinematic lighting, photorealistic, "
-            f"clean technological aesthetic, dark slate atmosphere with cyan and violet accents, "
-            f"master composition, 16:9 panoramic view, professional editorial art, no text, no letters."
-        )
-        payload = {
-            "instances": [{"prompt": full_prompt}],
-            "parameters": {
-                "sampleCount": 1,
-                "aspectRatio": "16:9",
-                "outputOptions": {"mimeType": "image/jpeg"}
-            }
-        }
-        response = requests.post(url, headers=headers, json=payload, timeout=30)
-        if response.status_code == 200:
-            result = response.json()
-            predictions = result.get("predictions", [])
-            if predictions and "bytesBase64Encoded" in predictions[0]:
-                image_bytes = base64.b64decode(predictions[0]["bytesBase64Encoded"])
-                with open(output_path, "wb") as img_file:
-                    img_file.write(image_bytes)
-                print(f"[Imagen 3] Sucesso: {output_path}")
-                return True
-    except Exception as e:
-        print(f"[Imagen 3] Aviso: {e}")
-    return False
-
 def generate_bilingual_post(model, source_name, original_title, original_summary):
-    is_x_post = "X |" in source_name
+    is_x = "X |" in source_name
     prompt = f"""
-Atue como Editor-Chefe de Tecnologia da plataforma CorticFlow.
-Produza DUAS versões: uma em PORTUGUÊS (PT-BR) e uma em INGLÊS (EN-US).
-Formule também um prompt em inglês para gerar uma imagem 16:9 focada no ELEMENTO PRINCIPAL da matéria.
+Atue como Editor-Chefe da plataforma CorticFlow.
+Sua missão é produzir DUAS versões completas e independentes desta notícia:
+1. VERSÃO 100% EM PORTUGUÊS DO BRASIL (PT-BR) para os campos _pt. Não deixe palavras em inglês nos campos _pt.
+2. VERSÃO 100% EM INGLÊS (EN-US) para os campos _en.
+3. Prompt em inglês (image_concept_prompt) descrevendo o elemento central da tecnologia em 16:9 para arte de capa por IA.
 
+Notícia:
 Fonte: {source_name}
 Título: {original_title}
 Resumo: {original_summary}
-Origem: {"Post do X (Twitter)" if is_x_post else "Notícia Técnica"}
+Tipo: {"Post do X (Twitter)" if is_x else "Artigo de Notícia"}
 
-Retorne ESTRITAMENTE um JSON com:
+Retorne ESTRITAMENTE um objeto JSON válido (sem tags markdown de código):
 {{
-  "title_pt": "Título jornalístico em Português",
-  "title_en": "Journalistic headline in English",
-  "excerpt_pt": "Resumo executivo em Português (2 a 3 frases).",
-  "excerpt_en": "Executive summary in English (2 to 3 sentences).",
-  "content_pt": "Análise técnica em Português.",
-  "content_en": "Deep technical analysis in English.",
-  "image_concept_prompt": "Cinematic visual description in English of the core technical subject of this article"
+  "title_pt": "Título jornalístico 100% em Português",
+  "title_en": "Journalistic headline 100% in English",
+  "excerpt_pt": "Resumo de 2 a 3 frases 100% em Português.",
+  "excerpt_en": "Executive summary of 2 to 3 sentences 100% in English.",
+  "content_pt": "Análise técnica aprofundada de 2 a 3 parágrafos 100% em Português.",
+  "content_en": "In-depth technical analysis of 2 to 3 paragraphs 100% in English.",
+  "image_concept_prompt": "Cinematic visual prompt in English of the core technology subject (e.g. quantum neural processor illuminated with cyan light in futuristic laboratory)"
 }}
 """
     try:
         response = model.generate_content(
             prompt,
-            generation_config={"response_mime_type": "application/json"}
+            generation_config={"response_mime_type": "application/json", "temperature": 0.2}
         )
-        return json.loads(response.text.strip())
+        raw = response.text.strip()
+        if raw.startswith("```"):
+            raw = re.sub(r"^```(?:json)?\s*", "", raw)
+            raw = re.sub(r"\s*```$", "", raw)
+        return json.loads(raw)
     except Exception as e:
         print(f"Erro Gemini ({source_name}): {e}")
+        try:
+            pt_trans = model.generate_content(f"Traduza e resuma em Português: {original_title}. {original_summary}").text.strip()
+        except:
+            pt_trans = f"Análise técnica sobre {original_title} em processamento pelo núcleo CorticFlow."
+
         return {
-            "title_pt": original_title,
+            "title_pt": f"Análise: {original_title}",
             "title_en": original_title,
-            "excerpt_pt": original_summary[:160] + "..." if original_summary else original_title,
-            "excerpt_en": original_summary[:160] + "..." if original_summary else original_title,
-            "content_pt": original_summary or original_title,
+            "excerpt_pt": pt_trans[:160] + "...",
+            "excerpt_en": (original_summary or original_title)[:160] + "...",
+            "content_pt": pt_trans,
             "content_en": original_summary or original_title,
-            "image_concept_prompt": f"Advanced artificial intelligence for {original_title}"
+            "image_concept_prompt": f"Futuristic technology visual for {original_title}"
         }
 
 def main():
     try:
-        # Garante a pasta e o arquivo de controle para o Git não falhar
-        os.makedirs("covers", exist_ok=True)
-        with open("covers/.gitkeep", "w") as f:
-            f.write("")
-
         api_key = os.getenv("GEMINI_API_KEY")
         if not api_key:
-            print("GEMINI_API_KEY não encontrada no ambiente.")
+            print("GEMINI_API_KEY não configurada.")
             return
 
         genai.configure(api_key=api_key)
@@ -125,35 +96,36 @@ def main():
                 for entry in feed.entries[:4]:
                     all_entries.append((source_name, entry))
             except Exception as e:
-                print(f"Erro no feed {source_name}: {e}")
+                print(f"Feed {source_name}: {e}")
 
         if not all_entries:
-            print("Nenhum feed respondeu.")
+            print("Nenhum feed disponível.")
             return
 
         random.shuffle(all_entries)
         selected_entries = all_entries[:8]
-        processed_posts = []
+        processed = []
 
         for i, (source, entry) in enumerate(selected_entries):
-            title = entry.get('title', 'Notícia de Tecnologia')
+            title = entry.get('title', 'Tecnologia em Foco')
             summary = entry.get('summary', entry.get('description', ''))
             link = entry.get('link', '')
 
-            print(f"[{i+1}/{len(selected_entries)}] {title[:40]}...")
+            print(f"[{i+1}/{len(selected_entries)}] Gerando matéria e arte: {title[:35]}...")
             post_data = generate_bilingual_post(model, source, title, summary)
 
-            slug = slugify(post_data.get("title_en", title))
-            cover_filename = f"covers/{slug}.jpg"
-            image_prompt = post_data.get("image_concept_prompt", f"Technology system for {title}")
-            image_ok = generate_ai_cover(api_key, image_prompt, cover_filename)
-            image_path = cover_filename if image_ok else "covers/default-ai.jpg"
+            img_prompt = post_data.get("image_concept_prompt", f"Advanced artificial intelligence system {title}")
+            clean_p = re.sub(r'[^\w\s,.-]', '', img_prompt)[:160].strip()
+            encoded_p = urllib.parse.quote(f"{clean_p}, 16:9 panoramic cinematic tech, photorealistic, 8k, dark slate cyan violet accents")
+            
+            # Gera a URL direta da imagem em alta resolução via IA generativa (Flux)
+            ai_image_url = f"[https://image.pollinations.ai/prompt/](https://image.pollinations.ai/prompt/){encoded_p}?width=1280&height=720&nologo=true&seed={i+42}&model=flux"
 
-            processed_posts.append({
+            processed.append({
                 "id": i + 1,
                 "source": source,
                 "link": link,
-                "image": image_path,
+                "image": ai_image_url,
                 "title_pt": post_data.get("title_pt", title),
                 "title_en": post_data.get("title_en", title),
                 "excerpt_pt": post_data.get("excerpt_pt", summary[:160]),
@@ -161,15 +133,15 @@ def main():
                 "content_pt": post_data.get("content_pt", summary),
                 "content_en": post_data.get("content_en", summary)
             })
-            time.sleep(1.5)
+            time.sleep(1.2)
 
-        if processed_posts:
+        if processed:
             with open("posts.json", "w", encoding="utf-8") as f:
-                json.dump(processed_posts, f, ensure_ascii=False, indent=4)
-            print(f"Sucesso: {len(processed_posts)} matérias salvas em posts.json!")
+                json.dump(processed, f, ensure_ascii=False, indent=4)
+            print(f"Sucesso: {len(processed)} matérias salvas com imagens de IA em posts.json!")
 
     except Exception as e:
-        print(f"Aviso geral: {e}")
+        print(f"Erro geral: {e}")
 
 if __name__ == "__main__":
     main()
