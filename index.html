@@ -38,9 +38,10 @@
 </head>
 <body class="bg-[#070A12] text-slate-100 min-h-screen flex flex-col antialiased relative" x-data="corticFlow()" x-init="init()" x-cloak>
 
+    <!-- Fundo de Sinapses Neurais Interativas -->
     <canvas id="neural-canvas"></canvas>
 
-    <!-- Navegação -->
+    <!-- Barra de Navegação -->
     <header class="glass-nav sticky top-0 z-40 px-6 py-4">
         <div class="max-w-7xl mx-auto flex justify-between items-center relative z-10">
             <div class="flex items-center gap-3 cursor-pointer" @click="window.scrollTo({top: 0, behavior: 'smooth'})">
@@ -59,16 +60,23 @@
             </nav>
 
             <div class="flex items-center gap-4">
+                <!-- Seletor Bilíngue Estrito -->
                 <div class="flex items-center bg-white/5 border border-white/10 rounded-full p-1 shadow-inner">
-                    <button @click="setLanguage('pt')" :class="currentLang === 'pt' ? 'bg-cyan text-slate-950 font-extrabold shadow-md shadow-cyan/30' : 'text-slate-400 hover:text-white'" class="px-3.5 py-1 text-xs rounded-full transition-all">PT</button>
-                    <button @click="setLanguage('en')" :class="currentLang === 'en' ? 'bg-cyan text-slate-950 font-extrabold shadow-md shadow-cyan/30' : 'text-slate-400 hover:text-white'" class="px-3.5 py-1 text-xs rounded-full transition-all">EN</button>
+                    <button 
+                        @click="setLanguage('pt')" 
+                        :class="currentLang === 'pt' ? 'bg-cyan text-slate-950 font-extrabold shadow-md shadow-cyan/30' : 'text-slate-400 hover:text-white'" 
+                        class="px-3.5 py-1 text-xs rounded-full transition-all">PT</button>
+                    <button 
+                        @click="setLanguage('en')" 
+                        :class="currentLang === 'en' ? 'bg-cyan text-slate-950 font-extrabold shadow-md shadow-cyan/30' : 'text-slate-400 hover:text-white'" 
+                        class="px-3.5 py-1 text-xs rounded-full transition-all">EN</button>
                 </div>
                 <a href="#newsletter" class="hidden sm:inline-block bg-gradient-to-r from-cyan to-violet text-slate-950 font-bold text-xs px-5 py-2.5 rounded-full hover:brightness-110 transition-all shadow-md shadow-cyan/20" x-text="t[currentLang].navNewsletter"></a>
             </div>
         </div>
     </header>
 
-    <!-- Hero -->
+    <!-- Hero Section -->
     <section class="pt-20 pb-12 px-6 max-w-7xl mx-auto w-full relative z-10">
         <div class="text-center max-w-3xl mx-auto mb-12">
             <span class="inline-flex items-center gap-2 px-3.5 py-1.5 mb-5 text-[11px] font-mono font-bold tracking-widest text-cyan uppercase bg-cyan/10 border border-cyan/25 rounded-full backdrop-blur-md">
@@ -83,7 +91,7 @@
         </div>
     </section>
 
-    <!-- Benchmark -->
+    <!-- Seção de Benchmark -->
     <section id="benchmark" class="max-w-7xl mx-auto px-6 pb-20 w-full relative z-10">
         <div class="glass-card rounded-3xl p-6 md:p-10 border border-cyan/30 relative overflow-hidden">
             <div class="absolute -top-32 -right-32 w-80 h-80 bg-violet/20 blur-[130px] rounded-full pointer-events-none"></div>
@@ -191,7 +199,7 @@
         </div>
     </section>
 
-    <!-- Artigos -->
+    <!-- Feed Editorial de Matérias com Capas de IA -->
     <main class="max-w-7xl mx-auto px-6 pb-24 flex-grow w-full relative z-10" id="artigos">
         <div class="mb-10 border-b border-white/10 pb-4 flex flex-col md:flex-row justify-between items-start md:items-end gap-2">
             <div>
@@ -201,28 +209,29 @@
             <div class="text-xs font-mono text-cyan" x-text="t[currentLang].generatedByAiBadge"></div>
         </div>
 
+        <!-- Loading -->
         <div x-show="isLoading" class="flex flex-col items-center justify-center py-24">
             <div class="w-10 h-10 border-4 border-cyan border-t-transparent rounded-full animate-spin mb-4"></div>
             <p class="text-slate-400 text-sm font-mono" x-text="t[currentLang].loadingText"></p>
         </div>
 
-        <!-- Grid de Cards com Fallback Visual de IA Garantido -->
+        <!-- Grid de Cards -->
         <div x-show="!isLoading" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             <template x-for="item in articles" :key="item.id">
                 <article 
                     class="glass-card rounded-2xl overflow-hidden flex flex-col cursor-pointer group relative"
                     @click="openModal(item)">
                     
-                    <!-- Bloco da Imagem com Fundo de IA Nativo -->
+                    <!-- Bloco da Imagem com Fundo de IA Resiliente -->
                     <div class="aspect-video w-full overflow-hidden bg-gradient-to-br from-[#0B0F19] via-[#131B2E] to-[#1E1B4B] relative flex items-center justify-center">
-                        <!-- Imagem gerada pela esteira -->
                         <img 
                             :src="item.image" 
                             :alt="getArticleTitle(item)"
                             class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out absolute inset-0 z-10"
-                            @error="$event.target.remove()">
+                            loading="lazy"
+                            @error="$event.target.style.display='none'">
                         
-                        <!-- Fundo Visual de IA que aparece sempre que a imagem estiver ausente -->
+                        <!-- Arte de Fundo de IA Automática -->
                         <div class="w-full h-full p-5 flex flex-col justify-between relative overflow-hidden">
                             <div class="absolute -right-6 -top-6 w-32 h-32 bg-cyan/20 rounded-full blur-2xl"></div>
                             <div class="absolute -left-6 -bottom-6 w-32 h-32 bg-violet/25 rounded-full blur-2xl"></div>
@@ -265,7 +274,7 @@
         </div>
     </main>
 
-    <!-- Modal com Conteúdo Completo Garantido -->
+    <!-- Modal de Leitura Completa -->
     <div 
         x-show="isModalOpen" 
         class="fixed inset-0 z-50 overflow-y-auto bg-black/90 backdrop-blur-md flex items-center justify-center p-4"
@@ -289,7 +298,7 @@
                     <h2 class="text-2xl md:text-4xl font-extrabold font-display text-white mb-6 leading-tight" x-text="getArticleTitle(activeDoc)"></h2>
                     
                     <div class="aspect-video w-full rounded-2xl overflow-hidden mb-8 border border-white/10 bg-gradient-to-br from-[#0B0F19] via-[#131B2E] to-[#1E1B4B] relative flex items-center justify-center">
-                        <img :src="activeDoc.image" :alt="getArticleTitle(activeDoc)" class="w-full h-full object-cover absolute inset-0 z-10" @error="$event.target.remove()">
+                        <img :src="activeDoc.image" :alt="getArticleTitle(activeDoc)" class="w-full h-full object-cover absolute inset-0 z-10" @error="$event.target.style.display='none'">
                         <div class="w-full h-full p-8 flex flex-col justify-between relative overflow-hidden">
                             <div class="absolute right-0 top-0 w-48 h-48 bg-cyan/20 rounded-full blur-3xl"></div>
                             <div class="absolute left-0 bottom-0 w-48 h-48 bg-violet/25 rounded-full blur-3xl"></div>
@@ -354,6 +363,7 @@
         </div>
     </footer>
 
+    <!-- Lógica Alpine.js & Canvas -->
     <script>
         // Canvas de Sinapses Neurais Interativas
         (function initNeuralCanvas() {
@@ -439,7 +449,7 @@
             animate();
         })();
 
-        // Camada de Lógica e Renderização Resiliente
+        // Camada Lógica Alpine.js
         function corticFlow() {
             return {
                 currentLang: 'pt',
@@ -467,13 +477,13 @@
                         heroDesc: 'Métricas de desempenho das melhores IAs da semana, análises profundas de arquitetura, semicondutores e sistemas autônomos.',
                         benchmarkBadge: 'Métricas Consolidadas',
                         benchmarkTitle: 'Benchmark da Semana: As Melhores IAs',
-                        benchmarkSubtitle: 'Avaliação comparativa de raciocínio, geração de código e custo de inferência.',
+                        benchmarkSubtitle: 'Avaliação comparativa de precisão de raciocínio, geração de código e custo computacional.',
                         benchmarkUpdated: 'Atualizado',
                         benchmarkWeekDate: 'Semana Atual',
                         topModelBadge: '🏆 #1 IA da Semana (Líder Geral)',
                         topModelDeveloper: 'Desenvolvedor',
                         accessAiBtn: 'Acessar IA Oficial',
-                        useAiAction: 'Usar IA',
+                        useAiAction: 'Acessar',
                         metricReasoning: 'Raciocínio Lógico & Planejamento',
                         metricCoding: 'Engenharia de Software & Código',
                         metricEfficiency: 'Eficiência de Custo por Token',
@@ -486,15 +496,15 @@
                         thAction: 'Acesso',
                         articlesSectionTitle: 'Feed Editorial de Inteligência Artificial',
                         articlesSectionDesc: 'Análises aprofundadas sobre lançamentos, modelos de fronteira e hardware de aceleração.',
-                        generatedByAiBadge: 'Capas Geradas por IA (Imagen 3)',
+                        generatedByAiBadge: 'Capas Geradas por IA (Flux / Imagen 3)',
                         loadingText: 'Sincronizando fluxo neural de notícias...',
                         articleReadTime: '5 min de leitura',
-                        tagAiCover: 'Capa Imagen 3',
+                        tagAiCover: 'Capa por IA',
                         readMore: 'Ler Análise Completa',
                         modalSource: 'Ver Fonte Original',
                         modalClose: 'Fechar Leitura',
                         newsletterTitle: 'CorticFlow Weekly na sua Inbox',
-                        newsletterDesc: 'A síntese dos fatos mais relevantes em IA e semicondutores entregue todo domingo.',
+                        newsletterDesc: 'A síntese dos fatos mais relevantes em IA, agentes autônomos e computação avançada entregue todo domingo.',
                         newsletterPlaceholder: 'seu.email@tech.com',
                         newsletterBtn: 'Inscrever-se',
                         newsletterSuccess: 'Inscrição confirmada no CorticFlow!',
@@ -523,7 +533,7 @@
                         topModelBadge: '🏆 #1 AI Model of the Week (Overall Leader)',
                         topModelDeveloper: 'Developer',
                         accessAiBtn: 'Access Official AI',
-                        useAiAction: 'Try Model',
+                        useAiAction: 'Access',
                         metricReasoning: 'Logical Reasoning & Planning',
                         metricCoding: 'Software Engineering & Code',
                         metricEfficiency: 'Token & Cost Efficiency',
@@ -535,11 +545,11 @@
                         thEfficiency: 'Efficiency',
                         thAction: 'Access',
                         articlesSectionTitle: 'AI Intelligence Editorial Stream',
-                        articlesSectionDesc: 'In-depth analysis of frontier releases with custom AI-generated covers (Imagen 3).',
-                        generatedByAiBadge: 'AI Covers (Imagen 3)',
+                        articlesSectionDesc: 'In-depth analysis of frontier releases, model architectures, and accelerated computing infrastructure.',
+                        generatedByAiBadge: 'AI Covers (Flux / Imagen 3)',
                         loadingText: 'Synchronizing neural news feed...',
                         articleReadTime: '5 min read',
-                        tagAiCover: 'Imagen 3 Cover',
+                        tagAiCover: 'AI Cover',
                         readMore: 'Read Full Analysis',
                         modalSource: 'View Original Source',
                         modalClose: 'Close Article',
@@ -561,40 +571,50 @@
                 },
                 getArticleTitle(item) {
                     if (!item) return '';
-                    return (this.currentLang === 'pt' ? item.title_pt : item.title_en) || item.title || item.title_pt || item.title_en || '';
+                    if (this.currentLang === 'pt') {
+                        return item.title_pt || item.title || '';
+                    } else {
+                        return item.title_en || item.title || '';
+                    }
                 },
                 getArticleExcerpt(item) {
                     if (!item) return '';
-                    return (this.currentLang === 'pt' ? item.excerpt_pt : item.excerpt_en) || item.summary || item.excerpt || (item.content ? item.content.slice(0, 160) + '...' : '') || '';
+                    if (this.currentLang === 'pt') {
+                        return item.excerpt_pt || item.summary || (item.content_pt ? item.content_pt.slice(0, 160) + '...' : '') || '';
+                    } else {
+                        return item.excerpt_en || item.summary || (item.content_en ? item.content_en.slice(0, 160) + '...' : '') || '';
+                    }
                 },
                 getArticleContent(item) {
                     if (!item) return '';
-                    return (this.currentLang === 'pt' ? item.content_pt : item.content_en) || item.content || item.summary || '';
+                    if (this.currentLang === 'pt') {
+                        return item.content_pt || item.content || item.summary || '';
+                    } else {
+                        return item.content_en || item.content || item.summary || '';
+                    }
                 },
                 async init() {
                     this.isLoading = true;
                     try {
-                        const response = await fetch('posts.json');
+                        // O parâmetro ?t= evita que o navegador prenda o arquivo em cache
+                        const response = await fetch('posts.json?t=' + new Date().getTime());
                         if (response.ok) {
                             const data = await response.json();
                             this.articles = data.map((item, idx) => ({
                                 id: item.id || (idx + 1),
-                                source: item.source || 'AI Frontier',
-                                image: item.image || 'covers/default-ai.jpg',
-                                title: item.title || '',
+                                source: item.source || 'CorticFlow Intelligence',
+                                image: item.image || '',
                                 title_pt: item.title_pt || item.title || '',
                                 title_en: item.title_en || item.title || '',
-                                excerpt_pt: item.excerpt_pt || item.summary || (item.content ? item.content.slice(0, 160) + '...' : ''),
-                                excerpt_en: item.excerpt_en || item.summary || (item.content ? item.content.slice(0, 160) + '...' : ''),
+                                excerpt_pt: item.excerpt_pt || item.summary || '',
+                                excerpt_en: item.excerpt_en || item.summary || '',
                                 content_pt: item.content_pt || item.content || item.summary || '',
                                 content_en: item.content_en || item.content || item.summary || '',
                                 link: item.link || '#'
                             }));
-                        } else {
-                            throw new Error('posts.json não encontrado');
                         }
                     } catch (e) {
-                        console.warn('Carregamento de contingência:', e);
+                        console.warn('Erro ao carregar posts.json:', e);
                     } finally {
                         this.isLoading = false;
                     }
