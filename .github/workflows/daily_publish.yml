@@ -35,5 +35,5 @@ jobs:
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
           git add .
-          git diff --staged --quiet || git commit -m "chore: publicacao automatica de artigos [skip ci]"
+          git diff --staged --quiet || git commit -m "chore: publicacao automatica de artigos e capas de IA"
           git push origin main || echo "Sem alteracoes para enviar"
