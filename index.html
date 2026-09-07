@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CorticFlow | The Stream of AI & Tech Intelligence</title>
+    <title>CorticFlow | Inteligência &amp; Benchmark em IA</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@500;700&family=Fira+Code&display=swap" rel="stylesheet">
@@ -26,97 +26,214 @@
         }
     </script>
     <style>
-        body { font-family: 'Inter', sans-serif; background-color: #0B0F19; }
-        .glass { background: rgba(17, 24, 39, 0.75); backdrop-filter: blur(14px); border: 1px solid rgba(255, 255, 255, 0.08); }
+        body { font-family: 'Inter', sans-serif; background-color: #070A12; overflow-x: hidden; }
+        .glass-card { background: rgba(17, 24, 39, 0.7); backdrop-filter: blur(16px); border: 1px solid rgba(255, 255, 255, 0.08); transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+        .glass-card:hover { transform: translateY(-4px); border-color: rgba(0, 229, 255, 0.4); box-shadow: 0 12px 30px -10px rgba(0, 229, 255, 0.15); }
+        .glass-nav { background: rgba(11, 15, 25, 0.85); backdrop-filter: blur(20px); border-bottom: 1px solid rgba(255, 255, 255, 0.08); }
         .custom-scrollbar::-webkit-scrollbar { width: 6px; }
         .custom-scrollbar::-webkit-scrollbar-thumb { background: #374151; border-radius: 8px; }
         [x-cloak] { display: none !important; }
+        #neural-canvas { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; pointer-events: none; z-index: 0; opacity: 0.55; }
     </style>
 </head>
-<body class="bg-[#0B0F19] text-slate-100 min-h-screen flex flex-col antialiased" x-data="corticFlow()" x-init="init()" x-cloak>
+<body class="bg-[#070A12] text-slate-100 min-h-screen flex flex-col antialiased relative" x-data="corticFlow()" x-init="init()" x-cloak>
 
-    <!-- Header / Navbar -->
-    <header class="glass sticky top-0 z-40 border-b border-white/10 px-6 py-4">
-        <div class="max-w-7xl mx-auto flex justify-between items-center">
-            <div class="flex items-center gap-3">
-                <div class="w-9 h-9 bg-gradient-to-tr from-cyan to-violet rounded-xl flex items-center justify-center text-slate-900 font-bold text-lg shadow-lg shadow-cyan/20">C</div>
-                <span class="text-2xl font-bold tracking-tighter font-display text-white">Cortic<span class="text-cyan">Flow</span></span>
+    <canvas id="neural-canvas"></canvas>
+
+    <header class="glass-nav sticky top-0 z-40 px-6 py-4">
+        <div class="max-w-7xl mx-auto flex justify-between items-center relative z-10">
+            <div class="flex items-center gap-3 cursor-pointer" @click="window.scrollTo({top: 0, behavior: 'smooth'})">
+                <div class="w-10 h-10 bg-gradient-to-tr from-cyan via-violet to-fuchsia-500 rounded-xl flex items-center justify-center text-slate-950 font-black text-xl shadow-lg shadow-cyan/20">C</div>
+                <div class="flex flex-col">
+                    <span class="text-2xl font-bold tracking-tight font-display text-white">Cortic<span class="text-cyan">Flow</span></span>
+                    <span class="text-[9px] font-mono tracking-widest text-slate-400 uppercase -mt-1" x-text="t[currentLang].subBrand"></span>
+                </div>
             </div>
             
-            <nav class="hidden md:flex items-center gap-6 text-sm font-medium text-slate-400">
+            <nav class="hidden md:flex items-center gap-8 text-sm font-medium text-slate-400">
+                <a href="#benchmark" class="hover:text-cyan transition-colors" x-text="t[currentLang].navBenchmark"></a>
                 <a href="#artigos" class="hover:text-cyan transition-colors" x-text="t[currentLang].navArticles"></a>
                 <a href="terms.html" class="hover:text-cyan transition-colors" x-text="t[currentLang].navTerms"></a>
                 <a href="privacy.html" class="hover:text-cyan transition-colors" x-text="t[currentLang].navPrivacy"></a>
             </nav>
 
             <div class="flex items-center gap-4">
-                <!-- Seletor de Idioma Bilíngue -->
                 <div class="flex items-center bg-white/5 border border-white/10 rounded-full p-1 shadow-inner">
-                    <button 
-                        @click="setLanguage('pt')" 
-                        :class="currentLang === 'pt' ? 'bg-cyan text-slate-950 font-extrabold shadow-sm' : 'text-slate-400 hover:text-white'" 
-                        class="px-3 py-1 text-xs rounded-full transition-all">PT</button>
-                    <button 
-                        @click="setLanguage('en')" 
-                        :class="currentLang === 'en' ? 'bg-cyan text-slate-950 font-extrabold shadow-sm' : 'text-slate-400 hover:text-white'" 
-                        class="px-3 py-1 text-xs rounded-full transition-all">EN</button>
+                    <button @click="setLanguage('pt')" :class="currentLang === 'pt' ? 'bg-cyan text-slate-950 font-extrabold shadow-md shadow-cyan/30' : 'text-slate-400 hover:text-white'" class="px-3.5 py-1 text-xs rounded-full transition-all">PT</button>
+                    <button @click="setLanguage('en')" :class="currentLang === 'en' ? 'bg-cyan text-slate-950 font-extrabold shadow-md shadow-cyan/30' : 'text-slate-400 hover:text-white'" class="px-3.5 py-1 text-xs rounded-full transition-all">EN</button>
                 </div>
-
-                <a href="#newsletter" class="hidden sm:inline-block bg-cyan text-slate-950 font-bold text-xs px-4 py-2 rounded-full hover:bg-white transition-all shadow-md shadow-cyan/20" x-text="t[currentLang].navNewsletter"></a>
+                <a href="#newsletter" class="hidden sm:inline-block bg-gradient-to-r from-cyan to-violet text-slate-950 font-bold text-xs px-5 py-2.5 rounded-full hover:brightness-110 transition-all shadow-md shadow-cyan/20" x-text="t[currentLang].navNewsletter"></a>
             </div>
         </div>
     </header>
 
-    <!-- Hero Section -->
-    <section class="pt-16 pb-10 px-6 max-w-7xl mx-auto w-full">
+    <section class="pt-20 pb-12 px-6 max-w-7xl mx-auto w-full relative z-10">
         <div class="text-center max-w-3xl mx-auto mb-12">
-            <span class="inline-block px-3 py-1 mb-4 text-[11px] font-bold tracking-widest text-cyan uppercase bg-cyan/10 border border-cyan/20 rounded-full" x-text="t[currentLang].badgeHero"></span>
-            <h1 class="text-4xl md:text-6xl font-extrabold font-display text-white mb-4 tracking-tight leading-tight">
-                <span x-text="t[currentLang].heroTitle1"></span> <span class="text-transparent bg-clip-text bg-gradient-to-r from-cyan to-violet" x-text="t[currentLang].heroTitle2"></span>
+            <span class="inline-flex items-center gap-2 px-3.5 py-1.5 mb-5 text-[11px] font-mono font-bold tracking-widest text-cyan uppercase bg-cyan/10 border border-cyan/25 rounded-full backdrop-blur-md">
+                <span class="w-2 h-2 rounded-full bg-cyan animate-pulse"></span>
+                <span x-text="t[currentLang].badgeHero"></span>
+            </span>
+            <h1 class="text-4xl md:text-6xl font-extrabold font-display text-white mb-6 tracking-tight leading-tight">
+                <span x-text="t[currentLang].heroTitle1"></span> 
+                <span class="text-transparent bg-clip-text bg-gradient-to-r from-cyan via-violet to-fuchsia-400" x-text="t[currentLang].heroTitle2"></span>
             </h1>
-            <p class="text-slate-400 text-base md:text-lg leading-relaxed" x-text="t[currentLang].heroDesc"></p>
-        </div>
-
-        <!-- Filter Chips -->
-        <div class="flex items-center gap-2 overflow-x-auto pb-4 custom-scrollbar mb-10 justify-start md:justify-center">
-            <template x-for="cat in currentCategories" :key="cat">
-                <button 
-                    @click="activeCategory = cat"
-                    :class="activeCategory === cat ? 'bg-cyan text-slate-950 font-bold' : 'bg-white/5 text-slate-400 hover:text-white border border-white/10'"
-                    class="px-4 py-1.5 rounded-full text-xs transition-all whitespace-nowrap"
-                    x-text="cat">
-                </button>
-            </template>
+            <p class="text-slate-400 text-base md:text-lg leading-relaxed max-w-2xl mx-auto" x-text="t[currentLang].heroDesc"></p>
         </div>
     </section>
 
-    <!-- Main Grid Section -->
-    <main class="max-w-7xl mx-auto px-6 pb-20 flex-grow w-full" id="artigos">
-        <!-- Loading State -->
-        <div x-show="isLoading" class="flex flex-col items-center justify-center py-20">
+    <section id="benchmark" class="max-w-7xl mx-auto px-6 pb-20 w-full relative z-10">
+        <div class="glass-card rounded-3xl p-6 md:p-10 border border-cyan/30 relative overflow-hidden">
+            <div class="absolute -top-32 -right-32 w-80 h-80 bg-violet/20 blur-[130px] rounded-full pointer-events-none"></div>
+            
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8 border-b border-white/10 pb-6">
+                <div>
+                    <div class="flex items-center gap-2 mb-2">
+                        <span class="w-2.5 h-2.5 rounded-full bg-cyan animate-ping"></span>
+                        <span class="text-xs font-mono font-bold tracking-widest text-cyan uppercase" x-text="t[currentLang].benchmarkBadge"></span>
+                    </div>
+                    <h2 class="text-2xl md:text-3xl font-bold font-display text-white" x-text="t[currentLang].benchmarkTitle"></h2>
+                    <p class="text-slate-400 text-xs md:text-sm mt-1" x-text="t[currentLang].benchmarkSubtitle"></p>
+                </div>
+                <div class="text-xs font-mono text-slate-400 bg-white/5 px-4 py-2 rounded-xl border border-white/10">
+                    <span x-text="t[currentLang].benchmarkUpdated"></span>: <strong class="text-cyan" x-text="t[currentLang].benchmarkWeekDate"></strong>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 items-center mb-10 bg-gradient-to-br from-[#131B2E]/90 to-[#0B0F19]/90 p-6 md:p-8 rounded-2xl border border-cyan/20">
+                <div class="lg:col-span-1">
+                    <span class="inline-block px-3 py-1 text-[10px] font-bold uppercase tracking-widest bg-cyan/15 text-cyan border border-cyan/30 rounded-md mb-3" x-text="t[currentLang].topModelBadge"></span>
+                    <h3 class="text-2xl md:text-3xl font-extrabold text-white mb-2" x-text="benchmarks[0].name"></h3>
+                    <p class="text-xs text-slate-400 mb-4" x-text="t[currentLang].topModelDeveloper + ': ' + benchmarks[0].developer"></p>
+                    <div class="text-4xl font-black font-display text-transparent bg-clip-text bg-gradient-to-r from-cyan to-violet mb-6">
+                        <span x-text="benchmarks[0].score"></span><span class="text-base text-slate-400 font-normal"> / 100</span>
+                    </div>
+                    <a :href="benchmarks[0].url" target="_blank" rel="noopener noreferrer"
+                       class="inline-flex items-center gap-2 bg-cyan text-slate-950 font-extrabold text-xs px-5 py-3 rounded-xl hover:bg-white transition-all shadow-lg shadow-cyan/20">
+                        <span x-text="t[currentLang].accessAiBtn"></span>
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" /></svg>
+                    </a>
+                </div>
+
+                <div class="lg:col-span-2 space-y-4">
+                    <div>
+                        <div class="flex justify-between text-xs font-mono mb-1.5">
+                            <span class="text-slate-300" x-text="t[currentLang].metricReasoning"></span>
+                            <span class="text-cyan font-bold" x-text="benchmarks[0].reasoning + '%'"></span>
+                        </div>
+                        <div class="w-full h-2.5 bg-slate-900 rounded-full overflow-hidden border border-white/5">
+                            <div class="h-full bg-gradient-to-r from-cyan to-violet rounded-full transition-all duration-1000" :style="'width: ' + benchmarks[0].reasoning + '%'"></div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="flex justify-between text-xs font-mono mb-1.5">
+                            <span class="text-slate-300" x-text="t[currentLang].metricCoding"></span>
+                            <span class="text-cyan font-bold" x-text="benchmarks[0].coding + '%'"></span>
+                        </div>
+                        <div class="w-full h-2.5 bg-slate-900 rounded-full overflow-hidden border border-white/5">
+                            <div class="h-full bg-gradient-to-r from-cyan to-violet rounded-full transition-all duration-1000" :style="'width: ' + benchmarks[0].coding + '%'"></div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="flex justify-between text-xs font-mono mb-1.5">
+                            <span class="text-slate-300" x-text="t[currentLang].metricEfficiency"></span>
+                            <span class="text-cyan font-bold" x-text="benchmarks[0].efficiency + '%'"></span>
+                        </div>
+                        <div class="w-full h-2.5 bg-slate-900 rounded-full overflow-hidden border border-white/5">
+                            <div class="h-full bg-gradient-to-r from-cyan to-violet rounded-full transition-all duration-1000" :style="'width: ' + benchmarks[0].efficiency + '%'"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="overflow-x-auto custom-scrollbar">
+                <table class="w-full text-left text-xs">
+                    <thead>
+                        <tr class="border-b border-white/10 text-slate-400 font-mono uppercase text-[10px]">
+                            <th class="py-3 px-4" x-text="t[currentLang].thRank"></th>
+                            <th class="py-3 px-4" x-text="t[currentLang].thModel"></th>
+                            <th class="py-3 px-4 text-center" x-text="t[currentLang].thScore"></th>
+                            <th class="py-3 px-4 text-center" x-text="t[currentLang].thReasoning"></th>
+                            <th class="py-3 px-4 text-center" x-text="t[currentLang].thCoding"></th>
+                            <th class="py-3 px-4 text-center" x-text="t[currentLang].thEfficiency"></th>
+                            <th class="py-3 px-4 text-right" x-text="t[currentLang].thAction"></th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-white/5 font-mono">
+                        <template x-for="item in benchmarks" :key="item.rank">
+                            <tr class="hover:bg-white/5 transition-colors">
+                                <td class="py-4 px-4 font-bold text-white">
+                                    <span class="w-6 h-6 rounded-full inline-flex items-center justify-center text-slate-950 font-extrabold text-[11px]"
+                                          :class="item.rank === 1 ? 'bg-cyan' : (item.rank === 2 ? 'bg-slate-300' : 'bg-amber-600/80 text-white')"
+                                          x-text="'#' + item.rank"></span>
+                                </td>
+                                <td class="py-4 px-4 font-sans font-medium text-white">
+                                    <div class="font-bold text-sm" x-text="item.name"></div>
+                                    <div class="text-[11px] text-slate-400 font-mono" x-text="item.developer"></div>
+                                </td>
+                                <td class="py-4 px-4 text-center text-cyan font-bold text-sm" x-text="item.score"></td>
+                                <td class="py-4 px-4 text-center text-slate-300" x-text="item.reasoning + '%'"></td>
+                                <td class="py-4 px-4 text-center text-slate-300" x-text="item.coding + '%'"></td>
+                                <td class="py-4 px-4 text-center text-slate-300" x-text="item.efficiency + '%'"></td>
+                                <td class="py-4 px-4 text-right font-sans">
+                                    <a :href="item.url" target="_blank" rel="noopener noreferrer"
+                                       class="inline-flex items-center gap-1 bg-white/10 hover:bg-cyan hover:text-slate-950 text-white font-bold text-xs px-3 py-1.5 rounded-lg transition-all">
+                                        <span x-text="t[currentLang].useAiAction"></span>
+                                    </a>
+                                </td>
+                            </tr>
+                        </template>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <main class="max-w-7xl mx-auto px-6 pb-24 flex-grow w-full relative z-10" id="artigos">
+        <div class="mb-10 border-b border-white/10 pb-4 flex flex-col md:flex-row justify-between items-start md:items-end gap-2">
+            <div>
+                <h2 class="text-2xl md:text-3xl font-bold font-display text-white" x-text="t[currentLang].articlesSectionTitle"></h2>
+                <p class="text-slate-400 text-xs md:text-sm mt-1" x-text="t[currentLang].articlesSectionDesc"></p>
+            </div>
+            <div class="text-xs font-mono text-cyan" x-text="t[currentLang].generatedByAiBadge"></div>
+        </div>
+
+        <div x-show="isLoading" class="flex flex-col items-center justify-center py-24">
             <div class="w-10 h-10 border-4 border-cyan border-t-transparent rounded-full animate-spin mb-4"></div>
             <p class="text-slate-400 text-sm font-mono" x-text="t[currentLang].loadingText"></p>
         </div>
 
-        <!-- Articles Grid -->
         <div x-show="!isLoading" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            <template x-for="item in filteredArticles" :key="item.id">
+            <template x-for="item in articles" :key="item.id">
                 <article 
-                    class="glass rounded-2xl overflow-hidden hover:border-cyan/40 transition-all duration-300 flex flex-col cursor-pointer group"
+                    class="glass-card rounded-2xl overflow-hidden flex flex-col cursor-pointer group relative"
                     @click="openModal(item)">
-                    <div class="aspect-video w-full overflow-hidden bg-slate-900 relative">
+                    
+                    <div class="aspect-video w-full overflow-hidden bg-slate-950 relative">
                         <img 
                             :src="item.image" 
                             :alt="getArticleTitle(item)"
-                            class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                            onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1677442136019-21780ecad995?q=80&w=1600&h=900&fit=crop';">
+                            class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
+                            @error="$event.target.style.display='none'; $event.target.nextElementSibling.style.display='flex'">
+                        
+                        <div class="hidden absolute inset-0 bg-gradient-to-br from-[#0B0F19] via-[#131B2E] to-[#1E1B4B] p-6 flex-col justify-between items-start border-b border-white/10">
+                            <span class="w-8 h-8 rounded-lg bg-cyan/10 border border-cyan/30 flex items-center justify-center text-cyan font-bold text-xs font-mono">CF</span>
+                            <div class="text-[11px] font-mono text-slate-400 uppercase" x-text="item.source"></div>
+                        </div>
+
+                        <div class="absolute inset-0 bg-gradient-to-t from-[#111827] via-transparent to-transparent opacity-80"></div>
+                        
                         <div class="absolute top-3 left-3">
-                            <span class="px-2.5 py-1 text-[10px] font-bold uppercase tracking-widest bg-slate-950/80 text-cyan rounded-md border border-cyan/30 backdrop-blur-md" x-text="item.source"></span>
+                            <span class="px-2.5 py-1 text-[10px] font-mono font-bold uppercase tracking-wider bg-slate-950/80 text-cyan rounded-md border border-cyan/30 backdrop-blur-md" x-text="item.source"></span>
                         </div>
                     </div>
+
                     <div class="p-6 flex-1 flex flex-col justify-between">
                         <div>
-                            <div class="text-[11px] text-slate-500 font-mono mb-2" x-text="item.date"></div>
+                            <div class="flex items-center gap-2 text-[11px] text-slate-500 font-mono mb-2">
+                                <span x-text="t[currentLang].articleReadTime"></span>
+                                <span>•</span>
+                                <span class="text-cyan font-semibold" x-text="t[currentLang].tagAiCover"></span>
+                            </div>
                             <h3 class="text-lg font-bold text-white group-hover:text-cyan transition-colors mb-3 leading-snug" x-text="getArticleTitle(item)"></h3>
                             <p class="text-slate-400 text-xs line-clamp-3 leading-relaxed mb-4" x-text="getArticleExcerpt(item)"></p>
                         </div>
@@ -132,87 +249,61 @@
         </div>
     </main>
 
-    <!-- Modal de Leitura Long-Form -->
     <div 
         x-show="isModalOpen" 
-        class="fixed inset-0 z-50 overflow-y-auto bg-black/80 backdrop-blur-md flex items-center justify-center p-4"
-        x-transition:enter="transition ease-out duration-300"
-        x-transition:enter-start="opacity-0"
-        x-transition:enter-end="opacity-100"
-        x-transition:leave="transition ease-in duration-200"
-        x-transition:leave-start="opacity-100"
-        x-transition:leave-end="opacity-0">
+        class="fixed inset-0 z-50 overflow-y-auto bg-black/90 backdrop-blur-md flex items-center justify-center p-4"
+        x-transition:enter="transition ease-out duration-200"
+        x-transition:enter-start="opacity-0 scale-95"
+        x-transition:enter-end="opacity-100 scale-100"
+        x-transition:leave="transition ease-in duration-150"
+        x-transition:leave-start="opacity-100 scale-100"
+        x-transition:leave-end="opacity-0 scale-95">
         
-        <div 
-            class="bg-[#111827] border border-white/15 rounded-3xl max-w-3xl w-full max-h-[90vh] overflow-y-auto custom-scrollbar p-6 md:p-10 relative shadow-2xl"
-            @click.outside="closeModal()">
-            
-            <button 
-                @click="closeModal()" 
-                class="absolute top-6 right-6 text-slate-400 hover:text-white bg-white/5 hover:bg-white/10 w-9 h-9 rounded-full flex items-center justify-center transition-all">
-                ✕
-            </button>
+        <div class="bg-[#111827] border border-white/15 rounded-3xl max-w-3xl w-full max-h-[90vh] overflow-y-auto custom-scrollbar p-6 md:p-10 relative shadow-2xl"
+             @click.outside="closeModal()">
+            <button @click="closeModal()" class="absolute top-6 right-6 text-slate-400 hover:text-white bg-white/5 hover:bg-white/10 w-9 h-9 rounded-full flex items-center justify-center transition-all">✕</button>
 
             <template x-if="activeDoc">
                 <div>
                     <div class="flex items-center gap-3 mb-4">
                         <span class="px-2.5 py-1 text-[10px] font-bold uppercase tracking-widest bg-cyan/10 text-cyan border border-cyan/30 rounded" x-text="activeDoc.source"></span>
-                        <span class="text-xs text-slate-500 font-mono" x-text="activeDoc.date"></span>
+                        <span class="text-xs text-slate-400 font-mono" x-text="t[currentLang].tagAiCover"></span>
                     </div>
-
                     <h2 class="text-2xl md:text-4xl font-extrabold font-display text-white mb-6 leading-tight" x-text="getArticleTitle(activeDoc)"></h2>
-
-                    <div class="aspect-video w-full rounded-2xl overflow-hidden mb-8 border border-white/10">
+                    
+                    <div class="aspect-video w-full rounded-2xl overflow-hidden mb-8 border border-white/10 bg-slate-950 relative">
                         <img :src="activeDoc.image" :alt="getArticleTitle(activeDoc)" class="w-full h-full object-cover">
                     </div>
 
                     <div class="prose prose-invert max-w-none text-slate-300 text-sm md:text-base leading-relaxed space-y-4 whitespace-pre-line" x-text="getArticleContent(activeDoc)"></div>
 
                     <div class="mt-8 pt-6 border-t border-white/10 flex flex-col sm:flex-row justify-between items-center gap-4">
-                        <a 
-                            :href="activeDoc.link" 
-                            target="_blank" 
-                            rel="noopener noreferrer"
-                            class="text-xs text-cyan hover:underline flex items-center gap-1.5 font-mono">
+                        <a :href="activeDoc.link" target="_blank" rel="noopener noreferrer"
+                           class="text-xs text-cyan hover:underline flex items-center gap-1.5 font-mono">
                             <span x-text="t[currentLang].modalSource"></span>
-                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-                            </svg>
+                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" /></svg>
                         </a>
-                        <button 
-                            @click="closeModal()" 
-                            class="bg-white/10 text-white hover:bg-white/20 px-5 py-2 rounded-xl text-xs font-bold transition-all"
-                            x-text="t[currentLang].modalClose">
-                        </button>
+                        <button @click="closeModal()" class="bg-white/10 text-white hover:bg-white/20 px-5 py-2.5 rounded-xl text-xs font-bold transition-all" x-text="t[currentLang].modalClose"></button>
                     </div>
                 </div>
             </template>
         </div>
     </div>
 
-    <!-- Newsletter Section -->
-    <section id="newsletter" class="max-w-7xl mx-auto px-6 py-16 w-full">
-        <div class="glass rounded-3xl p-8 md:p-14 text-center relative overflow-hidden border border-cyan/20">
+    <section id="newsletter" class="max-w-7xl mx-auto px-6 py-16 w-full relative z-10">
+        <div class="glass-card rounded-3xl p-8 md:p-14 text-center relative overflow-hidden border border-cyan/20">
             <div class="absolute -top-24 -right-24 w-64 h-64 bg-cyan/10 blur-[100px] rounded-full pointer-events-none"></div>
             <h2 class="text-2xl md:text-4xl font-extrabold font-display text-white mb-3" x-text="t[currentLang].newsletterTitle"></h2>
             <p class="text-slate-400 text-sm md:text-base max-w-lg mx-auto mb-8" x-text="t[currentLang].newsletterDesc"></p>
             <form class="flex flex-col sm:flex-row gap-3 max-w-md mx-auto" @submit.prevent="alert(t[currentLang].newsletterSuccess)">
-                <input 
-                    type="email" 
-                    :placeholder="t[currentLang].newsletterPlaceholder" 
-                    required 
-                    class="flex-1 bg-slate-900/90 border border-white/15 rounded-xl px-4 py-3 text-sm text-white placeholder-slate-500 outline-none focus:border-cyan transition-all">
-                <button 
-                    type="submit" 
-                    class="bg-cyan text-slate-950 px-6 py-3 rounded-xl font-bold text-sm hover:bg-white transition-all shadow-lg shadow-cyan/20"
-                    x-text="t[currentLang].newsletterBtn">
-                </button>
+                <input type="email" :placeholder="t[currentLang].newsletterPlaceholder" required 
+                       class="flex-1 bg-slate-900/90 border border-white/15 rounded-xl px-4 py-3 text-sm text-white placeholder-slate-500 outline-none focus:border-cyan transition-all">
+                <button type="submit" class="bg-gradient-to-r from-cyan to-violet text-slate-950 px-6 py-3 rounded-xl font-bold text-sm hover:brightness-110 transition-all shadow-lg shadow-cyan/20" x-text="t[currentLang].newsletterBtn"></button>
             </form>
         </div>
     </section>
 
-    <!-- Footer -->
-    <footer class="border-t border-white/10 bg-[#080B12] py-12 px-6 text-slate-400 text-xs">
+    <footer class="border-t border-white/10 bg-[#05070D] py-12 px-6 text-slate-400 text-xs relative z-10">
         <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-8 mb-10">
             <div class="col-span-1 md:col-span-2">
                 <span class="text-xl font-bold text-white font-display">Cortic<span class="text-cyan">Flow</span></span>
@@ -238,30 +329,140 @@
         </div>
     </footer>
 
-    <!-- Logic Layer (Alpine.js) -->
     <script>
+        (function initNeuralCanvas() {
+            const canvas = document.getElementById('neural-canvas');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+            let width, height, particles = [];
+            let mouse = { x: null, y: null, maxDist: 150 };
+
+            function resize() {
+                width = canvas.width = window.innerWidth;
+                height = canvas.height = window.innerHeight;
+            }
+            window.addEventListener('resize', resize);
+            resize();
+
+            window.addEventListener('mousemove', (e) => {
+                mouse.x = e.clientX;
+                mouse.y = e.clientY;
+            });
+            window.addEventListener('mouseleave', () => {
+                mouse.x = null;
+                mouse.y = null;
+            });
+
+            const particleCount = Math.min(Math.floor((window.innerWidth * window.innerHeight) / 18000), 65);
+            for (let i = 0; i < particleCount; i++) {
+                particles.push({
+                    x: Math.random() * width,
+                    y: Math.random() * height,
+                    vx: (Math.random() - 0.5) * 0.7,
+                    vy: (Math.random() - 0.5) * 0.7,
+                    radius: Math.random() * 1.8 + 1,
+                    color: Math.random() > 0.5 ? 'rgba(0, 229, 255, ' : 'rgba(139, 92, 246, '
+                });
+            }
+
+            function animate() {
+                ctx.clearRect(0, 0, width, height);
+
+                for (let i = 0; i < particles.length; i++) {
+                    let p = particles[i];
+                    p.x += p.vx;
+                    p.y += p.vy;
+
+                    if (p.x < 0 || p.x > width) p.vx *= -1;
+                    if (p.y < 0 || p.y > height) p.vy *= -1;
+
+                    if (mouse.x !== null && mouse.y !== null) {
+                        let dx = mouse.x - p.x;
+                        let dy = mouse.y - p.y;
+                        let dist = Math.sqrt(dx * dx + dy * dy);
+                        if (dist < mouse.maxDist) {
+                            p.x -= (dx / dist) * 0.6;
+                            p.y -= (dy / dist) * 0.6;
+                        }
+                    }
+
+                    ctx.beginPath();
+                    ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+                    ctx.fillStyle = p.color + '0.7)';
+                    ctx.fill();
+
+                    for (let j = i + 1; j < particles.length; j++) {
+                        let p2 = particles[j];
+                        let dx = p.x - p2.x;
+                        let dy = p.y - p2.y;
+                        let dist = Math.sqrt(dx * dx + dy * dy);
+
+                        if (dist < 130) {
+                            ctx.beginPath();
+                            ctx.moveTo(p.x, p.y);
+                            ctx.lineTo(p2.x, p2.y);
+                            let alpha = (1 - dist / 130) * 0.25;
+                            ctx.strokeStyle = `rgba(0, 229, 255, ${alpha})`;
+                            ctx.lineWidth = 0.8;
+                            ctx.stroke();
+                        }
+                    }
+                }
+                requestAnimationFrame(animate);
+            }
+            animate();
+        })();
+
         function corticFlow() {
             return {
                 currentLang: 'pt',
                 isLoading: true,
                 isModalOpen: false,
                 activeDoc: null,
-                activeCategory: 'Todos',
                 articles: [],
-
+                benchmarks: [
+                    { rank: 1, name: "Claude 3.7 Sonnet (Hybrid)", developer: "Anthropic", score: 96.8, reasoning: 98, coding: 97, efficiency: 94, url: "https://claude.ai" },
+                    { rank: 2, name: "OpenAI o3-mini / o1", developer: "OpenAI", score: 95.4, reasoning: 97, coding: 96, efficiency: 91, url: "https://chatgpt.com" },
+                    { rank: 3, name: "DeepSeek R1", developer: "DeepSeek", score: 94.2, reasoning: 95, coding: 94, efficiency: 99, url: "https://chat.deepseek.com" },
+                    { rank: 4, name: "Gemini 2.0 Flash / Pro", developer: "Google", score: 93.6, reasoning: 92, coding: 93, efficiency: 98, url: "https://gemini.google.com" }
+                ],
                 t: {
                     pt: {
-                        navArticles: 'Artigos',
+                        subBrand: 'Inteligência de Fronteira & Silício',
+                        navBenchmark: 'Benchmark Semanal',
+                        navArticles: 'Artigos & Notícias',
                         navTerms: 'Termos de Uso',
                         navPrivacy: 'Privacidade',
                         navNewsletter: 'Newsletter',
-                        badgeHero: '⚡ Inteligência de IA em Tempo Real',
+                        badgeHero: 'Inteligência & Benchmark em Tempo Real',
                         heroTitle1: 'O nexo da revolução',
                         heroTitle2: 'Cognitiva.',
-                        heroDesc: 'Análise técnica e profunda sobre modelos de linguagem, semicondutores, sistemas autônomos e a infraestrutura que redefine o futuro.',
-                        allCategory: 'Todos',
-                        categories: ['Todos', 'OpenAI', 'Anthropic', 'DeepSeek', 'Google', 'Nvidia', 'Apple', 'Linux'],
+                        heroDesc: 'Métricas de desempenho das melhores IAs da semana, análises profundas de arquitetura, semicondutores e sistemas autônomos.',
+                        benchmarkBadge: 'Métricas Consolidadas',
+                        benchmarkTitle: 'Benchmark da Semana: As Melhores IAs',
+                        benchmarkSubtitle: 'Avaliação comparativa de precisão de raciocínio, geração de código e eficiência computacional.',
+                        benchmarkUpdated: 'Atualizado',
+                        benchmarkWeekDate: 'Semana Atual',
+                        topModelBadge: '🏆 #1 IA da Semana (Líder Geral)',
+                        topModelDeveloper: 'Desenvolvedor',
+                        accessAiBtn: 'Acessar IA Oficial',
+                        useAiAction: 'Usar IA',
+                        metricReasoning: 'Raciocínio Lógico & Planejamento',
+                        metricCoding: 'Engenharia de Software & Código',
+                        metricEfficiency: 'Eficiência de Custo por Token',
+                        thRank: 'Posição',
+                        thModel: 'Modelo & Criador',
+                        thScore: 'Score Geral',
+                        thReasoning: 'Raciocínio',
+                        thCoding: 'Código',
+                        thEfficiency: 'Eficiência',
+                        thAction: 'Acesso',
+                        articlesSectionTitle: 'Feed Editorial de Inteligência Artificial',
+                        articlesSectionDesc: 'Análises aprofundadas sobre lançamentos, modelos de fronteira e hardware de aceleração.',
+                        generatedByAiBadge: 'Capas Geradas por IA (Imagen 3)',
                         loadingText: 'Sincronizando fluxo neural de notícias...',
+                        articleReadTime: '5 min de leitura',
+                        tagAiCover: 'Capa Imagen 3',
                         readMore: 'Ler Análise Completa',
                         modalSource: 'Ver Fonte Original',
                         modalClose: 'Fechar Leitura',
@@ -270,24 +471,48 @@
                         newsletterPlaceholder: 'seu.email@tech.com',
                         newsletterBtn: 'Inscrever-se',
                         newsletterSuccess: 'Inscrição confirmada no CorticFlow!',
-                        footerDesc: 'Decodificando a evolução técnica da inteligência artificial e semicondutores. Operação editorial com curadoria automatizada via IA.',
+                        footerDesc: 'Decodificando a evolução técnica da inteligência artificial e semicondutores. Operação editorial automatizada via IA.',
                         footerCompliance: 'Compliance & Legal',
                         footerStatus: 'Status da Esteira',
-                        pipelineActive: 'GitHub Actions: ATIVO',
+                        pipelineActive: 'Esteira Autônoma: ATIVA',
                         rights: 'Todos os direitos reservados.'
                     },
                     en: {
-                        navArticles: 'Articles',
+                        subBrand: 'Frontier AI & Silicon Intelligence',
+                        navBenchmark: 'Weekly Benchmark',
+                        navArticles: 'Articles & News',
                         navTerms: 'Terms of Use',
                         navPrivacy: 'Privacy Policy',
                         navNewsletter: 'Newsletter',
-                        badgeHero: '⚡ Real-Time AI Intelligence',
+                        badgeHero: 'Real-Time AI Intelligence & Benchmarks',
                         heroTitle1: 'The Nexus of the',
                         heroTitle2: 'Cognitive Shift.',
-                        heroDesc: 'Deep technical analysis on large language models, advanced semiconductors, autonomous agents, and next-gen computing infrastructure.',
-                        allCategory: 'All',
-                        categories: ['All', 'OpenAI', 'Anthropic', 'DeepSeek', 'Google', 'Nvidia', 'Apple', 'Linux'],
+                        heroDesc: 'Weekly performance leaderboards of frontier AI models, deep architectural breakdowns, accelerated silicon, and autonomous systems.',
+                        benchmarkBadge: 'Verified Metrics',
+                        benchmarkTitle: 'AI Benchmark Leaderboard of the Week',
+                        benchmarkSubtitle: 'Comparative performance evaluation covering reasoning precision, coding synthesis, and token efficiency.',
+                        benchmarkUpdated: 'Updated',
+                        benchmarkWeekDate: 'Current Week',
+                        topModelBadge: '🏆 #1 AI Model of the Week (Overall Leader)',
+                        topModelDeveloper: 'Developer',
+                        accessAiBtn: 'Access Official AI',
+                        useAiAction: 'Try Model',
+                        metricReasoning: 'Logical Reasoning & Planning',
+                        metricCoding: 'Software Engineering & Code',
+                        metricEfficiency: 'Token & Cost Efficiency',
+                        thRank: 'Rank',
+                        thModel: 'Model & Creator',
+                        thScore: 'Overall Score',
+                        thReasoning: 'Reasoning',
+                        thCoding: 'Coding',
+                        thEfficiency: 'Efficiency',
+                        thAction: 'Access',
+                        articlesSectionTitle: 'AI Intelligence Editorial Stream',
+                        articlesSectionDesc: 'In-depth analysis of frontier releases, model architectures, and accelerated computing infrastructure.',
+                        generatedByAiBadge: 'AI Covers (Imagen 3)',
                         loadingText: 'Synchronizing neural news feed...',
+                        articleReadTime: '5 min read',
+                        tagAiCover: 'Imagen 3 Cover',
                         readMore: 'Read Full Analysis',
                         modalSource: 'View Original Source',
                         modalClose: 'Close Article',
@@ -299,36 +524,26 @@
                         footerDesc: 'Decoding the technical evolution of artificial intelligence and accelerated silicon. Autonomous AI-driven editorial pipeline.',
                         footerCompliance: 'Compliance & Legal',
                         footerStatus: 'Pipeline Status',
-                        pipelineActive: 'GitHub Actions: ACTIVE',
+                        pipelineActive: 'Autonomous Pipeline: ACTIVE',
                         rights: 'All rights reserved.'
                     }
                 },
-
-                get currentCategories() {
-                    return this.t[this.currentLang].categories;
-                },
-
                 setLanguage(lang) {
                     this.currentLang = lang;
-                    this.activeCategory = this.t[lang].allCategory;
                     document.documentElement.lang = lang === 'pt' ? 'pt-BR' : 'en';
                 },
-
                 getArticleTitle(item) {
                     if (!item) return '';
-                    return this.currentLang === 'pt' ? (item.title_pt || item.title) : (item.title_en || item.title);
+                    return this.currentLang === 'pt' ? (item.title_pt || item.title || '') : (item.title_en || item.title || '');
                 },
-
                 getArticleExcerpt(item) {
                     if (!item) return '';
-                    return this.currentLang === 'pt' ? (item.excerpt_pt || item.excerpt) : (item.excerpt_en || item.excerpt);
+                    return this.currentLang === 'pt' ? (item.excerpt_pt || '') : (item.excerpt_en || '');
                 },
-
                 getArticleContent(item) {
                     if (!item) return '';
-                    return this.currentLang === 'pt' ? (item.content_pt || item.fullContent) : (item.content_en || item.fullContent);
+                    return this.currentLang === 'pt' ? (item.content_pt || '') : (item.content_en || '');
                 },
-
                 async init() {
                     this.isLoading = true;
                     try {
@@ -336,73 +551,56 @@
                         if (response.ok) {
                             const data = await response.json();
                             this.articles = data.map((item, idx) => ({
-                                id: idx + 1,
+                                id: item.id || (idx + 1),
                                 source: item.source || 'AI News',
-                                image: item.image || 'https://images.unsplash.com/photo-1677442136019-21780ecad995?q=80&w=1600&h=900&fit=crop',
-                                date: 'Recente',
-                                title_pt: item.title_pt || item.title,
-                                title_en: item.title_en || item.title,
-                                excerpt_pt: item.excerpt_pt || (item.content_pt ? item.content_pt.slice(0, 160) + '...' : ''),
-                                excerpt_en: item.excerpt_en || (item.content_en ? item.content_en.slice(0, 160) + '...' : ''),
-                                content_pt: item.content_pt || item.content || '',
-                                content_en: item.content_en || item.content || '',
+                                image: item.image || 'covers/default.jpg',
+                                title_pt: item.title_pt || '',
+                                title_en: item.title_en || '',
+                                excerpt_pt: item.excerpt_pt || '',
+                                excerpt_en: item.excerpt_en || '',
+                                content_pt: item.content_pt || '',
+                                content_en: item.content_en || '',
                                 link: item.link || '#'
                             }));
                         } else {
                             throw new Error('posts.json não encontrado');
                         }
                     } catch (e) {
-                        console.warn('Carregando amostra de contingência:', e);
                         this.articles = [
                             {
                                 id: 1,
                                 source: "X | @OpenAI",
-                                image: "https://images.unsplash.com/photo-1677442136019-21780ecad995?q=80&w=1600&h=900&fit=crop",
-                                date: "Recente",
-                                title_pt: "OpenAI Implementa Persistent Mode para Agentes Always-On",
+                                image: "covers/openai-persistent-agents.jpg",
+                                title_pt: "OpenAI Implementa Modo Persistente para Agentes Always-On",
                                 title_en: "OpenAI Deploys Persistent Mode for Always-On Autonomous Agents",
-                                excerpt_pt: "A transição de modelos acionados por prompt para instâncias contínuas reconfigura a engenharia de software.",
-                                excerpt_en: "The architectural shift from single-turn prompts to continuous execution loops transforms developer workflows.",
+                                excerpt_pt: "A transição de modelos acionados por prompt para instâncias de execução contínua reconfigura a infraestrutura de engenharia de software.",
+                                excerpt_en: "The architectural shift from single-turn prompts to continuous execution loops transforms enterprise software workflows.",
                                 content_pt: "O modo persistente marca a transição dos agentes de IA de utilitários de ciclo único para serviços autônomos que operam de forma contínua em servidores de produção.",
                                 content_en: "Persistent Mode represents the evolution of AI agents from single-shot prompts into continuously running background services.",
-                                link: "https://github.com/corticflow/corticflow"
+                                link: "https://openai.com/news"
                             },
                             {
                                 id: 2,
                                 source: "X | @NVIDIAAI",
-                                image: "https://images.unsplash.com/photo-1518770660439-4636190af475?q=80&w=1600&h=900&fit=crop",
-                                date: "Recente",
-                                title_pt: "Nvidia Acelera Transição para HBM4 em Clusters Blackwell",
+                                image: "covers/nvidia-hbm4-blackwell.jpg",
+                                title_pt: "Nvidia Acelera Transição para Memória HBM4 em Clusters Blackwell",
                                 title_en: "Nvidia Accelerates Transition to HBM4 Memory in Blackwell Clusters",
-                                excerpt_pt: "A adoção de memórias HBM4 visa mitigar a 'Memory Wall', permitindo largura de banda superior a 8 TB/s.",
-                                excerpt_en: "HBM4 adoption overcomes the Memory Wall bottleneck, delivering extreme throughput above 8 TB/s per accelerator.",
+                                excerpt_pt: "A nova arquitetura de memória mitiga a 'Memory Wall', fornecendo largura de banda superior a 8 TB/s para tarefas de raciocínio de longa duração.",
+                                excerpt_en: "HBM4 adoption overcomes the Memory Wall bottleneck, delivering extreme throughput above 8 TB/s per accelerator for long-horizon reasoning.",
                                 content_pt: "A nova arquitetura de memória resolve os gargalos de transferência que limitavam modelos de raciocínio de longa duração.",
                                 content_en: "Next-gen memory architecture addresses critical bandwidth limitations for massive multimodal reasoning workloads.",
-                                link: "https://github.com/corticflow/corticflow"
+                                link: "https://nvidianews.nvidia.com"
                             }
                         ];
                     } finally {
                         this.isLoading = false;
                     }
                 },
-
-                get filteredArticles() {
-                    const allKeyword = this.t[this.currentLang].allCategory;
-                    if (this.activeCategory === allKeyword) return this.articles;
-                    return this.articles.filter(a => {
-                        const title = this.getArticleTitle(a).toLowerCase();
-                        const source = a.source.toLowerCase();
-                        const cat = this.activeCategory.toLowerCase();
-                        return source.includes(cat) || title.includes(cat);
-                    });
-                },
-
                 openModal(doc) {
                     this.activeDoc = doc;
                     this.isModalOpen = true;
                     document.body.style.overflow = 'hidden';
                 },
-
                 closeModal() {
                     this.isModalOpen = false;
                     document.body.style.overflow = 'auto';
