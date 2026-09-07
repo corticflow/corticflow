@@ -31,57 +31,50 @@ def slugify(text):
     return re.sub(r'[-\s]+', '-', text)[:50]
 
 def generate_ai_cover(api_key, image_prompt, output_path):
-    """Gera capa 16:9 via Imagen 3 no Gemini API baseada no elemento principal da matéria"""
-    url = f"https://generativelanguage.googleapis.com/v1beta/models/imagen-3.0-generate-002:predict?key={api_key}"
-    headers = {"Content-Type": "application/json"}
-    
-    full_prompt = (
-        f"{image_prompt}. Hyper-detailed, 8k resolution, cinematic lighting, photorealistic, "
-        f"clean technological aesthetic, dark slate atmosphere with cyan and violet accents, "
-        f"master composition, 16:9 panoramic view, professional editorial art, no text, no letters."
-    )
-    
-    payload = {
-        "instances": [{"prompt": full_prompt}],
-        "parameters": {
-            "sampleCount": 1,
-            "aspectRatio": "16:9",
-            "outputOptions": {"mimeType": "image/jpeg"}
-        }
-    }
-    
+    """Gera capa 16:9 via Imagen 3 com tratamento de erros silencioso"""
     try:
-        response = requests.post(url, headers=headers, json=payload, timeout=50)
+        url = f"https://generativelanguage.googleapis.com/v1beta/models/imagen-3.0-generate-002:predict?key={api_key}"
+        headers = {"Content-Type": "application/json"}
+        full_prompt = (
+            f"{image_prompt}. Hyper-detailed, 8k resolution, cinematic lighting, photorealistic, "
+            f"clean technological aesthetic, dark slate atmosphere with cyan and violet accents, "
+            f"master composition, 16:9 panoramic view, professional editorial art, no text, no letters."
+        )
+        payload = {
+            "instances": [{"prompt": full_prompt}],
+            "parameters": {
+                "sampleCount": 1,
+                "aspectRatio": "16:9",
+                "outputOptions": {"mimeType": "image/jpeg"}
+            }
+        }
+        response = requests.post(url, headers=headers, json=payload, timeout=30)
         if response.status_code == 200:
             result = response.json()
             predictions = result.get("predictions", [])
             if predictions and "bytesBase64Encoded" in predictions[0]:
                 image_bytes = base64.b64decode(predictions[0]["bytesBase64Encoded"])
-                os.makedirs(os.path.dirname(output_path), exist_ok=True)
                 with open(output_path, "wb") as img_file:
                     img_file.write(image_bytes)
-                print(f"[Imagen 3] Capa gerada: {output_path}")
+                print(f"[Imagen 3] Sucesso: {output_path}")
                 return True
-        print(f"[Imagen 3] Aviso na geração: {response.status_code}")
     except Exception as e:
-        print(f"[Imagen 3] Erro: {e}")
-    
+        print(f"[Imagen 3] Aviso: {e}")
     return False
 
 def generate_bilingual_post(model, source_name, original_title, original_summary):
     is_x_post = "X |" in source_name
-    
     prompt = f"""
 Atue como Editor-Chefe de Tecnologia da plataforma CorticFlow.
-Analise a notícia abaixo e produza DUAS versões: uma em PORTUGUÊS (PT-BR) e uma em INGLÊS (EN-US).
-Formule também um prompt em inglês para gerar uma imagem conceitual 16:9 focada no ELEMENTO PRINCIPAL da matéria (sem usar fotos prontas).
+Produza DUAS versões: uma em PORTUGUÊS (PT-BR) e uma em INGLÊS (EN-US).
+Formule também um prompt em inglês para gerar uma imagem 16:9 focada no ELEMENTO PRINCIPAL da matéria.
 
 Fonte: {source_name}
 Título: {original_title}
 Resumo: {original_summary}
 Origem: {"Post do X (Twitter)" if is_x_post else "Notícia Técnica"}
 
-Retorne ESTRITAMENTE um objeto JSON com o seguinte schema:
+Retorne ESTRITAMENTE um JSON com:
 {{
   "title_pt": "Título jornalístico em Português",
   "title_en": "Journalistic headline in English",
@@ -89,7 +82,7 @@ Retorne ESTRITAMENTE um objeto JSON com o seguinte schema:
   "excerpt_en": "Executive summary in English (2 to 3 sentences).",
   "content_pt": "Análise técnica em Português.",
   "content_en": "Deep technical analysis in English.",
-  "image_concept_prompt": "Cinematic visual description in English of the core technical subject of this article for an AI image generator"
+  "image_concept_prompt": "Cinematic visual description in English of the core technical subject of this article"
 }}
 """
     try:
@@ -103,67 +96,63 @@ Retorne ESTRITAMENTE um objeto JSON com o seguinte schema:
         return {
             "title_pt": original_title,
             "title_en": original_title,
-            "excerpt_pt": original_summary[:160] + "...",
-            "excerpt_en": original_summary[:160] + "...",
-            "content_pt": original_summary,
-            "content_en": original_summary,
-            "image_concept_prompt": f"Advanced technology visual representing {original_title}"
+            "excerpt_pt": original_summary[:160] + "..." if original_summary else original_title,
+            "excerpt_en": original_summary[:160] + "..." if original_summary else original_title,
+            "content_pt": original_summary or original_title,
+            "content_en": original_summary or original_title,
+            "image_concept_prompt": f"Advanced artificial intelligence for {original_title}"
         }
 
 def main():
     try:
+        # Garante a pasta e o arquivo de controle para o Git não falhar
+        os.makedirs("covers", exist_ok=True)
+        with open("covers/.gitkeep", "w") as f:
+            f.write("")
+
         api_key = os.getenv("GEMINI_API_KEY")
         if not api_key:
-            print("GEMINI_API_KEY não configurada.")
+            print("GEMINI_API_KEY não encontrada no ambiente.")
             return
 
         genai.configure(api_key=api_key)
         model = genai.GenerativeModel('gemini-1.5-flash')
 
-        cutoff_date = datetime.now() - timedelta(hours=72)
         all_entries = []
-
         for source_name, url in RSS_FEEDS.items():
             try:
                 feed = feedparser.parse(url)
-                for entry in feed.entries:
-                    published = entry.get('published_parsed')
-                    if published:
-                        dt_published = datetime(*published[:6])
-                        if dt_published >= cutoff_date:
-                            entry['source_name'] = source_name
-                            all_entries.append(entry)
+                for entry in feed.entries[:4]:
+                    all_entries.append((source_name, entry))
             except Exception as e:
-                print(f"Erro em {source_name}: {e}")
+                print(f"Erro no feed {source_name}: {e}")
 
         if not all_entries:
-            print("Nenhum artigo recente encontrado.")
+            print("Nenhum feed respondeu.")
             return
 
         random.shuffle(all_entries)
-        selected_entries = all_entries[:12]
+        selected_entries = all_entries[:8]
         processed_posts = []
-        os.makedirs("covers", exist_ok=True)
 
-        for i, entry in enumerate(selected_entries):
-            source = entry.get('source_name', 'Tech News')
-            title = entry.get('title', 'Sem Título')
+        for i, (source, entry) in enumerate(selected_entries):
+            title = entry.get('title', 'Notícia de Tecnologia')
             summary = entry.get('summary', entry.get('description', ''))
-            
-            print(f"[{i+1}/{len(selected_entries)}] Processando: {title[:45]}...")
+            link = entry.get('link', '')
+
+            print(f"[{i+1}/{len(selected_entries)}] {title[:40]}...")
             post_data = generate_bilingual_post(model, source, title, summary)
-            
+
             slug = slugify(post_data.get("title_en", title))
             cover_filename = f"covers/{slug}.jpg"
-            
-            image_prompt = post_data.get("image_concept_prompt", f"Advanced artificial intelligence for {title}")
+            image_prompt = post_data.get("image_concept_prompt", f"Technology system for {title}")
             image_ok = generate_ai_cover(api_key, image_prompt, cover_filename)
             image_path = cover_filename if image_ok else "covers/default-ai.jpg"
-            
+
             processed_posts.append({
                 "id": i + 1,
                 "source": source,
-                "link": entry.get('link', ''),
+                "link": link,
                 "image": image_path,
                 "title_pt": post_data.get("title_pt", title),
                 "title_en": post_data.get("title_en", title),
@@ -172,15 +161,15 @@ def main():
                 "content_pt": post_data.get("content_pt", summary),
                 "content_en": post_data.get("content_en", summary)
             })
-            time.sleep(1)
+            time.sleep(1.5)
 
-        with open("posts.json", "w", encoding="utf-8") as f:
-            json.dump(processed_posts, f, ensure_ascii=False, indent=4)
-
-        print(f"Sucesso: {len(processed_posts)} posts com capas de IA salvos em posts.json!")
+        if processed_posts:
+            with open("posts.json", "w", encoding="utf-8") as f:
+                json.dump(processed_posts, f, ensure_ascii=False, indent=4)
+            print(f"Sucesso: {len(processed_posts)} matérias salvas em posts.json!")
 
     except Exception as e:
-        print(f"Erro Fatal: {e}")
+        print(f"Aviso geral: {e}")
 
 if __name__ == "__main__":
     main()
