@@ -40,6 +40,7 @@
 
     <canvas id="neural-canvas"></canvas>
 
+    <!-- Navegação -->
     <header class="glass-nav sticky top-0 z-40 px-6 py-4">
         <div class="max-w-7xl mx-auto flex justify-between items-center relative z-10">
             <div class="flex items-center gap-3 cursor-pointer" @click="window.scrollTo({top: 0, behavior: 'smooth'})">
@@ -67,6 +68,7 @@
         </div>
     </header>
 
+    <!-- Hero -->
     <section class="pt-20 pb-12 px-6 max-w-7xl mx-auto w-full relative z-10">
         <div class="text-center max-w-3xl mx-auto mb-12">
             <span class="inline-flex items-center gap-2 px-3.5 py-1.5 mb-5 text-[11px] font-mono font-bold tracking-widest text-cyan uppercase bg-cyan/10 border border-cyan/25 rounded-full backdrop-blur-md">
@@ -81,6 +83,7 @@
         </div>
     </section>
 
+    <!-- Benchmark -->
     <section id="benchmark" class="max-w-7xl mx-auto px-6 pb-20 w-full relative z-10">
         <div class="glass-card rounded-3xl p-6 md:p-10 border border-cyan/30 relative overflow-hidden">
             <div class="absolute -top-32 -right-32 w-80 h-80 bg-violet/20 blur-[130px] rounded-full pointer-events-none"></div>
@@ -188,6 +191,7 @@
         </div>
     </section>
 
+    <!-- Artigos -->
     <main class="max-w-7xl mx-auto px-6 pb-24 flex-grow w-full relative z-10" id="artigos">
         <div class="mb-10 border-b border-white/10 pb-4 flex flex-col md:flex-row justify-between items-start md:items-end gap-2">
             <div>
@@ -202,31 +206,43 @@
             <p class="text-slate-400 text-sm font-mono" x-text="t[currentLang].loadingText"></p>
         </div>
 
+        <!-- Grid de Cards com Fallback Visual de IA Garantido -->
         <div x-show="!isLoading" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             <template x-for="item in articles" :key="item.id">
                 <article 
                     class="glass-card rounded-2xl overflow-hidden flex flex-col cursor-pointer group relative"
                     @click="openModal(item)">
                     
-                    <div class="aspect-video w-full overflow-hidden bg-slate-950 relative">
+                    <!-- Bloco da Imagem com Fundo de IA Nativo -->
+                    <div class="aspect-video w-full overflow-hidden bg-gradient-to-br from-[#0B0F19] via-[#131B2E] to-[#1E1B4B] relative flex items-center justify-center">
+                        <!-- Imagem gerada pela esteira -->
                         <img 
                             :src="item.image" 
                             :alt="getArticleTitle(item)"
-                            class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
-                            @error="$event.target.style.display='none'; $event.target.nextElementSibling.style.display='flex'">
+                            class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out absolute inset-0 z-10"
+                            @error="$event.target.remove()">
                         
-                        <div class="hidden absolute inset-0 bg-gradient-to-br from-[#0B0F19] via-[#131B2E] to-[#1E1B4B] p-6 flex-col justify-between items-start border-b border-white/10">
-                            <span class="w-8 h-8 rounded-lg bg-cyan/10 border border-cyan/30 flex items-center justify-center text-cyan font-bold text-xs font-mono">CF</span>
-                            <div class="text-[11px] font-mono text-slate-400 uppercase" x-text="item.source"></div>
+                        <!-- Fundo Visual de IA que aparece sempre que a imagem estiver ausente -->
+                        <div class="w-full h-full p-5 flex flex-col justify-between relative overflow-hidden">
+                            <div class="absolute -right-6 -top-6 w-32 h-32 bg-cyan/20 rounded-full blur-2xl"></div>
+                            <div class="absolute -left-6 -bottom-6 w-32 h-32 bg-violet/25 rounded-full blur-2xl"></div>
+                            <div class="flex justify-between items-center relative z-0">
+                                <span class="w-7 h-7 rounded-lg bg-cyan/15 border border-cyan/30 flex items-center justify-center text-cyan font-bold text-xs font-mono">CF</span>
+                                <span class="text-[9px] font-mono text-cyan/70 tracking-widest uppercase">AI FRONTIER</span>
+                            </div>
+                            <div class="relative z-0">
+                                <div class="h-0.5 w-10 bg-gradient-to-r from-cyan to-violet rounded-full mb-2"></div>
+                                <span class="text-[10px] font-mono text-slate-400 uppercase tracking-wider" x-text="item.source"></span>
+                            </div>
                         </div>
 
-                        <div class="absolute inset-0 bg-gradient-to-t from-[#111827] via-transparent to-transparent opacity-80"></div>
-                        
-                        <div class="absolute top-3 left-3">
-                            <span class="px-2.5 py-1 text-[10px] font-mono font-bold uppercase tracking-wider bg-slate-950/80 text-cyan rounded-md border border-cyan/30 backdrop-blur-md" x-text="item.source"></span>
+                        <div class="absolute inset-0 bg-gradient-to-t from-[#111827] via-transparent to-transparent opacity-80 z-20 pointer-events-none"></div>
+                        <div class="absolute top-3 left-3 z-30 pointer-events-none">
+                            <span class="px-2.5 py-1 text-[10px] font-mono font-bold uppercase tracking-wider bg-slate-950/85 text-cyan rounded-md border border-cyan/30 backdrop-blur-md" x-text="item.source"></span>
                         </div>
                     </div>
 
+                    <!-- Conteúdo do Card -->
                     <div class="p-6 flex-1 flex flex-col justify-between">
                         <div>
                             <div class="flex items-center gap-2 text-[11px] text-slate-500 font-mono mb-2">
@@ -249,6 +265,7 @@
         </div>
     </main>
 
+    <!-- Modal com Conteúdo Completo Garantido -->
     <div 
         x-show="isModalOpen" 
         class="fixed inset-0 z-50 overflow-y-auto bg-black/90 backdrop-blur-md flex items-center justify-center p-4"
@@ -271,8 +288,14 @@
                     </div>
                     <h2 class="text-2xl md:text-4xl font-extrabold font-display text-white mb-6 leading-tight" x-text="getArticleTitle(activeDoc)"></h2>
                     
-                    <div class="aspect-video w-full rounded-2xl overflow-hidden mb-8 border border-white/10 bg-slate-950 relative">
-                        <img :src="activeDoc.image" :alt="getArticleTitle(activeDoc)" class="w-full h-full object-cover">
+                    <div class="aspect-video w-full rounded-2xl overflow-hidden mb-8 border border-white/10 bg-gradient-to-br from-[#0B0F19] via-[#131B2E] to-[#1E1B4B] relative flex items-center justify-center">
+                        <img :src="activeDoc.image" :alt="getArticleTitle(activeDoc)" class="w-full h-full object-cover absolute inset-0 z-10" @error="$event.target.remove()">
+                        <div class="w-full h-full p-8 flex flex-col justify-between relative overflow-hidden">
+                            <div class="absolute right-0 top-0 w-48 h-48 bg-cyan/20 rounded-full blur-3xl"></div>
+                            <div class="absolute left-0 bottom-0 w-48 h-48 bg-violet/25 rounded-full blur-3xl"></div>
+                            <span class="w-9 h-9 rounded-xl bg-cyan/15 border border-cyan/30 flex items-center justify-center text-cyan font-bold text-sm font-mono">CF</span>
+                            <span class="text-xs font-mono text-cyan tracking-widest uppercase" x-text="activeDoc.source"></span>
+                        </div>
                     </div>
 
                     <div class="prose prose-invert max-w-none text-slate-300 text-sm md:text-base leading-relaxed space-y-4 whitespace-pre-line" x-text="getArticleContent(activeDoc)"></div>
@@ -290,6 +313,7 @@
         </div>
     </div>
 
+    <!-- Newsletter -->
     <section id="newsletter" class="max-w-7xl mx-auto px-6 py-16 w-full relative z-10">
         <div class="glass-card rounded-3xl p-8 md:p-14 text-center relative overflow-hidden border border-cyan/20">
             <div class="absolute -top-24 -right-24 w-64 h-64 bg-cyan/10 blur-[100px] rounded-full pointer-events-none"></div>
@@ -303,6 +327,7 @@
         </div>
     </section>
 
+    <!-- Rodapé -->
     <footer class="border-t border-white/10 bg-[#05070D] py-12 px-6 text-slate-400 text-xs relative z-10">
         <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-8 mb-10">
             <div class="col-span-1 md:col-span-2">
@@ -330,6 +355,7 @@
     </footer>
 
     <script>
+        // Canvas de Sinapses Neurais Interativas
         (function initNeuralCanvas() {
             const canvas = document.getElementById('neural-canvas');
             if (!canvas) return;
@@ -413,6 +439,7 @@
             animate();
         })();
 
+        // Camada de Lógica e Renderização Resiliente
         function corticFlow() {
             return {
                 currentLang: 'pt',
@@ -440,7 +467,7 @@
                         heroDesc: 'Métricas de desempenho das melhores IAs da semana, análises profundas de arquitetura, semicondutores e sistemas autônomos.',
                         benchmarkBadge: 'Métricas Consolidadas',
                         benchmarkTitle: 'Benchmark da Semana: As Melhores IAs',
-                        benchmarkSubtitle: 'Avaliação comparativa de precisão de raciocínio, geração de código e eficiência computacional.',
+                        benchmarkSubtitle: 'Avaliação comparativa de raciocínio, geração de código e custo de inferência.',
                         benchmarkUpdated: 'Atualizado',
                         benchmarkWeekDate: 'Semana Atual',
                         topModelBadge: '🏆 #1 IA da Semana (Líder Geral)',
@@ -467,11 +494,11 @@
                         modalSource: 'Ver Fonte Original',
                         modalClose: 'Fechar Leitura',
                         newsletterTitle: 'CorticFlow Weekly na sua Inbox',
-                        newsletterDesc: 'A síntese dos fatos mais relevantes em IA, agentes autônomos e computação avançada entregue todo domingo.',
+                        newsletterDesc: 'A síntese dos fatos mais relevantes em IA e semicondutores entregue todo domingo.',
                         newsletterPlaceholder: 'seu.email@tech.com',
                         newsletterBtn: 'Inscrever-se',
                         newsletterSuccess: 'Inscrição confirmada no CorticFlow!',
-                        footerDesc: 'Decodificando a evolução técnica da inteligência artificial e semicondutores. Operação editorial automatizada via IA.',
+                        footerDesc: 'Decodificando a evolução técnica da inteligência artificial e semicondutores.',
                         footerCompliance: 'Compliance & Legal',
                         footerStatus: 'Status da Esteira',
                         pipelineActive: 'Esteira Autônoma: ATIVA',
@@ -508,7 +535,7 @@
                         thEfficiency: 'Efficiency',
                         thAction: 'Access',
                         articlesSectionTitle: 'AI Intelligence Editorial Stream',
-                        articlesSectionDesc: 'In-depth analysis of frontier releases, model architectures, and accelerated computing infrastructure.',
+                        articlesSectionDesc: 'In-depth analysis of frontier releases with custom AI-generated covers (Imagen 3).',
                         generatedByAiBadge: 'AI Covers (Imagen 3)',
                         loadingText: 'Synchronizing neural news feed...',
                         articleReadTime: '5 min read',
@@ -517,11 +544,11 @@
                         modalSource: 'View Original Source',
                         modalClose: 'Close Article',
                         newsletterTitle: 'CorticFlow Weekly in Your Inbox',
-                        newsletterDesc: 'The technical executive briefing on breakthrough AI architectures and chip developments delivered every Sunday.',
+                        newsletterDesc: 'The technical executive briefing on breakthrough AI architectures delivered every Sunday.',
                         newsletterPlaceholder: 'your.email@tech.com',
                         newsletterBtn: 'Subscribe',
                         newsletterSuccess: 'Subscription confirmed for CorticFlow Weekly!',
-                        footerDesc: 'Decoding the technical evolution of artificial intelligence and accelerated silicon. Autonomous AI-driven editorial pipeline.',
+                        footerDesc: 'Decoding the technical evolution of artificial intelligence and accelerated silicon.',
                         footerCompliance: 'Compliance & Legal',
                         footerStatus: 'Pipeline Status',
                         pipelineActive: 'Autonomous Pipeline: ACTIVE',
@@ -534,15 +561,15 @@
                 },
                 getArticleTitle(item) {
                     if (!item) return '';
-                    return this.currentLang === 'pt' ? (item.title_pt || item.title || '') : (item.title_en || item.title || '');
+                    return (this.currentLang === 'pt' ? item.title_pt : item.title_en) || item.title || item.title_pt || item.title_en || '';
                 },
                 getArticleExcerpt(item) {
                     if (!item) return '';
-                    return this.currentLang === 'pt' ? (item.excerpt_pt || '') : (item.excerpt_en || '');
+                    return (this.currentLang === 'pt' ? item.excerpt_pt : item.excerpt_en) || item.summary || item.excerpt || (item.content ? item.content.slice(0, 160) + '...' : '') || '';
                 },
                 getArticleContent(item) {
                     if (!item) return '';
-                    return this.currentLang === 'pt' ? (item.content_pt || '') : (item.content_en || '');
+                    return (this.currentLang === 'pt' ? item.content_pt : item.content_en) || item.content || item.summary || '';
                 },
                 async init() {
                     this.isLoading = true;
@@ -552,46 +579,22 @@
                             const data = await response.json();
                             this.articles = data.map((item, idx) => ({
                                 id: item.id || (idx + 1),
-                                source: item.source || 'AI News',
-                                image: item.image || 'covers/default.jpg',
-                                title_pt: item.title_pt || '',
-                                title_en: item.title_en || '',
-                                excerpt_pt: item.excerpt_pt || '',
-                                excerpt_en: item.excerpt_en || '',
-                                content_pt: item.content_pt || '',
-                                content_en: item.content_en || '',
+                                source: item.source || 'AI Frontier',
+                                image: item.image || 'covers/default-ai.jpg',
+                                title: item.title || '',
+                                title_pt: item.title_pt || item.title || '',
+                                title_en: item.title_en || item.title || '',
+                                excerpt_pt: item.excerpt_pt || item.summary || (item.content ? item.content.slice(0, 160) + '...' : ''),
+                                excerpt_en: item.excerpt_en || item.summary || (item.content ? item.content.slice(0, 160) + '...' : ''),
+                                content_pt: item.content_pt || item.content || item.summary || '',
+                                content_en: item.content_en || item.content || item.summary || '',
                                 link: item.link || '#'
                             }));
                         } else {
                             throw new Error('posts.json não encontrado');
                         }
                     } catch (e) {
-                        this.articles = [
-                            {
-                                id: 1,
-                                source: "X | @OpenAI",
-                                image: "covers/openai-persistent-agents.jpg",
-                                title_pt: "OpenAI Implementa Modo Persistente para Agentes Always-On",
-                                title_en: "OpenAI Deploys Persistent Mode for Always-On Autonomous Agents",
-                                excerpt_pt: "A transição de modelos acionados por prompt para instâncias de execução contínua reconfigura a infraestrutura de engenharia de software.",
-                                excerpt_en: "The architectural shift from single-turn prompts to continuous execution loops transforms enterprise software workflows.",
-                                content_pt: "O modo persistente marca a transição dos agentes de IA de utilitários de ciclo único para serviços autônomos que operam de forma contínua em servidores de produção.",
-                                content_en: "Persistent Mode represents the evolution of AI agents from single-shot prompts into continuously running background services.",
-                                link: "https://openai.com/news"
-                            },
-                            {
-                                id: 2,
-                                source: "X | @NVIDIAAI",
-                                image: "covers/nvidia-hbm4-blackwell.jpg",
-                                title_pt: "Nvidia Acelera Transição para Memória HBM4 em Clusters Blackwell",
-                                title_en: "Nvidia Accelerates Transition to HBM4 Memory in Blackwell Clusters",
-                                excerpt_pt: "A nova arquitetura de memória mitiga a 'Memory Wall', fornecendo largura de banda superior a 8 TB/s para tarefas de raciocínio de longa duração.",
-                                excerpt_en: "HBM4 adoption overcomes the Memory Wall bottleneck, delivering extreme throughput above 8 TB/s per accelerator for long-horizon reasoning.",
-                                content_pt: "A nova arquitetura de memória resolve os gargalos de transferência que limitavam modelos de raciocínio de longa duração.",
-                                content_en: "Next-gen memory architecture addresses critical bandwidth limitations for massive multimodal reasoning workloads.",
-                                link: "https://nvidianews.nvidia.com"
-                            }
-                        ];
+                        console.warn('Carregamento de contingência:', e);
                     } finally {
                         this.isLoading = false;
                     }
