@@ -30,18 +30,18 @@ def generate_bilingual_post(model, source_name, original_title, original_summary
     is_x = "X |" in source_name
     prompt = f"""
 Atue como Editor-Chefe da plataforma CorticFlow.
-Sua missão é produzir DUAS versões completas e independentes desta notícia:
+Sua missão é produzir DUAS versões analíticas desta notícia:
 1. VERSÃO 100% EM PORTUGUÊS DO BRASIL (PT-BR) para os campos _pt. Não deixe palavras em inglês nos campos _pt.
 2. VERSÃO 100% EM INGLÊS (EN-US) para os campos _en.
-3. Prompt em inglês (image_concept_prompt) descrevendo o elemento central da tecnologia em 16:9 para arte de capa por IA.
+3. Prompt visual em inglês (image_concept_prompt) descrevendo o elemento central da tecnologia em 16:9.
 
 Notícia:
 Fonte: {source_name}
 Título: {original_title}
 Resumo: {original_summary}
-Tipo: {"Post do X (Twitter)" if is_x else "Artigo de Notícia"}
+Tipo: {"Post do X (Twitter)" if is_x else "Artigo de Imprensa"}
 
-Retorne ESTRITAMENTE um objeto JSON válido (sem tags markdown de código):
+Retorne ESTRITAMENTE um objeto JSON válido (sem tags markdown):
 {{
   "title_pt": "Título jornalístico 100% em Português",
   "title_en": "Journalistic headline 100% in English",
@@ -49,7 +49,7 @@ Retorne ESTRITAMENTE um objeto JSON válido (sem tags markdown de código):
   "excerpt_en": "Executive summary of 2 to 3 sentences 100% in English.",
   "content_pt": "Análise técnica aprofundada de 2 a 3 parágrafos 100% em Português.",
   "content_en": "In-depth technical analysis of 2 to 3 paragraphs 100% in English.",
-  "image_concept_prompt": "Cinematic visual prompt in English of the core technology subject (e.g. quantum neural processor illuminated with cyan light in futuristic laboratory)"
+  "image_concept_prompt": "Cinematic 16:9 visual concept prompt in English describing the principal technical element"
 }}
 """
     try:
@@ -65,7 +65,7 @@ Retorne ESTRITAMENTE um objeto JSON válido (sem tags markdown de código):
     except Exception as e:
         print(f"Erro Gemini ({source_name}): {e}")
         try:
-            pt_trans = model.generate_content(f"Traduza e resuma em Português: {original_title}. {original_summary}").text.strip()
+            pt_trans = model.generate_content(f"Traduza e resuma em Português em 2 parágrafos: {original_title}. {original_summary}").text.strip()
         except:
             pt_trans = f"Análise técnica sobre {original_title} em processamento pelo núcleo CorticFlow."
 
@@ -76,7 +76,7 @@ Retorne ESTRITAMENTE um objeto JSON válido (sem tags markdown de código):
             "excerpt_en": (original_summary or original_title)[:160] + "...",
             "content_pt": pt_trans,
             "content_en": original_summary or original_title,
-            "image_concept_prompt": f"Futuristic technology visual for {original_title}"
+            "image_concept_prompt": f"Advanced technology representing {original_title}"
         }
 
 def main():
@@ -111,14 +111,14 @@ def main():
             summary = entry.get('summary', entry.get('description', ''))
             link = entry.get('link', '')
 
-            print(f"[{i+1}/{len(selected_entries)}] Gerando matéria e arte: {title[:35]}...")
+            print(f"[{i+1}/{len(selected_entries)}] Processando: {title[:35]}...")
             post_data = generate_bilingual_post(model, source, title, summary)
 
             img_prompt = post_data.get("image_concept_prompt", f"Advanced artificial intelligence system {title}")
             clean_p = re.sub(r'[^\w\s,.-]', '', img_prompt)[:160].strip()
             encoded_p = urllib.parse.quote(f"{clean_p}, 16:9 panoramic cinematic tech, photorealistic, 8k, dark slate cyan violet accents")
             
-            # Gera a URL direta da imagem em alta resolução via IA generativa (Flux)
+            # URL direta da imagem em alta resolução (1280x720) gerada por IA
             ai_image_url = f"[https://image.pollinations.ai/prompt/](https://image.pollinations.ai/prompt/){encoded_p}?width=1280&height=720&nologo=true&seed={i+42}&model=flux"
 
             processed.append({
@@ -138,7 +138,7 @@ def main():
         if processed:
             with open("posts.json", "w", encoding="utf-8") as f:
                 json.dump(processed, f, ensure_ascii=False, indent=4)
-            print(f"Sucesso: {len(processed)} matérias salvas com imagens de IA em posts.json!")
+            print(f"Sucesso: {len(processed)} matérias salvas com imagens em posts.json!")
 
     except Exception as e:
         print(f"Erro geral: {e}")
