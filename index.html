@@ -91,7 +91,7 @@
         </div>
     </section>
 
-    <!-- Seção de Benchmark -->
+    <!-- Benchmark da Semana -->
     <section id="benchmark" class="max-w-7xl mx-auto px-6 pb-20 w-full relative z-10">
         <div class="glass-card rounded-3xl p-6 md:p-10 border border-cyan/30 relative overflow-hidden">
             <div class="absolute -top-32 -right-32 w-80 h-80 bg-violet/20 blur-[130px] rounded-full pointer-events-none"></div>
@@ -110,6 +110,7 @@
                 </div>
             </div>
 
+            <!-- Card Destaque -->
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 items-center mb-10 bg-gradient-to-br from-[#131B2E]/90 to-[#0B0F19]/90 p-6 md:p-8 rounded-2xl border border-cyan/20">
                 <div class="lg:col-span-1">
                     <span class="inline-block px-3 py-1 text-[10px] font-bold uppercase tracking-widest bg-cyan/15 text-cyan border border-cyan/30 rounded-md mb-3" x-text="t[currentLang].topModelBadge"></span>
@@ -156,6 +157,7 @@
                 </div>
             </div>
 
+            <!-- Tabela Comparativa -->
             <div class="overflow-x-auto custom-scrollbar">
                 <table class="w-full text-left text-xs">
                     <thead>
@@ -199,14 +201,11 @@
         </div>
     </section>
 
-    <!-- Feed Editorial de Matérias com Capas de IA -->
+    <!-- Feed Editorial de Matérias -->
     <main class="max-w-7xl mx-auto px-6 pb-24 flex-grow w-full relative z-10" id="artigos">
-        <div class="mb-10 border-b border-white/10 pb-4 flex flex-col md:flex-row justify-between items-start md:items-end gap-2">
-            <div>
-                <h2 class="text-2xl md:text-3xl font-bold font-display text-white" x-text="t[currentLang].articlesSectionTitle"></h2>
-                <p class="text-slate-400 text-xs md:text-sm mt-1" x-text="t[currentLang].articlesSectionDesc"></p>
-            </div>
-            <div class="text-xs font-mono text-cyan" x-text="t[currentLang].generatedByAiBadge"></div>
+        <div class="mb-10 border-b border-white/10 pb-4">
+            <h2 class="text-2xl md:text-3xl font-bold font-display text-white" x-text="t[currentLang].articlesSectionTitle"></h2>
+            <p class="text-slate-400 text-xs md:text-sm mt-1" x-text="t[currentLang].articlesSectionDesc"></p>
         </div>
 
         <!-- Loading -->
@@ -215,14 +214,14 @@
             <p class="text-slate-400 text-sm font-mono" x-text="t[currentLang].loadingText"></p>
         </div>
 
-        <!-- Grid de Cards -->
+        <!-- Grid de Cards Limpos -->
         <div x-show="!isLoading" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             <template x-for="item in articles" :key="item.id">
                 <article 
                     class="glass-card rounded-2xl overflow-hidden flex flex-col cursor-pointer group relative"
                     @click="openModal(item)">
                     
-                    <!-- Bloco da Imagem com Fundo de IA Resiliente -->
+                    <!-- Bloco da Imagem 16:9 -->
                     <div class="aspect-video w-full overflow-hidden bg-gradient-to-br from-[#0B0F19] via-[#131B2E] to-[#1E1B4B] relative flex items-center justify-center">
                         <img 
                             :src="item.image" 
@@ -231,13 +230,13 @@
                             loading="lazy"
                             @error="$event.target.style.display='none'">
                         
-                        <!-- Arte de Fundo de IA Automática -->
+                        <!-- Fundo em degradê caso a imagem esteja carregando -->
                         <div class="w-full h-full p-5 flex flex-col justify-between relative overflow-hidden">
                             <div class="absolute -right-6 -top-6 w-32 h-32 bg-cyan/20 rounded-full blur-2xl"></div>
                             <div class="absolute -left-6 -bottom-6 w-32 h-32 bg-violet/25 rounded-full blur-2xl"></div>
                             <div class="flex justify-between items-center relative z-0">
                                 <span class="w-7 h-7 rounded-lg bg-cyan/15 border border-cyan/30 flex items-center justify-center text-cyan font-bold text-xs font-mono">CF</span>
-                                <span class="text-[9px] font-mono text-cyan/70 tracking-widest uppercase">AI FRONTIER</span>
+                                <span class="text-[9px] font-mono text-cyan/70 tracking-widest uppercase">CORTICFLOW</span>
                             </div>
                             <div class="relative z-0">
                                 <div class="h-0.5 w-10 bg-gradient-to-r from-cyan to-violet rounded-full mb-2"></div>
@@ -257,7 +256,7 @@
                             <div class="flex items-center gap-2 text-[11px] text-slate-500 font-mono mb-2">
                                 <span x-text="t[currentLang].articleReadTime"></span>
                                 <span>•</span>
-                                <span class="text-cyan font-semibold" x-text="t[currentLang].tagAiCover"></span>
+                                <span class="text-cyan font-semibold" x-text="t[currentLang].editorialCategory"></span>
                             </div>
                             <h3 class="text-lg font-bold text-white group-hover:text-cyan transition-colors mb-3 leading-snug" x-text="getArticleTitle(item)"></h3>
                             <p class="text-slate-400 text-xs line-clamp-3 leading-relaxed mb-4" x-text="getArticleExcerpt(item)"></p>
@@ -293,7 +292,7 @@
                 <div>
                     <div class="flex items-center gap-3 mb-4">
                         <span class="px-2.5 py-1 text-[10px] font-bold uppercase tracking-widest bg-cyan/10 text-cyan border border-cyan/30 rounded" x-text="activeDoc.source"></span>
-                        <span class="text-xs text-slate-400 font-mono" x-text="t[currentLang].tagAiCover"></span>
+                        <span class="text-xs text-slate-400 font-mono" x-text="t[currentLang].editorialCategory"></span>
                     </div>
                     <h2 class="text-2xl md:text-4xl font-extrabold font-display text-white mb-6 leading-tight" x-text="getArticleTitle(activeDoc)"></h2>
                     
@@ -363,7 +362,6 @@
         </div>
     </footer>
 
-    <!-- Lógica Alpine.js & Canvas -->
     <script>
         // Canvas de Sinapses Neurais Interativas
         (function initNeuralCanvas() {
@@ -494,17 +492,16 @@
                         thCoding: 'Código',
                         thEfficiency: 'Eficiência',
                         thAction: 'Acesso',
-                        articlesSectionTitle: 'Feed Editorial de Inteligência Artificial',
+                        articlesSectionTitle: 'Feed Editorial de Tecnologia & IA',
                         articlesSectionDesc: 'Análises aprofundadas sobre lançamentos, modelos de fronteira e hardware de aceleração.',
-                        generatedByAiBadge: 'Capas Geradas por IA (Flux / Imagen 3)',
                         loadingText: 'Sincronizando fluxo neural de notícias...',
                         articleReadTime: '5 min de leitura',
-                        tagAiCover: 'Capa por IA',
+                        editorialCategory: 'Fronteira & Silício',
                         readMore: 'Ler Análise Completa',
                         modalSource: 'Ver Fonte Original',
                         modalClose: 'Fechar Leitura',
                         newsletterTitle: 'CorticFlow Weekly na sua Inbox',
-                        newsletterDesc: 'A síntese dos fatos mais relevantes em IA, agentes autônomos e computação avançada entregue todo domingo.',
+                        newsletterDesc: 'A síntese dos fatos mais relevantes em IA e computação avançada entregue todo domingo.',
                         newsletterPlaceholder: 'seu.email@tech.com',
                         newsletterBtn: 'Inscrever-se',
                         newsletterSuccess: 'Inscrição confirmada no CorticFlow!',
@@ -546,10 +543,9 @@
                         thAction: 'Access',
                         articlesSectionTitle: 'AI Intelligence Editorial Stream',
                         articlesSectionDesc: 'In-depth analysis of frontier releases, model architectures, and accelerated computing infrastructure.',
-                        generatedByAiBadge: 'AI Covers (Flux / Imagen 3)',
                         loadingText: 'Synchronizing neural news feed...',
                         articleReadTime: '5 min read',
-                        tagAiCover: 'AI Cover',
+                        editorialCategory: 'Frontier & Silicon',
                         readMore: 'Read Full Analysis',
                         modalSource: 'View Original Source',
                         modalClose: 'Close Article',
@@ -596,7 +592,7 @@
                 async init() {
                     this.isLoading = true;
                     try {
-                        // O parâmetro ?t= evita que o navegador prenda o arquivo em cache
+                        // O parâmetro ?t= impede que o navegador prenda o posts.json em cache
                         const response = await fetch('posts.json?t=' + new Date().getTime());
                         if (response.ok) {
                             const data = await response.json();
