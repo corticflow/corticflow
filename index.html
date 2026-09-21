@@ -6,7 +6,7 @@
     <title>CorticFlow | Inteligência &amp; Benchmark em IA</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&amp;family=Space+Grotesk:wght@500;700&amp;family=Fira+Code&amp;display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@500;700&family=Fira+Code&display=swap" rel="stylesheet">
     <script>
         tailwind.config = {
             theme: {
@@ -27,7 +27,7 @@
     </script>
     <style>
         body { font-family: 'Inter', sans-serif; background-color: #0B0F19; }
-        .glass { background: rgba(17, 24, 39, 0.85); backdrop-filter: blur(14px); border: 1px solid rgba(255, 255, 255, 0.08); }
+        .glass { background: rgba(17, 24, 39, 0.85); backdrop-filter: blur(16px); border: 1px solid rgba(255, 255, 255, 0.08); }
         .custom-scrollbar::-webkit-scrollbar { width: 6px; }
         .custom-scrollbar::-webkit-scrollbar-thumb { background: #374151; border-radius: 8px; }
         [x-cloak] { display: none !important; }
@@ -39,10 +39,10 @@
     <!-- Header / Navbar -->
     <header class="glass sticky top-0 z-40 border-b border-white/10 px-6 py-4 relative">
         <div class="max-w-7xl mx-auto flex justify-between items-center">
-            <div class="flex items-center gap-3">
-                <div class="w-9 h-9 bg-gradient-to-tr from-cyan to-violet rounded-xl flex items-center justify-center text-slate-900 font-bold text-lg shadow-lg shadow-cyan/20">C</div>
+            <a href="index.html" class="flex items-center gap-3 group">
+                <div class="w-9 h-9 bg-gradient-to-tr from-cyan to-violet rounded-xl flex items-center justify-center text-slate-900 font-bold text-lg shadow-lg shadow-cyan/20 group-hover:scale-105 transition-transform">C</div>
                 <span class="text-2xl font-bold tracking-tighter font-display text-white">Cortic<span class="text-cyan">Flow</span></span>
-            </div>
+            </a>
             
             <nav class="hidden md:flex items-center gap-6 text-sm font-medium text-slate-400">
                 <a href="#benchmark" class="hover:text-cyan transition-colors" x-text="t[currentLang].navBenchmark"></a>
@@ -50,6 +50,7 @@
                 <a href="terms.html" class="hover:text-cyan transition-colors" x-text="t[currentLang].navTerms"></a>
                 <a href="privacy.html" class="hover:text-cyan transition-colors" x-text="t[currentLang].navPrivacy"></a>
             </nav>
+
             <div class="flex items-center gap-4">
                 <!-- Seletor de Idioma Bilíngue -->
                 <div class="flex items-center bg-white/5 border border-white/10 rounded-full p-1 shadow-inner">
@@ -62,6 +63,7 @@
                         :class="currentLang === 'en' ? 'bg-cyan text-slate-950 font-extrabold shadow-sm' : 'text-slate-400 hover:text-white'" 
                         class="px-3 py-1 text-xs rounded-full transition-all">EN</button>
                 </div>
+
                 <a href="#newsletter" class="hidden sm:inline-block bg-cyan text-slate-950 font-bold text-xs px-4 py-2 rounded-full hover:bg-white transition-all shadow-md shadow-cyan/20" x-text="t[currentLang].navNewsletter"></a>
             </div>
         </div>
@@ -80,8 +82,9 @@
 
     <!-- Seção de Benchmark da Semana (Leaderboard & Gráfico) -->
     <section id="benchmark" class="max-w-7xl mx-auto px-6 pb-16 w-full relative z-10">
-        <div class="glass rounded-3xl p-6 md:p-10 border border-cyan/30 relative overflow-hidden">
+        <div class="glass rounded-3xl p-6 md:p-10 border border-cyan/30 relative overflow-hidden shadow-2xl">
             <div class="absolute -top-32 -right-32 w-80 h-80 bg-violet/15 blur-[120px] rounded-full pointer-events-none"></div>
+
             <!-- Cabeçalho do Benchmark -->
             <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8 border-b border-white/10 pb-6">
                 <div>
@@ -96,8 +99,9 @@
                     <span x-text="t[currentLang].benchmarkUpdated"></span>: <strong class="text-white" x-text="t[currentLang].benchmarkWeekDate"></strong>
                 </div>
             </div>
+
             <!-- Card Destaque: #1 Modelo da Semana -->
-            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 items-center mb-10 bg-gradient-to-br from-[#131B2E] to-[#111827] p-6 md:p-8 rounded-2xl border border-cyan/20">
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 items-center mb-10 bg-gradient-to-br from-[#131B2E] to-[#111827] p-6 md:p-8 rounded-2xl border border-cyan/25 shadow-lg">
                 <div class="lg:col-span-1">
                     <span class="inline-block px-3 py-1 text-[10px] font-bold uppercase tracking-widest bg-cyan/15 text-cyan border border-cyan/30 rounded-md mb-3" x-text="t[currentLang].topModelBadge"></span>
                     <h3 class="text-2xl md:text-3xl font-extrabold text-white mb-2" x-text="benchmarks[0].name"></h3>
@@ -116,6 +120,7 @@
                         </svg>
                     </a>
                 </div>
+
                 <!-- Gráfico de Barras de Performance -->
                 <div class="lg:col-span-2 space-y-4">
                     <div>
@@ -156,6 +161,7 @@
                     </div>
                 </div>
             </div>
+
             <!-- Tabela Comparativa de IAs com Links Diretos de Uso -->
             <div class="overflow-x-auto custom-scrollbar">
                 <table class="w-full text-left text-xs">
@@ -219,20 +225,21 @@
             <p class="text-slate-400 text-sm font-mono" x-text="t[currentLang].loadingText"></p>
         </div>
 
-        <!-- Articles Grid (Cards Interativos) -->
+        <!-- Articles Grid (Cards Interativos com Gradiente e Efeito Cyber) -->
         <div x-show="!isLoading" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             <template x-for="item in articles" :key="item.id">
                 <article 
-                    class="glass rounded-2xl overflow-hidden hover:border-cyan/50 hover:shadow-2xl hover:shadow-cyan/10 transition-all duration-300 flex flex-col cursor-pointer group transform hover:-translate-y-1.5"
+                    class="relative rounded-2xl overflow-hidden border border-white/10 hover:border-cyan/50 transition-all duration-300 flex flex-col cursor-pointer group transform hover:-translate-y-1.5 hover:shadow-[0_12px_35px_rgba(0,229,255,0.15)] bg-gradient-to-b from-[#131B2E]/90 to-[#0B0F19]/95 backdrop-blur-xl"
                     @click="openModal(item)">
                     <div class="aspect-video w-full overflow-hidden bg-slate-900 relative">
                         <img 
                             :src="item.image" 
                             :alt="getArticleTitle(item)"
                             class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
-                            onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1677442136019-21780ecad995?q=80&amp;w=1600&amp;h=900&amp;fit=crop';">
+                            onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=1600&h=900&fit=crop';">
+                        <div class="absolute inset-0 bg-gradient-to-t from-[#0B0F19] via-transparent to-transparent opacity-60"></div>
                         <div class="absolute top-3 left-3">
-                            <span class="px-2.5 py-1 text-[10px] font-bold uppercase tracking-widest bg-slate-950/85 text-cyan rounded-md border border-cyan/30 backdrop-blur-md" x-text="item.source"></span>
+                            <span class="px-2.5 py-1 text-[10px] font-bold uppercase tracking-widest bg-slate-950/85 text-cyan rounded-md border border-cyan/30 backdrop-blur-md shadow-md" x-text="item.source"></span>
                         </div>
                     </div>
                     <div class="p-6 flex-1 flex flex-col justify-between">
@@ -263,25 +270,40 @@
         x-transition:leave="transition ease-in duration-200"
         x-transition:leave-start="opacity-100"
         x-transition:leave-end="opacity-0">
+        
         <div 
             class="bg-[#111827] border border-white/15 rounded-3xl max-w-3xl w-full max-h-[90vh] overflow-y-auto custom-scrollbar p-6 md:p-10 relative shadow-2xl"
             @click.outside="closeModal()">
+            
             <button 
                 @click="closeModal()" 
                 class="absolute top-6 right-6 text-slate-400 hover:text-white bg-white/5 hover:bg-white/10 w-9 h-9 rounded-full flex items-center justify-center transition-all">
                 ✕
             </button>
+
             <template x-if="activeDoc">
                 <div>
                     <div class="flex items-center gap-3 mb-4">
                         <span class="px-2.5 py-1 text-[10px] font-bold uppercase tracking-widest bg-cyan/10 text-cyan border border-cyan/30 rounded" x-text="activeDoc.source"></span>
                         <span class="text-xs text-slate-500 font-mono" x-text="activeDoc.date"></span>
                     </div>
+
                     <h2 class="text-2xl md:text-4xl font-extrabold font-display text-white mb-6 leading-tight" x-text="getArticleTitle(activeDoc)"></h2>
-                    <div class="aspect-video w-full rounded-2xl overflow-hidden mb-8 border border-white/10">
+
+                    <div class="aspect-video w-full rounded-2xl overflow-hidden mb-8 border border-white/10 relative shadow-xl">
                         <img :src="activeDoc.image" :alt="getArticleTitle(activeDoc)" class="w-full h-full object-cover">
+                        <div class="absolute inset-0 bg-gradient-to-t from-[#111827] via-transparent to-transparent opacity-40"></div>
                     </div>
-                    <div class="prose prose-invert max-w-none text-slate-300 text-sm md:text-base leading-relaxed space-y-4 whitespace-pre-line" x-text="getArticleContent(activeDoc)"></div>
+
+                    <!-- Box Destaque Executivo -->
+                    <div class="bg-[#131B2E] border-l-4 border-cyan p-4 rounded-r-xl mb-6 text-xs md:text-sm text-slate-300 leading-relaxed font-sans shadow-inner">
+                        <strong class="text-cyan block mb-1 font-mono uppercase tracking-wider" x-text="currentLang === 'pt' ? 'Síntese Editorial' : 'Editorial Brief'"></strong>
+                        <span x-text="getArticleExcerpt(activeDoc)"></span>
+                    </div>
+
+                    <!-- Conteúdo Long-Form Completo -->
+                    <div class="text-slate-300 text-sm md:text-base leading-relaxed space-y-4 whitespace-pre-line font-sans" x-text="getArticleContent(activeDoc)"></div>
+
                     <div class="mt-8 pt-6 border-t border-white/10 flex flex-col sm:flex-row justify-between items-center gap-4">
                         <a 
                             :href="activeDoc.link" 
@@ -420,7 +442,7 @@
 
     function corticFlow() {
         return {
-            currentLang: 'pt',
+            currentLang: localStorage.getItem('corticflow_lang') || 'pt',
             isLoading: true,
             isModalOpen: false,
             activeDoc: null,
@@ -529,6 +551,7 @@
             },
             setLanguage(lang) {
                 this.currentLang = lang;
+                localStorage.setItem('corticflow_lang', lang);
                 document.documentElement.lang = lang === 'pt' ? 'pt-BR' : 'en';
             },
             getArticleTitle(item) {
@@ -541,7 +564,7 @@
             },
             getArticleContent(item) {
                 if (!item) return '';
-                return this.currentLang === 'pt' ? (item.content_pt || item.fullContent) : (item.content_en || item.fullContent);
+                return this.currentLang === 'pt' ? (item.content_pt || item.fullContent || item.content) : (item.content_en || item.fullContent || item.content);
             },
             async init() {
                 this.isLoading = true;
@@ -552,60 +575,60 @@
                         this.articles = data.map((item, idx) => ({
                             id: item.id || (idx + 1),
                             source: item.source || 'AI News',
-                            image: item.image || 'https://images.unsplash.com/photo-1677442136019-21780ecad995?q=80&amp;w=1600&amp;h=900&amp;fit=crop',
+                            image: item.image || 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=1600&h=900&fit=crop',
                             date: this.currentLang === 'pt' ? 'Recente' : 'Recent',
                             title_pt: item.title_pt || item.title,
                             title_en: item.title_en || item.title,
                             excerpt_pt: item.excerpt_pt || '',
                             excerpt_en: item.excerpt_en || '',
-                            content_pt: item.content_pt || '',
-                            content_en: item.content_en || '',
-                            link: item.link || '#'
+                            content_pt: item.content_pt || item.content || '',
+                            content_en: item.content_en || item.content || '',
+                            link: (item.link && item.link.startsWith('http')) ? item.link : 'https://corticflow.com'
                         }));
                     } else {
                         throw new Error('posts.json não encontrado');
                     }
                 } catch (e) {
-                    console.warn('posts.json não carregado ou offline, exibindo artigos de contingência:', e);
+                    console.warn('posts.json offline ou não encontrado, carregando contingência:', e);
                     this.articles = [
                         {
                             id: 1,
                             source: "X | @OpenAI",
-                            image: "https://image.pollinations.ai/prompt/OpenAI%20persistent%20mode%20autonomous%20agents%20neural%20network%20servers,%2016:9%20cinematic%20lighting,%20dark%20slate%20cyan%20violet,%208k?width=1280&height=720&nologo=true&model=flux",
+                            image: "https://images.unsplash.com/photo-1620712943543-bcc463867000?q=80&w=1600&h=900&fit=crop",
                             date: this.currentLang === 'pt' ? 'Recente' : 'Recent',
                             title_pt: "OpenAI Implementa Modo Persistente para Agentes Always-On",
                             title_en: "OpenAI Deploys Persistent Mode for Always-On Autonomous Agents",
-                            excerpt_pt: "A transição de modelos acionados por prompt para instâncias de execução contínua reconfigura a engenharia de software.",
+                            excerpt_pt: "A transição de modelos acionados por prompt para instâncias de execução contínua reconfigura a infraestrutura de engenharia de software.",
                             excerpt_en: "The architectural shift from single-turn prompts to continuous execution loops transforms software workflows.",
-                            content_pt: "O modo persistente marca a transição dos agentes de IA de utilitários de ciclo único para serviços autônomos que operam de forma contínua em servidores de produção.",
-                            content_en: "Persistent Mode represents the evolution of AI agents from single-shot prompts into continuously running background services.",
+                            content_pt: "1. Síntese Executiva:\nA OpenAI anunciou uma atualização estrutural para sistemas autônomos com a ativação do 'Persistent Mode'. Trata-se da evolução definitiva dos modelos generativos de disparo único para instâncias operacionais que executam loops contínuos de reflexão, teste e implementação de código em ambientes corporativos.\n\n2. Arquitetura Técnica & Especificações:\nA nova arquitetura introduz um barramento de contexto em estado sólido que retém o histórico de execução de tarefas sem recalcular os tokens de atenção a cada ciclo. Com isso, os agentes conseguem monitorar repositórios de código, logs de servidores e pipelines de CI/CD 24 horas por dia, identificando vulnerabilidades e propondo correções antes mesmo que falhas afetem usuários finais.\n\n3. Impacto no Mercado & Desenvolvedores:\nO custo de computação para tarefas prolongadas é reduzido em até 60% graças ao cache semântico de contexto persistente. Empresas de tecnologia agora podem delegar manutenções de infraestrutura e refatorações complexas de código a agentes que não 'esquecem' o escopo do projeto.\n\n4. Perspectiva Estratégica:\nA iniciativa coloca forte pressão sobre concorrentes como Google e Anthropic para lançarem ambientes nativos de background execution. A era do software operado puramente por comandos pontuais está cedendo espaço para a cognição automatizada contínua.",
+                            content_en: "1. Executive Summary:\nOpenAI has officially launched 'Persistent Mode' for autonomous systems. This represents a paradigm shift from single-turn generative prompts to always-on execution loops that continuously observe, reason, and act within production software environments.\n\n2. Technical Architecture & Specs:\nThe runtime architecture incorporates stateful memory buses that cache transformer key-value states without recalculating past tokens across execution steps. This enables persistent agents to monitor repositories and CI/CD pipelines 24/7, intercepting runtime regressions autonomously.\n\n3. Industry & Developer Impact:\nInference overhead for long-horizon planning drops by over 60% via semantic context caching. Engineering teams can now deploy persistent maintainer bots capable of maintaining vast legacy codebases without state loss.\n\n4. Strategic Outlook:\nThis deployment accelerates the competitive race against Anthropic and Google DeepMind for native background agent runtimes, anchoring AI directly into the backbone of cloud operations.",
                             link: "https://openai.com/news"
                         },
                         {
                             id: 2,
-                            source: "X | @NVIDIAAI",
-                            image: "https://image.pollinations.ai/prompt/Nvidia%20Blackwell%20HBM4%20microchip%20semiconductor%20glowing%20cyan%20violet,%2016:9%20cinematic%20lighting,%208k?width=1280&height=720&nologo=true&model=flux",
+                            source: "Nvidia News",
+                            image: "https://images.unsplash.com/photo-1591799264318-7e6ef8ddb7ea?q=80&w=1600&h=900&fit=crop",
                             date: this.currentLang === 'pt' ? 'Recente' : 'Recent',
-                            title_pt: "Nvidia Acelera Transição para Memória HBM4 em Clusters Blackwell",
-                            title_en: "Nvidia Accelerates Transition to HBM4 Memory in Blackwell Clusters",
-                            excerpt_pt: "A adoção de memórias HBM4 visa mitigar a 'Memory Wall', permitindo largura de banda superior a 8 TB/s.",
+                            title_pt: "Nvidia Acelera Transição para Memória HBM4 em Clusters Blackwell Ultra",
+                            title_en: "Nvidia Accelerates Transition to HBM4 Memory in Blackwell Ultra Clusters",
+                            excerpt_pt: "A adoção das pilhas de memória HBM4 supera a barreira da 'Memory Wall', permitindo largura de banda superior a 8 TB/s por acelerador.",
                             excerpt_en: "HBM4 adoption overcomes the Memory Wall bottleneck, delivering extreme throughput above 8 TB/s per accelerator.",
-                            content_pt: "A nova arquitetura de memória resolve os gargalos de transferência que limitavam modelos de raciocínio de longa duração.",
-                            content_en: "Next-gen memory architecture addresses critical bandwidth limitations for massive multimodal reasoning workloads.",
+                            content_pt: "1. Síntese Executiva:\nA Nvidia revelou novas especificações para sua linha Blackwell Ultra, confirmando a antecipação de módulos de memória HBM4 (High Bandwidth Memory 4). O anúncio responde diretamente à demanda crescente por largura de banda em modelos de raciocínio multimodal de trilhões de parâmetros.\n\n2. Arquitetura Técnica & Especificações:\nCom barramentos de 2048 bits e empilhamento tridimensional de silício (3D IC), os novos aceleradores atingem taxas de transferência de dados que ultrapassam 8 Terabytes por segundo. Isso resolve a histórica 'Memory Wall', onde GPUs ficavam ociosas esperando o carregamento de pesos durante a etapa de inferência autorregressiva.\n\n3. Impacto no Mercado & Desenvolvedores:\nA eficiência energética por token gerado salta em 3,2x em comparação com a geração Hopper H100. Provedores de hiperescala poderão compactar clusters inteiros em densidades térmicas menores, barateando a hospedagem de IAs de fronteira.\n\n4. Perspectiva Estratégica:\nAo fechar contratos de exclusividade com fabricantes de wafers como TSMC e SK Hynix, a Nvidia consolida ainda mais seu fosso competitivo contra alternativas de silício customizado de rivais como AMD e Amazon Trainium.",
+                            content_en: "1. Executive Summary:\nNvidia has unveiled updated hardware specifications for the Blackwell Ultra series, confirming accelerated integration of HBM4 memory stacks to power massive multimodal reasoning workloads.\n\n2. Technical Architecture & Specs:\nFeaturing 2048-bit bus interfaces and advanced 3D packaging, bandwidth exceeds 8 Terabytes per second per socket. This eliminates the traditional memory wall bottleneck that previously left compute units starved during autoregressive decode passes.\n\n3. Industry & Developer Impact:\nEnergy efficiency per token increases by 3.2x compared to the previous generation, drastically lowering data center operational expenditures for massive frontier clusters.\n\n4. Strategic Outlook:\nThrough strategic packaging partnerships with TSMC and SK Hynix, Nvidia maintains a formidable technological moat against rival accelerators across the hyperscale AI landscape.",
                             link: "https://nvidianews.nvidia.com"
                         },
                         {
                             id: 3,
                             source: "X | @deepseek_ai",
-                            image: "https://image.pollinations.ai/prompt/DeepSeek%20open%20source%20neural%20reasoning%20model%20matrix%20hologram,%2016:9%20cinematic%20lighting,%20cyan%20neon,%208k?width=1280&height=720&nologo=true&model=flux",
+                            image: "https://images.unsplash.com/photo-1558494949-ef010911182e?q=80&w=1600&h=900&fit=crop",
                             date: this.currentLang === 'pt' ? 'Recente' : 'Recent',
-                            title_pt: "DeepSeek Disponibiliza Pesos Otimizados para Raciocínio Aberto",
-                            title_en: "DeepSeek Releases Optimized Weights for Frontier Open Reasoning",
-                            excerpt_pt: "Arquiteturas de raciocínio aberto demonstram paridade com modelos proprietários reduzindo o custo em até 85%.",
+                            title_pt: "DeepSeek Disponibiliza Pesos Otimizados de Raciocínio Aberto com MoE",
+                            title_en: "DeepSeek Releases Open-Weights MoE Reasoning Architecture",
+                            excerpt_pt: "Arquiteturas esparsas de raciocínio aberto demonstram paridade com modelos proprietários de ponta reduzindo o custo operacional em 85%.",
                             excerpt_en: "Open-weights reasoning architectures achieve near-parity with frontier proprietary systems while cutting inference costs by 85%.",
-                            content_pt: "Os novos modelos de raciocínio aberto da DeepSeek comprovam que a destilação de conhecimento e arquiteturas esparsas de Mixture-of-Experts (MoE) viabilizam execução de alto nível mesmo em clusters de hardware acessíveis.",
-                            content_en: "DeepSeek's open reasoning checkpoints prove that knowledge distillation combined with sparse Mixture-of-Experts architectures enables frontier-level execution on modest compute infrastructure.",
-                            link: "https://deepseek.com"
+                            content_pt: "1. Síntese Executiva:\nA DeepSeek lançou uma nova família de checkpoints de código aberto para modelos de raciocínio baseados em Mixture-of-Experts (MoE). O lançamento reafirma o poder do ecossistema open-source frente a gigantes proprietários de Silicon Valley.\n\n2. Arquitetura Técnica & Especificações:\nO modelo ativa apenas 37 bilhões de parâmetros dos 671 bilhões totais para cada token gerado. Essa rotação esparsa de especialistas permite inferência ultra-rápida com baixo consumo de VRAM, alcançando notas recordes em testes de raciocínio matemático (AIME) e competições de programação (Codeforces).\n\n3. Impacto no Mercado & Desenvolvedores:\nA disponibilidade imediata dos pesos sob licença comercial permissiva permite que empresas operem suas próprias frotas de IA privada sem pagar taxas de API recorrentes a provedores de nuvem fechados.\n\n4. Perspectiva Estratégica:\nA revolução dos pesos abertos liderada pela DeepSeek altera a geopolítica do desenvolvimento de IA, provando que otimização algorítmica e destilação superam a força bruta de capital financeiro.",
+                            content_en: "1. Executive Summary:\nDeepSeek has released its latest open-weights Mixture-of-Experts (MoE) reasoning model checkpoints, delivering state-of-the-art synthetic reasoning to the global open-source community.\n\n2. Technical Architecture & Specs:\nActivating only 37B parameters out of a 671B parameter total footprint per token, the sparse routing mechanism achieves unprecedented throughput on commodity compute clusters, rivaling closed frontier competitors in mathematical logic.\n\n3. Industry & Developer Impact:\nWith permissive commercial licensing, software teams can deploy sovereign reasoning clusters on-premise, bypassing cloud token fees and proprietary vendor lock-in.\n\n4. Strategic Outlook:\nDeepSeek proves that algorithmic innovation and knowledge distillation can outpace brute-force compute scaling, reshaping the open AI frontier worldwide.",
+                            link: "https://www.deepseek.com"
                         }
                     ];
                 } finally {
@@ -625,4 +648,12 @@
     }
     </script>
 </body>
-</html>
+</html>'''
+
+with open('/tmp/final_validated_index.html', 'w') as f:
+    f.write(html_content)
+
+print("Validated index built successfully!")
+EOF
+python3 /tmp/build_new_index.py
+}}
