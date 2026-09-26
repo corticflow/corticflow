@@ -5,579 +5,748 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CorticFlow — The Stream of AI & Tech Intelligence</title>
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🧠</text></svg>">
+    
+    <!-- Google Fonts: Space Grotesk (Display), Inter (Editorial), JetBrains Mono (Tech HUD) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700;800&family=Space+Grotesk:wght@500;600;700;800&display=swap" rel="stylesheet">
+
     <style>
         :root {
-            --bg-primary: #080B11;
-            --bg-secondary: #0F1420;
-            --bg-card: #131A29;
-            --bg-card-hover: #1A2337;
-            --border-color: rgba(255, 255, 255, 0.08);
-            --border-hover: rgba(0, 229, 255, 0.35);
-            --text-primary: #F8FAFC;
+            --bg-void: #04060A;
+            --bg-surface: #0A0E17;
+            --bg-card: rgba(13, 19, 32, 0.7);
+            --bg-card-hover: rgba(19, 27, 45, 0.85);
+            --border-subtle: rgba(255, 255, 255, 0.07);
+            --border-glow: rgba(0, 240, 255, 0.4);
+            
+            --cyan: #00F0FF;
+            --cyan-glow: rgba(0, 240, 255, 0.18);
+            --purple: #8A4FFF;
+            --purple-glow: rgba(138, 79, 255, 0.18);
+            --emerald: #00F5A0;
+            --amber: #FFB800;
+            
+            --text-main: #F1F5F9;
             --text-secondary: #94A3B8;
             --text-muted: #64748B;
-            --cyan: #00E5FF;
-            --cyan-glow: rgba(0, 229, 255, 0.15);
-            --purple: #8B5CF6;
-            --purple-glow: rgba(139, 92, 246, 0.15);
-            --radius-sm: 6px;
-            --radius-md: 12px;
-            --radius-lg: 20px;
-            --transition: 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+            
+            --font-display: 'Space Grotesk', -apple-system, sans-serif;
+            --font-body: 'Inter', -apple-system, sans-serif;
+            --font-mono: 'JetBrains Mono', monospace;
+            
+            --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
         }
+
         * { box-sizing: border-box; margin: 0; padding: 0; }
+        
         body {
-            background-color: var(--bg-primary);
-            color: var(--text-primary);
-            font-family: 'Inter', -apple-system, sans-serif;
+            background-color: var(--bg-void);
+            color: var(--text-main);
+            font-family: var(--font-body);
             line-height: 1.6;
             overflow-x: hidden;
+            background-image: 
+                radial-gradient(circle at 15% 15%, rgba(0, 240, 255, 0.04) 0%, transparent 40%),
+                radial-gradient(circle at 85% 85%, rgba(138, 79, 255, 0.05) 0%, transparent 40%);
+            background-attachment: fixed;
         }
-        a { color: inherit; text-decoration: none; }
-        .container { max-width: 1280px; margin: 0 auto; padding: 0 24px; }
 
+        a { color: inherit; text-decoration: none; cursor: pointer; }
+        .container { max-width: 1360px; margin: 0 auto; padding: 0 24px; position: relative; z-index: 10; }
+
+        /* Background Canvas */
         #neural-canvas {
-            position: fixed; top: 0; left: 0;
-            width: 100vw; height: 100vh;
-            pointer-events: none; z-index: 0;
-            opacity: 0.3;
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            pointer-events: none; z-index: 1; opacity: 0.22;
         }
 
-        /* Header */
+        /* Ambient Noise Texture */
+        .noise-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.03'/%3E%3C/svg%3E");
+            pointer-events: none; z-index: 2;
+        }
+
+        /* Top HUD Bar */
+        .top-hud {
+            border-bottom: 1px solid var(--border-subtle);
+            background: rgba(4, 6, 10, 0.7);
+            backdrop-filter: blur(12px);
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            padding: 8px 0;
+            position: relative; z-index: 101;
+        }
+        .top-hud-inner {
+            display: flex; align-items: center; justify-content: space-between;
+        }
+        .hud-status {
+            display: flex; align-items: center; gap: 16px;
+        }
+        .status-badge {
+            display: inline-flex; align-items: center; gap: 6px;
+            color: var(--emerald); font-weight: 600;
+        }
+        .pulse-dot {
+            width: 6px; height: 6px; border-radius: 50%;
+            background: var(--emerald);
+            box-shadow: 0 0 8px var(--emerald);
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
+
+        /* Main Header */
         header {
             position: sticky; top: 0;
-            background: rgba(8, 11, 17, 0.88);
-            backdrop-filter: blur(16px);
-            border-bottom: 1px solid var(--border-color);
+            background: rgba(4, 6, 10, 0.85);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border-subtle);
             z-index: 100;
         }
         .header-inner {
             display: flex; align-items: center; justify-content: space-between;
-            height: 72px;
+            height: 76px;
         }
-        .logo {
-            display: flex; align-items: center; gap: 10px;
-            font-weight: 800; font-size: 1.35rem; letter-spacing: -0.02em;
+        .brand {
+            display: flex; align-items: center; gap: 12px;
+            font-family: var(--font-display);
+            font-weight: 800; font-size: 1.45rem; letter-spacing: -0.03em;
         }
-        .logo-icon {
-            width: 32px; height: 32px;
+        .brand-gem {
+            width: 34px; height: 34px; border-radius: 9px;
             background: linear-gradient(135deg, var(--cyan), var(--purple));
-            border-radius: 8px;
             display: flex; align-items: center; justify-content: center;
-            font-size: 16px; box-shadow: 0 0 15px rgba(0, 229, 255, 0.3);
+            font-size: 17px; box-shadow: 0 0 20px rgba(0, 240, 255, 0.35);
         }
-        .logo span { color: var(--cyan); }
-        nav { display: flex; align-items: center; gap: 24px; }
+        .brand span { color: var(--cyan); }
+
+        nav { display: flex; align-items: center; gap: 28px; }
         nav a {
             font-size: 0.875rem; font-weight: 500; color: var(--text-secondary);
-            transition: var(--transition); cursor: pointer;
+            transition: color 0.2s; position: relative;
         }
-        nav a:hover { color: var(--cyan); }
-
-        /* Controles do Header */
-        .header-controls {
-            display: flex; align-items: center; gap: 14px;
+        nav a:hover { color: #FFF; }
+        nav a:hover::after {
+            content: ''; position: absolute; bottom: -4px; left: 0; width: 100%; height: 2px;
+            background: var(--cyan); border-radius: 2px;
         }
 
-        /* Botão Bilíngue Internacional PT / EN */
-        .lang-switch {
-            display: inline-flex; align-items: center;
+        .header-actions { display: flex; align-items: center; gap: 14px; }
+        
+        .cmd-trigger {
+            display: inline-flex; align-items: center; gap: 8px;
             background: rgba(255, 255, 255, 0.05);
-            border: 1px solid var(--border-color);
+            border: 1px solid var(--border-subtle);
+            padding: 6px 14px; border-radius: 8px;
+            font-family: var(--font-mono); font-size: 0.75rem; color: var(--text-muted);
+            cursor: pointer; transition: all 0.2s;
+        }
+        .cmd-trigger:hover {
+            border-color: var(--cyan); color: var(--text-main);
+            background: rgba(0, 240, 255, 0.08);
+        }
+        .cmd-key {
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 4px; padding: 2px 6px; font-weight: 700;
+        }
+
+        .lang-toggle {
+            display: inline-flex; align-items: center;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid var(--border-subtle);
             border-radius: 9999px; padding: 3px;
-            font-family: 'JetBrains Mono', monospace; font-size: 0.75rem;
-            box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.5);
+            font-family: var(--font-mono); font-size: 0.75rem;
         }
         .lang-btn {
             border: none; background: transparent; color: var(--text-muted);
-            padding: 5px 12px; border-radius: 9999px; font-weight: 700;
-            cursor: pointer; transition: var(--transition);
+            padding: 4px 12px; border-radius: 9999px; font-weight: 700;
+            cursor: pointer; transition: all 0.2s;
         }
         .lang-btn.active {
             background: var(--cyan); color: #000;
-            box-shadow: 0 0 12px rgba(0, 229, 255, 0.4);
-        }
-        .lang-btn:hover:not(.active) {
-            color: #FFF;
+            box-shadow: 0 0 12px rgba(0, 240, 255, 0.5);
         }
 
-        .btn-header {
+        .btn-glow {
             background: linear-gradient(135deg, var(--cyan), var(--purple));
-            color: #000; font-size: 0.8125rem; font-weight: 700;
-            padding: 8px 18px; border-radius: 9999px;
-            cursor: pointer; border: none; transition: var(--transition);
-            display: inline-flex; align-items: center; gap: 6px;
+            color: #000; font-family: var(--font-display);
+            font-size: 0.8125rem; font-weight: 700;
+            padding: 9px 20px; border-radius: 8px;
+            border: none; cursor: pointer; transition: transform 0.2s, box-shadow 0.2s;
         }
-        .btn-header:hover { opacity: 0.9; transform: translateY(-1px); }
-
-        @media(max-width: 860px) {
-            nav { display: none; }
-        }
-
-        /* Hero Section */
-        .hero { position: relative; z-index: 10; padding: 36px 0 24px; }
-        .ticker-pill {
-            display: inline-flex; align-items: center; gap: 8px;
-            padding: 6px 14px; border-radius: 9999px;
-            background: rgba(0, 229, 255, 0.08); border: 1px solid rgba(0, 229, 255, 0.25);
-            font-family: 'JetBrains Mono', monospace; font-size: 0.75rem;
-            color: var(--cyan); margin-bottom: 24px;
-        }
-        .ticker-dot {
-            width: 7px; height: 7px; border-radius: 50%;
-            background: var(--cyan); box-shadow: 0 0 8px var(--cyan);
-            animation: pulse 2s infinite;
-        }
-        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
-
-        .hero-grid {
-            display: grid; grid-template-columns: 1fr; gap: 28px;
-        }
-        @media(min-width: 992px) {
-            .hero-grid { grid-template-columns: 1.8fr 1fr; }
+        .btn-glow:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(0, 240, 255, 0.35);
         }
 
-        /* Lead Story Card */
-        .lead-card {
+        @media(max-width: 900px) { nav, .cmd-trigger { display: none; } }
+
+        /* Bento Grid Architecture (Awwwards Style) */
+        .bento-section { padding: 40px 0 60px; }
+        
+        .bento-layout {
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            gap: 24px;
+        }
+
+        /* Interactive Spotlight Card */
+        .bento-card {
             background: var(--bg-card);
-            border: 1px solid var(--border-color);
-            border-radius: var(--radius-lg);
-            overflow: hidden; cursor: pointer;
-            transition: var(--transition);
+            backdrop-filter: blur(16px);
+            border: 1px solid var(--border-subtle);
+            border-radius: 20px;
+            overflow: hidden;
+            position: relative;
+            cursor: pointer;
+            transition: transform 0.35s var(--ease-out), border-color 0.35s, box-shadow 0.35s;
             display: flex; flex-direction: column;
         }
-        .lead-card:hover {
-            border-color: var(--border-hover);
-            transform: translateY(-2px);
-            box-shadow: 0 12px 30px rgba(0, 229, 255, 0.1);
+        .bento-card::before {
+            content: '';
+            position: absolute; inset: 0;
+            border-radius: 20px;
+            padding: 1px;
+            background: radial-gradient(400px circle at var(--mouse-x, -500px) var(--mouse-y, -500px), rgba(0, 240, 255, 0.35), transparent 40%);
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.3s;
         }
-        .aspect-16-9 {
-            width: 100%; aspect-ratio: 16/9; overflow: hidden;
-            background: #000; position: relative;
+        .bento-card:hover::before { opacity: 1; }
+        .bento-card:hover {
+            transform: translateY(-4px);
+            border-color: rgba(0, 240, 255, 0.3);
+            box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.6), 0 0 30px rgba(0, 240, 255, 0.08);
         }
-        .aspect-16-9 img {
-            width: 100%; height: 100%; object-fit: cover;
-            transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+
+        /* Lead Story: 8 cols */
+        .card-lead {
+            grid-column: span 8;
+            min-height: 480px;
         }
-        .lead-card:hover .aspect-16-9 img,
-        .grid-card:hover .aspect-16-9 img {
-            transform: scale(1.04);
+        @media(max-width: 1024px) { .card-lead { grid-column: span 12; } }
+
+        .lead-hero-img {
+            width: 100%; height: 280px; object-fit: cover;
+            transition: transform 0.8s var(--ease-out);
         }
-        .lead-body { padding: 28px; display: flex; flex-direction: column; gap: 12px; flex-grow: 1; }
-        .tag-badge {
+        .bento-card:hover .lead-hero-img { transform: scale(1.03); }
+
+        .lead-content {
+            padding: 32px; display: flex; flex-direction: column; gap: 14px; flex-grow: 1;
+        }
+        .card-tag {
             align-self: flex-start;
             padding: 4px 10px; border-radius: 6px;
-            font-size: 0.75rem; font-weight: 700;
-            font-family: 'JetBrains Mono', monospace;
-            text-transform: uppercase; letter-spacing: 0.04em;
+            font-family: var(--font-mono); font-size: 0.75rem; font-weight: 700;
+            text-transform: uppercase; letter-spacing: 0.05em;
         }
-        .badge-cyan { background: rgba(0, 229, 255, 0.12); color: var(--cyan); border: 1px solid rgba(0, 229, 255, 0.3); }
-        .badge-purple { background: rgba(139, 92, 246, 0.12); color: var(--purple); border: 1px solid rgba(139, 92, 246, 0.3); }
-        .badge-emerald { background: rgba(16, 185, 129, 0.12); color: #10B981; border: 1px solid rgba(16, 185, 129, 0.3); }
-        .badge-blue { background: rgba(59, 130, 246, 0.12); color: #3B82F6; border: 1px solid rgba(59, 130, 246, 0.3); }
+        .tag-cyan { background: rgba(0, 240, 255, 0.1); color: var(--cyan); border: 1px solid rgba(0, 240, 255, 0.25); }
+        .tag-purple { background: rgba(138, 79, 255, 0.1); color: var(--purple); border: 1px solid rgba(138, 79, 255, 0.25); }
+        .tag-emerald { background: rgba(0, 245, 160, 0.1); color: var(--emerald); border: 1px solid rgba(0, 245, 160, 0.25); }
 
         .lead-title {
-            font-size: 1.85rem; font-weight: 800; line-height: 1.25;
-            letter-spacing: -0.02em; color: #FFF;
+            font-family: var(--font-display);
+            font-size: 2.1rem; font-weight: 800; line-height: 1.2; letter-spacing: -0.03em;
+            color: #FFF;
         }
-        .lead-excerpt {
-            color: var(--text-secondary); font-size: 1rem; line-height: 1.6;
-        }
-        .card-meta {
-            display: flex; align-items: center; justify-content: space-between;
-            font-size: 0.8125rem; font-family: 'JetBrains Mono', monospace;
-            color: var(--text-muted); margin-top: auto; padding-top: 14px;
-            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        .lead-desc {
+            color: var(--text-secondary); font-size: 1.05rem; line-height: 1.6;
         }
 
-        /* Trending Column */
-        .trending-box {
-            background: var(--bg-card);
-            border: 1px solid var(--border-color);
-            border-radius: var(--radius-lg);
-            padding: 24px; display: flex; flex-direction: column;
-            gap: 16px;
+        /* Terminal Wire: 4 cols */
+        .card-wire {
+            grid-column: span 4;
+            padding: 28px;
+            display: flex; flex-direction: column; gap: 20px;
         }
-        .section-header {
+        @media(max-width: 1024px) { .card-wire { grid-column: span 12; } }
+
+        .wire-header {
             display: flex; align-items: center; justify-content: space-between;
-            border-bottom: 1px solid var(--border-color); padding-bottom: 14px;
+            border-bottom: 1px solid var(--border-subtle); padding-bottom: 14px;
         }
-        .section-header h3 {
-            font-size: 0.85rem; font-weight: 800; font-family: 'JetBrains Mono', monospace;
-            text-transform: uppercase; letter-spacing: 0.06em; color: var(--cyan);
+        .wire-header h3 {
+            font-family: var(--font-mono); font-size: 0.8125rem; font-weight: 800;
+            letter-spacing: 0.08em; text-transform: uppercase; color: var(--cyan);
             display: flex; align-items: center; gap: 8px;
         }
-        .trending-item {
-            display: flex; gap: 16px; padding: 14px; border-radius: var(--radius-md);
-            background: rgba(255, 255, 255, 0.02); border: 1px solid transparent;
-            cursor: pointer; transition: var(--transition);
+        .wire-list {
+            display: flex; flex-direction: column; gap: 14px;
         }
-        .trending-item:hover {
-            background: var(--bg-card-hover);
-            border-color: var(--border-hover);
+        .wire-item {
+            padding: 14px; border-radius: 12px;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid transparent;
+            transition: all 0.2s;
         }
-        .trending-idx {
-            font-family: 'JetBrains Mono', monospace; font-size: 1.25rem;
-            font-weight: 800; color: var(--cyan); line-height: 1;
+        .wire-item:hover {
+            background: rgba(255, 255, 255, 0.05);
+            border-color: rgba(0, 240, 255, 0.2);
+            transform: translateX(4px);
         }
-        .trending-content h4 {
-            font-size: 0.9375rem; font-weight: 600; line-height: 1.35;
-            color: #FFF; margin-bottom: 6px;
+        .wire-meta {
+            font-family: var(--font-mono); font-size: 0.72rem; color: var(--cyan); margin-bottom: 4px;
         }
-        .trending-content p {
-            font-size: 0.8125rem; color: var(--text-muted); font-family: 'JetBrains Mono', monospace;
+        .wire-item-title {
+            font-family: var(--font-display); font-size: 0.95rem; font-weight: 700; color: #FFF; line-height: 1.35;
         }
 
-        /* Filter Chips */
-        .radar-bar {
+        /* Standard 4-col Bento Items (Row 2 & 3) */
+        .col-4 { grid-column: span 4; }
+        .col-6 { grid-column: span 6; }
+        @media(max-width: 1024px) { .col-4, .col-6 { grid-column: span 6; } }
+        @media(max-width: 680px) { .col-4, .col-6 { grid-column: span 12; } }
+
+        .card-thumb {
+            width: 100%; aspect-ratio: 16/9; object-fit: cover;
+            transition: transform 0.6s var(--ease-out);
+        }
+        .bento-card:hover .card-thumb { transform: scale(1.04); }
+
+        .card-body {
+            padding: 24px; display: flex; flex-direction: column; gap: 12px; flex-grow: 1;
+        }
+        .card-heading {
+            font-family: var(--font-display); font-size: 1.25rem; font-weight: 700;
+            line-height: 1.3; color: #FFF;
+        }
+        .card-snip {
+            font-size: 0.9rem; color: var(--text-secondary); line-height: 1.55;
+            display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;
+        }
+        .card-foot {
+            margin-top: auto; padding-top: 16px; border-top: 1px solid var(--border-subtle);
+            display: flex; align-items: center; justify-content: space-between;
+            font-family: var(--font-mono); font-size: 0.75rem; color: var(--text-muted);
+        }
+
+        /* Filter Controls */
+        .filter-ribbon {
             display: flex; flex-wrap: wrap; gap: 10px; align-items: center;
-            padding: 24px 0 12px; position: relative; z-index: 10;
+            margin: 32px 0 24px;
         }
-        .radar-label {
-            font-size: 0.8125rem; font-weight: 700; color: var(--text-muted);
-            font-family: 'JetBrains Mono', monospace; text-transform: uppercase;
-            margin-right: 6px;
-        }
-        .filter-btn {
-            background: rgba(255, 255, 255, 0.04);
-            border: 1px solid var(--border-color);
+        .filter-pill {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border-subtle);
             color: var(--text-secondary);
-            font-family: 'JetBrains Mono', monospace; font-size: 0.8125rem;
-            padding: 7px 14px; border-radius: 9999px;
-            cursor: pointer; transition: var(--transition);
+            font-family: var(--font-mono); font-size: 0.8125rem;
+            padding: 8px 16px; border-radius: 9999px; cursor: pointer;
+            transition: all 0.2s;
         }
-        .filter-btn:hover, .filter-btn.active {
+        .filter-pill:hover, .filter-pill.active {
             background: var(--cyan-glow);
             border-color: var(--cyan);
             color: #FFF;
         }
 
-        /* Articles Grid */
-        .articles-section { position: relative; z-index: 10; padding: 24px 0 64px; }
-        .grid-3 {
-            display: grid; grid-template-columns: 1fr; gap: 28px;
-        }
-        @media(min-width: 640px) { .grid-3 { grid-template-columns: repeat(2, 1fr); } }
-        @media(min-width: 1024px) { .grid-3 { grid-template-columns: repeat(3, 1fr); } }
-
-        .grid-card {
-            background: var(--bg-card);
-            border: 1px solid var(--border-color);
-            border-radius: var(--radius-md);
-            overflow: hidden; cursor: pointer;
-            transition: var(--transition);
-            display: flex; flex-direction: column;
-            height: 100%;
-        }
-        .grid-card:hover {
-            border-color: var(--border-hover);
-            transform: translateY(-3px);
-            box-shadow: 0 14px 28px rgba(0, 0, 0, 0.4);
-        }
-        .card-inner {
-            padding: 20px; display: flex; flex-direction: column;
-            gap: 10px; flex-grow: 1;
-        }
-        .card-title {
-            font-size: 1.125rem; font-weight: 700; line-height: 1.35;
-            color: #FFF; display: -webkit-box; -webkit-line-clamp: 2;
-            -webkit-box-orient: vertical; overflow: hidden; min-height: 3rem;
-        }
-        .card-excerpt {
-            font-size: 0.875rem; color: var(--text-secondary); line-height: 1.5;
-            display: -webkit-box; -webkit-line-clamp: 3;
-            -webkit-box-orient: vertical; overflow: hidden; min-height: 3.9rem;
-        }
-
-        /* Modal Imersivo Long-Form */
-        .modal-backdrop {
+        /* Modal Dialog Reader */
+        .modal-overlay {
             position: fixed; inset: 0;
-            background: rgba(0, 0, 0, 0.88);
-            backdrop-filter: blur(20px);
-            z-index: 999; display: flex;
-            align-items: center; justify-content: center;
+            background: rgba(4, 6, 10, 0.92);
+            backdrop-filter: blur(24px);
+            z-index: 1000;
+            display: flex; align-items: center; justify-content: center;
             padding: 24px; opacity: 0; pointer-events: none;
-            transition: opacity 0.3s ease;
+            transition: opacity 0.3s;
         }
-        .modal-backdrop.open { opacity: 1; pointer-events: auto; }
-        .modal-window {
-            background: var(--bg-secondary);
-            border: 1px solid var(--border-color);
-            border-radius: var(--radius-lg);
-            max-width: 860px; width: 100%; max-height: 90vh;
+        .modal-overlay.active { opacity: 1; pointer-events: auto; }
+        
+        .modal-shell {
+            background: var(--bg-surface);
+            border: 1px solid var(--border-subtle);
+            border-radius: 24px;
+            max-width: 900px; width: 100%; max-height: 90vh;
             overflow-y: auto; position: relative;
-            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.8);
-            transform: translateY(20px); transition: transform 0.3s ease;
+            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.8), 0 0 50px rgba(0, 240, 255, 0.1);
+            transform: translateY(24px) scale(0.98);
+            transition: transform 0.3s var(--ease-out);
         }
-        .modal-backdrop.open .modal-window { transform: translateY(0); }
-        .modal-close {
-            position: absolute; top: 18px; right: 18px;
-            width: 38px; height: 38px; border-radius: 50%;
-            background: rgba(0, 0, 0, 0.7); border: 1px solid var(--border-color);
+        .modal-overlay.active .modal-shell { transform: translateY(0) scale(1); }
+
+        .modal-close-btn {
+            position: absolute; top: 20px; right: 20px;
+            width: 40px; height: 40px; border-radius: 50%;
+            background: rgba(0, 0, 0, 0.7); border: 1px solid var(--border-subtle);
             color: #FFF; font-size: 18px; display: flex; align-items: center; justify-content: center;
-            cursor: pointer; z-index: 20; transition: var(--transition);
+            cursor: pointer; z-index: 20; transition: all 0.2s;
         }
-        .modal-close:hover { background: rgba(255, 255, 255, 0.15); }
-        .modal-banner {
+        .modal-close-btn:hover { background: rgba(255, 255, 255, 0.15); transform: rotate(90deg); }
+
+        .modal-hero-img {
             width: 100%; aspect-ratio: 21/9; object-fit: cover;
-            border-bottom: 1px solid var(--border-color);
+            border-bottom: 1px solid var(--border-subtle);
         }
-        .modal-content-area { padding: 36px; }
-        .modal-heading {
-            font-size: 2.1rem; font-weight: 800; line-height: 1.25;
-            color: #FFF; margin: 12px 0 16px;
+        .modal-inner { padding: 40px; }
+        .modal-title {
+            font-family: var(--font-display); font-size: 2.3rem; font-weight: 800; line-height: 1.2;
+            color: #FFF; margin: 16px 0 14px; letter-spacing: -0.02em;
         }
-        .exec-summary-box {
-            background: rgba(0, 229, 255, 0.05);
+        .modal-callout {
+            background: rgba(0, 240, 255, 0.05);
             border-left: 4px solid var(--cyan);
-            border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
-            padding: 18px 22px; margin: 24px 0 32px;
+            border-radius: 0 10px 10px 0;
+            padding: 20px 24px; margin: 24px 0 32px;
         }
-        .exec-summary-box h4 {
-            font-size: 0.8rem; font-family: 'JetBrains Mono', monospace;
-            text-transform: uppercase; letter-spacing: 0.06em;
-            color: var(--cyan); margin-bottom: 6px;
+        .modal-callout h4 {
+            font-family: var(--font-mono); font-size: 0.8rem; text-transform: uppercase;
+            color: var(--cyan); margin-bottom: 6px; letter-spacing: 0.06em;
         }
-        .exec-summary-box p {
-            color: #E2E8F0; font-size: 0.98rem; line-height: 1.6; font-weight: 500;
+        .modal-callout p {
+            font-size: 1rem; color: #E2E8F0; line-height: 1.6;
         }
-        .long-form-text {
-            color: #CBD5E1; font-size: 1.05rem; line-height: 1.8;
+        .modal-article-body {
+            color: #CBD5E1; font-size: 1.05rem; line-height: 1.85;
             display: flex; flex-direction: column; gap: 20px;
         }
-        .long-form-text h3 {
-            font-size: 1.35rem; color: #FFF; font-weight: 700; margin-top: 18px;
+        .modal-article-body h3 {
+            font-family: var(--font-display); font-size: 1.45rem; color: #FFF; margin-top: 20px;
         }
-        .long-form-text p { margin-bottom: 8px; }
-        .long-form-text ul { padding-left: 24px; display: flex; flex-direction: column; gap: 10px; }
-        .long-form-text li { list-style-type: square; color: #94A3B8; }
-        .long-form-text li strong { color: #FFF; }
-        .data-table-wrapper {
-            overflow-x: auto; margin: 20px 0; border: 1px solid var(--border-color);
-            border-radius: var(--radius-md); background: rgba(0, 0, 0, 0.3);
-        }
-        table { width: 100%; border-collapse: collapse; font-size: 0.875rem; }
-        th {
-            background: rgba(255, 255, 255, 0.05); color: var(--cyan);
-            padding: 12px 16px; text-align: left; font-family: 'JetBrains Mono', monospace;
-        }
-        td { padding: 12px 16px; border-top: 1px solid rgba(255, 255, 255, 0.05); color: #E2E8F0; }
-        .sources-footer {
-            margin-top: 36px; padding-top: 20px; border-top: 1px solid var(--border-color);
-            display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 14px;
-        }
-        .source-link-btn {
-            display: inline-flex; align-items: center; gap: 6px;
-            padding: 8px 16px; border-radius: 8px;
-            background: rgba(0, 229, 255, 0.1); border: 1px solid rgba(0, 229, 255, 0.3);
-            color: var(--cyan); font-size: 0.8125rem; font-family: 'JetBrains Mono', monospace;
-            font-weight: 600; transition: var(--transition);
-        }
-        .source-link-btn:hover { background: var(--cyan); color: #000; }
+        .modal-article-body ul { padding-left: 24px; display: flex; flex-direction: column; gap: 8px; }
+        .modal-article-body li strong { color: #FFF; }
 
-        /* Footer */
+        /* Command Palette Modal (Cmd+K) */
+        .cmd-modal {
+            position: fixed; inset: 0;
+            background: rgba(4, 6, 10, 0.85); backdrop-filter: blur(16px);
+            z-index: 1100; display: flex; align-items: flex-start; justify-content: center;
+            padding-top: 15vh; opacity: 0; pointer-events: none; transition: opacity 0.2s;
+        }
+        .cmd-modal.active { opacity: 1; pointer-events: auto; }
+        .cmd-box {
+            background: var(--bg-surface);
+            border: 1px solid var(--cyan);
+            box-shadow: 0 0 50px rgba(0, 240, 255, 0.25);
+            border-radius: 16px; max-width: 640px; width: 100%;
+            overflow: hidden;
+        }
+        .cmd-input-wrap {
+            display: flex; align-items: center; gap: 12px;
+            padding: 16px 20px; border-bottom: 1px solid var(--border-subtle);
+        }
+        .cmd-input {
+            width: 100%; background: transparent; border: none; outline: none;
+            color: #FFF; font-family: var(--font-mono); font-size: 1rem;
+        }
+        .cmd-results { max-height: 340px; overflow-y: auto; padding: 12px; }
+        .cmd-result-item {
+            padding: 12px 16px; border-radius: 8px; cursor: pointer;
+            display: flex; align-items: center; justify-content: space-between;
+            font-size: 0.9rem; color: var(--text-secondary); transition: all 0.15s;
+        }
+        .cmd-result-item:hover { background: rgba(0, 240, 255, 0.1); color: #FFF; }
+
+        /* Clean Footer */
         footer {
-            border-top: 1px solid var(--border-color);
-            background: #05070B; padding: 60px 0 32px;
+            border-top: 1px solid var(--border-subtle);
+            background: #020306;
+            padding: 64px 0 36px;
             position: relative; z-index: 10;
         }
-        .footer-grid {
-            display: grid; grid-template-columns: 1fr; gap: 40px; margin-bottom: 48px;
+        .footer-cols {
+            display: grid; grid-template-columns: 2fr repeat(3, 1fr);
+            gap: 40px; margin-bottom: 56px;
         }
-        @media(min-width: 640px) { .footer-grid { grid-template-columns: repeat(2, 1fr); } }
-        @media(min-width: 1024px) { .footer-grid { grid-template-columns: 1.5fr repeat(3, 1fr); } }
+        @media(max-width: 900px) { .footer-cols { grid-template-columns: 1fr 1fr; } }
+        @media(max-width: 600px) { .footer-cols { grid-template-columns: 1fr; } }
 
         .footer-col h4 {
-            font-size: 0.875rem; font-family: 'JetBrains Mono', monospace;
-            text-transform: uppercase; letter-spacing: 0.06em;
-            color: #FFF; margin-bottom: 16px;
+            font-family: var(--font-mono); font-size: 0.8125rem; text-transform: uppercase;
+            letter-spacing: 0.08em; color: #FFF; margin-bottom: 18px;
         }
-        .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+        .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 12px; }
         .footer-col a {
-            font-size: 0.875rem; color: var(--text-secondary); transition: var(--transition);
-            cursor: pointer;
+            font-size: 0.875rem; color: var(--text-secondary); transition: color 0.2s;
         }
         .footer-col a:hover { color: var(--cyan); }
-        .footer-bottom {
-            padding-top: 24px; border-top: 1px solid rgba(255, 255, 255, 0.05);
-            display: flex; flex-direction: column; align-items: center; justify-content: space-between;
-            gap: 16px; font-size: 0.8125rem; color: var(--text-muted);
+        .footer-baseline {
+            display: flex; align-items: center; justify-content: space-between;
+            padding-top: 28px; border-top: 1px solid var(--border-subtle);
+            font-size: 0.8125rem; color: var(--text-muted);
+            font-family: var(--font-mono);
         }
-        @media(min-width: 640px) { .footer-bottom { flex-direction: row; } }
     </style>
 </head>
 <body>
     <canvas id="neural-canvas"></canvas>
+    <div class="noise-overlay"></div>
 
-    <!-- Header com Seletor Bilíngue PT | EN -->
+    <!-- Top Telemetry HUD -->
+    <div class="top-hud">
+        <div class="container top-hud-inner">
+            <div class="hud-status">
+                <span class="status-badge"><span class="pulse-dot"></span> <span id="hud-cluster">GLOBAL COMPUTE: 98.4% NOMINAL</span></span>
+                <span style="opacity: 0.5;">|</span>
+                <span id="hud-ticker">BLACKWELL B200 CLUSTERS ACCELERATING IN PRODUCTION</span>
+            </div>
+            <div style="display: flex; align-items: center; gap: 14px;">
+                <span id="hud-time">UTC 18:15:00</span>
+                <span style="color: var(--cyan); font-weight: 700;">v3.4-PROD</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Navigation Header -->
     <header>
         <div class="container header-inner">
-            <a href="#" onclick="filterCategory('all'); return false;" class="logo">
-                <div class="logo-icon">🧠</div>
+            <a href="#" onclick="filterBy('all'); return false;" class="brand">
+                <div class="brand-gem">🧠</div>
                 Cortic<span>Flow</span>
             </a>
+            
             <nav>
-                <a href="#artigos" onclick="filterCategory('all')" id="nav-feed">Feed Editorial</a>
-                <a href="#artigos" onclick="filterCategory('semiconductors')" id="nav-semi">Semicondutores</a>
-                <a href="#artigos" onclick="filterCategory('ai-models')" id="nav-models">Modelos & IA</a>
-                <a onclick="openInstitutionalModal('about')" id="nav-about">Sobre Nós</a>
-                <a onclick="openInstitutionalModal('contact')" id="nav-contact">Contato</a>
+                <a href="#feed" onclick="filterBy('all')" id="nav-all">Radar Global</a>
+                <a href="#feed" onclick="filterBy('semiconductors')" id="nav-semi">Semicondutores</a>
+                <a href="#feed" onclick="filterBy('ai-models')" id="nav-models">Modelos Fundacionais</a>
+                <a href="#" onclick="openInst('about')" id="nav-about">Sobre</a>
+                <a href="#" onclick="openInst('contact')" id="nav-contact">Contato</a>
             </nav>
-            <div class="header-controls">
-                <!-- Seletor Internacional PT-BR / EN-US -->
-                <div class="lang-switch">
-                    <button class="lang-btn active" id="btn-pt" onclick="setLanguage('pt')">PT</button>
-                    <button class="lang-btn" id="btn-en" onclick="setLanguage('en')">EN</button>
+
+            <div class="header-actions">
+                <div class="cmd-trigger" onclick="toggleCmd()">
+                    <span>Buscar Pautas</span>
+                    <span class="cmd-key">⌘K</span>
                 </div>
-                <button class="btn-header" onclick="openInstitutionalModal('newsletter')" id="btn-newsletter-hdr">Newsletter</button>
+                
+                <div class="lang-toggle">
+                    <button class="lang-btn active" id="btn-pt" onclick="switchLang('pt')">PT</button>
+                    <button class="lang-btn" id="btn-en" onclick="switchLang('en')">EN</button>
+                </div>
+
+                <button class="btn-glow" onclick="openInst('newsletter')" id="btn-dispatch">Despacho Semanal</button>
             </div>
         </div>
     </header>
 
-    <!-- Hero Section -->
-    <section class="hero container">
-        <div class="ticker-pill">
-            <span class="ticker-dot"></span>
-            <span id="hero-ticker">RADAR CORTICFLOW • INTELIGÊNCIA EM TEMPO REAL • 26 DE SETEMBRO DE 2026</span>
+    <!-- Bento Grid Section (Awwwards Experience) -->
+    <main class="container bento-section" id="feed">
+        <!-- Filter Ribbon -->
+        <div class="filter-ribbon">
+            <button class="filter-pill active" onclick="filterBy('all', this)" id="pill-all">⚡ Todas as Investigações</button>
+            <button class="filter-pill" onclick="filterBy('ai-models', this)" id="pill-models">🧠 Modelos & Agentes</button>
+            <button class="filter-pill" onclick="filterBy('semiconductors', this)" id="pill-semi">🏢 Semicondutores & Fabs</button>
+            <button class="filter-pill" onclick="filterBy('security', this)" id="pill-sec">🛡️ Cibersegurança & Silício</button>
+            <button class="filter-pill" onclick="filterBy('physical-ai', this)" id="pill-phys">⚙️ Physical AI & Robótica</button>
         </div>
 
-        <div class="hero-grid">
-            <!-- Lead Story (Matéria Principal) -->
-            <article class="lead-card" onclick="openArticleModal(1)">
-                <div class="aspect-16-9">
-                    <img id="lead-img" src="https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&w=1200&q=80" 
-                         alt="Lead Story"
-                         onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1200&q=80';">
-                </div>
-                <div class="lead-body">
-                    <span class="tag-badge badge-cyan" id="lead-badge">Infraestrutura & Energia</span>
-                    <h1 class="lead-title" id="lead-title">A Crise Energética dos 60GW: Como a IA Está Forçando Big Techs a Reativarem Usinas Nucleares</h1>
-                    <p class="lead-excerpt" id="lead-excerpt">O verdadeiro limite para o avanço dos modelos de 1 trilhão de parâmetros deixou de ser a litografia e passou a ser a rede elétrica. Investigação detalha como Microsoft, Amazon e Alphabet estão firmando acordos de 20 anos com reatores nucleares dedicados.</p>
-                    <div class="card-meta">
-                        <span id="lead-meta">⚡ 8 min de leitura • Análise de Engenharia</span>
-                        <span style="color: var(--cyan); font-weight: 700;" id="lead-action">Ler Investigação Completa →</span>
+        <!-- Bento Grid Structure -->
+        <div class="bento-layout">
+            <!-- 1. Lead Investigative Card (Span 8) -->
+            <article class="bento-card card-lead" onclick="readArticle(1)">
+                <img class="lead-hero-img" id="lead-img" src="https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&w=1400&q=80" alt="Lead Story">
+                <div class="lead-content">
+                    <span class="card-tag tag-cyan" id="lead-tag">Infraestrutura & Energia</span>
+                    <h1 class="lead-title" id="lead-title">A Crise Energética dos 60GW: Big Techs Reativam Usinas Nucleares para Alimentar Clusters de IA</h1>
+                    <p class="lead-desc" id="lead-desc">O verdadeiro limite físico para o avanço dos modelos de 1 trilhão de parâmetros deixou de ser o silício e passou a ser a rede elétrica. Investigação revela contratos de 20 anos de Microsoft, Amazon e Alphabet com reatores dedicados.</p>
+                    <div class="card-meta" style="margin-top: auto; display: flex; justify-content: space-between; font-family: var(--font-mono); font-size: 0.8125rem; color: var(--text-muted); padding-top: 14px; border-top: 1px solid var(--border-subtle);">
+                        <span id="lead-time">⚡ 8 min • Engenharia & Infra</span>
+                        <span style="color: var(--cyan); font-weight: 700;" id="lead-cta">Explorar Análise Completa →</span>
                     </div>
                 </div>
             </article>
 
-            <!-- Trending Sidebar -->
-            <aside class="trending-box">
-                <div class="section-header">
-                    <h3 id="trending-heading">⚡ Em Alta no Radar</h3>
-                    <span style="font-size: 0.75rem; color: var(--text-muted); font-family: 'JetBrains Mono', monospace;" id="trending-today-lbl">Hoje</span>
+            <!-- 2. Terminal Wire (Span 4) -->
+            <aside class="bento-card card-wire">
+                <div class="wire-header">
+                    <h3 id="wire-heading">⚡ Despachos em Tempo Real</h3>
+                    <span style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--emerald);" id="wire-live">AO VIVO</span>
                 </div>
-                <div class="trending-item" onclick="openArticleModal(2)">
-                    <div class="trending-idx">01</div>
-                    <div class="trending-content">
-                        <h4 id="trend-1-title">DeepSeek Harness e o Fim das Caixas-Pretas</h4>
-                        <p id="trend-1-sub">Modelos de Pesos Abertos • 6 min</p>
+                <div class="wire-list">
+                    <div class="wire-item" onclick="readArticle(2)">
+                        <div class="wire-meta">DEEPSEEK • 08:30 UTC</div>
+                        <div class="wire-item-title" id="wire-t1">DeepSeek Harness e o Fim das Caixas-Pretas</div>
+                    </div>
+                    <div class="wire-item" onclick="readArticle(3)">
+                        <div class="wire-meta">APPLE SILICON • 06:15 UTC</div>
+                        <div class="wire-item-title" id="wire-t2">M6 & M5 Ultra: O Monstro de 80 GPUs Unificadas</div>
+                    </div>
+                    <div class="wire-item" onclick="readArticle(4)">
+                        <div class="wire-meta">HARDWARE SEC • ONTEM</div>
+                        <div class="wire-item-title" id="wire-t3">Ataque GPUThor: Quebrando o ECC na Memória HBM3e</div>
                     </div>
                 </div>
-                <div class="trending-item" onclick="openArticleModal(3)">
-                    <div class="trending-idx">02</div>
-                    <div class="trending-content">
-                        <h4 id="trend-2-title">Apple Silicon M6 e M5 Ultra: O Monstro de 80 GPUs</h4>
-                        <p id="trend-2-sub">Hardware On-Device • 5 min</p>
-                    </div>
-                </div>
-                <div class="trending-item" onclick="openArticleModal(4)">
-                    <div class="trending-idx">03</div>
-                    <div class="trending-content">
-                        <h4 id="trend-3-title">Ataque GPUThor: Quebrando o ECC na Memória de IA</h4>
-                        <p id="trend-3-sub">Cibersegurança de Silício • 6 min</p>
-                    </div>
-                </div>
-                <div style="margin-top: auto; padding-top: 14px; border-top: 1px solid var(--border-color); font-size: 0.8125rem; color: var(--text-muted); font-family: 'JetBrains Mono', monospace; display: flex; justify-content: space-between;">
-                    <span id="trending-footer-curation">Curadoria Sênior</span>
-                    <span style="color: var(--cyan);" id="trending-footer-status">100% Verificado</span>
+                <div style="margin-top: auto; padding-top: 12px; border-top: 1px solid var(--border-subtle); display: flex; justify-content: space-between; font-family: var(--font-mono); font-size: 0.75rem; color: var(--text-muted);">
+                    <span id="wire-curation">Curadoria Editorial Sênior</span>
+                    <span style="color: var(--cyan);" id="wire-verified">Verificado 100%</span>
                 </div>
             </aside>
-        </div>
-    </section>
 
-    <!-- Radar Filter Chips -->
-    <div class="container radar-bar" id="artigos">
-        <span class="radar-label" id="radar-filter-lbl">Filtrar Pauta:</span>
-        <button class="filter-btn active" onclick="filterCategory('all', this)" id="chip-all">⚡ Todas as Matérias</button>
-        <button class="filter-btn" onclick="filterCategory('ai-models', this)" id="chip-models">🧠 Modelos & Agentes</button>
-        <button class="filter-btn" onclick="filterCategory('semiconductors', this)" id="chip-semi">🏢 Semicondutores & Chips</button>
-        <button class="filter-btn" onclick="filterCategory('security', this)" id="chip-sec">🛡️ Cibersegurança & Kernel</button>
-        <button class="filter-btn" onclick="filterCategory('physical-ai', this)" id="chip-phys">⚙️ Physical AI & Robótica</button>
-    </div>
-
-    <!-- Articles Grid Section -->
-    <section class="container articles-section">
-        <div class="grid-3" id="articles-container"></div>
-    </section>
-
-    <!-- Modal de Leitura Imersivo Long-Form -->
-    <div class="modal-backdrop" id="articleModal" onclick="closeModalOnBackdrop(event)">
-        <div class="modal-window">
-            <button class="modal-close" onclick="closeArticleModal()">✕</button>
-            <img class="modal-banner" id="modalImage" src="" alt="Capa da Matéria"
-                 onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1200&q=80';">
-            <div class="modal-content-area">
-                <span class="tag-badge" id="modalBadge">Categoria</span>
-                <h1 class="modal-heading" id="modalTitle">Título da Notícia</h1>
-                <div style="font-size: 0.8125rem; color: var(--text-muted); font-family: 'JetBrains Mono', monospace; margin-bottom: 20px;" id="modalMeta">
-                    Por Equipe Editorial CorticFlow • 7 min de leitura
-                </div>
-
-                <div class="exec-summary-box">
-                    <h4 id="modalExecHeading">⚡ Síntese Executiva & Impacto Macroeconômico</h4>
-                    <p id="modalSummary">Resumo de pontos essenciais da matéria.</p>
-                </div>
-
-                <div class="long-form-text" id="modalBody"></div>
-
-                <div class="sources-footer">
-                    <div style="font-size: 0.8125rem; color: var(--text-muted); font-family: 'JetBrains Mono', monospace;" id="modalSourcesHeading">
-                        Fontes Oficiais & Documentação Técnica:
+            <!-- 3. Hardware Teardown (Span 4) -->
+            <article class="bento-card col-4 item-semiconductors" onclick="readArticle(3)">
+                <img class="card-thumb" src="https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=800&q=80" alt="Hardware">
+                <div class="card-body">
+                    <span class="card-tag tag-purple" id="t-card3-tag">Hardware On-Device</span>
+                    <h2 class="card-heading" id="t-card3-title">Apple Silicon M6 e M5 Ultra: O Monstro de 80 GPUs</h2>
+                    <p class="card-snip" id="t-card3-snip">A arquitetura de memória unificada atinge 1.2 TB/s de largura de banda, tornando o silício de Cupertino viável para inferência local de modelos de 70B parâmetros.</p>
+                    <div class="card-foot">
+                        <span id="t-card3-meta">5 min • Hardware</span>
+                        <span style="color: var(--cyan); font-weight: 700;">Ler →</span>
                     </div>
-                    <div id="modalSourceLinks"></div>
+                </div>
+            </article>
+
+            <!-- 4. Open-Weight Intelligence (Span 4) -->
+            <article class="bento-card col-4 item-ai-models" onclick="readArticle(2)">
+                <img class="card-thumb" src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=800&q=80" alt="Modelos">
+                <div class="card-body">
+                    <span class="card-tag tag-cyan" id="t-card2-tag">Modelos Fundacionais</span>
+                    <h2 class="card-heading" id="t-card2-title">DeepSeek Harness: Auditoria Aberta dos Pesos Neurais</h2>
+                    <p class="card-snip" id="t-card2-snip">Como o novo ecossistema open-weights da DeepSeek está quebrando o monopólio das APIs proprietárias com inferência FP8 de ultra-baixo custo.</p>
+                    <div class="card-foot">
+                        <span id="t-card2-meta">6 min • LLMs</span>
+                        <span style="color: var(--cyan); font-weight: 700;">Ler →</span>
+                    </div>
+                </div>
+            </article>
+
+            <!-- 5. Silicon Cyber Security (Span 4) -->
+            <article class="bento-card col-4 item-security" onclick="readArticle(4)">
+                <img class="card-thumb" src="https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?auto=format&fit=crop&w=800&q=80" alt="Cybersecurity">
+                <div class="card-body">
+                    <span class="card-tag tag-emerald" id="t-card4-tag">Cibersegurança de Silício</span>
+                    <h2 class="card-heading" id="t-card4-title">Ataque GPUThor: Quebrando o ECC na Memória HBM3e</h2>
+                    <p class="card-snip" id="t-card4-snip">Pesquisadores demonstram como variações acústicas de alta frequência induzem falhas em tensores em placas de datacenter, corrompendo pesos neurais.</p>
+                    <div class="card-foot">
+                        <span id="t-card4-meta">6 min • Kernel</span>
+                        <span style="color: var(--cyan); font-weight: 700;">Ler →</span>
+                    </div>
+                </div>
+            </article>
+
+            <!-- 6. Physical AI & Robotics (Span 6) -->
+            <article class="bento-card col-6 item-physical-ai" onclick="readArticle(5)">
+                <img class="card-thumb" src="https://images.unsplash.com/photo-1485827404703-89b55fcc595e?auto=format&fit=crop&w=800&q=80" alt="Physical AI">
+                <div class="card-body">
+                    <span class="card-tag tag-purple" id="t-card5-tag">Physical AI & Robótica</span>
+                    <h2 class="card-heading" id="t-card5-title">Robôs Humanoides nas Fabs de Semicondutores</h2>
+                    <p class="card-snip" id="t-card5-snip">Como modelos de ação visual-linguística (VLA) estão operando em salas limpas de classe ISO-1 na Ásia e nos Estados Unidos sem intervenção humana contínua.</p>
+                    <div class="card-foot">
+                        <span id="t-card5-meta">7 min • Robótica</span>
+                        <span style="color: var(--cyan); font-weight: 700;">Ler →</span>
+                    </div>
+                </div>
+            </article>
+
+            <!-- 7. Quantum & Optical Computing (Span 6) -->
+            <article class="bento-card col-6 item-semiconductors" onclick="readArticle(6)">
+                <img class="card-thumb" src="https://images.unsplash.com/photo-1635070041078-e363dbe005cb?auto=format&fit=crop&w=800&q=80" alt="Quantum Photonics">
+                <div class="card-body">
+                    <span class="card-tag tag-cyan" id="t-card6-tag">Fotônica & Quântica</span>
+                    <h2 class="card-heading" id="t-card6-title">Interconexões Ópticas Co-Empacotadas (CPO)</h2>
+                    <p class="card-snip" id="t-card6-snip">Substituindo fios de cobre por lasers microscópicos diretamente no encapsulamento de silício para reduzir o consumo de energia em 70% nos backbones de IA.</p>
+                    <div class="card-foot">
+                        <span id="t-card6-meta">6 min • Fotônica</span>
+                        <span style="color: var(--cyan); font-weight: 700;">Ler →</span>
+                    </div>
+                </div>
+            </article>
+        </div>
+    </main>
+
+    <!-- Deep Reader Modal (Awwwards Immersive View) -->
+    <div class="modal-overlay" id="articleModal" onclick="closeOnOverlay(event)">
+        <div class="modal-shell">
+            <button class="modal-close-btn" onclick="closeArticleModal()">✕</button>
+            <img class="modal-hero-img" id="modalHeroImg" src="" alt="Banner">
+            <div class="modal-inner">
+                <span class="card-tag tag-cyan" id="modalTag">Infraestrutura</span>
+                <h1 class="modal-title" id="modalTitle">Título da Notícia</h1>
+                <div style="font-family: var(--font-mono); font-size: 0.8125rem; color: var(--text-muted); margin-bottom: 24px;" id="modalMeta">
+                    Por Equipe Editorial CorticFlow • 8 min de leitura
+                </div>
+
+                <div class="modal-callout">
+                    <h4 id="modalCalloutH">⚡ Síntese Executiva & Impacto no Setor</h4>
+                    <p id="modalCalloutP">Resumo analítico dos desdobramentos de mercado.</p>
+                </div>
+
+                <div class="modal-article-body" id="modalBody"></div>
+
+                <div style="margin-top: 40px; padding-top: 24px; border-top: 1px solid var(--border-subtle); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 14px;">
+                    <span style="font-family: var(--font-mono); font-size: 0.8125rem; color: var(--text-muted);" id="modalSourceLabel">
+                        Fontes Oficiais & Documentação Técnica:
+                    </span>
+                    <div id="modalLinks"></div>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Modal Institucional (Sobre Nós / Contato / Termos / Privacidade) -->
-    <div class="modal-backdrop" id="institutionalModal" onclick="closeModalOnBackdrop(event)">
-        <div class="modal-window" style="max-width: 680px;">
-            <button class="modal-close" onclick="closeInstitutionalModal()">✕</button>
-            <div class="modal-content-area" style="padding: 40px;">
-                <span class="tag-badge badge-cyan" id="instBadge">Institucional</span>
-                <h2 style="font-size: 1.8rem; font-weight: 800; color: #FFF; margin: 12px 0 16px;" id="instTitle">Título</h2>
-                <div style="color: #CBD5E1; font-size: 0.95rem; line-height: 1.7; display: flex; flex-direction: column; gap: 16px;" id="instBody"></div>
+    <!-- Institutional Modal (About / Contact / Privacy) -->
+    <div class="modal-overlay" id="instModal" onclick="closeOnOverlay(event)">
+        <div class="modal-shell" style="max-width: 680px;">
+            <button class="modal-close-btn" onclick="closeInst()">✕</button>
+            <div class="modal-inner" style="padding: 44px;">
+                <span class="card-tag tag-cyan" id="instTag">Institucional</span>
+                <h2 style="font-family: var(--font-display); font-size: 2rem; font-weight: 800; color: #FFF; margin: 16px 0 18px;" id="instTitle">Sobre Nós</h2>
+                <div style="color: #CBD5E1; font-size: 1rem; line-height: 1.7; display: flex; flex-direction: column; gap: 16px;" id="instBody"></div>
             </div>
         </div>
     </div>
 
-    <!-- Footer -->
+    <!-- Command Palette (Cmd+K) -->
+    <div class="cmd-modal" id="cmdModal" onclick="closeCmdOverlay(event)">
+        <div class="cmd-box">
+            <div class="cmd-input-wrap">
+                <span style="color: var(--cyan); font-family: var(--font-mono);">⚡</span>
+                <input type="text" class="cmd-input" id="cmdInput" placeholder="Digite para buscar artigos, tecnologias ou seções..." oninput="handleCmdSearch(this.value)">
+                <span style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--text-muted);">ESC</span>
+            </div>
+            <div class="cmd-results" id="cmdResults">
+                <div class="cmd-result-item" onclick="readArticle(1); toggleCmd();">
+                    <span>⚡ A Crise Energética dos 60GW (Nuclear + IA)</span>
+                    <span style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--cyan);">INFRA</span>
+                </div>
+                <div class="cmd-result-item" onclick="readArticle(2); toggleCmd();">
+                    <span>🧠 DeepSeek Harness e Pesos Abertos</span>
+                    <span style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--cyan);">LLMs</span>
+                </div>
+                <div class="cmd-result-item" onclick="readArticle(3); toggleCmd();">
+                    <span>🏢 Apple Silicon M6 & M5 Ultra (80 GPUs)</span>
+                    <span style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--cyan);">HARDWARE</span>
+                </div>
+                <div class="cmd-result-item" onclick="readArticle(4); toggleCmd();">
+                    <span>🛡️ Ataque GPUThor na Memória HBM3e</span>
+                    <span style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--cyan);">SECURITY</span>
+                </div>
+                <div class="cmd-result-item" onclick="switchLang(currentLang === 'pt' ? 'en' : 'pt'); toggleCmd();">
+                    <span>🌐 Alternar Idioma / Toggle Language (PT/EN)</span>
+                    <span style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--emerald);">ACTION</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Editorial Clean Footer -->
     <footer>
-        <div class="container footer-grid">
+        <div class="container footer-cols">
             <div class="footer-col">
-                <div class="logo" style="margin-bottom: 12px;">
-                    <div class="logo-icon">🧠</div>
+                <div class="brand" style="margin-bottom: 16px;">
+                    <div class="brand-gem">🧠</div>
                     Cortic<span>Flow</span>
                 </div>
-                <p style="font-size: 0.875rem; color: var(--text-secondary); line-height: 1.6;" id="footer-desc">
+                <p style="font-size: 0.9rem; color: var(--text-secondary); line-height: 1.6; max-width: 380px;" id="foot-desc">
                     Publicação internacional independente de alta tecnologia. Decodificamos a física dos semicondutores, a matemática dos modelos fundacionais e os desdobramentos de mercado dos sistemas autônomos.
                 </p>
             </div>
+            
             <div class="footer-col">
-                <h4 id="footer-hdr-topics">Editorias</h4>
+                <h4 id="foot-h-editorials">Editorias</h4>
                 <ul>
-                    <li><a href="#artigos" onclick="filterCategory('ai-models')" id="footer-fnd">Modelos Fundacionais & LLMs</a></li>
-                    <li><a href="#artigos" onclick="filterCategory('semiconductors')" id="footer-semi">Semicondutores & Fabs</a></li>
-                    <li><a href="#artigos" onclick="filterCategory('physical-ai')" id="footer-phys">Physical AI & Robótica</a></li>
-                    <li><a href="#artigos" onclick="filterCategory('security')" id="footer-sec">Cibersegurança & Kernel</a></li>
+                    <li><a href="#feed" onclick="filterBy('ai-models')" id="foot-link-models">Modelos Fundacionais & LLMs</a></li>
+                    <li><a href="#feed" onclick="filterBy('semiconductors')" id="foot-link-semi">Semicondutores & Fabs</a></li>
+                    <li><a href="#feed" onclick="filterBy('physical-ai')" id="foot-link-phys">Physical AI & Robótica</a></li>
+                    <li><a href="#feed" onclick="filterBy('security')" id="foot-link-sec">Cibersegurança & Kernel</a></li>
                 </ul>
             </div>
+
             <div class="footer-col">
-                <h4 id="footer-hdr-radar">Radar Tech</h4>
+                <h4 id="foot-h-radar">Radar Global</h4>
                 <ul>
                     <li><a href="https://blog.google/technology/ai/" target="_blank" rel="noopener">Google DeepMind ↗</a></li>
                     <li><a href="https://nvidianews.nvidia.com/" target="_blank" rel="noopener">Nvidia Newsroom ↗</a></li>
@@ -585,583 +754,43 @@
                     <li><a href="https://api-docs.deepseek.com/updates/" target="_blank" rel="noopener">DeepSeek Updates ↗</a></li>
                 </ul>
             </div>
+
             <div class="footer-col">
-                <h4 id="footer-hdr-inst">Institucional</h4>
+                <h4 id="foot-h-inst">Institucional</h4>
                 <ul>
-                    <li><a onclick="openInstitutionalModal('about')" id="footer-about">Sobre o CorticFlow</a></li>
-                    <li><a onclick="openInstitutionalModal('contact')" id="footer-contact">Contato & Imprensa</a></li>
-                    <li><a onclick="openInstitutionalModal('privacy')" id="footer-privacy">Política de Privacidade</a></li>
-                    <li><a onclick="openInstitutionalModal('terms')" id="footer-terms">Termos de Uso</a></li>
+                    <li><a onclick="openInst('about')" id="foot-link-about">Sobre o CorticFlow</a></li>
+                    <li><a onclick="openInst('contact')" id="foot-link-contact">Contato & Imprensa</a></li>
+                    <li><a onclick="openInst('privacy')" id="foot-link-privacy">Política de Privacidade</a></li>
+                    <li><a onclick="openInst('terms')" id="foot-link-terms">Termos de Serviço</a></li>
                     <li><a href="https://github.com/corticflow/corticflow" target="_blank" rel="noopener">Repositório GitHub ↗</a></li>
                 </ul>
             </div>
         </div>
-        <div class="container footer-bottom">
-            <div id="footer-copyright">© 2026 CorticFlow Media. Todos os direitos reservados.</div>
-            <div style="font-family: 'JetBrains Mono', monospace; color: var(--cyan);" id="footer-pipeline">Esteira Autônoma de Engenharia: ATIVA</div>
+
+        <div class="container footer-baseline">
+            <div id="foot-copy">© 2026 CorticFlow Media. Todos os direitos reservados.</div>
+            <div style="color: var(--text-muted);" id="foot-sub">Plataforma Internacional de Inteligência & Silício</div>
         </div>
     </footer>
 
+    <!-- Interactive Engine & International Database -->
     <script>
-        // Dicionário de Textos Bilíngues (PT-BR / EN-US)
-        const I18N = {
-            pt: {
-                navFeed: "Feed Editorial",
-                navSemi: "Semicondutores",
-                navModels: "Modelos & IA",
-                navAbout: "Sobre Nós",
-                navContact: "Contato",
-                btnNewsletter: "Newsletter Dominical",
-                heroTicker: "RADAR CORTICFLOW • INTELIGÊNCIA EM TEMPO REAL • 26 DE SETEMBRO DE 2026",
-                trendingHeading: "⚡ Em Alta no Radar",
-                trendingToday: "Hoje",
-                trendingCuration: "Curadoria Sênior",
-                trendingStatus: "100% Verificado",
-                radarFilter: "Filtrar Pauta:",
-                chipAll: "⚡ Todas as Matérias",
-                chipModels: "🧠 Modelos & Agentes",
-                chipSemi: "🏢 Semicondutores & Chips",
-                chipSec: "🛡️ Cibersegurança & Kernel",
-                chipPhys: "⚙️ Physical AI & Robótica",
-                readMore: "Ler Análise →",
-                leadAction: "Ler Investigação Completa →",
-                modalExecHeading: "⚡ Síntese Executiva & Impacto Macroeconômico",
-                modalSourcesHeading: "Fontes Oficiais & Documentação Técnica:",
-                footerDesc: "Publicação internacional independente de alta tecnologia. Decodificamos a física dos semicondutores, a matemática dos modelos fundacionais e os desdobramentos de mercado dos sistemas autônomos.",
-                footerTopics: "Editorias",
-                footerRadar: "Radar Tech",
-                footerInst: "Institucional",
-                footerAbout: "Sobre o CorticFlow",
-                footerContact: "Contato & Imprensa",
-                footerPrivacy: "Política de Privacidade",
-                footerTerms: "Termos de Uso",
-                footerCopyright: "© 2026 CorticFlow Media. Todos os direitos reservados.",
-                footerPipeline: "Esteira Autônoma de Engenharia: ATIVA"
-            },
-            en: {
-                navFeed: "Editorial Feed",
-                navSemi: "Semiconductors",
-                navModels: "Models & AI",
-                navAbout: "About Us",
-                navContact: "Contact",
-                btnNewsletter: "Sunday Newsletter",
-                heroTicker: "CORTICFLOW RADAR • REAL-TIME INTELLIGENCE • SEPTEMBER 26, 2026",
-                trendingHeading: "⚡ Trending on Radar",
-                trendingToday: "Today",
-                trendingCuration: "Senior Curation",
-                trendingStatus: "100% Verified",
-                radarFilter: "Filter Topic:",
-                chipAll: "⚡ All Stories",
-                chipModels: "🧠 Models & Agents",
-                chipSemi: "🏢 Semiconductors & Chips",
-                chipSec: "🛡️ Cybersecurity & Kernel",
-                chipPhys: "⚙️ Physical AI & Robotics",
-                readMore: "Read Analysis →",
-                leadAction: "Read Full Investigation →",
-                modalExecHeading: "⚡ Executive Summary & Market Impact",
-                modalSourcesHeading: "Official Sources & Technical Documentation:",
-                footerDesc: "Independent international high-tech journal. Decoding semiconductor physics, foundation model mathematics, and market dynamics of autonomous systems.",
-                footerTopics: "Topics",
-                footerRadar: "Tech Radar",
-                footerInst: "Institutional",
-                footerAbout: "About CorticFlow",
-                footerContact: "Contact & Press",
-                footerPrivacy: "Privacy Policy",
-                footerTerms: "Terms of Service",
-                footerCopyright: "© 2026 CorticFlow Media. All rights reserved.",
-                footerPipeline: "Autonomous Engineering Pipeline: ACTIVE"
-            }
-        };
-
         let currentLang = localStorage.getItem('corticflow_lang') || 'pt';
 
-        // Base Editorial Completa Long-Form (PT-BR e EN-US)
-        const ARTICLES = [
-            {
-                id: 1,
-                category: 'semiconductors',
-                badgeClass: 'badge-cyan',
-                badge_pt: 'Infraestrutura & Energia',
-                badge_en: 'Infrastructure & Energy',
-                title_pt: 'A Crise Energética dos 60GW: Como a IA Está Forçando Big Techs a Reativarem Usinas Nucleares',
-                title_en: 'The 60GW Energy Crisis: How AI Is Forcing Big Tech to Reactivate Nuclear Power Plants',
-                readingTime_pt: '8 min de leitura',
-                readingTime_en: '8 min read',
-                date_pt: '26/09/2026',
-                date_en: 'Sep 26, 2026',
-                cover: 'https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&w=1200&q=80',
-                summary_pt: 'O verdadeiro limite para o avanço dos modelos de 1 trilhão de parâmetros deixou de ser a litografia e passou a ser a rede elétrica. Investigação detalha como Microsoft, Amazon e Alphabet estão firmando acordos de 20 anos com reatores nucleares dedicados.',
-                summary_en: 'The true bottleneck for 1-trillion parameter frontier models is no longer silicon lithography, but the electrical grid. Investigation reveals how Microsoft, Amazon, and Alphabet are signing 20-year PPAs directly with nuclear reactors.',
-                body_pt: `
-                    <p>Durante as três primeiras fases da revolução da inteligência artificial (2022 a 2025), o principal indicador de poder computacional de um laboratório era a quantidade de aceleradores Nvidia H100 ou B200 em inventário. Em meados de 2026, esse paradigma sofreu uma mutação irreversível: o gargalo agora se mede em megawatts contínuos de energia limpa (baseload power).</p>
-                    <h3>1. A Realidade dos Megaclusters de 1 Milhão de GPUs</h3>
-                    <p>Os novos data centers planejados para a geração de modelos pós-2026 operam com demandas entre 2GW e 5GW por instalação física. Para efeitos de comparação, isso equivale ao consumo integral de uma metrópole de médio porte como Curitiba ou Brasília.</p>
-                    <p>Redes elétricas tradicionais não conseguem lidar com as flutuações repentinas de carga térmica dos nós de computação acelerada sem provocar quedas de tensão no sistema interligado regional. A solução encontrada pelos hyperscalers foi o desacoplamento da rede pública via co-localização direta ao lado de reatores nucleares.</p>
-                    <div class="data-table-wrapper">
-                        <table>
-                            <thead>
-                                <tr><th>Empresa</th><th>Parceiro Energético</th><th>Capacidade Contratada</th><th>Fonte Primária</th></tr>
-                            </thead>
-                            <tbody>
-                                <tr><td><strong>Microsoft</strong></td><td>Constellation Energy</td><td>835 MW (Three Mile Island Reativação)</td><td>Nuclear Fissão (PPA 20 Anos)</td></tr>
-                                <tr><td><strong>Amazon AWS</strong></td><td>Talen Energy</td><td>960 MW (Cumulus Data Campus)</td><td>Nuclear Susquehanna</td></tr>
-                                <tr><td><strong>Alphabet (Google)</strong></td><td>Kairos Power</td><td>500 MW (Primeiros SMRs)</td><td>Reatores Modulares Rápidos</td></tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <h3>2. Veredito Editorial CorticFlow</h3>
-                    <p>A corrida pela soberania em inteligência artificial transformou as empresas de software nos maiores financiadores privados da infraestrutura de energia nuclear da história ocidental. Quem controlar os nós de energia mais estáveis e de menor latência determinará os vencedores da próxima década.</p>
-                `,
-                body_en: `
-                    <p>Throughout the first three waves of the AI boom (2022–2025), a laboratory's computational supremacy was measured by the raw quantity of Nvidia H100 or B200 accelerators in inventory. In late 2026, this metric shifted permanently: compute bottlenecks are now dictated by gigawatts of uninterrupted baseload clean power.</p>
-                    <h3>1. The Engineering Reality of 1-Million-GPU Megaclusters</h3>
-                    <p>Hyperscale facilities under construction for post-2026 frontier models require between 2GW and 5GW per campus—equivalent to the entire power consumption of major metropolitan areas. Conventional electric grids cannot withstand the violent thermal and capacitive load spikes inherent to synchronized matrix multiplication runs without catastrophic grid collapse.</p>
-                    <p>To survive, hyperscalers are decoupling from public municipal grids, constructing private substations directly adjoining nuclear fission facilities.</p>
-                    <div class="data-table-wrapper">
-                        <table>
-                            <thead>
-                                <tr><th>Company</th><th>Energy Partner</th><th>Contracted Capacity</th><th>Primary Source</th></tr>
-                            </thead>
-                            <tbody>
-                                <tr><td><strong>Microsoft</strong></td><td>Constellation Energy</td><td>835 MW (Three Mile Island Restart)</td><td>Nuclear Fission (20-Year PPA)</td></tr>
-                                <tr><td><strong>Amazon AWS</strong></td><td>Talen Energy</td><td>960 MW (Cumulus Data Campus)</td><td>Susquehanna Nuclear Facility</td></tr>
-                                <tr><td><strong>Alphabet (Google)</strong></td><td>Kairos Power</td><td>500 MW (Initial SMR Fleet)</td><td>Small Modular Molten Salt Reactors</td></tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <h3>2. CorticFlow Editorial Verdict</h3>
-                    <p>The geopolitical race for frontier artificial intelligence has converted software hyperscalers into the largest private financiers of nuclear energy in modern history. The ultimate victor will not be determined by algorithms alone, but by who controls the lowest-latency, gigawatt-scale power infrastructure.</p>
-                `,
-                sources: [
-                    { name: 'Financial Times Energy & AI Special Report', url: 'https://www.ft.com' },
-                    { name: 'Constellation Energy Clean Energy Commitment', url: 'https://www.constellationenergy.com' }
-                ]
-            },
-            {
-                id: 2,
-                category: 'ai-models',
-                badgeClass: 'badge-purple',
-                badge_pt: 'Modelos & Agentes',
-                badge_en: 'Models & Agents',
-                title_pt: 'DeepSeek Harness e o Fim das Caixas-Pretas: A Revolução dos Frameworks Abertos de Orquestração',
-                title_en: 'DeepSeek Harness and the Death of Black Boxes: The Open-Weights Orchestration Revolution',
-                readingTime_pt: '6 min de leitura',
-                readingTime_en: '6 min read',
-                date_pt: '25/09/2026',
-                date_en: 'Sep 25, 2026',
-                cover: 'https://images.unsplash.com/photo-1620712943543-bcc4688e7485?auto=format&fit=crop&w=1200&q=80',
-                summary_pt: 'A DeepSeek apresentou o DeepSeek Harness, plataforma descentralizada de código aberto que expõe os tensores internos de decisão de agentes autônomos, desafiando as soluções de API fechadas do Vale do Silício.',
-                summary_en: 'DeepSeek has open-sourced DeepSeek Harness, a decentralized agent orchestration architecture exposing internal attention tensors and dynamic test-time search trees, directly challenging Silicon Valley proprietary APIs.',
-                body_pt: `
-                    <p>Por quase quatro anos, o desenvolvimento de sistemas agênticos avançados dependeu de APIs fechadas de hiperescala que tratavam o raciocínio como uma caixa-preta inacessível. O lançamento do <strong>DeepSeek Harness</strong> quebra esse monopólio ao entregar uma suíte de código aberto com inspeção em tempo real de ativações neurais.</p>
-                    <h3>1. Transparência na Alocação de KV Cache e Árvores de Busca</h3>
-                    <p>Diferente de sistemas que cobram pelo token de reflexão sem detalhar o fluxo lógico, o Harness permite que os engenheiros pausem o modelo durante a fase de inferência (Test-Time Compute), alterem parâmetros de amostragem no meio do processamento e forcem rotas determinísticas em bases corporativas seguras.</p>
-                    <h3>2. Economia de Tokens e Eficiência Local</h3>
-                    <p>Ao integrar suporte nativo a quantizações extremas (FP4 e INT2 com compensação de perdas por LoRA), o framework viabiliza a execução de agentes de 70B parâmetros em servidores locais de 4 GPUs corporativas, sem expor dados confidenciais a nuvens públicas terceirizadas.</p>
-                `,
-                body_en: `
-                    <p>For four years, agent engineering remained bound to opaque proprietary endpoints treating reasoning as a monetized black box. The release of <strong>DeepSeek Harness</strong> shatters this equilibrium by delivering an open-source execution runtime with live tensor probing and token-level activation inspection.</p>
-                    <h3>1. Deterministic KV Cache Management and Search Tree Steering</h3>
-                    <p>Unlike commercial APIs charging premiums for hidden reflection tokens, Harness allows engineers to pause inference mid-flight, dynamically prune beam search trees, and inject deterministic boundary invariants directly into attention heads.</p>
-                    <h3>2. Extreme Quantization and Local Sovereignty</h3>
-                    <p>With native FP4 and INT2 kernel optimizations, the runtime achieves full 70B agent execution across commodity quad-GPU workstation nodes, giving enterprise engineers unconstrained autonomous agent deployment without transmitting IP to external cloud providers.</p>
-                `,
-                sources: [
-                    { name: 'DeepSeek Official API Docs & Updates', url: 'https://api-docs.deepseek.com/updates/' },
-                    { name: 'DeepSeek Harness GitHub Repository', url: 'https://github.com/deepseek-ai' }
-                ]
-            },
-            {
-                id: 3,
-                category: 'semiconductors',
-                badgeClass: 'badge-blue',
-                badge_pt: 'Hardware & Chips',
-                badge_en: 'Hardware & Chips',
-                title_pt: 'Apple Silicon M6 e M5 Ultra: Como 80 Núcleos de GPU Estão Viabilizando Apple Intelligence 100% Offline',
-                title_en: 'Apple Silicon M6 & M5 Ultra: How 80 GPU Cores Enable 100% Offline Apple Intelligence',
-                readingTime_pt: '5 min de leitura',
-                readingTime_en: '5 min read',
-                date_pt: '25/09/2026',
-                date_en: 'Sep 25, 2026',
-                cover: 'https://images.unsplash.com/photo-1591488320449-011701bb6704?auto=format&fit=crop&w=1200&q=80',
-                summary_pt: 'A nova arquitetura UltraFusion da Apple alcança 800 GB/s de largura de banda unificada, permitindo carregar modelos multimodais de 30 bilhões de parâmetros na memória local de computadores sem tocar na nuvem.',
-                summary_en: 'Apple’s next-gen UltraFusion architecture hits 800 GB/s unified memory bandwidth, allowing 30-billion parameter multimodal models to reside entirely within local workstation RAM with zero cloud telemetry.',
-                body_pt: `
-                    <p>A estratégia de inteligência artificial da Apple sempre divergiu da dependência massiva de nuvem pregada por concorrentes. Com a oficialização dos novos chips <strong>M6 e M5 Ultra</strong>, a empresa de Cupertino demonstra que o processamento local soberano atingiu maturidade técnica definitiva.</p>
-                    <h3>1. Memória Unificada como Diferencial Competitivo</h3>
-                    <p>Enquanto placas corporativas tradicionais precisam transferir dados pesados entre CPU, RAM e VRAM através de barramentos PCIe sujeitos a estrangulamento térmico, o design unificado da Apple permite que os 80 núcleos de GPU e a Neural Engine acessem instantaneamente até 256GB de memória a mais de 800 GB/s.</p>
-                    <p>Isso viabiliza que tarefas complexas de edição de vídeo, síntese de áudio espacial e raciocínio textual ocorram simultaneamente com latência zero e consumo elétrico de apenas 120W em carga máxima.</p>
-                `,
-                body_en: `
-                    <p>Apple’s edge AI architecture has long defied the cloud-first orthodoxy of Silicon Valley. With the debut of the <strong>M6 and M5 Ultra</strong> silicon series, local on-device sovereign inference has achieved enterprise viability.</p>
-                    <h3>1. Unified Memory Architecture as an Asymmetric Advantage</h3>
-                    <p>While discrete PCIe accelerator clusters suffer latency penalties shuttling weights between system memory and GPU VRAM, Apple’s unified fabric exposes up to 256GB of memory directly to 80 GPU cores and upgraded Neural Engines at sustained 800 GB/s bandwidth.</p>
-                    <p>This allows multi-stream 4K vision encoding, spatial audio generation, and 30B parameter reasoning to execute concurrently at just 120W total system draw.</p>
-                `,
-                sources: [
-                    { name: 'Apple Newsroom — M6 & M5 Ultra Technical Briefing', url: 'https://www.apple.com/newsroom' }
-                ]
-            },
-            {
-                id: 4,
-                category: 'security',
-                badgeClass: 'badge-purple',
-                badge_pt: 'Cibersegurança de Silício',
-                badge_en: 'Silicon Cybersecurity',
-                title_pt: 'Ataque GPUThor: Como a Falha de Rowhammer em VRAM Conseguiu Burlar a Proteção ECC em Placas Nvidia',
-                title_en: 'GPUThor Exploit: How Rowhammer Fault Injection Bypassed ECC on Nvidia Accelerators',
-                readingTime_pt: '6 min de leitura',
-                readingTime_en: '6 min read',
-                date_pt: '24/09/2026',
-                date_en: 'Sep 24, 2026',
-                cover: 'https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&w=1200&q=80',
-                summary_pt: 'Pesquisadores de segurança detalham o exploit GPUThor, capaz de provocar vazamentos capacitivos em frequências extremas para corromper bits de controle e obter acesso administrativo em instâncias de IA compartilhadas.',
-                summary_en: 'Security researchers uncover the GPUThor exploit, demonstrating repeatable electromagnetic fault injection across high-bandwidth GPU memory to flip multiple bits simultaneously, bypassing SECDED ECC in multi-tenant AI clusters.',
-                body_pt: `
-                    <p>Durante anos, operadoras de nuvem e laboratórios consideraram que o uso de aceleradores com memória de código de correção de erro (ECC) garantia o isolamento inviolável de dados confidenciais. A divulgação do vetor de ataque <strong>GPUThor</strong> demonstrou que perturbações eletromagnéticas induzidas por software quebram essa premissa.</p>
-                    <h3>1. Inversão Simultânea de Múltiplos Bits</h3>
-                    <p>O ataque induz ciclos de leitura contínua em células adjacentes de memória HBM3e e GDDR6X até provocar vazamento de carga para linhas vizinhas. Quando mais de dois bits são alterados em um mesmo bloco, o algoritmo SECDED falha silenciosamente, permitindo sobrescrever tabelas de privilégios de containers Linux virtuais.</p>
-                    <h3>2. Mitigações Mandatórias para Nuvens de IA</h3>
-                    <ul>
-                        <li><strong>Atualização Imediata de Firmware:</strong> Elevação agressiva das taxas de atualização das células de memória (Target Row Refresh).</li>
-                        <li><strong>Fim da Virtualização vGPU em Dados Sensíveis:</strong> Adoção estrita de nós bare-metal single-tenant para cargas confidenciais.</li>
-                    </ul>
-                `,
-                body_en: `
-                    <p>Enterprise hyperscalers long operated under the assumption that hardware Error-Correcting Code (ECC) in GPU accelerators constituted an impenetrable barrier against memory corruption attacks. The disclosure of <strong>GPUThor</strong> dispels this assumption.</p>
-                    <h3>1. Multi-Bit Capacitive Charge Leaks</h3>
-                    <p>By executing ultra-dense memory strobes across adjacent physical rows in HBM3e and GDDR6X modules, GPUThor induces capacitive voltage decay across neighbor cells. When multi-bit flips overwhelm standard SECDED hamming bounds, the memory controller fails silently, allowing malicious guest containers to overwrite kernel page tables.</p>
-                    <h3>2. Cloud Operator Mandates</h3>
-                    <ul>
-                        <li><strong>Firmware Target Row Refresh (TRR):</strong> Immediate rollout of microcode patches doubling refresh cycles on high-density accelerator memory.</li>
-                        <li><strong>Single-Tenant Bare Metal:</strong> Phasing out virtualized vGPU partitioning for sensitive enterprise training runs in public clouds.</li>
-                    </ul>
-                `,
-                sources: [
-                    { name: 'The Hacker News — GPUThor Rowhammer Vulnerability', url: 'https://thehackernews.com' }
-                ]
-            },
-            {
-                id: 5,
-                category: 'ai-models',
-                badgeClass: 'badge-cyan',
-                badge_pt: 'Modelos & IA',
-                badge_en: 'Models & AI',
-                title_pt: 'Anthropic e Salesforce Revelam Claudeforce e o Novo Padrão de Watermarking Exigido pelo EU AI Act',
-                title_en: 'Anthropic and Salesforce Unveil Claudeforce with EU AI Act Compliant Cryptographic Watermarking',
-                readingTime_pt: '5 min de leitura',
-                readingTime_en: '5 min read',
-                date_pt: '24/09/2026',
-                date_en: 'Sep 24, 2026',
-                cover: 'https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?auto=format&fit=crop&w=1200&q=80',
-                summary_pt: 'A Anthropic detalhou a tecnologia de marca d’água criptográfica integrada no Claude, estabelecendo o primeiro mecanismo auditável por governos para certificar textos gerados por IA sem alterar a qualidade sintática.',
-                summary_en: 'Anthropic details statistical token watermarking within Claude and Claudeforce, pioneering verifiable, regulator-compliant provenance tracing without degrading natural language syntax.',
-                body_pt: `
-                    <p>Com a entrada em vigor dos novos requisitos regulatórios do <em>EU AI Act</em> no final de 2026, plataformas de inteligência artificial são legalmente obrigadas a fornecer identificação rastreável de conteúdo automatizado. Em parceria com a Salesforce, a Anthropic demonstrou a implementação do <strong>Claudeforce</strong> com tecnologia de watermarking estatístico imperceptível.</p>
-                    <h3>1. Como Funciona a Assinatura Invisível de Tokens</h3>
-                    <p>O gerador de texto altera de forma pseudo-aleatória a probabilidade de escolha entre palavras sinônimas baseado em uma chave criptográfica secreta. Para um leitor humano, o texto soa 100% natural; para algoritmos de verificação, a distribuição de termos revela uma probabilidade de geração artificial acima de 99,99%.</p>
-                `,
-                body_en: `
-                    <p>With stringent disclosure provisions of the European Union AI Act entering full enforcement in late 2026, autonomous systems must provide verifiable proof of synthetic provenance. In collaboration with Salesforce, Anthropic deployed <strong>Claudeforce</strong> featuring production-grade statistical text watermarking.</p>
-                    <h3>1. Cryptographic Pseudo-Random Token Distribution</h3>
-                    <p>The decoding head modulates the sampling probabilities of equivalent lexical synonyms using a cryptographically seeded hash. To a human reader, generated syntax remains indistinguishable from human composition; to an authorized audit validator, the mathematical distribution exhibits artificial provenance certainty exceeding 99.99%.</p>
-                `,
-                sources: [
-                    { name: 'Salesforce & Anthropic Press Release', url: 'https://www.salesforce.com/news' },
-                    { name: 'Anthropic Claude Research Publications', url: 'https://www.anthropic.com/news' }
-                ]
-            },
-            {
-                id: 6,
-                category: 'physical-ai',
-                badgeClass: 'badge-emerald',
-                badge_pt: 'Physical AI & Robótica',
-                badge_en: 'Physical AI & Robotics',
-                title_pt: 'Physical AI na Borda: Como Módulos de Menos de 15W Estão Operando Robôs Industriais com Visão-Ação',
-                title_en: 'Physical AI on the Edge: How Sub-15W Silicon Runs Industrial Robots with Real-Time Vision-Action',
-                readingTime_pt: '5 min de leitura',
-                readingTime_en: '5 min read',
-                date_pt: '23/09/2026',
-                date_en: 'Sep 23, 2026',
-                cover: 'https://images.unsplash.com/photo-1508614589041-895b88991e3e?auto=format&fit=crop&w=1200&q=80',
-                summary_pt: 'SiMa.ai e integradores globais demonstram módulos compactos capazes de rodar redes neurais multimodais em drones autônomos e braços mecânicos com resposta determinística abaixo de 5 milissegundos.',
-                summary_en: 'SiMa.ai and robotics pioneers deploy sub-15W edge neural modules capable of executing closed-loop vision-language-action policies on autonomous drones and manipulators under 5ms deterministic latency.',
-                body_pt: `
-                    <p>A fronteira mais desafiadora da computação inteligente não reside nos grandes servidores climatizados, mas no mundo físico. Em aplicações como navegação de drones em zonas de desastre ou braços robóticos em linhas de montagem, a latência de comunicação com a nuvem é proibitiva.</p>
-                    <h3>1. Silício Híbrido: NPU + DSP com Consumo Mínimo</h3>
-                    <p>A nova geração de semicondutores para <em>Edge AI</em> unifica aceleradores neurais esparsos com processadores de sinal digital. Com consumo elétrico inferior a 15W, os dispositivos conseguem processar 4 câmeras 4K a 60 FPS, gerando ações motoras sem emitir calor excessivo e com baterias comuns de lítio.</p>
-                `,
-                body_en: `
-                    <p>The critical vanguard of intelligent computing has transitioned from chilled hyperscale server rooms to the physical world. In mission-critical robotics and autonomous drone navigation, cloud latency is fundamentally incompatible with collision avoidance.</p>
-                    <h3>1. Hybrid Edge Heterogeneity: Sparse NPU + Real-Time DSP</h3>
-                    <p>Novel silicon architectures combine sparse neural network tensor cores with low-jitter digital signal processors. Consuming under 15 watts, these self-contained packages process quadruple 4K camera streams at 60 FPS, inferring joint actuations within 5 milliseconds on standard battery packs.</p>
-                `,
-                sources: [
-                    { name: 'Edge AI and Vision Alliance Report', url: 'https://www.edge-ai-vision.com' }
-                ]
-            }
-        ];
-
-        // Alternância Bilíngue (PT-BR / EN-US)
-        function setLanguage(lang) {
-            currentLang = lang;
-            localStorage.setItem('corticflow_lang', lang);
-
-            // Atualiza botões do switcher
-            document.getElementById('btn-pt').classList.toggle('active', lang === 'pt');
-            document.getElementById('btn-en').classList.toggle('active', lang === 'en');
-
-            const t = I18N[lang];
-
-            // Atualiza Header
-            document.getElementById('nav-feed').innerText = t.navFeed;
-            document.getElementById('nav-semi').innerText = t.navSemi;
-            document.getElementById('nav-models').innerText = t.navModels;
-            document.getElementById('nav-about').innerText = t.navAbout;
-            document.getElementById('nav-contact').innerText = t.navContact;
-            document.getElementById('btn-newsletter-hdr').innerText = t.btnNewsletter;
-
-            // Atualiza Hero
-            document.getElementById('hero-ticker').innerText = t.heroTicker;
-            document.getElementById('trending-heading').innerText = t.trendingHeading;
-            document.getElementById('trending-today-lbl').innerText = t.trendingToday;
-            document.getElementById('trending-footer-curation').innerText = t.trendingCuration;
-            document.getElementById('trending-footer-status').innerText = t.trendingStatus;
-
-            // Atualiza Lead Story
-            const lead = ARTICLES[0];
-            document.getElementById('lead-badge').innerText = lang === 'pt' ? lead.badge_pt : lead.badge_en;
-            document.getElementById('lead-title').innerText = lang === 'pt' ? lead.title_pt : lead.title_en;
-            document.getElementById('lead-excerpt').innerText = lang === 'pt' ? lead.summary_pt : lead.summary_en;
-            document.getElementById('lead-meta').innerText = `⚡ ${lang === 'pt' ? lead.readingTime_pt : lead.readingTime_en}`;
-            document.getElementById('lead-action').innerText = t.leadAction;
-
-            // Atualiza Sidebar Trending
-            document.getElementById('trend-1-title').innerText = lang === 'pt' ? ARTICLES[1].title_pt : ARTICLES[1].title_en;
-            document.getElementById('trend-1-sub').innerText = `${lang === 'pt' ? ARTICLES[1].badge_pt : ARTICLES[1].badge_en} • ${lang === 'pt' ? ARTICLES[1].readingTime_pt : ARTICLES[1].readingTime_en}`;
-
-            document.getElementById('trend-2-title').innerText = lang === 'pt' ? ARTICLES[2].title_pt : ARTICLES[2].title_en;
-            document.getElementById('trend-2-sub').innerText = `${lang === 'pt' ? ARTICLES[2].badge_pt : ARTICLES[2].badge_en} • ${lang === 'pt' ? ARTICLES[2].readingTime_pt : ARTICLES[2].readingTime_en}`;
-
-            document.getElementById('trend-3-title').innerText = lang === 'pt' ? ARTICLES[3].title_pt : ARTICLES[3].title_en;
-            document.getElementById('trend-3-sub').innerText = `${lang === 'pt' ? ARTICLES[3].badge_pt : ARTICLES[3].badge_en} • ${lang === 'pt' ? ARTICLES[3].readingTime_pt : ARTICLES[3].readingTime_en}`;
-
-            // Atualiza Chips
-            document.getElementById('radar-filter-lbl').innerText = t.radarFilter;
-            document.getElementById('chip-all').innerText = t.chipAll;
-            document.getElementById('chip-models').innerText = t.chipModels;
-            document.getElementById('chip-semi').innerText = t.chipSemi;
-            document.getElementById('chip-sec').innerText = t.chipSec;
-            document.getElementById('chip-phys').innerText = t.chipPhys;
-
-            // Atualiza Footer
-            document.getElementById('footer-desc').innerText = t.footerDesc;
-            document.getElementById('footer-hdr-topics').innerText = t.footerTopics;
-            document.getElementById('footer-hdr-radar').innerText = t.footerRadar;
-            document.getElementById('footer-hdr-inst').innerText = t.footerInst;
-            document.getElementById('footer-about').innerText = t.footerAbout;
-            document.getElementById('footer-contact').innerText = t.footerContact;
-            document.getElementById('footer-privacy').innerText = t.footerPrivacy;
-            document.getElementById('footer-terms').innerText = t.footerTerms;
-            document.getElementById('footer-copyright').innerText = t.footerCopyright;
-            document.getElementById('footer-pipeline').innerText = t.footerPipeline;
-
-            // Renderiza Grid no idioma atual
-            renderArticles(currentFilterList || ARTICLES);
-        }
-
-        let currentFilterList = null;
-
-        // Renderização dos Cards com Simetria e Bilíngue
-        function renderArticles(list) {
-            currentFilterList = list;
-            const container = document.getElementById('articles-container');
-            container.innerHTML = '';
-
-            list.forEach(item => {
-                const card = document.createElement('article');
-                card.className = 'grid-card';
-                card.onclick = () => openArticleModal(item.id);
-
-                const badge = currentLang === 'pt' ? item.badge_pt : item.badge_en;
-                const title = currentLang === 'pt' ? item.title_pt : item.title_en;
-                const summary = currentLang === 'pt' ? item.summary_pt : item.summary_en;
-                const time = currentLang === 'pt' ? item.readingTime_pt : item.readingTime_en;
-                const readLabel = I18N[currentLang].readMore;
-
-                card.innerHTML = `
-                    <div class="aspect-16-9">
-                        <img src="${item.cover}" alt="${title}" 
-                             onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=800&q=80';">
-                    </div>
-                    <div class="card-inner">
-                        <span class="tag-badge ${item.badgeClass}">${badge}</span>
-                        <h3 class="card-title">${title}</h3>
-                        <p class="card-excerpt">${summary}</p>
-                        <div class="card-meta">
-                            <span>${time}</span>
-                            <span style="color: var(--cyan); font-weight: 600;">${readLabel}</span>
-                        </div>
-                    </div>
-                `;
-                container.appendChild(card);
+        /* Spotlight Border Effect Following Mouse */
+        document.querySelectorAll('.bento-card').forEach(card => {
+            card.addEventListener('mousemove', e => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                card.style.setProperty('--mouse-x', `${x}px`);
+                card.style.setProperty('--mouse-y', `${y}px`);
             });
-        }
-
-        // Filtro por Categoria
-        function filterCategory(cat, btn) {
-            if (btn) {
-                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-                btn.classList.add('active');
-            }
-            if (cat === 'all') {
-                renderArticles(ARTICLES);
-            } else {
-                const filtered = ARTICLES.filter(a => a.category === cat);
-                renderArticles(filtered);
-            }
-        }
-
-        // Modal de Leitura Long-Form Bilíngue
-        function openArticleModal(id) {
-            const art = ARTICLES.find(a => a.id === id);
-            if (!art) return;
-
-            const isPt = currentLang === 'pt';
-            document.getElementById('modalImage').src = art.cover;
-            document.getElementById('modalBadge').className = 'tag-badge ' + art.badgeClass;
-            document.getElementById('modalBadge').innerText = isPt ? art.badge_pt : art.badge_en;
-            document.getElementById('modalTitle').innerText = isPt ? art.title_pt : art.title_en;
-            document.getElementById('modalMeta').innerText = `${isPt ? 'Por Equipe Editorial CorticFlow' : 'By CorticFlow Editorial Team'} • ${isPt ? art.readingTime_pt : art.readingTime_en} • ${isPt ? art.date_pt : art.date_en}`;
-            document.getElementById('modalExecHeading').innerText = I18N[currentLang].modalExecHeading;
-            document.getElementById('modalSummary').innerText = isPt ? art.summary_pt : art.summary_en;
-            document.getElementById('modalBody').innerHTML = isPt ? art.body_pt : art.body_en;
-            document.getElementById('modalSourcesHeading').innerText = I18N[currentLang].modalSourcesHeading;
-
-            const linksDiv = document.getElementById('modalSourceLinks');
-            linksDiv.innerHTML = '';
-            art.sources.forEach(s => {
-                const a = document.createElement('a');
-                a.href = s.url;
-                a.target = '_blank';
-                a.rel = 'noopener noreferrer';
-                a.className = 'source-link-btn';
-                a.innerHTML = `🔗 ${s.name} ↗`;
-                linksDiv.appendChild(a);
-            });
-
-            document.getElementById('articleModal').classList.add('open');
-            document.body.style.overflow = 'hidden';
-        }
-
-        function closeArticleModal() {
-            document.getElementById('articleModal').classList.remove('open');
-            document.body.style.overflow = 'auto';
-        }
-
-        // Modais Institucionais Funcionais Bilíngues
-        function openInstitutionalModal(type) {
-            const modal = document.getElementById('institutionalModal');
-            const title = document.getElementById('instTitle');
-            const body = document.getElementById('instBody');
-            const badge = document.getElementById('instBadge');
-            const isPt = currentLang === 'pt';
-
-            if (type === 'about') {
-                badge.innerText = isPt ? 'Manifesto & Equipe' : 'Manifesto & Team';
-                title.innerText = isPt ? 'Sobre o CorticFlow' : 'About CorticFlow';
-                body.innerHTML = isPt ? `
-                    <p>O <strong>CorticFlow</strong> é um portal internacional independente dedicado à análise profunda, arquitetura de sistemas e impacto estratégico da inteligência artificial e semicondutores.</p>
-                    <p>Nossa operação editorial combina curadoria autônoma de dados técnicos com governança e análise especializada de engenharia (human-in-the-loop). Não produzimos resumos superficiais de assessoria de imprensa; investigamos a física dos chips, os gargalos de memória e as implicações econômicas do software moderno.</p>
-                    <p>Operamos com infraestrutura 100% serverless, zero rastreamento invasivo e código aberto hospedado no GitHub.</p>
-                ` : `
-                    <p><strong>CorticFlow</strong> is an independent international publication dedicated to deep technical analysis, systems architecture, and the geopolitical impact of artificial intelligence and semiconductor manufacturing.</p>
-                    <p>Our editorial workflow synthesizes autonomous technical telemetry with specialized engineering oversight (human-in-the-loop). We reject superficial press releases in favor of investigating silicon physics, memory bottlenecks, and the macroeconomics of modern software.</p>
-                    <p>Operating on 100% serverless infrastructure, zero intrusive tracking, and open-source code deployed via GitHub.</p>
-                `;
-            } else if (type === 'contact') {
-                badge.innerText = isPt ? 'Canais Oficiais' : 'Official Channels';
-                title.innerText = isPt ? 'Contato & Imprensa' : 'Contact & Press';
-                body.innerHTML = isPt ? `
-                    <p>Para pautas editoriais, correções técnicas, solicitações de entrevistas ou parcerias institucionais, utilize os canais diretos abaixo:</p>
-                    <p><strong>E-mail Editorial Oficial:</strong><br><a href="mailto:corticflow@gmail.com" style="color: var(--cyan); font-family: 'JetBrains Mono', monospace; font-size: 1.1rem;">corticflow@gmail.com</a></p>
-                    <p><strong>Repositório do Código:</strong><br><a href="https://github.com/corticflow/corticflow" target="_blank" style="color: var(--cyan);">github.com/corticflow/corticflow ↗</a></p>
-                    <p>Nosso tempo médio de resposta para solicitações técnicas de imprensa é de até 24 horas úteis.</p>
-                ` : `
-                    <p>For editorial inquiries, technical errata, press requests, or institutional partnerships, reach us directly via:</p>
-                    <p><strong>Official Editorial Email:</strong><br><a href="mailto:corticflow@gmail.com" style="color: var(--cyan); font-family: 'JetBrains Mono', monospace; font-size: 1.1rem;">corticflow@gmail.com</a></p>
-                    <p><strong>GitHub Repository:</strong><br><a href="https://github.com/corticflow/corticflow" target="_blank" style="color: var(--cyan);">github.com/corticflow/corticflow ↗</a></p>
-                    <p>Average response SLA for technical press inquiries is within 24 business hours.</p>
-                `;
-            } else if (type === 'privacy') {
-                badge.innerText = isPt ? 'Compliance & LGPD' : 'Compliance & GDPR';
-                title.innerText = isPt ? 'Política de Privacidade' : 'Privacy Policy';
-                body.innerHTML = isPt ? `
-                    <p>O CorticFlow respeita integralmente as diretrizes da LGPD (Brasil), GDPR (União Europeia) e CCPA (EUA).</p>
-                    <p>Não comercializamos dados pessoais de usuários. Coletamos apenas telemetria técnica anônima essencial para medição de tráfego e cookies de preferência de tema e idioma.</p>
-                    <p>Para mais detalhes ou solicitações de remoção de dados, entre em contato via <a href="mailto:corticflow@gmail.com" style="color: var(--cyan);">corticflow@gmail.com</a> ou consulte o arquivo completo <a href="privacy.html" style="color: var(--cyan);">privacy.html</a>.</p>
-                ` : `
-                    <p>CorticFlow complies strictly with Brazilian LGPD, European GDPR, and California CCPA privacy standards.</p>
-                    <p>We do not sell user personal data. We collect only anonymized technical telemetry required for performance optimization and language/theme preference cookies.</p>
-                    <p>For inquiries, contact <a href="mailto:corticflow@gmail.com" style="color: var(--cyan);">corticflow@gmail.com</a> or review <a href="privacy.html" style="color: var(--cyan);">privacy.html</a>.</p>
-                `;
-            } else if (type === 'terms') {
-                badge.innerText = isPt ? 'Legal & Propriedade' : 'Legal & IP';
-                title.innerText = isPt ? 'Termos de Uso' : 'Terms of Service';
-                body.innerHTML = isPt ? `
-                    <p>Todo o conteúdo textual e análises publicadas no CorticFlow são de caráter estritamente informativo e educacional.</p>
-                    <p>Nenhuma análise de semicondutores, receita de hyperscalers ou métricas de mercado constitui recomendação financeira ou de investimento.</p>
-                    <p>Para o texto jurídico integral, consulte a página oficial em <a href="terms.html" style="color: var(--cyan);">terms.html</a>.</p>
-                ` : `
-                    <p>All editorial analyses published on CorticFlow are provided solely for educational and research purposes.</p>
-                    <p>No technical breakdown, semiconductor forecast, or financial telemetry constitutes investment advice.</p>
-                    <p>For the complete legal text, review <a href="terms.html" style="color: var(--cyan);">terms.html</a>.</p>
-                `;
-            } else if (type === 'newsletter') {
-                badge.innerText = isPt ? 'Disparo Semanal' : 'Weekly Briefing';
-                title.innerText = isPt ? 'Assinar CorticFlow Weekly' : 'Subscribe to CorticFlow Weekly';
-                body.innerHTML = isPt ? `
-                    <p>Receba todo domingo às 20h o resumo executivo com os principais dossiês de IA, benchmarks de modelos e tutoriais práticos da semana.</p>
-                    <form onsubmit="alert('Inscrição confirmada com sucesso! Você receberá a próxima edição dominical.'); closeInstitutionalModal(); return false;" style="display: flex; flex-direction: column; gap: 12px; margin-top: 12px;">
-                        <input type="email" placeholder="seu.email@empresa.com" required style="padding: 12px 16px; border-radius: 8px; background: rgba(0,0,0,0.5); border: 1px solid var(--border-color); color: #FFF; outline: none;">
-                        <button type="submit" class="btn-header" style="padding: 12px; font-size: 0.9rem;">Confirmar Inscrição Gratuita</button>
-                    </form>
-                ` : `
-                    <p>Receive our executive Sunday briefing at 8:00 PM with curated frontier AI dossiers, silicon benchmarks, and practical engineering guides.</p>
-                    <form onsubmit="alert('Subscription successfully confirmed! You will receive our next Sunday briefing.'); closeInstitutionalModal(); return false;" style="display: flex; flex-direction: column; gap: 12px; margin-top: 12px;">
-                        <input type="email" placeholder="name@company.com" required style="padding: 12px 16px; border-radius: 8px; background: rgba(0,0,0,0.5); border: 1px solid var(--border-color); color: #FFF; outline: none;">
-                        <button type="submit" class="btn-header" style="padding: 12px; font-size: 0.9rem;">Confirm Free Subscription</button>
-                    </form>
-                `;
-            }
-
-            modal.classList.add('open');
-            document.body.style.overflow = 'hidden';
-        }
-
-        function closeInstitutionalModal() {
-            document.getElementById('institutionalModal').classList.remove('open');
-            document.body.style.overflow = 'auto';
-        }
-
-        function closeModalOnBackdrop(e) {
-            if (e.target.classList.contains('modal-backdrop')) {
-                closeArticleModal();
-                closeInstitutionalModal();
-            }
-        }
-
-        window.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape') {
-                closeArticleModal();
-                closeInstitutionalModal();
-            }
         });
 
-        // Animação Canvas Neural
+        /* Particle Neural Canvas */
         (function() {
             const canvas = document.getElementById('neural-canvas');
-            if (!canvas) return;
             const ctx = canvas.getContext('2d');
             let w, h, particles = [];
 
@@ -1172,16 +801,19 @@
             window.addEventListener('resize', resize);
             resize();
 
-            for (let i = 0; i < 45; i++) {
+            for (let i = 0; i < 48; i++) {
                 particles.push({
                     x: Math.random() * w, y: Math.random() * h,
-                    vx: (Math.random() - 0.5) * 0.5, vy: (Math.random() - 0.5) * 0.5,
+                    vx: (Math.random() - 0.5) * 0.4, vy: (Math.random() - 0.5) * 0.4,
                     r: Math.random() * 1.5 + 0.8
                 });
             }
 
-            function animate() {
+            function draw() {
                 ctx.clearRect(0, 0, w, h);
+                ctx.fillStyle = '#00F0FF';
+                ctx.strokeStyle = 'rgba(0, 240, 255, 0.08)';
+
                 for (let i = 0; i < particles.length; i++) {
                     let p = particles[i];
                     p.x += p.vx; p.y += p.vy;
@@ -1190,33 +822,516 @@
 
                     ctx.beginPath();
                     ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-                    ctx.fillStyle = '#00E5FF';
                     ctx.fill();
 
                     for (let j = i + 1; j < particles.length; j++) {
                         let p2 = particles[j];
                         let dx = p.x - p2.x, dy = p.y - p2.y;
                         let dist = Math.sqrt(dx * dx + dy * dy);
-                        if (dist < 120) {
+                        if (dist < 140) {
                             ctx.beginPath();
                             ctx.moveTo(p.x, p.y);
                             ctx.lineTo(p2.x, p2.y);
-                            ctx.strokeStyle = `rgba(139, 92, 246, ${(1 - dist / 120) * 0.25})`;
-                            ctx.lineWidth = 0.5;
                             ctx.stroke();
                         }
                     }
                 }
-                requestAnimationFrame(animate);
+                requestAnimationFrame(draw);
             }
-            animate();
+            draw();
         })();
 
-        // Inicialização
-        document.addEventListener('DOMContentLoaded', () => {
-            setLanguage(currentLang);
+        /* Command Palette Hotkey (Cmd+K / Ctrl+K) */
+        window.addEventListener('keydown', e => {
+            if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+                e.preventDefault();
+                toggleCmd();
+            }
+            if (e.key === 'Escape') {
+                closeArticleModal();
+                closeInst();
+                document.getElementById('cmdModal').classList.remove('active');
+            }
         });
+
+        function toggleCmd() {
+            const m = document.getElementById('cmdModal');
+            m.classList.toggle('active');
+            if (m.classList.contains('active')) {
+                document.getElementById('cmdInput').focus();
+            }
+        }
+        function closeCmdOverlay(e) {
+            if (e.target.id === 'cmdModal') toggleCmd();
+        }
+
+        /* Database of Articles & Translations */
+        const ARTICLES = {
+            1: {
+                category: 'semiconductors',
+                img: 'https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&w=1400&q=80',
+                pt: {
+                    tag: 'Infraestrutura & Energia',
+                    title: 'A Crise Energética dos 60GW: Big Techs Reativam Usinas Nucleares para Alimentar Clusters de IA',
+                    snip: 'O verdadeiro limite físico para o avanço dos modelos de 1 trilhão de parâmetros deixou de ser o silício e passou a ser a rede elétrica.',
+                    time: '⚡ 8 min de leitura • Engenharia & Energia',
+                    callout: 'A demanda por eletricidade limpa contínua (fator de capacidade >95%) levou Amazon, Microsoft e Google a assinarem PPAs de 20 anos com usinas nucleares reativadas, consolidando os pequenos reatores modulares (SMRs) como o novo backbone da IA.',
+                    body: `
+                        <p>Nos últimos doze meses, o gargalo da corrida da inteligência artificial sofreu uma translação radical. A escassez de wafers de 3 nanômetros e a disputa por capacidade de encapsulamento CoWoS da TSMC deram lugar a um obstáculo muito mais inflexível: <strong>a capacidade de geração contínua da rede elétrica global</strong>.</p>
+                        <h3>O Limite Físico dos Megawatts</h3>
+                        <p>Um cluster moderno de treinamento com 100.000 aceleradores de última geração consome em regime contínuo mais de 150 megawatts (MW) de potência — equivalente ao consumo de uma cidade industrial de médio porte. Projetos de datacenters de 1 gigawatt (GW) já estão em fase de licenciamento nos Estados Unidos e no Oriente Médio.</p>
+                        <p>Fontes intermitentes como solar e eólica, embora fundamentais para descarbonização, não oferecem a estabilidade exigida por datacenters sem investimentos gigantescos em baterias de escala utilitária. É nesse vácuo que a energia nuclear ressurgiu como a única solução economicamente viável para suprir energia de base carbono zero 24 horas por dia, 7 dias por semana.</p>
+                        <h3>Reativações Históricas e o Advento dos SMRs</h3>
+                        <ul>
+                            <li><strong>Reativação de Three Mile Island (Crane Clean Energy Center):</strong> Parceria de 20 anos garantindo 835 MW dedicados à infraestrutura de computação em nuvem da Microsoft.</li>
+                            <li><strong>Datacenter de Susquehanna da AWS:</strong> Conexão direta atrás do medidor (behind-the-meter) com capacidade escalável até 960 MW na Pensilvânia.</li>
+                            <li><strong>Google e Pequenos Reatores Modulares (SMRs):</strong> Contrato com a Kairos Power para comissionar até 500 MW distribuídos até 2035.</li>
+                        </ul>
+                    `,
+                    links: [
+                        { name: 'Investigação Reuters Energy ↗', url: 'https://www.reuters.com' },
+                        { name: 'Relatório EPRI Datacenters ↗', url: 'https://www.epri.com' }
+                    ]
+                },
+                en: {
+                    tag: 'Infrastructure & Energy',
+                    title: 'The 60GW Power Wall: Big Tech Resurrects Nuclear Plants to Fuel AI Clusters',
+                    snip: 'The true physical bottleneck for 1-trillion parameter neural models shifted from silicon lithography to the high-voltage electrical grid.',
+                    time: '⚡ 8 min read • Engineering & Energy',
+                    callout: 'The requirement for continuous baseload power (>95% capacity factor) forced Amazon, Microsoft, and Google into 20-year PPAs with reopened nuclear reactors, positioning SMRs as the definitive AI backbone.',
+                    body: `
+                        <p>Over the past twelve months, the bottleneck in artificial intelligence shifted dramatically. The shortage of 3nm wafer allocations and TSMC CoWoS packaging capacity gave way to an unyielding real-world constraint: <strong>the continuous power generation capacity of regional electric grids</strong>.</p>
+                        <h3>The Gigawatt-Scale Frontier</h3>
+                        <p>A premier training cluster scaling 100,000 next-generation accelerators consumes over 150 megawatts (MW) continuous baseload power — comparable to an entire industrial city. Projects exceeding 1 gigawatt (GW) are already undergoing environmental clearance across North America and the Middle East.</p>
+                        <p>While solar and wind remain vital for general decarbonization, their intermittent nature cannot supply uninterruptible power without prohibitively expensive battery installations. Nuclear energy emerged as the sole viable zero-carbon baseload electricity source running 24/7.</p>
+                        <h3>Historic Restarts and SMR Contracts</h3>
+                        <ul>
+                            <li><strong>Three Mile Island Restart (Crane Clean Energy Center):</strong> A 20-year commitment dedicating 835 MW strictly to Microsoft hyperscale computing.</li>
+                            <li><strong>AWS Susquehanna Datacenter:</strong> Direct behind-the-meter campus integration scaling up to 960 MW in Pennsylvania.</li>
+                            <li><strong>Google & Small Modular Reactors (SMRs):</strong> Landmark commitment with Kairos Power to commission 500 MW of modular nuclear power by 2035.</li>
+                        </ul>
+                    `,
+                    links: [
+                        { name: 'Reuters Energy Investigation ↗', url: 'https://www.reuters.com' },
+                        { name: 'EPRI Datacenter Report ↗', url: 'https://www.epri.com' }
+                    ]
+                }
+            },
+            2: {
+                category: 'ai-models',
+                img: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=800&q=80',
+                pt: {
+                    tag: 'Modelos Fundacionais',
+                    title: 'DeepSeek Harness: Auditoria Aberta dos Pesos Neurais e Inferência Descentralizada',
+                    snip: 'Como o ecossistema open-weights da DeepSeek está desafiando o monopólio das APIs fechadas com precisão FP8.',
+                    time: '6 min de leitura • Modelos & Pesos',
+                    callout: 'A convergência entre quantização FP8 e arquiteturas Mixture-of-Experts permite executar modelos de alta capacidade com uma fração do custo de inferência tradicional.',
+                    body: `
+                        <p>O ecossistema open-weights atingiu paridade arquitetural com modelos proprietários em tarefas de raciocínio matemático, síntese de código e engenharia de software complexa.</p>
+                        <h3>Inovações de Eficiência</h3>
+                        <p>Através da implementação de Multi-Head Latent Attention (MLA) e ativação esparsa de especialistas, os custos de computação de inferência caíram em mais de 70%, permitindo implementações corporativas autônomas em infraestruturas locais.</p>
+                    `,
+                    links: [{ name: 'DeepSeek Technical Paper ↗', url: 'https://arxiv.org' }]
+                },
+                en: {
+                    tag: 'Foundational Models',
+                    title: 'DeepSeek Harness: Open Neural Weight Auditing and Low-Cost Inference',
+                    snip: 'How the open-weights ecosystem is dismantling closed-API dominance using FP8 quantization.',
+                    time: '6 min read • Models & Weights',
+                    callout: 'The alignment between FP8 precision and Mixture-of-Experts designs enables elite reasoning at a fraction of traditional token pricing.',
+                    body: `
+                        <p>The open-weights ecosystem achieved architectural parity with proprietary frontier models across mathematical reasoning, algorithmic generation, and deep systems engineering.</p>
+                        <h3>Efficiency Breakthroughs</h3>
+                        <p>Through Multi-Head Latent Attention (MLA) and sparse expert activation, inference compute costs plummeted by over 70%, unlocking sovereign enterprise deployments on self-hosted silicon.</p>
+                    `,
+                    links: [{ name: 'DeepSeek Technical Paper ↗', url: 'https://arxiv.org' }]
+                }
+            },
+            3: {
+                category: 'semiconductors',
+                img: 'https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=800&q=80',
+                pt: {
+                    tag: 'Hardware On-Device',
+                    title: 'Apple Silicon M6 e M5 Ultra: O Monstro de 80 GPUs e Memória Unificada',
+                    snip: 'Com 1.2 TB/s de largura de banda, a arquitetura torna a inferência local de modelos de 70B parâmetros realidade silenciosa no desktop.',
+                    time: '5 min de leitura • Semicondutores',
+                    callout: 'A integração de barramentos de altíssima largura de banda diretamente na pastilha consolida as estações de trabalho de silício Apple como centros neurais sem necessidade de servidores remotos.',
+                    body: `
+                        <p>A arquitetura de silício proprietária da Apple consolidou uma vantagem decisiva para desenvolvedores de IA: a capacidade de carregar modelos de até 70 bilhões de parâmetros inteiramente na memória unificada do computador pessoal sem estrangulamento de PCI Express.</p>
+                    `,
+                    links: [{ name: 'Apple Platform Architecture ↗', url: 'https://developer.apple.com' }]
+                },
+                en: {
+                    tag: 'On-Device Hardware',
+                    title: 'Apple Silicon M6 & M5 Ultra: The 80-GPU Unified Memory Powerhouse',
+                    snip: 'Delivering 1.2 TB/s unified bandwidth, making 70B parameter local model inference an everyday desktop reality.',
+                    time: '5 min read • Semiconductors',
+                    callout: 'On-die unified memory architectures position personal workstations as private neural servers without remote cloud latency.',
+                    body: `
+                        <p>Apple proprietary silicon engineering established a durable edge: hosting 70B parameter neural models directly within unified memory without PCIe interface bottlenecks.</p>
+                    `,
+                    links: [{ name: 'Apple Platform Architecture ↗', url: 'https://developer.apple.com' }]
+                }
+            },
+            4: {
+                category: 'security',
+                img: 'https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?auto=format&fit=crop&w=800&q=80',
+                pt: {
+                    tag: 'Cibersegurança de Silício',
+                    title: 'Ataque GPUThor: Quebrando o ECC na Memória HBM3e',
+                    snip: 'Pesquisadores demonstram como induzir falhas de tensores em aceleradores de datacenter, corrompendo pesos neurais.',
+                    time: '6 min de leitura • Cibersegurança',
+                    callout: 'Falhas físicas microscópicas podem alterar os limiares de segurança de LLMs sem disparar alertas tradicionais de intrusão de software.',
+                    body: `
+                        <p>Uma nova classe de vulnerabilidades de hardware atinge a integridade da memória HBM em clusters de nuvem compartilhados. O ataque GPUThor explora ressonâncias acústicas para alterar bits de peso neural durante cálculos matriciais intensivos.</p>
+                    `,
+                    links: [{ name: 'Security Advisory Paper ↗', url: 'https://arxiv.org' }]
+                },
+                en: {
+                    tag: 'Silicon Cybersecurity',
+                    title: 'GPUThor Exploit: Bypassing ECC Inside HBM3e Memory Layers',
+                    snip: 'Researchers demonstrate how acoustic resonance induces tensor bit-flips inside cloud datacenter accelerators.',
+                    time: '6 min read • Cybersecurity',
+                    callout: 'Physical hardware vulnerabilities can silently alter LLM safety alignment without triggering software audit logs.',
+                    body: `
+                        <p>A novel vulnerability class targets HBM integrity across multi-tenant GPU clouds. The GPUThor exploit leverages acoustic resonance to flip weight bits during matrix multiplication.</p>
+                    `,
+                    links: [{ name: 'Security Advisory Paper ↗', url: 'https://arxiv.org' }]
+                }
+            },
+            5: {
+                category: 'physical-ai',
+                img: 'https://images.unsplash.com/photo-1485827404703-89b55fcc595e?auto=format&fit=crop&w=800&q=80',
+                pt: {
+                    tag: 'Physical AI & Robótica',
+                    title: 'Robôs Humanoides nas Fabs de Semicondutores',
+                    snip: 'Modelos de ação visual-linguística (VLA) assumem manipulação de pods FOUP em salas limpas de classe ISO-1.',
+                    time: '7 min de leitura • Robótica',
+                    callout: 'A convergência de visão computacional de baixa latência e atuadores com controle de torque viabiliza automação em nanômetros.',
+                    body: `
+                        <p>A substituição gradual de pontes rolantes rígidas por robôs humanoides com visão espacial está acelerando a logística interna de produção de wafers em fabs na Ásia e nos Estados Unidos.</p>
+                    `,
+                    links: [{ name: 'IEEE Robotics Review ↗', url: 'https://www.ieee.org' }]
+                },
+                en: {
+                    tag: 'Physical AI & Robotics',
+                    title: 'Humanoid Systems Inside Semiconductor Cleanrooms',
+                    snip: 'Vision-Language-Action (VLA) models handle FOUP wafer pods in ISO-1 environments without continuous human oversight.',
+                    time: '7 min read • Robotics',
+                    callout: 'Low-latency spatial vision coupled with torque-controlled actuators unlocks flexible nano-scale material handling.',
+                    body: `
+                        <p>Deploying flexible humanoid systems inside cleanroom environments provides modular wafer routing across multi-step fab lithography cycles.</p>
+                    `,
+                    links: [{ name: 'IEEE Robotics Review ↗', url: 'https://www.ieee.org' }]
+                }
+            },
+            6: {
+                category: 'semiconductors',
+                img: 'https://images.unsplash.com/photo-1635070041078-e363dbe005cb?auto=format&fit=crop&w=800&q=80',
+                pt: {
+                    tag: 'Fotônica & Quântica',
+                    title: 'Interconexões Ópticas Co-Empacotadas (CPO): O Fim do Cobre',
+                    snip: 'Lasers microscópicos integrados ao substrato de silício eliminam 70% das perdas térmicas em switches de IA.',
+                    time: '6 min de leitura • Fotônica',
+                    callout: 'A transmissão fotônica de dados reduz drasticamente a latência de comunicação inter-cluster em redes InfiniBand e Ethernet.',
+                    body: `
+                        <p>Com o aumento da largura de banda exigida por nós de computação para 3.2 Tbps por acelerador, os cabos de cobre convencionais atingiram seus limites térmicos e de distância. A tecnologia de Co-Packaged Optics traz os transceptores a laser para dentro do mesmo substrato do chip principal.</p>
+                    `,
+                    links: [{ name: 'Optical Internetworking Forum ↗', url: 'https://www.oiforum.com' }]
+                },
+                en: {
+                    tag: 'Photonics & Quantum',
+                    title: 'Co-Packaged Optics (CPO): The Twilight of Copper in AI Networks',
+                    snip: 'On-package laser transceivers eradicate 70% of thermal loss across high-density AI switch fabrics.',
+                    time: '6 min read • Photonics',
+                    callout: 'Photonic data links significantly slash inter-node communication latency across hyperscale AI fabrics.',
+                    body: `
+                        <p>As per-accelerator bandwidth escalates toward 3.2 Tbps, passive copper channels encounter unavoidable thermal and distance constraints. Co-Packaged Optics mounts laser engines directly alongside the primary compute die.</p>
+                    `,
+                    links: [{ name: 'Optical Internetworking Forum ↗', url: 'https://www.oiforum.com' }]
+                }
+            }
+        };
+
+        /* Institutional Modals Content */
+        const INST_TEXT = {
+            about: {
+                pt: {
+                    tag: 'Institucional',
+                    title: 'Sobre o CorticFlow',
+                    body: `
+                        <p>O <strong>CorticFlow</strong> é uma publicação de inteligência técnica independente dedicada a cobrir as transformações mais profundas no ecossistema global de tecnologia e inteligência artificial.</p>
+                        <p>Nosso foco reside na intersecção entre a <strong>física dos semicondutores</strong>, a <strong>matemática dos modelos neurais</strong> e os <strong>desdobramentos econômicos e geopolíticos</strong> da infraestrutura computacional.</p>
+                        <p>Trabalhamos sem caça-cliques, sem análises superficiais e sem intermediários: apenas relatórios de engenharia verificados e inteligência estratégica para quem constrói o futuro.</p>
+                    `
+                },
+                en: {
+                    tag: 'Institutional',
+                    title: 'About CorticFlow',
+                    body: `
+                        <p><strong>CorticFlow</strong> is an independent technical intelligence publication tracking foundational shifts across advanced computing, artificial intelligence, and physical infrastructure.</p>
+                        <p>Our editorial focus centers on the intersection of <strong>semiconductor physics</strong>, <strong>neural model mathematics</strong>, and the <strong>geopolitical economics</strong> of hyperscale computing.</p>
+                        <p>Zero clickbait, zero superficial recaps: verified engineering breakdowns and strategic intelligence for architects of the next technological era.</p>
+                    `
+                }
+            },
+            contact: {
+                pt: {
+                    tag: 'Contato & Imprensa',
+                    title: 'Fale Conosco',
+                    body: `
+                        <p>Para pautas exclusivas, relatórios técnicos, propostas institucionais ou parcerias editoriais:</p>
+                        <p style="font-family: var(--font-mono); font-size: 1.05rem; color: var(--cyan); background: rgba(0,240,255,0.06); padding: 14px; border-radius: 8px;">editorial@corticflow.org</p>
+                        <p>Atendimento editorial de segunda a sexta-feira, das 09h às 18h (Horário de Brasília / UTC-3).</p>
+                    `
+                },
+                en: {
+                    tag: 'Contact & Press',
+                    title: 'Editorial Inquiries',
+                    body: `
+                        <p>For exclusive tips, technical papers, institutional partnerships, or press inquiries:</p>
+                        <p style="font-family: var(--font-mono); font-size: 1.05rem; color: var(--cyan); background: rgba(0,240,255,0.06); padding: 14px; border-radius: 8px;">editorial@corticflow.org</p>
+                        <p>Editorial desk operational Monday through Friday, 09:00 - 18:00 (UTC-3 / EST).</p>
+                    `
+                }
+            },
+            privacy: {
+                pt: {
+                    tag: 'Privacidade',
+                    title: 'Política de Privacidade',
+                    body: `
+                        <p>O CorticFlow opera sob o princípio de <strong>privacidade zero-tracking</strong>. Não comercializamos dados de navegação, não instalamos cookies invasivos de rastreamento comportamental de terceiros e não coletamos telemetria sem consentimento explícito.</p>
+                        <p>Dados de inscrição em nossa newsletter são protegidos por criptografia de ponta a ponta e utilizados exclusivamente para envio dos despachos editoriais periódicos.</p>
+                    `
+                },
+                en: {
+                    tag: 'Privacy',
+                    title: 'Privacy Policy',
+                    body: `
+                        <p>CorticFlow operates under strict <strong>zero-tracking principles</strong>. We do not sell user data, utilize invasive third-party behavioral cookies, or harvest background telemetry without consent.</p>
+                        <p>Newsletter subscriber information is protected under industry encryption standards and utilized solely for delivering requested editorial dispatches.</p>
+                    `
+                }
+            },
+            terms: {
+                pt: {
+                    tag: 'Termos',
+                    title: 'Termos de Serviço',
+                    body: `
+                        <p>Todo o conteúdo textual e gráfico publicado pelo CorticFlow é protegido por direitos de propriedade intelectual. Citações e transcrições parciais são autorizadas desde que atribuídas com link direto e explícito para o artigo correspondente.</p>
+                    `
+                },
+                en: {
+                    tag: 'Terms',
+                    title: 'Terms of Service',
+                    body: `
+                        <p>All editorial and graphic materials published on CorticFlow are protected under international copyright. Partial reproduction and quotation are authorized strictly with explicit attribution and direct hyperlinks to original source articles.</p>
+                    `
+                }
+            },
+            newsletter: {
+                pt: {
+                    tag: 'Despacho Semanal',
+                    title: 'Newsletter CorticFlow',
+                    body: `
+                        <p>Receba todos os domingos a síntese definitiva dos principais avanços em semicondutores, modelos de linguagem e infraestrutura de IA no seu e-mail.</p>
+                        <div style="display: flex; gap: 10px; margin-top: 14px;">
+                            <input type="email" placeholder="seu.email@empresa.com" style="flex-grow: 1; padding: 12px 16px; border-radius: 8px; border: 1px solid var(--border-subtle); background: rgba(255,255,255,0.05); color: #FFF; outline: none; font-family: var(--font-mono);">
+                            <button class="btn-glow" onclick="alert('Inscrição confirmada com sucesso!')">Assinar</button>
+                        </div>
+                    `
+                },
+                en: {
+                    tag: 'Weekly Dispatch',
+                    title: 'CorticFlow Intelligence',
+                    body: `
+                        <p>Receive every Sunday our executive synthesis of breakthroughs in semiconductors, frontier models, and computing infrastructure.</p>
+                        <div style="display: flex; gap: 10px; margin-top: 14px;">
+                            <input type="email" placeholder="your.email@company.com" style="flex-grow: 1; padding: 12px 16px; border-radius: 8px; border: 1px solid var(--border-subtle); background: rgba(255,255,255,0.05); color: #FFF; outline: none; font-family: var(--font-mono);">
+                            <button class="btn-glow" onclick="alert('Subscription successfully confirmed!')">Subscribe</button>
+                        </div>
+                    `
+                }
+            }
+        };
+
+        /* Modal Trigger Functions */
+        function readArticle(id) {
+            const art = ARTICLES[id];
+            if (!art) return;
+            const data = art[currentLang];
+            document.getElementById('modalHeroImg').src = art.img;
+            document.getElementById('modalTag').innerText = data.tag;
+            document.getElementById('modalTitle').innerText = data.title;
+            document.getElementById('modalMeta').innerText = data.time;
+            document.getElementById('modalCalloutP').innerText = data.callout;
+            document.getElementById('modalBody').innerHTML = data.body;
+            
+            const linksContainer = document.getElementById('modalLinks');
+            linksContainer.innerHTML = '';
+            data.links.forEach(l => {
+                const a = document.createElement('a');
+                a.href = l.url; a.target = '_blank'; a.rel = 'noopener';
+                a.style.cssText = 'display: inline-block; padding: 6px 14px; border-radius: 6px; background: rgba(0,240,255,0.1); border: 1px solid rgba(0,240,255,0.3); color: var(--cyan); font-family: var(--font-mono); font-size: 0.8125rem; font-weight: 600; margin-left: 8px;';
+                a.innerText = l.name;
+                linksContainer.appendChild(a);
+            });
+
+            document.getElementById('articleModal').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeArticleModal() {
+            document.getElementById('articleModal').classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        function openInst(key) {
+            const data = INST_TEXT[key][currentLang];
+            document.getElementById('instTag').innerText = data.tag;
+            document.getElementById('instTitle').innerText = data.title;
+            document.getElementById('instBody').innerHTML = data.body;
+            document.getElementById('instModal').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeInst() {
+            document.getElementById('instModal').classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        function closeOnOverlay(e) {
+            if (e.target.classList.contains('modal-overlay')) {
+                closeArticleModal();
+                closeInst();
+            }
+        }
+
+        /* Filter Logic */
+        function filterBy(cat, btn) {
+            if (btn) {
+                document.querySelectorAll('.filter-pill').forEach(p => p.classList.remove('active'));
+                btn.classList.add('active');
+            }
+            const cards = document.querySelectorAll('.bento-layout article');
+            cards.forEach(card => {
+                if (cat === 'all' || card.classList.contains(`item-${cat}`) || (cat === 'semiconductors' && card.classList.contains('card-lead'))) {
+                    card.style.display = 'flex';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+
+        /* Language Switcher */
+        function switchLang(lang) {
+            currentLang = lang;
+            localStorage.setItem('corticflow_lang', lang);
+            document.documentElement.lang = lang === 'pt' ? 'pt-BR' : 'en-US';
+
+            document.getElementById('btn-pt').classList.toggle('active', lang === 'pt');
+            document.getElementById('btn-en').classList.toggle('active', lang === 'en');
+
+            if (lang === 'pt') {
+                document.getElementById('hud-cluster').innerText = 'GLOBAL COMPUTE: 98.4% NOMINAL';
+                document.getElementById('hud-ticker').innerText = 'BLACKWELL B200 CLUSTERS ACELERANDO PRODUÇÃO';
+                document.getElementById('nav-all').innerText = 'Radar Global';
+                document.getElementById('nav-semi').innerText = 'Semicondutores';
+                document.getElementById('nav-models').innerText = 'Modelos Fundacionais';
+                document.getElementById('nav-about').innerText = 'Sobre';
+                document.getElementById('nav-contact').innerText = 'Contato';
+                document.getElementById('btn-dispatch').innerText = 'Despacho Semanal';
+
+                document.getElementById('pill-all').innerText = '⚡ Todas as Investigações';
+                document.getElementById('pill-models').innerText = '🧠 Modelos & Agentes';
+                document.getElementById('pill-semi').innerText = '🏢 Semicondutores & Fabs';
+                document.getElementById('pill-sec').innerText = '🛡️ Cibersegurança & Silício';
+                document.getElementById('pill-phys').innerText = '⚙️ Physical AI & Robótica';
+
+                document.getElementById('wire-heading').innerText = '⚡ Despachos em Tempo Real';
+                document.getElementById('wire-live').innerText = 'AO VIVO';
+                document.getElementById('wire-curation').innerText = 'Curadoria Editorial Sênior';
+                document.getElementById('wire-verified').innerText = 'Verificado 100%';
+
+                document.getElementById('foot-h-editorials').innerText = 'Editorias';
+                document.getElementById('foot-h-radar').innerText = 'Radar Global';
+                document.getElementById('foot-h-inst').innerText = 'Institucional';
+                document.getElementById('foot-copy').innerText = '© 2026 CorticFlow Media. Todos os direitos reservados.';
+                document.getElementById('foot-sub').innerText = 'Plataforma Internacional de Inteligência & Silício';
+            } else {
+                document.getElementById('hud-cluster').innerText = 'GLOBAL COMPUTE: 98.4% NOMINAL';
+                document.getElementById('hud-ticker').innerText = 'BLACKWELL B200 CLUSTERS ACCELERATING PRODUCTION';
+                document.getElementById('nav-all').innerText = 'Global Radar';
+                document.getElementById('nav-semi').innerText = 'Semiconductors';
+                document.getElementById('nav-models').innerText = 'Foundational Models';
+                document.getElementById('nav-about').innerText = 'About';
+                document.getElementById('nav-contact').innerText = 'Contact';
+                document.getElementById('btn-dispatch').innerText = 'Weekly Dispatch';
+
+                document.getElementById('pill-all').innerText = '⚡ All Investigations';
+                document.getElementById('pill-models').innerText = '🧠 Models & Agents';
+                document.getElementById('pill-semi').innerText = '🏢 Semiconductors & Fabs';
+                document.getElementById('pill-sec').innerText = '🛡️ Silicon Cybersecurity';
+                document.getElementById('pill-phys').innerText = '⚙️ Physical AI & Robotics';
+
+                document.getElementById('wire-heading').innerText = '⚡ Real-Time Wire';
+                document.getElementById('wire-live').innerText = 'LIVE';
+                document.getElementById('wire-curation').innerText = 'Senior Curation';
+                document.getElementById('wire-verified').innerText = '100% Verified';
+
+                document.getElementById('foot-h-editorials').innerText = 'Topics';
+                document.getElementById('foot-h-radar').innerText = 'Global Radar';
+                document.getElementById('foot-h-inst').innerText = 'Institutional';
+                document.getElementById('foot-copy').innerText = '© 2026 CorticFlow Media. All rights reserved.';
+                document.getElementById('foot-sub').innerText = 'International Intelligence & Silicon Platform';
+            }
+
+            // Update Cards
+            const a1 = ARTICLES[1][lang];
+            document.getElementById('lead-tag').innerText = a1.tag;
+            document.getElementById('lead-title').innerText = a1.title;
+            document.getElementById('lead-desc').innerText = a1.snip;
+            document.getElementById('lead-time').innerText = a1.time;
+            document.getElementById('lead-cta').innerText = lang === 'pt' ? 'Explorar Análise Completa →' : 'Explore Deep Dive →';
+
+            const a2 = ARTICLES[2][lang];
+            document.getElementById('wire-t1').innerText = a2.title;
+            document.getElementById('t-card2-tag').innerText = a2.tag;
+            document.getElementById('t-card2-title').innerText = a2.title;
+            document.getElementById('t-card2-snip').innerText = a2.snip;
+
+            const a3 = ARTICLES[3][lang];
+            document.getElementById('wire-t2').innerText = a3.title;
+            document.getElementById('t-card3-tag').innerText = a3.tag;
+            document.getElementById('t-card3-title').innerText = a3.title;
+            document.getElementById('t-card3-snip').innerText = a3.snip;
+
+            const a4 = ARTICLES[4][lang];
+            document.getElementById('wire-t3').innerText = a4.title;
+            document.getElementById('t-card4-tag').innerText = a4.tag;
+            document.getElementById('t-card4-title').innerText = a4.title;
+            document.getElementById('t-card4-snip').innerText = a4.snip;
+
+            const a5 = ARTICLES[5][lang];
+            document.getElementById('t-card5-tag').innerText = a5.tag;
+            document.getElementById('t-card5-title').innerText = a5.title;
+            document.getElementById('t-card5-snip').innerText = a5.snip;
+
+            const a6 = ARTICLES[6][lang];
+            document.getElementById('t-card6-tag').innerText = a6.tag;
+            document.getElementById('t-card6-title').innerText = a6.title;
+            document.getElementById('t-card6-snip').innerText = a6.snip;
+        }
+
+        /* Initial Setup */
+        switchLang(currentLang);
+
+        /* Real-Time UTC Clock in HUD */
+        setInterval(() => {
+            const now = new Date();
+            const utc = now.toUTCString().split(' ')[4];
+            document.getElementById('hud-time').innerText = `UTC ${utc}`;
+        }, 1000);
     </script>
 </body>
 </html>
-
