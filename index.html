@@ -7,7 +7,7 @@
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🧠</text></svg>">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700;800&display=swap" rel="stylesheet">
     <style>
         :root {
             --bg-primary: #080B11;
@@ -39,20 +39,17 @@
         a { color: inherit; text-decoration: none; }
         .container { max-width: 1280px; margin: 0 auto; padding: 0 24px; }
 
-        /* Canvas de Fundo */
         #neural-canvas {
-            position: fixed;
-            top: 0; left: 0;
+            position: fixed; top: 0; left: 0;
             width: 100vw; height: 100vh;
-            pointer-events: none;
-            z-index: 0;
+            pointer-events: none; z-index: 0;
             opacity: 0.3;
         }
 
         /* Header */
         header {
             position: sticky; top: 0;
-            background: rgba(8, 11, 17, 0.85);
+            background: rgba(8, 11, 17, 0.88);
             backdrop-filter: blur(16px);
             border-bottom: 1px solid var(--border-color);
             z-index: 100;
@@ -76,19 +73,52 @@
         nav { display: flex; align-items: center; gap: 24px; }
         nav a {
             font-size: 0.875rem; font-weight: 500; color: var(--text-secondary);
-            transition: var(--transition);
+            transition: var(--transition); cursor: pointer;
         }
         nav a:hover { color: var(--cyan); }
+
+        /* Controles do Header */
+        .header-controls {
+            display: flex; align-items: center; gap: 14px;
+        }
+
+        /* Botão Bilíngue Internacional PT / EN */
+        .lang-switch {
+            display: inline-flex; align-items: center;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border-color);
+            border-radius: 9999px; padding: 3px;
+            font-family: 'JetBrains Mono', monospace; font-size: 0.75rem;
+            box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.5);
+        }
+        .lang-btn {
+            border: none; background: transparent; color: var(--text-muted);
+            padding: 5px 12px; border-radius: 9999px; font-weight: 700;
+            cursor: pointer; transition: var(--transition);
+        }
+        .lang-btn.active {
+            background: var(--cyan); color: #000;
+            box-shadow: 0 0 12px rgba(0, 229, 255, 0.4);
+        }
+        .lang-btn:hover:not(.active) {
+            color: #FFF;
+        }
+
         .btn-header {
             background: linear-gradient(135deg, var(--cyan), var(--purple));
             color: #000; font-size: 0.8125rem; font-weight: 700;
-            padding: 9px 18px; border-radius: 9999px;
+            padding: 8px 18px; border-radius: 9999px;
             cursor: pointer; border: none; transition: var(--transition);
+            display: inline-flex; align-items: center; gap: 6px;
         }
         .btn-header:hover { opacity: 0.9; transform: translateY(-1px); }
 
+        @media(max-width: 860px) {
+            nav { display: none; }
+        }
+
         /* Hero Section */
-        .hero { position: relative; z-index: 10; padding: 40px 0 24px; }
+        .hero { position: relative; z-index: 10; padding: 36px 0 24px; }
         .ticker-pill {
             display: inline-flex; align-items: center; gap: 8px;
             padding: 6px 14px; border-radius: 9999px;
@@ -226,7 +256,7 @@
         }
 
         /* Articles Grid */
-        .articles-section { position: relative; z-index: 10; padding: 32px 0 64px; }
+        .articles-section { position: relative; z-index: 10; padding: 24px 0 64px; }
         .grid-3 {
             display: grid; grid-template-columns: 1fr; gap: 28px;
         }
@@ -382,22 +412,27 @@
 <body>
     <canvas id="neural-canvas"></canvas>
 
-    <!-- Header -->
+    <!-- Header com Seletor Bilíngue PT | EN -->
     <header>
         <div class="container header-inner">
             <a href="#" onclick="filterCategory('all'); return false;" class="logo">
                 <div class="logo-icon">🧠</div>
                 Cortic<span>Flow</span>
             </a>
-            <nav class="hidden-mobile">
-                <a href="#artigos" onclick="filterCategory('all')">Feed Editorial</a>
-                <a href="#artigos" onclick="filterCategory('semiconductors')">Semicondutores</a>
-                <a href="#artigos" onclick="filterCategory('reasoning')">Modelos & IA</a>
-                <a href="#" onclick="openInstitutionalModal('about'); return false;">Sobre Nós</a>
-                <a href="#" onclick="openInstitutionalModal('contact'); return false;">Contato</a>
+            <nav>
+                <a href="#artigos" onclick="filterCategory('all')" id="nav-feed">Feed Editorial</a>
+                <a href="#artigos" onclick="filterCategory('semiconductors')" id="nav-semi">Semicondutores</a>
+                <a href="#artigos" onclick="filterCategory('ai-models')" id="nav-models">Modelos & IA</a>
+                <a onclick="openInstitutionalModal('about')" id="nav-about">Sobre Nós</a>
+                <a onclick="openInstitutionalModal('contact')" id="nav-contact">Contato</a>
             </nav>
-            <div style="display: flex; align-items: center; gap: 12px;">
-                <button class="btn-header" onclick="openInstitutionalModal('newsletter')">Newsletter Dominical</button>
+            <div class="header-controls">
+                <!-- Seletor Internacional PT-BR / EN-US -->
+                <div class="lang-switch">
+                    <button class="lang-btn active" id="btn-pt" onclick="setLanguage('pt')">PT</button>
+                    <button class="lang-btn" id="btn-en" onclick="setLanguage('en')">EN</button>
+                </div>
+                <button class="btn-header" onclick="openInstitutionalModal('newsletter')" id="btn-newsletter-hdr">Newsletter</button>
             </div>
         </div>
     </header>
@@ -406,24 +441,24 @@
     <section class="hero container">
         <div class="ticker-pill">
             <span class="ticker-dot"></span>
-            RADAR CORTICFLOW • INTELIGÊNCIA EM TEMPO REAL • 26 DE SETEMBRO DE 2026
+            <span id="hero-ticker">RADAR CORTICFLOW • INTELIGÊNCIA EM TEMPO REAL • 26 DE SETEMBRO DE 2026</span>
         </div>
 
         <div class="hero-grid">
             <!-- Lead Story (Matéria Principal) -->
             <article class="lead-card" onclick="openArticleModal(1)">
                 <div class="aspect-16-9">
-                    <img src="https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&w=1200&q=80" 
-                         alt="Data Centers de 60GW"
+                    <img id="lead-img" src="https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&w=1200&q=80" 
+                         alt="Lead Story"
                          onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1200&q=80';">
                 </div>
                 <div class="lead-body">
-                    <span class="tag-badge badge-cyan">Infraestrutura & Energia</span>
-                    <h1 class="lead-title">A Crise Energética dos 60GW: Como a IA Está Forçando Big Techs a Reativarem Usinas Nucleares</h1>
-                    <p class="lead-excerpt">A barreira da computação não é mais o silício, mas os megawatts. Investigação detalha como Microsoft, Amazon e Google estão contratando usinas atômicas inteiras para alimentar a próxima geração de clusters de 1 milhão de GPUs.</p>
+                    <span class="tag-badge badge-cyan" id="lead-badge">Infraestrutura & Energia</span>
+                    <h1 class="lead-title" id="lead-title">A Crise Energética dos 60GW: Como a IA Está Forçando Big Techs a Reativarem Usinas Nucleares</h1>
+                    <p class="lead-excerpt" id="lead-excerpt">O verdadeiro limite para o avanço dos modelos de 1 trilhão de parâmetros deixou de ser a litografia e passou a ser a rede elétrica. Investigação detalha como Microsoft, Amazon e Alphabet estão firmando acordos de 20 anos com reatores nucleares dedicados.</p>
                     <div class="card-meta">
-                        <span>⚡ 8 min de leitura • Análise de Engenharia</span>
-                        <span style="color: var(--cyan); font-weight: 700;">Ler Investigação Completa →</span>
+                        <span id="lead-meta">⚡ 8 min de leitura • Análise de Engenharia</span>
+                        <span style="color: var(--cyan); font-weight: 700;" id="lead-action">Ler Investigação Completa →</span>
                     </div>
                 </div>
             </article>
@@ -431,33 +466,33 @@
             <!-- Trending Sidebar -->
             <aside class="trending-box">
                 <div class="section-header">
-                    <h3>⚡ Em Alta no Radar</h3>
-                    <span style="font-size: 0.75rem; color: var(--text-muted); font-family: 'JetBrains Mono', monospace;">Hoje</span>
+                    <h3 id="trending-heading">⚡ Em Alta no Radar</h3>
+                    <span style="font-size: 0.75rem; color: var(--text-muted); font-family: 'JetBrains Mono', monospace;" id="trending-today-lbl">Hoje</span>
                 </div>
                 <div class="trending-item" onclick="openArticleModal(2)">
                     <div class="trending-idx">01</div>
                     <div class="trending-content">
-                        <h4>DeepSeek Harness e o Fim das Caixas-Pretas</h4>
-                        <p>Modelos de Pesos Abertos • 6 min</p>
+                        <h4 id="trend-1-title">DeepSeek Harness e o Fim das Caixas-Pretas</h4>
+                        <p id="trend-1-sub">Modelos de Pesos Abertos • 6 min</p>
                     </div>
                 </div>
                 <div class="trending-item" onclick="openArticleModal(3)">
                     <div class="trending-idx">02</div>
                     <div class="trending-content">
-                        <h4>Apple Silicon M6 e M5 Ultra: O Monstro de 80 GPUs</h4>
-                        <p>Hardware On-Device • 5 min</p>
+                        <h4 id="trend-2-title">Apple Silicon M6 e M5 Ultra: O Monstro de 80 GPUs</h4>
+                        <p id="trend-2-sub">Hardware On-Device • 5 min</p>
                     </div>
                 </div>
                 <div class="trending-item" onclick="openArticleModal(4)">
                     <div class="trending-idx">03</div>
                     <div class="trending-content">
-                        <h4>Ataque GPUThor: Quebrando o ECC na Memória de IA</h4>
-                        <p>Cibersegurança de Silício • 6 min</p>
+                        <h4 id="trend-3-title">Ataque GPUThor: Quebrando o ECC na Memória de IA</h4>
+                        <p id="trend-3-sub">Cibersegurança de Silício • 6 min</p>
                     </div>
                 </div>
                 <div style="margin-top: auto; padding-top: 14px; border-top: 1px solid var(--border-color); font-size: 0.8125rem; color: var(--text-muted); font-family: 'JetBrains Mono', monospace; display: flex; justify-content: space-between;">
-                    <span>Curadoria Sênior</span>
-                    <span style="color: var(--cyan);">100% Verificado</span>
+                    <span id="trending-footer-curation">Curadoria Sênior</span>
+                    <span style="color: var(--cyan);" id="trending-footer-status">100% Verificado</span>
                 </div>
             </aside>
         </div>
@@ -465,22 +500,20 @@
 
     <!-- Radar Filter Chips -->
     <div class="container radar-bar" id="artigos">
-        <span class="radar-label">Filtrar Pauta:</span>
-        <button class="filter-btn active" onclick="filterCategory('all', this)">⚡ Todas as Matérias</button>
-        <button class="filter-btn" onclick="filterCategory('ai-models', this)">🧠 Modelos & Agentes</button>
-        <button class="filter-btn" onclick="filterCategory('semiconductors', this)">🏢 Semicondutores & Chips</button>
-        <button class="filter-btn" onclick="filterCategory('security', this)">🛡️ Cibersegurança & Kernel</button>
-        <button class="filter-btn" onclick="filterCategory('physical-ai', this)">⚙️ Physical AI & Robótica</button>
+        <span class="radar-label" id="radar-filter-lbl">Filtrar Pauta:</span>
+        <button class="filter-btn active" onclick="filterCategory('all', this)" id="chip-all">⚡ Todas as Matérias</button>
+        <button class="filter-btn" onclick="filterCategory('ai-models', this)" id="chip-models">🧠 Modelos & Agentes</button>
+        <button class="filter-btn" onclick="filterCategory('semiconductors', this)" id="chip-semi">🏢 Semicondutores & Chips</button>
+        <button class="filter-btn" onclick="filterCategory('security', this)" id="chip-sec">🛡️ Cibersegurança & Kernel</button>
+        <button class="filter-btn" onclick="filterCategory('physical-ai', this)" id="chip-phys">⚙️ Physical AI & Robótica</button>
     </div>
 
     <!-- Articles Grid Section -->
     <section class="container articles-section">
-        <div class="grid-3" id="articles-container">
-            <!-- Cards gerados dinamicamente via JS com dados long-form e imagens 16:9 -->
-        </div>
+        <div class="grid-3" id="articles-container"></div>
     </section>
 
-    <!-- Modal de Leitura Imersivo (Long-Form) -->
+    <!-- Modal de Leitura Imersivo Long-Form -->
     <div class="modal-backdrop" id="articleModal" onclick="closeModalOnBackdrop(event)">
         <div class="modal-window">
             <button class="modal-close" onclick="closeArticleModal()">✕</button>
@@ -494,16 +527,14 @@
                 </div>
 
                 <div class="exec-summary-box">
-                    <h4>⚡ Síntese Executiva & Impacto Macroeconômico</h4>
+                    <h4 id="modalExecHeading">⚡ Síntese Executiva & Impacto Macroeconômico</h4>
                     <p id="modalSummary">Resumo de pontos essenciais da matéria.</p>
                 </div>
 
-                <div class="long-form-text" id="modalBody">
-                    <!-- Texto integral long-form gerado -->
-                </div>
+                <div class="long-form-text" id="modalBody"></div>
 
                 <div class="sources-footer">
-                    <div style="font-size: 0.8125rem; color: var(--text-muted); font-family: 'JetBrains Mono', monospace;">
+                    <div style="font-size: 0.8125rem; color: var(--text-muted); font-family: 'JetBrains Mono', monospace;" id="modalSourcesHeading">
                         Fontes Oficiais & Documentação Técnica:
                     </div>
                     <div id="modalSourceLinks"></div>
@@ -519,14 +550,12 @@
             <div class="modal-content-area" style="padding: 40px;">
                 <span class="tag-badge badge-cyan" id="instBadge">Institucional</span>
                 <h2 style="font-size: 1.8rem; font-weight: 800; color: #FFF; margin: 12px 0 16px;" id="instTitle">Título</h2>
-                <div style="color: #CBD5E1; font-size: 0.95rem; line-height: 1.7; display: flex; flex-direction: column; gap: 16px;" id="instBody">
-                    <!-- Conteúdo institucional -->
-                </div>
+                <div style="color: #CBD5E1; font-size: 0.95rem; line-height: 1.7; display: flex; flex-direction: column; gap: 16px;" id="instBody"></div>
             </div>
         </div>
     </div>
 
-    <!-- Footer em 4 Colunas -->
+    <!-- Footer -->
     <footer>
         <div class="container footer-grid">
             <div class="footer-col">
@@ -534,21 +563,21 @@
                     <div class="logo-icon">🧠</div>
                     Cortic<span>Flow</span>
                 </div>
-                <p style="font-size: 0.875rem; color: var(--text-secondary); line-height: 1.6;">
+                <p style="font-size: 0.875rem; color: var(--text-secondary); line-height: 1.6;" id="footer-desc">
                     Publicação internacional independente de alta tecnologia. Decodificamos a física dos semicondutores, a matemática dos modelos fundacionais e os desdobramentos de mercado dos sistemas autônomos.
                 </p>
             </div>
             <div class="footer-col">
-                <h4>Editorias</h4>
+                <h4 id="footer-hdr-topics">Editorias</h4>
                 <ul>
-                    <li><a href="#artigos" onclick="filterCategory('ai-models')">Modelos Fundacionais & LLMs</a></li>
-                    <li><a href="#artigos" onclick="filterCategory('semiconductors')">Semicondutores & Fabs</a></li>
-                    <li><a href="#artigos" onclick="filterCategory('physical-ai')">Physical AI & Robótica</a></li>
-                    <li><a href="#artigos" onclick="filterCategory('security')">Cibersegurança & Kernel</a></li>
+                    <li><a href="#artigos" onclick="filterCategory('ai-models')" id="footer-fnd">Modelos Fundacionais & LLMs</a></li>
+                    <li><a href="#artigos" onclick="filterCategory('semiconductors')" id="footer-semi">Semicondutores & Fabs</a></li>
+                    <li><a href="#artigos" onclick="filterCategory('physical-ai')" id="footer-phys">Physical AI & Robótica</a></li>
+                    <li><a href="#artigos" onclick="filterCategory('security')" id="footer-sec">Cibersegurança & Kernel</a></li>
                 </ul>
             </div>
             <div class="footer-col">
-                <h4>Radar Tech</h4>
+                <h4 id="footer-hdr-radar">Radar Tech</h4>
                 <ul>
                     <li><a href="https://blog.google/technology/ai/" target="_blank" rel="noopener">Google DeepMind ↗</a></li>
                     <li><a href="https://nvidianews.nvidia.com/" target="_blank" rel="noopener">Nvidia Newsroom ↗</a></li>
@@ -557,77 +586,151 @@
                 </ul>
             </div>
             <div class="footer-col">
-                <h4>Institucional</h4>
+                <h4 id="footer-hdr-inst">Institucional</h4>
                 <ul>
-                    <li><a onclick="openInstitutionalModal('about')">Sobre o CorticFlow</a></li>
-                    <li><a onclick="openInstitutionalModal('contact')">Contato & Imprensa</a></li>
-                    <li><a onclick="openInstitutionalModal('privacy')">Política de Privacidade</a></li>
-                    <li><a onclick="openInstitutionalModal('terms')">Termos de Uso</a></li>
+                    <li><a onclick="openInstitutionalModal('about')" id="footer-about">Sobre o CorticFlow</a></li>
+                    <li><a onclick="openInstitutionalModal('contact')" id="footer-contact">Contato & Imprensa</a></li>
+                    <li><a onclick="openInstitutionalModal('privacy')" id="footer-privacy">Política de Privacidade</a></li>
+                    <li><a onclick="openInstitutionalModal('terms')" id="footer-terms">Termos de Uso</a></li>
                     <li><a href="https://github.com/corticflow/corticflow" target="_blank" rel="noopener">Repositório GitHub ↗</a></li>
                 </ul>
             </div>
         </div>
         <div class="container footer-bottom">
-            <div>© 2026 CorticFlow Media. Todos os direitos reservados.</div>
-            <div style="font-family: 'JetBrains Mono', monospace; color: var(--cyan);">Esteira Autônoma de Engenharia: ATIVA</div>
+            <div id="footer-copyright">© 2026 CorticFlow Media. Todos os direitos reservados.</div>
+            <div style="font-family: 'JetBrains Mono', monospace; color: var(--cyan);" id="footer-pipeline">Esteira Autônoma de Engenharia: ATIVA</div>
         </div>
     </footer>
 
-    <!-- Dados Editoriais Completos (Long-Form) e Lógica de Interface -->
     <script>
+        // Dicionário de Textos Bilíngues (PT-BR / EN-US)
+        const I18N = {
+            pt: {
+                navFeed: "Feed Editorial",
+                navSemi: "Semicondutores",
+                navModels: "Modelos & IA",
+                navAbout: "Sobre Nós",
+                navContact: "Contato",
+                btnNewsletter: "Newsletter Dominical",
+                heroTicker: "RADAR CORTICFLOW • INTELIGÊNCIA EM TEMPO REAL • 26 DE SETEMBRO DE 2026",
+                trendingHeading: "⚡ Em Alta no Radar",
+                trendingToday: "Hoje",
+                trendingCuration: "Curadoria Sênior",
+                trendingStatus: "100% Verificado",
+                radarFilter: "Filtrar Pauta:",
+                chipAll: "⚡ Todas as Matérias",
+                chipModels: "🧠 Modelos & Agentes",
+                chipSemi: "🏢 Semicondutores & Chips",
+                chipSec: "🛡️ Cibersegurança & Kernel",
+                chipPhys: "⚙️ Physical AI & Robótica",
+                readMore: "Ler Análise →",
+                leadAction: "Ler Investigação Completa →",
+                modalExecHeading: "⚡ Síntese Executiva & Impacto Macroeconômico",
+                modalSourcesHeading: "Fontes Oficiais & Documentação Técnica:",
+                footerDesc: "Publicação internacional independente de alta tecnologia. Decodificamos a física dos semicondutores, a matemática dos modelos fundacionais e os desdobramentos de mercado dos sistemas autônomos.",
+                footerTopics: "Editorias",
+                footerRadar: "Radar Tech",
+                footerInst: "Institucional",
+                footerAbout: "Sobre o CorticFlow",
+                footerContact: "Contato & Imprensa",
+                footerPrivacy: "Política de Privacidade",
+                footerTerms: "Termos de Uso",
+                footerCopyright: "© 2026 CorticFlow Media. Todos os direitos reservados.",
+                footerPipeline: "Esteira Autônoma de Engenharia: ATIVA"
+            },
+            en: {
+                navFeed: "Editorial Feed",
+                navSemi: "Semiconductors",
+                navModels: "Models & AI",
+                navAbout: "About Us",
+                navContact: "Contact",
+                btnNewsletter: "Sunday Newsletter",
+                heroTicker: "CORTICFLOW RADAR • REAL-TIME INTELLIGENCE • SEPTEMBER 26, 2026",
+                trendingHeading: "⚡ Trending on Radar",
+                trendingToday: "Today",
+                trendingCuration: "Senior Curation",
+                trendingStatus: "100% Verified",
+                radarFilter: "Filter Topic:",
+                chipAll: "⚡ All Stories",
+                chipModels: "🧠 Models & Agents",
+                chipSemi: "🏢 Semiconductors & Chips",
+                chipSec: "🛡️ Cybersecurity & Kernel",
+                chipPhys: "⚙️ Physical AI & Robotics",
+                readMore: "Read Analysis →",
+                leadAction: "Read Full Investigation →",
+                modalExecHeading: "⚡ Executive Summary & Market Impact",
+                modalSourcesHeading: "Official Sources & Technical Documentation:",
+                footerDesc: "Independent international high-tech journal. Decoding semiconductor physics, foundation model mathematics, and market dynamics of autonomous systems.",
+                footerTopics: "Topics",
+                footerRadar: "Tech Radar",
+                footerInst: "Institutional",
+                footerAbout: "About CorticFlow",
+                footerContact: "Contact & Press",
+                footerPrivacy: "Privacy Policy",
+                footerTerms: "Terms of Service",
+                footerCopyright: "© 2026 CorticFlow Media. All rights reserved.",
+                footerPipeline: "Autonomous Engineering Pipeline: ACTIVE"
+            }
+        };
+
+        let currentLang = localStorage.getItem('corticflow_lang') || 'pt';
+
+        // Base Editorial Completa Long-Form (PT-BR e EN-US)
         const ARTICLES = [
             {
                 id: 1,
                 category: 'semiconductors',
                 badgeClass: 'badge-cyan',
-                categoryLabel: 'Infraestrutura & Energia',
-                title: 'A Crise Energética dos 60GW: Como a IA Está Forçando Big Techs a Reativarem Usinas Nucleares',
-                readingTime: '8 min de leitura',
-                date: '26/09/2026',
+                badge_pt: 'Infraestrutura & Energia',
+                badge_en: 'Infrastructure & Energy',
+                title_pt: 'A Crise Energética dos 60GW: Como a IA Está Forçando Big Techs a Reativarem Usinas Nucleares',
+                title_en: 'The 60GW Energy Crisis: How AI Is Forcing Big Tech to Reactivate Nuclear Power Plants',
+                readingTime_pt: '8 min de leitura',
+                readingTime_en: '8 min read',
+                date_pt: '26/09/2026',
+                date_en: 'Sep 26, 2026',
                 cover: 'https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&w=1200&q=80',
-                summary: 'O verdadeiro limite para o avanço dos modelos de 1 trilhão de parâmetros deixou de ser a litografia e passou a ser a rede elétrica. Investigação detalha como Microsoft, Amazon e Alphabet estão firmando acordos de 20 anos com reatores nucleares dedicados.',
-                body: `
+                summary_pt: 'O verdadeiro limite para o avanço dos modelos de 1 trilhão de parâmetros deixou de ser a litografia e passou a ser a rede elétrica. Investigação detalha como Microsoft, Amazon e Alphabet estão firmando acordos de 20 anos com reatores nucleares dedicados.',
+                summary_en: 'The true bottleneck for 1-trillion parameter frontier models is no longer silicon lithography, but the electrical grid. Investigation reveals how Microsoft, Amazon, and Alphabet are signing 20-year PPAs directly with nuclear reactors.',
+                body_pt: `
                     <p>Durante as três primeiras fases da revolução da inteligência artificial (2022 a 2025), o principal indicador de poder computacional de um laboratório era a quantidade de aceleradores Nvidia H100 ou B200 em inventário. Em meados de 2026, esse paradigma sofreu uma mutação irreversível: o gargalo agora se mede em megawatts contínuos de energia limpa (baseload power).</p>
-                    
                     <h3>1. A Realidade dos Megaclusters de 1 Milhão de GPUs</h3>
                     <p>Os novos data centers planejados para a geração de modelos pós-2026 operam com demandas entre 2GW e 5GW por instalação física. Para efeitos de comparação, isso equivale ao consumo integral de uma metrópole de médio porte como Curitiba ou Brasília.</p>
                     <p>Redes elétricas tradicionais não conseguem lidar com as flutuações repentinas de carga térmica dos nós de computação acelerada sem provocar quedas de tensão no sistema interligado regional. A solução encontrada pelos hyperscalers foi o desacoplamento da rede pública via co-localização direta ao lado de reatores nucleares.</p>
-
                     <div class="data-table-wrapper">
                         <table>
                             <thead>
-                                <tr>
-                                    <th>Empresa</th>
-                                    <th>Parceiro Energético</th>
-                                    <th>Capacidade Contratada</th>
-                                    <th>Fonte Primária</th>
-                                </tr>
+                                <tr><th>Empresa</th><th>Parceiro Energético</th><th>Capacidade Contratada</th><th>Fonte Primária</th></tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td><strong>Microsoft</strong></td>
-                                    <td>Constellation Energy</td>
-                                    <td>835 MW (Three Mile Island Reativação)</td>
-                                    <td>Nuclear Fissão (PPA 20 Anos)</td>
-                                </tr>
-                                <tr>
-                                    <td><strong>Amazon AWS</strong></td>
-                                    <td>Talen Energy</td>
-                                    <td>960 MW (Cumulus Data Campus)</td>
-                                    <td>Nuclear Susquehanna</td>
-                                </tr>
-                                <tr>
-                                    <td><strong>Alphabet (Google)</strong></td>
-                                    <td>Kairos Power</td>
-                                    <td>500 MW (Primeiros SMRs)</td>
-                                    <td>Reatores Modulares Rápidos</td>
-                                </tr>
+                                <tr><td><strong>Microsoft</strong></td><td>Constellation Energy</td><td>835 MW (Three Mile Island Reativação)</td><td>Nuclear Fissão (PPA 20 Anos)</td></tr>
+                                <tr><td><strong>Amazon AWS</strong></td><td>Talen Energy</td><td>960 MW (Cumulus Data Campus)</td><td>Nuclear Susquehanna</td></tr>
+                                <tr><td><strong>Alphabet (Google)</strong></td><td>Kairos Power</td><td>500 MW (Primeiros SMRs)</td><td>Reatores Modulares Rápidos</td></tr>
                             </tbody>
                         </table>
                     </div>
-
                     <h3>2. Veredito Editorial CorticFlow</h3>
                     <p>A corrida pela soberania em inteligência artificial transformou as empresas de software nos maiores financiadores privados da infraestrutura de energia nuclear da história ocidental. Quem controlar os nós de energia mais estáveis e de menor latência determinará os vencedores da próxima década.</p>
+                `,
+                body_en: `
+                    <p>Throughout the first three waves of the AI boom (2022–2025), a laboratory's computational supremacy was measured by the raw quantity of Nvidia H100 or B200 accelerators in inventory. In late 2026, this metric shifted permanently: compute bottlenecks are now dictated by gigawatts of uninterrupted baseload clean power.</p>
+                    <h3>1. The Engineering Reality of 1-Million-GPU Megaclusters</h3>
+                    <p>Hyperscale facilities under construction for post-2026 frontier models require between 2GW and 5GW per campus—equivalent to the entire power consumption of major metropolitan areas. Conventional electric grids cannot withstand the violent thermal and capacitive load spikes inherent to synchronized matrix multiplication runs without catastrophic grid collapse.</p>
+                    <p>To survive, hyperscalers are decoupling from public municipal grids, constructing private substations directly adjoining nuclear fission facilities.</p>
+                    <div class="data-table-wrapper">
+                        <table>
+                            <thead>
+                                <tr><th>Company</th><th>Energy Partner</th><th>Contracted Capacity</th><th>Primary Source</th></tr>
+                            </thead>
+                            <tbody>
+                                <tr><td><strong>Microsoft</strong></td><td>Constellation Energy</td><td>835 MW (Three Mile Island Restart)</td><td>Nuclear Fission (20-Year PPA)</td></tr>
+                                <tr><td><strong>Amazon AWS</strong></td><td>Talen Energy</td><td>960 MW (Cumulus Data Campus)</td><td>Susquehanna Nuclear Facility</td></tr>
+                                <tr><td><strong>Alphabet (Google)</strong></td><td>Kairos Power</td><td>500 MW (Initial SMR Fleet)</td><td>Small Modular Molten Salt Reactors</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <h3>2. CorticFlow Editorial Verdict</h3>
+                    <p>The geopolitical race for frontier artificial intelligence has converted software hyperscalers into the largest private financiers of nuclear energy in modern history. The ultimate victor will not be determined by algorithms alone, but by who controls the lowest-latency, gigawatt-scale power infrastructure.</p>
                 `,
                 sources: [
                     { name: 'Financial Times Energy & AI Special Report', url: 'https://www.ft.com' },
@@ -638,20 +741,30 @@
                 id: 2,
                 category: 'ai-models',
                 badgeClass: 'badge-purple',
-                categoryLabel: 'Modelos & Agentes',
-                title: 'DeepSeek Harness e o Fim das Caixas-Pretas: A Revolução dos Frameworks Abertos de Orquestração',
-                readingTime: '6 min de leitura',
-                date: '25/09/2026',
+                badge_pt: 'Modelos & Agentes',
+                badge_en: 'Models & Agents',
+                title_pt: 'DeepSeek Harness e o Fim das Caixas-Pretas: A Revolução dos Frameworks Abertos de Orquestração',
+                title_en: 'DeepSeek Harness and the Death of Black Boxes: The Open-Weights Orchestration Revolution',
+                readingTime_pt: '6 min de leitura',
+                readingTime_en: '6 min read',
+                date_pt: '25/09/2026',
+                date_en: 'Sep 25, 2026',
                 cover: 'https://images.unsplash.com/photo-1620712943543-bcc4688e7485?auto=format&fit=crop&w=1200&q=80',
-                summary: 'A DeepSeek apresentou o DeepSeek Harness, plataforma descentralizada de código aberto que expõe os tensores internos de decisão de agentes autônomos, desafiando as soluções de API fechadas do Vale do Silício.',
-                body: `
+                summary_pt: 'A DeepSeek apresentou o DeepSeek Harness, plataforma descentralizada de código aberto que expõe os tensores internos de decisão de agentes autônomos, desafiando as soluções de API fechadas do Vale do Silício.',
+                summary_en: 'DeepSeek has open-sourced DeepSeek Harness, a decentralized agent orchestration architecture exposing internal attention tensors and dynamic test-time search trees, directly challenging Silicon Valley proprietary APIs.',
+                body_pt: `
                     <p>Por quase quatro anos, o desenvolvimento de sistemas agênticos avançados dependeu de APIs fechadas de hiperescala que tratavam o raciocínio como uma caixa-preta inacessível. O lançamento do <strong>DeepSeek Harness</strong> quebra esse monopólio ao entregar uma suíte de código aberto com inspeção em tempo real de ativações neurais.</p>
-                    
                     <h3>1. Transparência na Alocação de KV Cache e Árvores de Busca</h3>
                     <p>Diferente de sistemas que cobram pelo token de reflexão sem detalhar o fluxo lógico, o Harness permite que os engenheiros pausem o modelo durante a fase de inferência (Test-Time Compute), alterem parâmetros de amostragem no meio do processamento e forcem rotas determinísticas em bases corporativas seguras.</p>
-                    
                     <h3>2. Economia de Tokens e Eficiência Local</h3>
                     <p>Ao integrar suporte nativo a quantizações extremas (FP4 e INT2 com compensação de perdas por LoRA), o framework viabiliza a execução de agentes de 70B parâmetros em servidores locais de 4 GPUs corporativas, sem expor dados confidenciais a nuvens públicas terceirizadas.</p>
+                `,
+                body_en: `
+                    <p>For four years, agent engineering remained bound to opaque proprietary endpoints treating reasoning as a monetized black box. The release of <strong>DeepSeek Harness</strong> shatters this equilibrium by delivering an open-source execution runtime with live tensor probing and token-level activation inspection.</p>
+                    <h3>1. Deterministic KV Cache Management and Search Tree Steering</h3>
+                    <p>Unlike commercial APIs charging premiums for hidden reflection tokens, Harness allows engineers to pause inference mid-flight, dynamically prune beam search trees, and inject deterministic boundary invariants directly into attention heads.</p>
+                    <h3>2. Extreme Quantization and Local Sovereignty</h3>
+                    <p>With native FP4 and INT2 kernel optimizations, the runtime achieves full 70B agent execution across commodity quad-GPU workstation nodes, giving enterprise engineers unconstrained autonomous agent deployment without transmitting IP to external cloud providers.</p>
                 `,
                 sources: [
                     { name: 'DeepSeek Official API Docs & Updates', url: 'https://api-docs.deepseek.com/updates/' },
@@ -662,18 +775,28 @@
                 id: 3,
                 category: 'semiconductors',
                 badgeClass: 'badge-blue',
-                categoryLabel: 'Hardware & Chips',
-                title: 'Apple Silicon M6 e M5 Ultra: Como 80 Núcleos de GPU Estão Viabilizando Apple Intelligence 100% Offline',
-                readingTime: '5 min de leitura',
-                date: '25/09/2026',
+                badge_pt: 'Hardware & Chips',
+                badge_en: 'Hardware & Chips',
+                title_pt: 'Apple Silicon M6 e M5 Ultra: Como 80 Núcleos de GPU Estão Viabilizando Apple Intelligence 100% Offline',
+                title_en: 'Apple Silicon M6 & M5 Ultra: How 80 GPU Cores Enable 100% Offline Apple Intelligence',
+                readingTime_pt: '5 min de leitura',
+                readingTime_en: '5 min read',
+                date_pt: '25/09/2026',
+                date_en: 'Sep 25, 2026',
                 cover: 'https://images.unsplash.com/photo-1591488320449-011701bb6704?auto=format&fit=crop&w=1200&q=80',
-                summary: 'A nova arquitetura UltraFusion da Apple alcança 800 GB/s de largura de banda unificada, permitindo carregar modelos multimodais de 30 bilhões de parâmetros na memória local de computadores sem tocar na nuvem.',
-                body: `
+                summary_pt: 'A nova arquitetura UltraFusion da Apple alcança 800 GB/s de largura de banda unificada, permitindo carregar modelos multimodais de 30 bilhões de parâmetros na memória local de computadores sem tocar na nuvem.',
+                summary_en: 'Apple’s next-gen UltraFusion architecture hits 800 GB/s unified memory bandwidth, allowing 30-billion parameter multimodal models to reside entirely within local workstation RAM with zero cloud telemetry.',
+                body_pt: `
                     <p>A estratégia de inteligência artificial da Apple sempre divergiu da dependência massiva de nuvem pregada por concorrentes. Com a oficialização dos novos chips <strong>M6 e M5 Ultra</strong>, a empresa de Cupertino demonstra que o processamento local soberano atingiu maturidade técnica definitiva.</p>
-                    
                     <h3>1. Memória Unificada como Diferencial Competitivo</h3>
                     <p>Enquanto placas corporativas tradicionais precisam transferir dados pesados entre CPU, RAM e VRAM através de barramentos PCIe sujeitos a estrangulamento térmico, o design unificado da Apple permite que os 80 núcleos de GPU e a Neural Engine acessem instantaneamente até 256GB de memória a mais de 800 GB/s.</p>
                     <p>Isso viabiliza que tarefas complexas de edição de vídeo, síntese de áudio espacial e raciocínio textual ocorram simultaneamente com latência zero e consumo elétrico de apenas 120W em carga máxima.</p>
+                `,
+                body_en: `
+                    <p>Apple’s edge AI architecture has long defied the cloud-first orthodoxy of Silicon Valley. With the debut of the <strong>M6 and M5 Ultra</strong> silicon series, local on-device sovereign inference has achieved enterprise viability.</p>
+                    <h3>1. Unified Memory Architecture as an Asymmetric Advantage</h3>
+                    <p>While discrete PCIe accelerator clusters suffer latency penalties shuttling weights between system memory and GPU VRAM, Apple’s unified fabric exposes up to 256GB of memory directly to 80 GPU cores and upgraded Neural Engines at sustained 800 GB/s bandwidth.</p>
+                    <p>This allows multi-stream 4K vision encoding, spatial audio generation, and 30B parameter reasoning to execute concurrently at just 120W total system draw.</p>
                 `,
                 sources: [
                     { name: 'Apple Newsroom — M6 & M5 Ultra Technical Briefing', url: 'https://www.apple.com/newsroom' }
@@ -683,22 +806,35 @@
                 id: 4,
                 category: 'security',
                 badgeClass: 'badge-purple',
-                categoryLabel: 'Cibersegurança de Silício',
-                title: 'Ataque GPUThor: Como a Falha de Rowhammer em VRAM Conseguiu Burlar a Proteção ECC em Placas Nvidia',
-                readingTime: '6 min de leitura',
-                date: '24/09/2026',
+                badge_pt: 'Cibersegurança de Silício',
+                badge_en: 'Silicon Cybersecurity',
+                title_pt: 'Ataque GPUThor: Como a Falha de Rowhammer em VRAM Conseguiu Burlar a Proteção ECC em Placas Nvidia',
+                title_en: 'GPUThor Exploit: How Rowhammer Fault Injection Bypassed ECC on Nvidia Accelerators',
+                readingTime_pt: '6 min de leitura',
+                readingTime_en: '6 min read',
+                date_pt: '24/09/2026',
+                date_en: 'Sep 24, 2026',
                 cover: 'https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&w=1200&q=80',
-                summary: 'Pesquisadores de segurança detalham o exploit GPUThor, capaz de provocar vazamentos capacitivos em frequências extremas para corromper bits de controle e obter acesso administrativo em instâncias de IA compartilhadas.',
-                body: `
+                summary_pt: 'Pesquisadores de segurança detalham o exploit GPUThor, capaz de provocar vazamentos capacitivos em frequências extremas para corromper bits de controle e obter acesso administrativo em instâncias de IA compartilhadas.',
+                summary_en: 'Security researchers uncover the GPUThor exploit, demonstrating repeatable electromagnetic fault injection across high-bandwidth GPU memory to flip multiple bits simultaneously, bypassing SECDED ECC in multi-tenant AI clusters.',
+                body_pt: `
                     <p>Durante anos, operadoras de nuvem e laboratórios consideraram que o uso de aceleradores com memória de código de correção de erro (ECC) garantia o isolamento inviolável de dados confidenciais. A divulgação do vetor de ataque <strong>GPUThor</strong> demonstrou que perturbações eletromagnéticas induzidas por software quebram essa premissa.</p>
-                    
                     <h3>1. Inversão Simultânea de Múltiplos Bits</h3>
                     <p>O ataque induz ciclos de leitura contínua em células adjacentes de memória HBM3e e GDDR6X até provocar vazamento de carga para linhas vizinhas. Quando mais de dois bits são alterados em um mesmo bloco, o algoritmo SECDED falha silenciosamente, permitindo sobrescrever tabelas de privilégios de containers Linux virtuais.</p>
-                    
                     <h3>2. Mitigações Mandatórias para Nuvens de IA</h3>
                     <ul>
                         <li><strong>Atualização Imediata de Firmware:</strong> Elevação agressiva das taxas de atualização das células de memória (Target Row Refresh).</li>
                         <li><strong>Fim da Virtualização vGPU em Dados Sensíveis:</strong> Adoção estrita de nós bare-metal single-tenant para cargas confidenciais.</li>
+                    </ul>
+                `,
+                body_en: `
+                    <p>Enterprise hyperscalers long operated under the assumption that hardware Error-Correcting Code (ECC) in GPU accelerators constituted an impenetrable barrier against memory corruption attacks. The disclosure of <strong>GPUThor</strong> dispels this assumption.</p>
+                    <h3>1. Multi-Bit Capacitive Charge Leaks</h3>
+                    <p>By executing ultra-dense memory strobes across adjacent physical rows in HBM3e and GDDR6X modules, GPUThor induces capacitive voltage decay across neighbor cells. When multi-bit flips overwhelm standard SECDED hamming bounds, the memory controller fails silently, allowing malicious guest containers to overwrite kernel page tables.</p>
+                    <h3>2. Cloud Operator Mandates</h3>
+                    <ul>
+                        <li><strong>Firmware Target Row Refresh (TRR):</strong> Immediate rollout of microcode patches doubling refresh cycles on high-density accelerator memory.</li>
+                        <li><strong>Single-Tenant Bare Metal:</strong> Phasing out virtualized vGPU partitioning for sensitive enterprise training runs in public clouds.</li>
                     </ul>
                 `,
                 sources: [
@@ -709,17 +845,26 @@
                 id: 5,
                 category: 'ai-models',
                 badgeClass: 'badge-cyan',
-                categoryLabel: 'Modelos & IA',
-                title: 'Anthropic e Salesforce Revelam Claudeforce e o Novo Padrão de Watermarking Exigido pelo EU AI Act',
-                readingTime: '5 min de leitura',
-                date: '24/09/2026',
+                badge_pt: 'Modelos & IA',
+                badge_en: 'Models & AI',
+                title_pt: 'Anthropic e Salesforce Revelam Claudeforce e o Novo Padrão de Watermarking Exigido pelo EU AI Act',
+                title_en: 'Anthropic and Salesforce Unveil Claudeforce with EU AI Act Compliant Cryptographic Watermarking',
+                readingTime_pt: '5 min de leitura',
+                readingTime_en: '5 min read',
+                date_pt: '24/09/2026',
+                date_en: 'Sep 24, 2026',
                 cover: 'https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?auto=format&fit=crop&w=1200&q=80',
-                summary: 'A Anthropic detalhou a tecnologia de marca d’água criptográfica integrada no Claude, estabelecendo o primeiro mecanismo auditável por governos para certificar textos gerados por IA sem alterar a qualidade sintática.',
-                body: `
+                summary_pt: 'A Anthropic detalhou a tecnologia de marca d’água criptográfica integrada no Claude, estabelecendo o primeiro mecanismo auditável por governos para certificar textos gerados por IA sem alterar a qualidade sintática.',
+                summary_en: 'Anthropic details statistical token watermarking within Claude and Claudeforce, pioneering verifiable, regulator-compliant provenance tracing without degrading natural language syntax.',
+                body_pt: `
                     <p>Com a entrada em vigor dos novos requisitos regulatórios do <em>EU AI Act</em> no final de 2026, plataformas de inteligência artificial são legalmente obrigadas a fornecer identificação rastreável de conteúdo automatizado. Em parceria com a Salesforce, a Anthropic demonstrou a implementação do <strong>Claudeforce</strong> com tecnologia de watermarking estatístico imperceptível.</p>
-                    
                     <h3>1. Como Funciona a Assinatura Invisível de Tokens</h3>
                     <p>O gerador de texto altera de forma pseudo-aleatória a probabilidade de escolha entre palavras sinônimas baseado em uma chave criptográfica secreta. Para um leitor humano, o texto soa 100% natural; para algoritmos de verificação, a distribuição de termos revela uma probabilidade de geração artificial acima de 99,99%.</p>
+                `,
+                body_en: `
+                    <p>With stringent disclosure provisions of the European Union AI Act entering full enforcement in late 2026, autonomous systems must provide verifiable proof of synthetic provenance. In collaboration with Salesforce, Anthropic deployed <strong>Claudeforce</strong> featuring production-grade statistical text watermarking.</p>
+                    <h3>1. Cryptographic Pseudo-Random Token Distribution</h3>
+                    <p>The decoding head modulates the sampling probabilities of equivalent lexical synonyms using a cryptographically seeded hash. To a human reader, generated syntax remains indistinguishable from human composition; to an authorized audit validator, the mathematical distribution exhibits artificial provenance certainty exceeding 99.99%.</p>
                 `,
                 sources: [
                     { name: 'Salesforce & Anthropic Press Release', url: 'https://www.salesforce.com/news' },
@@ -730,17 +875,26 @@
                 id: 6,
                 category: 'physical-ai',
                 badgeClass: 'badge-emerald',
-                categoryLabel: 'Physical AI & Robótica',
-                title: 'Physical AI na Borda: Como Módulos de Menos de 15W Estão Operando Robôs Industriais com Visão-Ação',
-                readingTime: '5 min de leitura',
-                date: '23/09/2026',
+                badge_pt: 'Physical AI & Robótica',
+                badge_en: 'Physical AI & Robotics',
+                title_pt: 'Physical AI na Borda: Como Módulos de Menos de 15W Estão Operando Robôs Industriais com Visão-Ação',
+                title_en: 'Physical AI on the Edge: How Sub-15W Silicon Runs Industrial Robots with Real-Time Vision-Action',
+                readingTime_pt: '5 min de leitura',
+                readingTime_en: '5 min read',
+                date_pt: '23/09/2026',
+                date_en: 'Sep 23, 2026',
                 cover: 'https://images.unsplash.com/photo-1508614589041-895b88991e3e?auto=format&fit=crop&w=1200&q=80',
-                summary: 'SiMa.ai e integradores globais demonstram módulos compactos capazes de rodar redes neurais multimodais em drones autônomos e braços mecânicos com resposta determinística abaixo de 5 milissegundos.',
-                body: `
+                summary_pt: 'SiMa.ai e integradores globais demonstram módulos compactos capazes de rodar redes neurais multimodais em drones autônomos e braços mecânicos com resposta determinística abaixo de 5 milissegundos.',
+                summary_en: 'SiMa.ai and robotics pioneers deploy sub-15W edge neural modules capable of executing closed-loop vision-language-action policies on autonomous drones and manipulators under 5ms deterministic latency.',
+                body_pt: `
                     <p>A fronteira mais desafiadora da computação inteligente não reside nos grandes servidores climatizados, mas no mundo físico. Em aplicações como navegação de drones em zonas de desastre ou braços robóticos em linhas de montagem, a latência de comunicação com a nuvem é proibitiva.</p>
-                    
                     <h3>1. Silício Híbrido: NPU + DSP com Consumo Mínimo</h3>
                     <p>A nova geração de semicondutores para <em>Edge AI</em> unifica aceleradores neurais esparsos com processadores de sinal digital. Com consumo elétrico inferior a 15W, os dispositivos conseguem processar 4 câmeras 4K a 60 FPS, gerando ações motoras sem emitir calor excessivo e com baterias comuns de lítio.</p>
+                `,
+                body_en: `
+                    <p>The critical vanguard of intelligent computing has transitioned from chilled hyperscale server rooms to the physical world. In mission-critical robotics and autonomous drone navigation, cloud latency is fundamentally incompatible with collision avoidance.</p>
+                    <h3>1. Hybrid Edge Heterogeneity: Sparse NPU + Real-Time DSP</h3>
+                    <p>Novel silicon architectures combine sparse neural network tensor cores with low-jitter digital signal processors. Consuming under 15 watts, these self-contained packages process quadruple 4K camera streams at 60 FPS, inferring joint actuations within 5 milliseconds on standard battery packs.</p>
                 `,
                 sources: [
                     { name: 'Edge AI and Vision Alliance Report', url: 'https://www.edge-ai-vision.com' }
@@ -748,8 +902,79 @@
             }
         ];
 
-        // Renderização Dinâmica dos Cards
+        // Alternância Bilíngue (PT-BR / EN-US)
+        function setLanguage(lang) {
+            currentLang = lang;
+            localStorage.setItem('corticflow_lang', lang);
+
+            // Atualiza botões do switcher
+            document.getElementById('btn-pt').classList.toggle('active', lang === 'pt');
+            document.getElementById('btn-en').classList.toggle('active', lang === 'en');
+
+            const t = I18N[lang];
+
+            // Atualiza Header
+            document.getElementById('nav-feed').innerText = t.navFeed;
+            document.getElementById('nav-semi').innerText = t.navSemi;
+            document.getElementById('nav-models').innerText = t.navModels;
+            document.getElementById('nav-about').innerText = t.navAbout;
+            document.getElementById('nav-contact').innerText = t.navContact;
+            document.getElementById('btn-newsletter-hdr').innerText = t.btnNewsletter;
+
+            // Atualiza Hero
+            document.getElementById('hero-ticker').innerText = t.heroTicker;
+            document.getElementById('trending-heading').innerText = t.trendingHeading;
+            document.getElementById('trending-today-lbl').innerText = t.trendingToday;
+            document.getElementById('trending-footer-curation').innerText = t.trendingCuration;
+            document.getElementById('trending-footer-status').innerText = t.trendingStatus;
+
+            // Atualiza Lead Story
+            const lead = ARTICLES[0];
+            document.getElementById('lead-badge').innerText = lang === 'pt' ? lead.badge_pt : lead.badge_en;
+            document.getElementById('lead-title').innerText = lang === 'pt' ? lead.title_pt : lead.title_en;
+            document.getElementById('lead-excerpt').innerText = lang === 'pt' ? lead.summary_pt : lead.summary_en;
+            document.getElementById('lead-meta').innerText = `⚡ ${lang === 'pt' ? lead.readingTime_pt : lead.readingTime_en}`;
+            document.getElementById('lead-action').innerText = t.leadAction;
+
+            // Atualiza Sidebar Trending
+            document.getElementById('trend-1-title').innerText = lang === 'pt' ? ARTICLES[1].title_pt : ARTICLES[1].title_en;
+            document.getElementById('trend-1-sub').innerText = `${lang === 'pt' ? ARTICLES[1].badge_pt : ARTICLES[1].badge_en} • ${lang === 'pt' ? ARTICLES[1].readingTime_pt : ARTICLES[1].readingTime_en}`;
+
+            document.getElementById('trend-2-title').innerText = lang === 'pt' ? ARTICLES[2].title_pt : ARTICLES[2].title_en;
+            document.getElementById('trend-2-sub').innerText = `${lang === 'pt' ? ARTICLES[2].badge_pt : ARTICLES[2].badge_en} • ${lang === 'pt' ? ARTICLES[2].readingTime_pt : ARTICLES[2].readingTime_en}`;
+
+            document.getElementById('trend-3-title').innerText = lang === 'pt' ? ARTICLES[3].title_pt : ARTICLES[3].title_en;
+            document.getElementById('trend-3-sub').innerText = `${lang === 'pt' ? ARTICLES[3].badge_pt : ARTICLES[3].badge_en} • ${lang === 'pt' ? ARTICLES[3].readingTime_pt : ARTICLES[3].readingTime_en}`;
+
+            // Atualiza Chips
+            document.getElementById('radar-filter-lbl').innerText = t.radarFilter;
+            document.getElementById('chip-all').innerText = t.chipAll;
+            document.getElementById('chip-models').innerText = t.chipModels;
+            document.getElementById('chip-semi').innerText = t.chipSemi;
+            document.getElementById('chip-sec').innerText = t.chipSec;
+            document.getElementById('chip-phys').innerText = t.chipPhys;
+
+            // Atualiza Footer
+            document.getElementById('footer-desc').innerText = t.footerDesc;
+            document.getElementById('footer-hdr-topics').innerText = t.footerTopics;
+            document.getElementById('footer-hdr-radar').innerText = t.footerRadar;
+            document.getElementById('footer-hdr-inst').innerText = t.footerInst;
+            document.getElementById('footer-about').innerText = t.footerAbout;
+            document.getElementById('footer-contact').innerText = t.footerContact;
+            document.getElementById('footer-privacy').innerText = t.footerPrivacy;
+            document.getElementById('footer-terms').innerText = t.footerTerms;
+            document.getElementById('footer-copyright').innerText = t.footerCopyright;
+            document.getElementById('footer-pipeline').innerText = t.footerPipeline;
+
+            // Renderiza Grid no idioma atual
+            renderArticles(currentFilterList || ARTICLES);
+        }
+
+        let currentFilterList = null;
+
+        // Renderização dos Cards com Simetria e Bilíngue
         function renderArticles(list) {
+            currentFilterList = list;
             const container = document.getElementById('articles-container');
             container.innerHTML = '';
 
@@ -758,18 +983,24 @@
                 card.className = 'grid-card';
                 card.onclick = () => openArticleModal(item.id);
 
+                const badge = currentLang === 'pt' ? item.badge_pt : item.badge_en;
+                const title = currentLang === 'pt' ? item.title_pt : item.title_en;
+                const summary = currentLang === 'pt' ? item.summary_pt : item.summary_en;
+                const time = currentLang === 'pt' ? item.readingTime_pt : item.readingTime_en;
+                const readLabel = I18N[currentLang].readMore;
+
                 card.innerHTML = `
                     <div class="aspect-16-9">
-                        <img src="${item.cover}" alt="${item.title}" 
+                        <img src="${item.cover}" alt="${title}" 
                              onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=800&q=80';">
                     </div>
                     <div class="card-inner">
-                        <span class="tag-badge ${item.badgeClass}">${item.categoryLabel}</span>
-                        <h3 class="card-title">${item.title}</h3>
-                        <p class="card-excerpt">${item.summary}</p>
+                        <span class="tag-badge ${item.badgeClass}">${badge}</span>
+                        <h3 class="card-title">${title}</h3>
+                        <p class="card-excerpt">${summary}</p>
                         <div class="card-meta">
-                            <span>${item.readingTime}</span>
-                            <span style="color: var(--cyan); font-weight: 600;">Ler Análise →</span>
+                            <span>${time}</span>
+                            <span style="color: var(--cyan); font-weight: 600;">${readLabel}</span>
                         </div>
                     </div>
                 `;
@@ -791,18 +1022,21 @@
             }
         }
 
-        // Abertura do Modal de Leitura Long-Form
+        // Modal de Leitura Long-Form Bilíngue
         function openArticleModal(id) {
             const art = ARTICLES.find(a => a.id === id);
             if (!art) return;
 
+            const isPt = currentLang === 'pt';
             document.getElementById('modalImage').src = art.cover;
             document.getElementById('modalBadge').className = 'tag-badge ' + art.badgeClass;
-            document.getElementById('modalBadge').innerText = art.categoryLabel;
-            document.getElementById('modalTitle').innerText = art.title;
-            document.getElementById('modalMeta').innerText = `Por Equipe Editorial CorticFlow • ${art.readingTime} • ${art.date}`;
-            document.getElementById('modalSummary').innerText = art.summary;
-            document.getElementById('modalBody').innerHTML = art.body;
+            document.getElementById('modalBadge').innerText = isPt ? art.badge_pt : art.badge_en;
+            document.getElementById('modalTitle').innerText = isPt ? art.title_pt : art.title_en;
+            document.getElementById('modalMeta').innerText = `${isPt ? 'Por Equipe Editorial CorticFlow' : 'By CorticFlow Editorial Team'} • ${isPt ? art.readingTime_pt : art.readingTime_en} • ${isPt ? art.date_pt : art.date_en}`;
+            document.getElementById('modalExecHeading').innerText = I18N[currentLang].modalExecHeading;
+            document.getElementById('modalSummary').innerText = isPt ? art.summary_pt : art.summary_en;
+            document.getElementById('modalBody').innerHTML = isPt ? art.body_pt : art.body_en;
+            document.getElementById('modalSourcesHeading').innerText = I18N[currentLang].modalSourcesHeading;
 
             const linksDiv = document.getElementById('modalSourceLinks');
             linksDiv.innerHTML = '';
@@ -825,54 +1059,78 @@
             document.body.style.overflow = 'auto';
         }
 
-        // Modais Institucionais Funcionais
+        // Modais Institucionais Funcionais Bilíngues
         function openInstitutionalModal(type) {
             const modal = document.getElementById('institutionalModal');
             const title = document.getElementById('instTitle');
             const body = document.getElementById('instBody');
             const badge = document.getElementById('instBadge');
+            const isPt = currentLang === 'pt';
 
             if (type === 'about') {
-                badge.innerText = 'Manifesto & Equipe';
-                title.innerText = 'Sobre o CorticFlow';
-                body.innerHTML = `
+                badge.innerText = isPt ? 'Manifesto & Equipe' : 'Manifesto & Team';
+                title.innerText = isPt ? 'Sobre o CorticFlow' : 'About CorticFlow';
+                body.innerHTML = isPt ? `
                     <p>O <strong>CorticFlow</strong> é um portal internacional independente dedicado à análise profunda, arquitetura de sistemas e impacto estratégico da inteligência artificial e semicondutores.</p>
                     <p>Nossa operação editorial combina curadoria autônoma de dados técnicos com governança e análise especializada de engenharia (human-in-the-loop). Não produzimos resumos superficiais de assessoria de imprensa; investigamos a física dos chips, os gargalos de memória e as implicações econômicas do software moderno.</p>
                     <p>Operamos com infraestrutura 100% serverless, zero rastreamento invasivo e código aberto hospedado no GitHub.</p>
+                ` : `
+                    <p><strong>CorticFlow</strong> is an independent international publication dedicated to deep technical analysis, systems architecture, and the geopolitical impact of artificial intelligence and semiconductor manufacturing.</p>
+                    <p>Our editorial workflow synthesizes autonomous technical telemetry with specialized engineering oversight (human-in-the-loop). We reject superficial press releases in favor of investigating silicon physics, memory bottlenecks, and the macroeconomics of modern software.</p>
+                    <p>Operating on 100% serverless infrastructure, zero intrusive tracking, and open-source code deployed via GitHub.</p>
                 `;
             } else if (type === 'contact') {
-                badge.innerText = 'Canais Oficiais';
-                title.innerText = 'Contato & Imprensa';
-                body.innerHTML = `
+                badge.innerText = isPt ? 'Canais Oficiais' : 'Official Channels';
+                title.innerText = isPt ? 'Contato & Imprensa' : 'Contact & Press';
+                body.innerHTML = isPt ? `
                     <p>Para pautas editoriais, correções técnicas, solicitações de entrevistas ou parcerias institucionais, utilize os canais diretos abaixo:</p>
                     <p><strong>E-mail Editorial Oficial:</strong><br><a href="mailto:corticflow@gmail.com" style="color: var(--cyan); font-family: 'JetBrains Mono', monospace; font-size: 1.1rem;">corticflow@gmail.com</a></p>
                     <p><strong>Repositório do Código:</strong><br><a href="https://github.com/corticflow/corticflow" target="_blank" style="color: var(--cyan);">github.com/corticflow/corticflow ↗</a></p>
                     <p>Nosso tempo médio de resposta para solicitações técnicas de imprensa é de até 24 horas úteis.</p>
+                ` : `
+                    <p>For editorial inquiries, technical errata, press requests, or institutional partnerships, reach us directly via:</p>
+                    <p><strong>Official Editorial Email:</strong><br><a href="mailto:corticflow@gmail.com" style="color: var(--cyan); font-family: 'JetBrains Mono', monospace; font-size: 1.1rem;">corticflow@gmail.com</a></p>
+                    <p><strong>GitHub Repository:</strong><br><a href="https://github.com/corticflow/corticflow" target="_blank" style="color: var(--cyan);">github.com/corticflow/corticflow ↗</a></p>
+                    <p>Average response SLA for technical press inquiries is within 24 business hours.</p>
                 `;
             } else if (type === 'privacy') {
-                badge.innerText = 'Compliance & LGPD';
-                title.innerText = 'Política de Privacidade';
-                body.innerHTML = `
+                badge.innerText = isPt ? 'Compliance & LGPD' : 'Compliance & GDPR';
+                title.innerText = isPt ? 'Política de Privacidade' : 'Privacy Policy';
+                body.innerHTML = isPt ? `
                     <p>O CorticFlow respeita integralmente as diretrizes da LGPD (Brasil), GDPR (União Europeia) e CCPA (EUA).</p>
-                    <p>Não comercializamos dados pessoais de usuários. Coletamos apenas telemetria técnica anônima essencial para medição de tráfego e cookies de preferência de tema/idioma.</p>
+                    <p>Não comercializamos dados pessoais de usuários. Coletamos apenas telemetria técnica anônima essencial para medição de tráfego e cookies de preferência de tema e idioma.</p>
                     <p>Para mais detalhes ou solicitações de remoção de dados, entre em contato via <a href="mailto:corticflow@gmail.com" style="color: var(--cyan);">corticflow@gmail.com</a> ou consulte o arquivo completo <a href="privacy.html" style="color: var(--cyan);">privacy.html</a>.</p>
+                ` : `
+                    <p>CorticFlow complies strictly with Brazilian LGPD, European GDPR, and California CCPA privacy standards.</p>
+                    <p>We do not sell user personal data. We collect only anonymized technical telemetry required for performance optimization and language/theme preference cookies.</p>
+                    <p>For inquiries, contact <a href="mailto:corticflow@gmail.com" style="color: var(--cyan);">corticflow@gmail.com</a> or review <a href="privacy.html" style="color: var(--cyan);">privacy.html</a>.</p>
                 `;
             } else if (type === 'terms') {
-                badge.innerText = 'Legal & Propriedade';
-                title.innerText = 'Termos de Uso';
-                body.innerHTML = `
+                badge.innerText = isPt ? 'Legal & Propriedade' : 'Legal & IP';
+                title.innerText = isPt ? 'Termos de Uso' : 'Terms of Service';
+                body.innerHTML = isPt ? `
                     <p>Todo o conteúdo textual e análises publicadas no CorticFlow são de caráter estritamente informativo e educacional.</p>
                     <p>Nenhuma análise de semicondutores, receita de hyperscalers ou métricas de mercado constitui recomendação financeira ou de investimento.</p>
                     <p>Para o texto jurídico integral, consulte a página oficial em <a href="terms.html" style="color: var(--cyan);">terms.html</a>.</p>
+                ` : `
+                    <p>All editorial analyses published on CorticFlow are provided solely for educational and research purposes.</p>
+                    <p>No technical breakdown, semiconductor forecast, or financial telemetry constitutes investment advice.</p>
+                    <p>For the complete legal text, review <a href="terms.html" style="color: var(--cyan);">terms.html</a>.</p>
                 `;
             } else if (type === 'newsletter') {
-                badge.innerText = 'Disparo Semanal';
-                title.innerText = 'Assinar CorticFlow Weekly';
-                body.innerHTML = `
+                badge.innerText = isPt ? 'Disparo Semanal' : 'Weekly Briefing';
+                title.innerText = isPt ? 'Assinar CorticFlow Weekly' : 'Subscribe to CorticFlow Weekly';
+                body.innerHTML = isPt ? `
                     <p>Receba todo domingo às 20h o resumo executivo com os principais dossiês de IA, benchmarks de modelos e tutoriais práticos da semana.</p>
                     <form onsubmit="alert('Inscrição confirmada com sucesso! Você receberá a próxima edição dominical.'); closeInstitutionalModal(); return false;" style="display: flex; flex-direction: column; gap: 12px; margin-top: 12px;">
                         <input type="email" placeholder="seu.email@empresa.com" required style="padding: 12px 16px; border-radius: 8px; background: rgba(0,0,0,0.5); border: 1px solid var(--border-color); color: #FFF; outline: none;">
                         <button type="submit" class="btn-header" style="padding: 12px; font-size: 0.9rem;">Confirmar Inscrição Gratuita</button>
+                    </form>
+                ` : `
+                    <p>Receive our executive Sunday briefing at 8:00 PM with curated frontier AI dossiers, silicon benchmarks, and practical engineering guides.</p>
+                    <form onsubmit="alert('Subscription successfully confirmed! You will receive our next Sunday briefing.'); closeInstitutionalModal(); return false;" style="display: flex; flex-direction: column; gap: 12px; margin-top: 12px;">
+                        <input type="email" placeholder="name@company.com" required style="padding: 12px 16px; border-radius: 8px; background: rgba(0,0,0,0.5); border: 1px solid var(--border-color); color: #FFF; outline: none;">
+                        <button type="submit" class="btn-header" style="padding: 12px; font-size: 0.9rem;">Confirm Free Subscription</button>
                     </form>
                 `;
             }
@@ -900,7 +1158,7 @@
             }
         });
 
-        // Animação de Canvas Neural
+        // Animação Canvas Neural
         (function() {
             const canvas = document.getElementById('neural-canvas');
             if (!canvas) return;
@@ -956,7 +1214,7 @@
 
         // Inicialização
         document.addEventListener('DOMContentLoaded', () => {
-            renderArticles(ARTICLES);
+            setLanguage(currentLang);
         });
     </script>
 </body>
