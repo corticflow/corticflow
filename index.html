@@ -1,591 +1,1680 @@
 <!DOCTYPE html>
-<html lang="pt-br" class="scroll-smooth">
+
+<html lang="pt-BR">
+
 <head>
+
     <meta charset="UTF-8">
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CorticFlow | Inteligência &amp; Benchmark em IA</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&amp;family=Space+Grotesk:wght@500;700&amp;family=Fira+Code&amp;display=swap" rel="stylesheet">
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        cyan: { DEFAULT: '#00E5FF' },
-                        violet: { DEFAULT: '#8B5CF6' },
-                        dark: { slate: '#0B0F19', card: '#111827', inner: '#131B2E' }
-                    },
-                    fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
-                        display: ['Space Grotesk', 'sans-serif'],
-                        mono: ['Fira Code', 'monospace']
-                    }
-                }
-            }
-        }
-    </script>
+
+    <title>CorticFlow - Tech, Design & Digital Culture</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
     <style>
-        body { font-family: 'Inter', sans-serif; background-color: #0B0F19; }
-        .glass { background: rgba(17, 24, 39, 0.8); backdrop-filter: blur(14px); border: 1px solid rgba(255, 255, 255, 0.08); }
-        .custom-scrollbar::-webkit-scrollbar { width: 6px; }
-        .custom-scrollbar::-webkit-scrollbar-thumb { background: #374151; border-radius: 8px; }
-        [x-cloak] { display: none !important; }
+
+        :root {
+
+            --bg-primary: #0a0a0c;
+
+            --bg-secondary: #121215;
+
+            --bg-card: #18181c;
+
+            --bg-card-hover: #222226;
+
+            --border-color: rgba(255, 255, 255, 0.08);
+
+            --border-color-hover: rgba(255, 255, 255, 0.2);
+
+            --text-primary: #f4f4f6;
+
+            --text-secondary: #a1a1aa;
+
+            --text-muted: #71717a;
+
+            --accent-purple: #5e6ad2;
+
+            --accent-purple-glow: rgba(94, 106, 210, 0.15);
+
+            --accent-pink: #f43f5e;
+
+            --font-main: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+
+            --max-width: 1280px;
+
+            --radius-sm: 6px;
+
+            --radius-md: 10px;
+
+            --radius-lg: 16px;
+
+            --transition-fast: 0.15s ease;
+
+            --transition-normal: 0.25s ease;
+
+        }
+
+        * {
+
+            box-sizing: border-box;
+
+            margin: 0;
+
+            padding: 0;
+
+        }
+
+        body {
+
+            background-color: var(--bg-primary);
+
+            color: var(--text-primary);
+
+            font-family: var(--font-main);
+
+            line-height: 1.5;
+
+            -webkit-font-smoothing: antialiased;
+
+            -moz-osx-font-smoothing: grayscale;
+
+            overflow-x: hidden;
+
+        }
+
+        a {
+
+            color: inherit;
+
+            text-decoration: none;
+
+        }
+
+        img {
+
+            max-width: 100%;
+
+            height: auto;
+
+            display: block;
+
+        }
+
+        /* Container Standard */
+
+        .container {
+
+            max-width: var(--max-width);
+
+            margin: 0 auto;
+
+            padding: 0 24px;
+
+        }
+
+        /* Header */
+
+        header {
+
+            border-bottom: 1px solid var(--border-color);
+
+            background: rgba(10, 10, 12, 0.8);
+
+            backdrop-filter: blur(12px);
+
+            position: sticky;
+
+            top: 0;
+
+            z-index: 100;
+
+        }
+
+        .header-content {
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            height: 64px;
+
+        }
+
+        .logo {
+
+            font-weight: 700;
+
+            font-size: 1.25rem;
+
+            letter-spacing: -0.03em;
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 8px;
+
+        }
+
+        .logo-icon {
+
+            width: 12px;
+
+            height: 12px;
+
+            background: var(--accent-purple);
+
+            border-radius: 2px;
+
+            box-shadow: 0 0 10px var(--accent-purple);
+
+        }
+
+        nav ul {
+
+            display: flex;
+
+            gap: 24px;
+
+            list-style: none;
+
+        }
+
+        nav a {
+
+            font-size: 0.875rem;
+
+            color: var(--text-secondary);
+
+            font-weight: 500;
+
+            transition: color var(--transition-fast);
+
+        }
+
+        nav a:hover {
+
+            color: var(--text-primary);
+
+        }
+
+        .header-actions {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 16px;
+
+        }
+
+        .btn-subscribe {
+
+            background-color: var(--text-primary);
+
+            color: var(--bg-primary);
+
+            font-size: 0.8125rem;
+
+            font-weight: 600;
+
+            padding: 8px 14px;
+
+            border-radius: var(--radius-sm);
+
+            transition: opacity var(--transition-fast);
+
+        }
+
+        .btn-subscribe:hover {
+
+            opacity: 0.9;
+
+        }
+
+        /* Hero Section (Lead Story + Trending) */
+
+        .hero-section {
+
+            padding: 32px 0;
+
+            border-bottom: 1px solid var(--border-color);
+
+        }
+
+        .hero-grid {
+
+            display: grid;
+
+            grid-template-columns: 1fr;
+
+            gap: 32px;
+
+        }
+
+        @media (min-width: 992px) {
+
+            .hero-grid {
+
+                grid-template-columns: 2.2fr 1fr;
+
+            }
+
+        }
+
+        /* Lead Story Card */
+
+        .lead-card {
+
+            background: var(--bg-card);
+
+            border: 1px solid var(--border-color);
+
+            border-radius: var(--radius-lg);
+
+            overflow: hidden;
+
+            display: flex;
+
+            flex-direction: column;
+
+            transition: border-color var(--transition-normal);
+
+            cursor: pointer;
+
+        }
+
+        .lead-card:hover {
+
+            border-color: var(--border-color-hover);
+
+        }
+
+        .aspect-16-9 {
+
+            width: 100%;
+
+            aspect-ratio: 16 / 9;
+
+            overflow: hidden;
+
+            background-color: var(--bg-secondary);
+
+            position: relative;
+
+        }
+
+        .aspect-16-9 img {
+
+            width: 100%;
+
+            height: 100%;
+
+            object-fit: cover;
+
+            transition: transform var(--transition-normal);
+
+        }
+
+        .lead-card:hover .aspect-16-9 img,
+
+        .grid-card:hover .aspect-16-9 img {
+
+            transform: scale(1.02);
+
+        }
+
+        .lead-content {
+
+            padding: 24px;
+
+            display: flex;
+
+            flex-direction: column;
+
+            gap: 12px;
+
+            flex-grow: 1;
+
+        }
+
+        .tag {
+
+            font-size: 0.75rem;
+
+            font-weight: 600;
+
+            text-transform: uppercase;
+
+            letter-spacing: 0.05em;
+
+            color: var(--accent-purple);
+
+            width: fit-content;
+
+        }
+
+        .lead-title {
+
+            font-size: 1.75rem;
+
+            font-weight: 700;
+
+            line-height: 1.2;
+
+            letter-spacing: -0.02em;
+
+        }
+
+        .lead-excerpt {
+
+            color: var(--text-secondary);
+
+            font-size: 0.95rem;
+
+            line-height: 1.5;
+
+        }
+
+        .card-meta {
+
+            margin-top: auto;
+
+            padding-top: 12px;
+
+            font-size: 0.8125rem;
+
+            color: var(--text-muted);
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 8px;
+
+        }
+
+        /* Trending Column */
+
+        .trending-col {
+
+            display: flex;
+
+            flex-direction: column;
+
+            gap: 16px;
+
+        }
+
+        .section-title {
+
+            font-size: 0.875rem;
+
+            font-weight: 700;
+
+            text-transform: uppercase;
+
+            letter-spacing: 0.08em;
+
+            color: var(--text-muted);
+
+            margin-bottom: 8px;
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 8px;
+
+        }
+
+        .section-title::before {
+
+            content: '';
+
+            display: inline-block;
+
+            width: 6px;
+
+            height: 6px;
+
+            background-color: var(--accent-pink);
+
+            border-radius: 50%;
+
+        }
+
+        .trending-list {
+
+            display: flex;
+
+            flex-direction: column;
+
+            gap: 12px;
+
+            height: 100%;
+
+            justify-content: space-between;
+
+        }
+
+        .trending-item {
+
+            background: var(--bg-card);
+
+            border: 1px solid var(--border-color);
+
+            border-radius: var(--radius-md);
+
+            padding: 16px;
+
+            display: flex;
+
+            gap: 16px;
+
+            cursor: pointer;
+
+            transition: border-color var(--transition-fast), background-color var(--transition-fast);
+
+        }
+
+        .trending-item:hover {
+
+            border-color: var(--border-color-hover);
+
+            background-color: var(--bg-card-hover);
+
+        }
+
+        .trending-number {
+
+            font-size: 1.25rem;
+
+            font-weight: 700;
+
+            color: var(--text-muted);
+
+            line-height: 1;
+
+        }
+
+        .trending-info {
+
+            display: flex;
+
+            flex-direction: column;
+
+            gap: 6px;
+
+        }
+
+        .trending-title {
+
+            font-size: 0.9375rem;
+
+            font-weight: 600;
+
+            line-height: 1.35;
+
+        }
+
+        /* Feed Grid Section */
+
+        .feed-section {
+
+            padding: 48px 0;
+
+        }
+
+        .feed-grid {
+
+            display: grid;
+
+            grid-template-columns: 1fr;
+
+            gap: 24px;
+
+            margin-top: 24px;
+
+        }
+
+        @media (min-width: 640px) {
+
+            .feed-grid {
+
+                grid-template-columns: repeat(2, 1fr);
+
+            }
+
+        }
+
+        @media (min-width: 1024px) {
+
+            .feed-grid {
+
+                grid-template-columns: repeat(3, 1fr);
+
+            }
+
+        }
+
+        /* Uniform Card Grid Elements */
+
+        .grid-card {
+
+            background: var(--bg-card);
+
+            border: 1px solid var(--border-color);
+
+            border-radius: var(--radius-md);
+
+            overflow: hidden;
+
+            display: flex;
+
+            flex-direction: column;
+
+            height: 100%;
+
+            cursor: pointer;
+
+            transition: border-color var(--transition-normal);
+
+        }
+
+        .grid-card:hover {
+
+            border-color: var(--border-color-hover);
+
+        }
+
+        .grid-card-content {
+
+            padding: 16px;
+
+            display: flex;
+
+            flex-direction: flex-col;
+
+            flex-direction: column;
+
+            flex-grow: 1;
+
+            gap: 8px;
+
+        }
+
+        .grid-card-title {
+
+            font-size: 1.0625rem;
+
+            font-weight: 600;
+
+            line-height: 1.35;
+
+            letter-spacing: -0.01em;
+
+        }
+
+        .grid-card-excerpt {
+
+            font-size: 0.875rem;
+
+            color: var(--text-secondary);
+
+            line-height: 1.4;
+
+            display: -webkit-box;
+
+            -webkit-line-clamp: 2;
+
+            -webkit-box-orient: vertical;
+
+            overflow: hidden;
+
+            margin-bottom: auto;
+
+        }
+
+        /* Modal Imersivo */
+
+        .modal-overlay {
+
+            position: fixed;
+
+            top: 0;
+
+            left: 0;
+
+            width: 100%;
+
+            height: 100%;
+
+            background: rgba(5, 5, 7, 0.85);
+
+            backdrop-filter: blur(16px);
+
+            z-index: 1000;
+
+            display: flex;
+
+            justify-content: center;
+
+            align-items: flex-start;
+
+            overflow-y: auto;
+
+            opacity: 0;
+
+            visibility: hidden;
+
+            transition: opacity var(--transition-normal), visibility var(--transition-normal);
+
+            padding: 40px 16px;
+
+        }
+
+        .modal-overlay.active {
+
+            opacity: 1;
+
+            visibility: visible;
+
+        }
+
+        .modal-container {
+
+            background: var(--bg-secondary);
+
+            border: 1px solid var(--border-color);
+
+            border-radius: var(--radius-lg);
+
+            max-width: 800px;
+
+            width: 100%;
+
+            margin: auto;
+
+            overflow: hidden;
+
+            position: relative;
+
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+
+            transform: translateY(20px);
+
+            transition: transform var(--transition-normal);
+
+        }
+
+        .modal-overlay.active .modal-container {
+
+            transform: translateY(0);
+
+        }
+
+        .modal-close {
+
+            position: absolute;
+
+            top: 16px;
+
+            right: 16px;
+
+            width: 36px;
+
+            height: 36px;
+
+            background: rgba(0, 0, 0, 0.6);
+
+            border: 1px solid var(--border-color);
+
+            border-radius: 50%;
+
+            color: var(--text-primary);
+
+            font-size: 1.25rem;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            cursor: pointer;
+
+            z-index: 10;
+
+            transition: background-color var(--transition-fast);
+
+        }
+
+        .modal-close:hover {
+
+            background: rgba(255, 255, 255, 0.1);
+
+        }
+
+        .modal-hero-banner {
+
+            width: 100%;
+
+            aspect-ratio: 21 / 9;
+
+            object-fit: cover;
+
+            background-color: var(--bg-card);
+
+        }
+
+        .modal-body {
+
+            padding: 32px;
+
+        }
+
+        .executive-summary {
+
+            background: var(--accent-purple-glow);
+
+            border-left: 3px solid var(--accent-purple);
+
+            padding: 16px 20px;
+
+            border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+
+            margin: 20px 0;
+
+        }
+
+        .executive-summary h4 {
+
+            font-size: 0.75rem;
+
+            text-transform: uppercase;
+
+            letter-spacing: 0.05em;
+
+            color: var(--accent-purple);
+
+            margin-bottom: 4px;
+
+        }
+
+        .executive-summary p {
+
+            font-size: 0.9375rem;
+
+            color: var(--text-primary);
+
+            font-weight: 500;
+
+        }
+
+        .modal-text-content {
+
+            font-size: 1rem;
+
+            color: var(--text-secondary);
+
+            line-height: 1.7;
+
+            display: flex;
+
+            flex-direction: column;
+
+            gap: 16px;
+
+        }
+
+        /* Footer */
+
+        footer {
+
+            border-top: 1px solid var(--border-color);
+
+            background-color: var(--bg-secondary);
+
+            padding: 48px 0 32px 0;
+
+            margin-top: 64px;
+
+        }
+
+        .footer-grid {
+
+            display: grid;
+
+            grid-template-columns: repeat(1, 1fr);
+
+            gap: 32px;
+
+            margin-bottom: 48px;
+
+        }
+
+        @media (min-width: 640px) {
+
+            .footer-grid {
+
+                grid-template-columns: repeat(2, 1fr);
+
+            }
+
+        }
+
+        @media (min-width: 1024px) {
+
+            .footer-grid {
+
+                grid-template-columns: 1.5fr repeat(3, 1fr);
+
+            }
+
+        }
+
+        .footer-col {
+
+            display: flex;
+
+            flex-direction: column;
+
+            gap: 12px;
+
+        }
+
+        .footer-col h4 {
+
+            font-size: 0.875rem;
+
+            font-weight: 600;
+
+            color: var(--text-primary);
+
+        }
+
+        .footer-col ul {
+
+            list-style: none;
+
+            display: flex;
+
+            flex-direction: column;
+
+            gap: 8px;
+
+        }
+
+        .footer-col a {
+
+            font-size: 0.8125rem;
+
+            color: var(--text-secondary);
+
+            transition: color var(--transition-fast);
+
+        }
+
+        .footer-col a:hover {
+
+            color: var(--text-primary);
+
+        }
+
+        .footer-bottom {
+
+            border-top: 1px solid var(--border-color);
+
+            padding-top: 24px;
+
+            display: flex;
+
+            flex-direction: column;
+
+            gap: 16px;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            font-size: 0.8125rem;
+
+            color: var(--text-muted);
+
+        }
+
+        @media (min-width: 640px) {
+
+            .footer-bottom {
+
+                flex-direction: row;
+
+            }
+
+        }
+
+        .footer-legal {
+
+            display: flex;
+
+            gap: 16px;
+
+        }
+
+        .footer-legal a {
+
+            color: var(--text-muted);
+
+        }
+
+        .footer-legal a:hover {
+
+            color: var(--text-secondary);
+
+        }
+
     </style>
+
 </head>
-<body class="bg-[#0B0F19] text-slate-100 min-h-screen flex flex-col antialiased" x-data="corticFlow()" x-init="init()" x-cloak>
-    <!-- Header / Navbar -->
-    <header class="glass sticky top-0 z-40 border-b border-white/10 px-6 py-4">
-        <div class="max-w-7xl mx-auto flex justify-between items-center">
-            <div class="flex items-center gap-3">
-                <div class="w-9 h-9 bg-gradient-to-tr from-cyan to-violet rounded-xl flex items-center justify-center text-slate-900 font-bold text-lg shadow-lg shadow-cyan/20">C</div>
-                <span class="text-2xl font-bold tracking-tighter font-display text-white">Cortic<span class="text-cyan">Flow</span></span>
-            </div>
-            
-            <nav class="hidden md:flex items-center gap-6 text-sm font-medium text-slate-400">
-                <a href="#benchmark" class="hover:text-cyan transition-colors" x-text="t[currentLang].navBenchmark"></a>
-                <a href="#artigos" class="hover:text-cyan transition-colors" x-text="t[currentLang].navArticles"></a>
-                <a href="terms.html" class="hover:text-cyan transition-colors" x-text="t[currentLang].navTerms"></a>
-                <a href="privacy.html" class="hover:text-cyan transition-colors" x-text="t[currentLang].navPrivacy"></a>
-            </nav>
-            <div class="flex items-center gap-4">
-                <!-- Seletor de Idioma Bilíngue -->
-                <div class="flex items-center bg-white/5 border border-white/10 rounded-full p-1 shadow-inner">
-                    <button 
-                        @click="setLanguage('pt')" 
-                        :class="currentLang === 'pt' ? 'bg-cyan text-slate-950 font-extrabold shadow-sm' : 'text-slate-400 hover:text-white'" 
-                        class="px-3 py-1 text-xs rounded-full transition-all">PT</button>
-                    <button 
-                        @click="setLanguage('en')" 
-                        :class="currentLang === 'en' ? 'bg-cyan text-slate-950 font-extrabold shadow-sm' : 'text-slate-400 hover:text-white'" 
-                        class="px-3 py-1 text-xs rounded-full transition-all">EN</button>
-                </div>
-                <a href="#newsletter" class="hidden sm:inline-block bg-cyan text-slate-950 font-bold text-xs px-4 py-2 rounded-full hover:bg-white transition-all shadow-md shadow-cyan/20" x-text="t[currentLang].navNewsletter"></a>
-            </div>
-        </div>
-    </header>
-    <!-- Hero Section -->
-    <section class="pt-16 pb-8 px-6 max-w-7xl mx-auto w-full">
-        <div class="text-center max-w-3xl mx-auto mb-10">
-            <span class="inline-block px-3 py-1 mb-4 text-[11px] font-bold tracking-widest text-cyan uppercase bg-cyan/10 border border-cyan/20 rounded-full" x-text="t[currentLang].badgeHero"></span>
-            <h1 class="text-4xl md:text-6xl font-extrabold font-display text-white mb-4 tracking-tight leading-tight">
-                <span x-text="t[currentLang].heroTitle1"></span> <span class="text-transparent bg-clip-text bg-gradient-to-r from-cyan to-violet" x-text="t[currentLang].heroTitle2"></span>
-            </h1>
-            <p class="text-slate-400 text-base md:text-lg leading-relaxed" x-text="t[currentLang].heroDesc"></p>
-        </div>
-    </section>
-    <!-- Seção de Benchmark da Semana (Leaderboard &amp; Gráfico) -->
-    <section id="benchmark" class="max-w-7xl mx-auto px-6 pb-16 w-full">
-        <div class="glass rounded-3xl p-6 md:p-10 border border-cyan/30 relative overflow-hidden">
-            <div class="absolute -top-32 -right-32 w-80 h-80 bg-violet/15 blur-[120px] rounded-full pointer-events-none"></div>
-            <!-- Cabeçalho do Benchmark -->
-            <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8 border-b border-white/10 pb-6">
-                <div>
-                    <div class="flex items-center gap-2 mb-2">
-                        <span class="w-2.5 h-2.5 rounded-full bg-cyan animate-ping"></span>
-                        <span class="text-xs font-mono font-bold tracking-widest text-cyan uppercase" x-text="t[currentLang].benchmarkBadge"></span>
-                    </div>
-                    <h2 class="text-2xl md:text-3xl font-bold font-display text-white" x-text="t[currentLang].benchmarkTitle"></h2>
-                    <p class="text-slate-400 text-xs md:text-sm mt-1" x-text="t[currentLang].benchmarkSubtitle"></p>
-                </div>
-                <div class="text-xs font-mono text-slate-400 bg-white/5 px-4 py-2 rounded-xl border border-white/10">
-                    <span x-text="t[currentLang].benchmarkUpdated"></span>: <strong class="text-white" x-text="t[currentLang].benchmarkWeekDate"></strong>
-                </div>
-            </div>
-            <!-- Card Destaque: #1 Modelo da Semana -->
-            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 items-center mb-10 bg-gradient-to-br from-[#131B2E] to-[#111827] p-6 md:p-8 rounded-2xl border border-cyan/20">
-                <div class="lg:col-span-1">
-                    <span class="inline-block px-3 py-1 text-[10px] font-bold uppercase tracking-widest bg-cyan/15 text-cyan border border-cyan/30 rounded-md mb-3" x-text="t[currentLang].topModelBadge"></span>
-                    <h3 class="text-2xl md:text-3xl font-extrabold text-white mb-2" x-text="benchmarks[0].name"></h3>
-                    <p class="text-xs text-slate-400 mb-4" x-text="t[currentLang].topModelDeveloper + ': ' + benchmarks[0].developer"></p>
-                    <div class="text-4xl font-black font-display text-transparent bg-clip-text bg-gradient-to-r from-cyan to-violet mb-6">
-                        <span x-text="benchmarks[0].score"></span><span class="text-base text-slate-400 font-normal"> / 100</span>
-                    </div>
-                    <a 
-                        :href="benchmarks[0].url" 
-                        target="_blank" 
-                        rel="noopener noreferrer"
-                        class="inline-flex items-center gap-2 bg-cyan text-slate-950 font-extrabold text-xs px-5 py-3 rounded-xl hover:bg-white transition-all shadow-lg shadow-cyan/20">
-                        <span x-text="t[currentLang].accessAiBtn + ' (' + benchmarks[0].developer + ')'"></span>
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-                        </svg>
-                    </a>
-                </div>
-                <!-- Gráfico de Barras de Performance -->
-                <div class="lg:col-span-2 space-y-4">
-                    <!-- Raciocínio -->
-                    <div>
-                        <div class="flex justify-between text-xs font-mono mb-1.5">
-                            <span class="text-slate-300" x-text="t[currentLang].metricReasoning"></span>
-                            <span class="text-cyan font-bold" x-text="benchmarks[0].reasoning + '%'"></span>
-                        </div>
-                        <div class="w-full h-3 bg-slate-900 rounded-full overflow-hidden border border-white/5">
-                            <div class="h-full bg-gradient-to-r from-cyan to-violet rounded-full transition-all duration-1000" :style="'width: ' + benchmarks[0].reasoning + '%'"></div>
-                        </div>
-                    </div>
-                    <!-- Código -->
-                    <div>
-                        <div class="flex justify-between text-xs font-mono mb-1.5">
-                            <span class="text-slate-300" x-text="t[currentLang].metricCoding"></span>
-                            <span class="text-cyan font-bold" x-text="benchmarks[0].coding + '%'"></span>
-                        </div>
-                        <div class="w-full h-3 bg-slate-900 rounded-full overflow-hidden border border-white/5">
-                            <div class="h-full bg-gradient-to-r from-cyan to-violet rounded-full transition-all duration-1000" :style="'width: ' + benchmarks[0].coding + '%'"></div>
-                        </div>
-                    </div>
-                    <!-- Matemática &amp; Ciência -->
-                    <div>
-                        <div class="flex justify-between text-xs font-mono mb-1.5">
-                            <span class="text-slate-300" x-text="t[currentLang].metricMath"></span>
-                            <span class="text-cyan font-bold" x-text="benchmarks[0].math + '%'"></span>
-                        </div>
-                        <div class="w-full h-3 bg-slate-900 rounded-full overflow-hidden border border-white/5">
-                            <div class="h-full bg-gradient-to-r from-cyan to-violet rounded-full transition-all duration-1000" :style="'width: ' + benchmarks[0].math + '%'"></div>
-                        </div>
-                    </div>
-                    <!-- Eficiência &amp; Custo -->
-                    <div>
-                        <div class="flex justify-between text-xs font-mono mb-1.5">
-                            <span class="text-slate-300" x-text="t[currentLang].metricEfficiency"></span>
-                            <span class="text-cyan font-bold" x-text="benchmarks[0].efficiency + '%'"></span>
-                        </div>
-                        <div class="w-full h-3 bg-slate-900 rounded-full overflow-hidden border border-white/5">
-                            <div class="h-full bg-gradient-to-r from-cyan to-violet rounded-full transition-all duration-1000" :style="'width: ' + benchmarks[0].efficiency + '%'"></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- Tabela Comparativa de IAs com Links Diretos de Uso -->
-            <div class="overflow-x-auto custom-scrollbar">
-                <table class="w-full text-left text-xs">
-                    <thead>
-                        <tr class="border-b border-white/10 text-slate-400 font-mono uppercase text-[10px]">
-                            <th class="py-3 px-4">Posição</th>
-                            <th class="py-3 px-4">Modelo &amp; Criador</th>
-                            <th class="py-3 px-4 text-center">Score Geral</th>
-                            <th class="py-3 px-4 text-center">Raciocínio</th>
-                            <th class="py-3 px-4 text-center">Código</th>
-                            <th class="py-3 px-4 text-center">Eficiência</th>
-                            <th class="py-3 px-4 text-right">Acesso Oficial</th>
-                        </tr>
-                    </thead>
-                    <tbody class="divide-y divide-white/5 font-mono">
-                        <template x-for="item in benchmarks" :key="item.rank">
-                            <tr class="hover:bg-white/5 transition-colors">
-                                <td class="py-4 px-4 font-bold text-white">
-                                    <span class="w-6 h-6 rounded-full inline-flex items-center justify-center text-slate-950 font-extrabold text-[11px]"
-                                          :class="item.rank === 1 ? 'bg-cyan' : (item.rank === 2 ? 'bg-slate-300' : 'bg-amber-600/80 text-white')"
-                                          x-text="'#' + item.rank"></span>
-                                </td>
-                                <td class="py-4 px-4 font-sans font-medium text-white">
-                                    <div class="font-bold text-sm" x-text="item.name"></div>
-                                    <div class="text-[11px] text-slate-400 font-mono" x-text="item.developer"></div>
-                                </td>
-                                <td class="py-4 px-4 text-center text-cyan font-bold text-sm" x-text="item.score"></td>
-                                <td class="py-4 px-4 text-center text-slate-300" x-text="item.reasoning + '%'"></td>
-                                <td class="py-4 px-4 text-center text-slate-300" x-text="item.coding + '%'"></td>
-                                <td class="py-4 px-4 text-center text-slate-300" x-text="item.efficiency + '%'"></td>
-                                <td class="py-4 px-4 text-right font-sans">
-                                    <a 
-                                        :href="item.url" 
-                                        target="_blank" 
-                                        rel="noopener noreferrer"
-                                        class="inline-flex items-center gap-1.5 bg-white/10 hover:bg-cyan hover:text-slate-950 text-white font-bold text-xs px-3.5 py-1.5 rounded-lg transition-all">
-                                        <span x-text="t[currentLang].useAiAction"></span>
-                                        <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
-                                        </svg>
-                                    </a>
-                                </td>
-                            </tr>
-                        </template>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </section>
-    <!-- Seção de Artigos &amp; Análises -->
-    <main class="max-w-7xl mx-auto px-6 pb-20 flex-grow w-full" id="artigos">
-        <div class="mb-8 border-b border-white/10 pb-4">
-            <h2 class="text-2xl font-bold font-display text-white" x-text="t[currentLang].articlesSectionTitle"></h2>
-            <p class="text-slate-400 text-xs md:text-sm mt-1" x-text="t[currentLang].articlesSectionDesc"></p>
-        </div>
-    <!-- Loading State -->
-    <div x-show="isLoading" class="flex flex-col items-center justify-center py-20">
-        <div class="w-10 h-10 border-4 border-cyan border-t-transparent rounded-full animate-spin mb-4"></div>
-        <p class="text-slate-400 text-sm font-mono" x-text="t[currentLang].loadingText"></p>
-    </div>
-    <!-- Articles Grid -->
-    <div x-show="!isLoading" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-        <template x-for="item in articles" :key="item.id">
-            <article 
-                class="glass rounded-2xl overflow-hidden hover:border-cyan/40 transition-all duration-300 flex flex-col cursor-pointer group"
-                @click="openModal(item)">
-                <div class="aspect-video w-full overflow-hidden bg-slate-900 relative">
-                    <img 
-                        :src="item.image" 
-                        :alt="getArticleTitle(item)"
-                        class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                        onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1677442136019-21780ecad995?q=80&amp;w=1600&amp;h=900&amp;fit=crop';">
-                    <div class="absolute top-3 left-3">
-                        <span class="px-2.5 py-1 text-[10px] font-bold uppercase tracking-widest bg-slate-950/80 text-cyan rounded-md border border-cyan/30 backdrop-blur-md" x-text="item.source"></span>
-                    </div>
-                </div>
-                <div class="p-6 flex-1 flex flex-col justify-between">
-                    <div>
-                        <div class="text-[11px] text-slate-500 font-mono mb-2" x-text="item.date"></div>
-                        <h3 class="text-lg font-bold text-white group-hover:text-cyan transition-colors mb-3 leading-snug" x-text="getArticleTitle(item)"></h3>
-                        <p class="text-slate-400 text-xs line-clamp-3 leading-relaxed mb-4" x-text="getArticleExcerpt(item)"></p>
-                    </div>
-                    <div class="pt-4 border-t border-white/5 flex items-center justify-between text-xs font-semibold text-cyan">
-                        <span x-text="t[currentLang].readMore"></span>
-                        <svg class="w-4 h-4 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-                        </svg>
-                    </div>
-                </div>
-            </article>
-        </template>
-    </div>
-    </main>
-    <!-- Modal de Leitura Long-Form -->
-    <div 
-        x-show="isModalOpen" 
-        class="fixed inset-0 z-50 overflow-y-auto bg-black/85 backdrop-blur-md flex items-center justify-center p-4"
-        x-transition:enter="transition ease-out duration-300"
-        x-transition:enter-start="opacity-0"
-        x-transition:enter-end="opacity-100"
-        x-transition:leave="transition ease-in duration-200"
-        x-transition:leave-start="opacity-100"
-        x-transition:leave-end="opacity-0">
-        <div 
-            class="bg-[#111827] border border-white/15 rounded-3xl max-w-3xl w-full max-h-[90vh] overflow-y-auto custom-scrollbar p-6 md:p-10 relative shadow-2xl"
-            @click.outside="closeModal()">
-            <button 
-                @click="closeModal()" 
-                class="absolute top-6 right-6 text-slate-400 hover:text-white bg-white/5 hover:bg-white/10 w-9 h-9 rounded-full flex items-center justify-center transition-all">
-                ✕
-            </button>
-            <template x-if="activeDoc">
-                <div>
-                    <div class="flex items-center gap-3 mb-4">
-                        <span class="px-2.5 py-1 text-[10px] font-bold uppercase tracking-widest bg-cyan/10 text-cyan border border-cyan/30 rounded" x-text="activeDoc.source"></span>
-                        <span class="text-xs text-slate-500 font-mono" x-text="activeDoc.date"></span>
-                    </div>
-                    <h2 class="text-2xl md:text-4xl font-extrabold font-display text-white mb-6 leading-tight" x-text="getArticleTitle(activeDoc)"></h2>
-                    <div class="aspect-video w-full rounded-2xl overflow-hidden mb-8 border border-white/10">
-                        <img :src="activeDoc.image" :alt="getArticleTitle(activeDoc)" class="w-full h-full object-cover">
-                    </div>
-                    <div class="prose prose-invert max-w-none text-slate-300 text-sm md:text-base leading-relaxed space-y-4 whitespace-pre-line" x-text="getArticleContent(activeDoc)"></div>
-                    <div class="mt-8 pt-6 border-t border-white/10 flex flex-col sm:flex-row justify-between items-center gap-4">
-                        <a 
-                            :href="activeDoc.link" 
-                            target="_blank" 
-                            rel="noopener noreferrer"
-                            class="text-xs text-cyan hover:underline flex items-center gap-1.5 font-mono">
-                            <span x-text="t[currentLang].modalSource"></span>
-                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-                            </svg>
-                        </a>
-                        <button 
-                            @click="closeModal()" 
-                            class="bg-white/10 text-white hover:bg-white/20 px-5 py-2 rounded-xl text-xs font-bold transition-all"
-                            x-text="t[currentLang].modalClose">
-                        </button>
-                    </div>
-                </div>
-            </template>
-        </div>
-    </div>
-    <!-- Newsletter CTA Section -->
-    <section id="newsletter" class="max-w-7xl mx-auto px-6 py-16 w-full">
-        <div class="glass rounded-3xl p-8 md:p-14 text-center relative overflow-hidden border border-cyan/20">
-            <div class="absolute -top-24 -right-24 w-64 h-64 bg-cyan/10 blur-[100px] rounded-full pointer-events-none"></div>
-            <h2 class="text-2xl md:text-4xl font-extrabold font-display text-white mb-3" x-text="t[currentLang].newsletterTitle"></h2>
-            <p class="text-slate-400 text-sm md:text-base max-w-lg mx-auto mb-8" x-text="t[currentLang].newsletterDesc"></p>
-            <form class="flex flex-col sm:flex-row gap-3 max-w-md mx-auto" @submit.prevent="alert(t[currentLang].newsletterSuccess)">
-                <input 
-                    type="email" 
-                    :placeholder="t[currentLang].newsletterPlaceholder" 
-                    required 
-                    class="flex-1 bg-slate-900/90 border border-white/15 rounded-xl px-4 py-3 text-sm text-white placeholder-slate-500 outline-none focus:border-cyan transition-all">
-                <button 
-                    type="submit" 
-                    class="bg-cyan text-slate-950 px-6 py-3 rounded-xl font-bold text-sm hover:bg-white transition-all shadow-lg shadow-cyan/20"
-                    x-text="t[currentLang].newsletterBtn">
-                </button>
-            </form>
-        </div>
-    </section>
-    <!-- Footer -->
-    <footer class="border-t border-white/10 bg-[#080B12] py-12 px-6 text-slate-400 text-xs">
-        <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-8 mb-10">
-            <div class="col-span-1 md:col-span-2">
-                <span class="text-xl font-bold text-white font-display">Cortic<span class="text-cyan">Flow</span></span>
-                <p class="mt-3 text-slate-500 max-w-sm leading-relaxed" x-text="t[currentLang].footerDesc"></p>
-            </div>
-            <div>
-                <h4 class="text-white font-bold mb-4 uppercase tracking-widest text-[11px]" x-text="t[currentLang].footerCompliance"></h4>
-                <ul class="space-y-2">
-                    <li><a href="privacy.html" class="hover:text-cyan transition-colors" x-text="t[currentLang].navPrivacy"></a></li>
-                    <li><a href="terms.html" class="hover:text-cyan transition-colors" x-text="t[currentLang].navTerms"></a></li>
+
+<body>
+
+    <!-- Header -->
+
+    <header>
+
+        <div class="container header-content">
+
+            <a href="#" class="logo">
+
+                <span class="logo-icon"></span>
+
+                CorticFlow
+
+            </a>
+
+            <nav>
+
+                <ul>
+
+                    <li><a href="#">Inteligência Artificial</a></li>
+
+                    <li><a href="#">Design Systems</a></li>
+
+                    <li><a href="#">Engenharia</a></li>
+
+                    <li><a href="#">Cultura Digital</a></li>
+
                 </ul>
+
+            </nav>
+
+            <div class="header-actions">
+
+                <a href="#" class="btn-subscribe">Assinar Newsletter</a>
+
             </div>
-            <div>
-                <h4 class="text-white font-bold mb-4 uppercase tracking-widest text-[11px]" x-text="t[currentLang].footerStatus"></h4>
-                <div class="flex items-center gap-2 text-slate-300 font-mono text-[11px]">
-                    <div class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></div>
-                    <span x-text="t[currentLang].pipelineActive"></span>
+
+        </div>
+
+    </header>
+
+    <main class="container">
+
+        <!-- Hero Section: Lead Story + Trending Side Bar -->
+
+        <section class="hero-section">
+
+            <div class="hero-grid">
+
+                <!-- Lead Story -->
+
+                <article class="lead-card" onclick="openModal('hero')">
+
+                    <div class="aspect-16-9">
+
+                        <img src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=1200&q=80" 
+
+                             alt="Arquitetura de Sistemas" 
+
+                             onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1200&q=80';">
+
+                    </div>
+
+                    <div class="lead-content">
+
+                        <span class="tag">Engenharia de Software</span>
+
+                        <h1 class="lead-title">A Nova Fronteira das Arquiteturas Orientadas a Agentes Autônomos</h1>
+
+                        <p class="lead-excerpt">Como ecossistemas distribuídos baseados em modelos neurais estão redefinindo os padrões globais de escalabilidade, orquestração de processos e design de infraestrutura moderna.</p>
+
+                        <div class="card-meta">
+
+                            <span>Por Helena Rostova</span>
+
+                            <span>•</span>
+
+                            <span>8 min de leitura</span>
+
+                        </div>
+
+                    </div>
+
+                </article>
+
+                <!-- Trending Sidebar -->
+
+                <aside class="trending-col">
+
+                    <h3 class="section-title">Mais Lidas</h3>
+
+                    <div class="trending-list">
+
+                        <article class="trending-item" onclick="openModal('trending-1')">
+
+                            <span class="trending-number">01</span>
+
+                            <div class="trending-info">
+
+                                <span class="tag">Design</span>
+
+                                <h4 class="trending-title">O Fim dos Skeuomorfismos Invisíveis nas UIs Modernas</h4>
+
+                                <div class="card-meta"><span>5 min de leitura</span></div>
+
+                            </div>
+
+                        </article>
+
+                        <article class="trending-item" onclick="openModal('trending-2')">
+
+                            <span class="trending-number">02</span>
+
+                            <div class="trending-info">
+
+                                <span class="tag">Hardware</span>
+
+                                <h4 class="trending-title">Chips Fotônicos e o Futuro do Processamento de Baixa Latência</h4>
+
+                                <div class="card-meta"><span>6 min de leitura</span></div>
+
+                            </div>
+
+                        </article>
+
+                        <article class="trending-item" onclick="openModal('trending-3')">
+
+                            <span class="trending-number">03</span>
+
+                            <div class="trending-info">
+
+                                <span class="tag">IA</span>
+
+                                <h4 class="trending-title">Modelos Pequenos Especializados (SLMs) Superam LLMs Genéricos</h4>
+
+                                <div class="card-meta"><span>4 min de leitura</span></div>
+
+                            </div>
+
+                        </article>
+
+                    </div>
+
+                </aside>
+
+            </div>
+
+        </section>
+
+        <!-- Feed Grid Section -->
+
+        <section class="feed-section">
+
+            <h3 class="section-title">Matérias Recentes</h3>
+
+            <div class="feed-grid">
+
+                <!-- Card 1 -->
+
+                <article class="grid-card" onclick="openModal('card-1')">
+
+                    <div class="aspect-16-9">
+
+                        <img src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&w=800&q=80" 
+
+                             alt="Cibersegurança" 
+
+                             onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=800&q=80';">
+
+                    </div>
+
+                    <div class="grid-card-content">
+
+                        <span class="tag">Segurança</span>
+
+                        <h3 class="grid-card-title">Criptografia Pós-Quântica em Ambientes de Nuvem</h3>
+
+                        <p class="grid-card-excerpt">Novos padrões de segurança estão sendo implantados para conter riscos iminentes do processamento quântico.</p>
+
+                        <div class="card-meta"><span>7 min de leitura</span></div>
+
+                    </div>
+
+                </article>
+
+                <!-- Card 2 -->
+
+                <article class="grid-card" onclick="openModal('card-2')">
+
+                    <div class="aspect-16-9">
+
+                        <img src="https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?auto=format&fit=crop&w=800&q=80" 
+
+                             alt="Código Matrix" 
+
+                             onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=800&q=80';">
+
+                    </div>
+
+                    <div class="grid-card-content">
+
+                        <span class="tag">Desenvolvimento</span>
+
+                        <h3 class="grid-card-title">Compiladores Baseados em Aprendizado Profundo</h3>
+
+                        <p class="grid-card-excerpt">Como a otimização sintática automatizada está gerando executáveis até 40% mais eficientes em tempo real.</p>
+
+                        <div class="card-meta"><span>5 min de leitura</span></div>
+
+                    </div>
+
+                </article>
+
+                <!-- Card 3 -->
+
+                <article class="grid-card" onclick="openModal('card-3')">
+
+                    <div class="aspect-16-9">
+
+                        <img src="https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?auto=format&fit=crop&w=800&q=80" 
+
+                             alt="Interface Web" 
+
+                             onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=800&q=80';">
+
+                    </div>
+
+                    <div class="grid-card-content">
+
+                        <span class="tag">UX / UI</span>
+
+                        <h3 class="grid-card-title">A Evolução dos Design Tokens na Era Micro-Frontends</h3>
+
+                        <p class="grid-card-excerpt">Estratégias avançadas para manter consistência em grande escala corporativa sem perder a autonomia de times.</p>
+
+                        <div class="card-meta"><span>6 min de leitura</span></div>
+
+                    </div>
+
+                </article>
+
+                <!-- Card 4 -->
+
+                <article class="grid-card" onclick="openModal('card-4')">
+
+                    <div class="aspect-16-9">
+
+                        <img src="https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&w=800&q=80" 
+
+                             alt="Data Center" 
+
+                             onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=800&q=80';">
+
+                    </div>
+
+                    <div class="grid-card-content">
+
+                        <span class="tag">Infraestrutura</span>
+
+                        <h3 class="grid-card-title">Infraestrutura Sustentável e Computação Verde</h3>
+
+                        <p class="grid-card-excerpt">Metodologias de arquitetura distribuída para otimização do consumo energético em mega data centers.</p>
+
+                        <div class="card-meta"><span>9 min de leitura</span></div>
+
+                    </div>
+
+                </article>
+
+                <!-- Card 5 -->
+
+                <article class="grid-card" onclick="openModal('card-5')">
+
+                    <div class="aspect-16-9">
+
+                        <img src="https://images.unsplash.com/photo-1531403009284-440f080d1e12?auto=format&fit=crop&w=800&q=80" 
+
+                             alt="Metodologia Agile" 
+
+                             onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=800&q=80';">
+
+                    </div>
+
+                    <div class="grid-card-content">
+
+                        <span class="tag">Gestão</span>
+
+                        <h3 class="grid-card-title">Métricas de Produtividade em Times Assíncronos</h3>
+
+                        <p class="grid-card-excerpt">Abandonando horários fixos e métricas de vaidade em favor de entregas contínuas de valor mensurável.</p>
+
+                        <div class="card-meta"><span>4 min de leitura</span></div>
+
+                    </div>
+
+                </article>
+
+                <!-- Card 6 -->
+
+                <article class="grid-card" onclick="openModal('card-6')">
+
+                    <div class="aspect-16-9">
+
+                        <img src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=800&q=80" 
+
+                             alt="Rede Neural" 
+
+                             onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=800&q=80';">
+
+                    </div>
+
+                    <div class="grid-card-content">
+
+                        <span class="tag">Pesquisa</span>
+
+                        <h3 class="grid-card-title">Interpretabilidade Neural em Sistemas de Alta Incerteza</h3>
+
+                        <p class="grid-card-excerpt">Novos avanços na abertura de caixas-pretas de aprendizado profundo aplicados ao setor financeiro.</p>
+
+                        <div class="card-meta"><span>8 min de leitura</span></div>
+
+                    </div>
+
+                </article>
+
+            </div>
+
+        </section>
+
+    </main>
+
+    <!-- Modal de Leitura Imersivo -->
+
+    <div class="modal-overlay" id="articleModal" onclick="closeModalOnOverlay(event)">
+
+        <div class="modal-container">
+
+            <button class="modal-close" onclick="closeModal()">&times;</button>
+
+            <img class="modal-hero-banner" id="modalImage" src="" alt="Cover" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1200&q=80';">
+
+            <div class="modal-body">
+
+                <span class="tag" id="modalTag">Categoria</span>
+
+                <h2 id="modalTitle" style="font-size: 1.75rem; font-weight: 700; margin: 12px 0; line-height: 1.2;">Título da Matéria</h2>
+
+                <div class="card-meta" id="modalMeta" style="margin-bottom: 20px;">Por Autor • Data</div>
+
+                
+
+                <div class="executive-summary">
+
+                    <h4>Síntese Executiva</h4>
+
+                    <p id="modalSummary">Resumo de pontos-chave sobre a leitura técnica abordada no documento imersivo.</p>
+
                 </div>
+
+                <div class="modal-text-content" id="modalContent">
+
+                    <p>O ecossistema moderno de tecnologia demanda análises profundas desprovidas de ruídos e focadas na arquitetura e sustentabilidade a longo prazo.</p>
+
+                    <p>Ao implementar estes padrões, engenheiros e designers conseguem atingir níveis elevados de escalabilidade, mantendo a experiência do usuário consistente com os mais altos níveis do mercado global.</p>
+
+                </div>
+
             </div>
+
         </div>
-        <div class="max-w-7xl mx-auto pt-6 border-t border-white/5 text-center text-slate-600 text-[11px]">
-            © 2026 CorticFlow Media. <span x-text="t[currentLang].rights"></span>
+
+    </div>
+
+    <!-- Footer -->
+
+    <footer>
+
+        <div class="container">
+
+            <div class="footer-grid">
+
+                <div class="footer-col">
+
+                    <div class="logo">
+
+                        <span class="logo-icon"></span>
+
+                        CorticFlow
+
+                    </div>
+
+                    <p style="font-size: 0.8125rem; color: var(--text-secondary); margin-top: 8px;">
+
+                        Publicação técnica focada nas interseções de inteligência artificial, engenharia e design.
+
+                    </p>
+
+                </div>
+
+                <div class="footer-col">
+
+                    <h4>Conteúdo</h4>
+
+                    <ul>
+
+                        <li><a href="#">Artigos Técnicos</a></li>
+
+                        <li><a href="#">Análises de Sistemas</a></li>
+
+                        <li><a href="#">Entrevistas</a></li>
+
+                        <li><a href="#">Relatórios Anuais</a></li>
+
+                    </ul>
+
+                </div>
+
+                <div class="footer-col">
+
+                    <h4>Plataforma</h4>
+
+                    <ul>
+
+                        <li><a href="#">Sobre Nós</a></li>
+
+                        <li><a href="#">Carreiras</a></li>
+
+                        <li><a href="#">Newsletter</a></li>
+
+                        <li><a href="#">Contato</a></li>
+
+                    </ul>
+
+                </div>
+
+                <div class="footer-col">
+
+                    <h4>Conecte-se</h4>
+
+                    <ul>
+
+                        <li><a href="#">GitHub</a></li>
+
+                        <li><a href="#">X / Twitter</a></li>
+
+                        <li><a href="#">LinkedIn</a></li>
+
+                        <li><a href="#">RSS Feed</a></li>
+
+                    </ul>
+
+                </div>
+
+            </div>
+
+            <div class="footer-bottom">
+
+                <p>&copy; 2024 CorticFlow. Todos os direitos reservados.</p>
+
+                <div class="footer-legal">
+
+                    <a href="#">Política de Privacidade</a>
+
+                    <a href="#">Termos de Uso</a>
+
+                </div>
+
+            </div>
+
         </div>
+
     </footer>
-    <!-- Logic Layer (Alpine.js) -->
-<script>
-// Inicialização do Canvas Interativo (Sinapses Neurais)
-(function initNeuralCanvas() {
-    const canvas = document.getElementById('neural-canvas');
-    if (!canvas) return;
-    const ctx = canvas.getContext('2d');
-    let width, height, particles = [];
-    let mouse = { x: null, y: null, maxDist: 150 };
-    function resize() {
-        width = canvas.width = window.innerWidth;
-        height = canvas.height = window.innerHeight;
-    }
-    window.addEventListener('resize', resize);
-    resize();
-    window.addEventListener('mousemove', (e) => { mouse.x = e.clientX; mouse.y = e.clientY; });
-    window.addEventListener('mouseleave', () => { mouse.x = null; mouse.y = null; });
-    const particleCount = Math.min(Math.floor((window.innerWidth * window.innerHeight) / 18000), 65);
-    for (let i = 0; i < particleCount; i++) {
-        particles.push({
-            x: Math.random() * width,
-            y: Math.random() * height,
-            vx: (Math.random() - 0.5) * 0.7,
-            vy: (Math.random() - 0.5) * 0.7,
-            radius: Math.random() * 1.8 + 1,
-            color: Math.random() > 0.5 ? 'rgba(0, 229, 255, ' : 'rgba(139, 92, 246, '
-        });
-    }
-    function animate() {
-        ctx.clearRect(0, 0, width, height);
-        for (let i = 0; i < particles.length; i++) {
-            let p = particles[i];
-            p.x += p.vx;
-            p.y += p.vy;
-            if (p.x < 0 || p.x > width) p.vx *= -1;
-            if (p.y < 0 || p.y > height) p.vy *= -1;
-            if (mouse.x !== null && mouse.y !== null) {
-                let dx = mouse.x - p.x, dy = mouse.y - p.y;
-                let dist = Math.sqrt(dx * dx + dy * dy);
-                if (dist < mouse.maxDist) {
-                    p.x -= (dx / dist) * 0.6;
-                    p.y -= (dy / dist) * 0.6;
-                }
-            }
-            ctx.beginPath();
-            ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
-            ctx.fillStyle = p.color + '0.7)';
-            ctx.fill();
-            for (let j = i + 1; j < particles.length; j++) {
-                let p2 = particles[j];
-                let dx = p.x - p2.x, dy = p.y - p2.y;
-                let dist = Math.sqrt(dx * dx + dy * dy);
-                if (dist < 130) {
-                    ctx.beginPath();
-                    ctx.moveTo(p.x, p.y);
-                    ctx.lineTo(p2.x, p2.y);
-                    ctx.strokeStyle = `rgba(0, 229, 255, ${(1 - dist / 130) * 0.25})`;
-                    ctx.lineWidth = 0.8;
-                    ctx.stroke();
-                }
-            }
-        }
-        requestAnimationFrame(animate);
-    }
-    animate();
-})();
-function corticFlow() {
-    return {
-        currentLang: 'pt',
-        isLoading: true,
-        isModalOpen: false,
-        activeDoc: null,
-        articles: [],
-        benchmarks: [
-            { rank: 1, name: "Claude 3.7 Sonnet (Hybrid)", developer: "Anthropic", score: 96.8, reasoning: 98, coding: 97, efficiency: 94, url: "https://claude.ai" },
-            { rank: 2, name: "OpenAI o3-mini / o1", developer: "OpenAI", score: 95.4, reasoning: 97, coding: 96, efficiency: 91, url: "https://chatgpt.com" },
-            { rank: 3, name: "DeepSeek R1", developer: "DeepSeek", score: 94.2, reasoning: 95, coding: 94, efficiency: 99, url: "https://chat.deepseek.com" },
-            { rank: 4, name: "Gemini 2.0 Flash / Pro", developer: "Google", score: 93.6, reasoning: 92, coding: 93, efficiency: 98, url: "https://gemini.google.com" }
-        ],
-        t: {
-            pt: {
-                navBenchmark: 'Benchmark Semanal',
-                navArticles: 'Artigos &amp; Notícias',
-                navTerms: 'Termos de Uso',
-                navPrivacy: 'Privacidade',
-                navNewsletter: 'Newsletter',
-                badgeHero: 'Inteligência &amp; Benchmark em Tempo Real',
-                heroTitle1: 'O nexo da revolução',
-                heroTitle2: 'Cognitiva.',
-                heroDesc: 'Métricas de desempenho das melhores IAs da semana, análises profundas de arquitetura, semicondutores e sistemas autônomos.',
-                benchmarkBadge: 'Métricas Consolidadas',
-                benchmarkTitle: 'Benchmark da Semana: As Melhores IAs',
-                benchmarkSubtitle: 'Avaliação comparativa de raciocínio, geração de código e custo computacional.',
-                benchmarkUpdated: 'Atualização',
-                benchmarkWeekDate: 'Semana Atual',
-                topModelBadge: '🏆 #1 IA da Semana (Líder Geral)',
-                topModelDeveloper: 'Desenvolvedor',
-                accessAiBtn: 'Acessar IA Oficial',
-                useAiAction: 'Usar IA',
-                metricReasoning: 'Raciocínio Lógico &amp; Planejamento',
-                metricCoding: 'Engenharia de Software &amp; Código',
-                metricMath: 'Matemática &amp; Ciências Exatas',
-                metricEfficiency: 'Eficiência de Custo por Token',
-                articlesSectionTitle: 'Feed Editorial de Inteligência Artificial',
-                articlesSectionDesc: 'Análises aprofundadas com capas temáticas geradas por IA (Imagen 3).',
-                loadingText: 'Sincronizando fluxo neural de notícias...',
-                readMore: 'Ler Análise Completa',
-                modalSource: 'Ver Fonte Original',
-                modalClose: 'Fechar Leitura',
-                newsletterTitle: 'CorticFlow Weekly na sua Inbox',
-                newsletterDesc: 'A síntese dos fatos mais relevantes em IA e semicondutores entregue todo domingo.',
-                newsletterPlaceholder: 'seu.email@tech.com',
-                newsletterBtn: 'Inscrever-se',
-                newsletterSuccess: 'Inscrição confirmada no CorticFlow!',
-                footerDesc: 'Decodificando a evolução técnica da inteligência artificial e semicondutores. Operação editorial com curadoria automatizada via IA.',
-                footerCompliance: 'Compliance &amp; Legal',
-                footerStatus: 'Status da Esteira',
-                pipelineActive: 'Esteira Autônoma: ATIVA',
-                rights: 'Todos os direitos reservados.'
+
+    <script>
+
+        const articlesData = {
+
+            'hero': {
+
+                tag: 'Engenharia de Software',
+
+                title: 'A Nova Fronteira das Arquiteturas Orientadas a Agentes Autônomos',
+
+                meta: 'Por Helena Rostova • 8 min de leitura',
+
+                image: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=1200&q=80',
+
+                summary: 'Análise detalhada sobre a transição de microsserviços tradicionais para orquestração reativa por agentes autônomos.',
+
+                content: '<p>A arquitetura de software está passando por uma mudança de paradigma essencial. À medida que sistemas autônomos se tornam centrais para as operações das empresas, o modelo tradicional baseado estritamente em requisição-resposta dá lugar a padrões mais reativos e distribuídos.</p><p>A integração de agentes autônomos exige uma nova infraestrutura de menor latência e maior confiabilidade, redefinindo como gerenciamos estado e consistência eventual.</p>'
+
             },
-            en: {
-                navBenchmark: 'Weekly Benchmark',
-                navArticles: 'Articles &amp; News',
-                navTerms: 'Terms of Use',
-                navPrivacy: 'Privacy Policy',
-                navNewsletter: 'Newsletter',
-                badgeHero: 'Real-Time AI Intelligence &amp; Benchmarks',
-                heroTitle1: 'The Nexus of the',
-                heroTitle2: 'Cognitive Shift.',
-                heroDesc: 'Weekly performance leaderboards of frontier AI models, deep architectural breakdowns, accelerated silicon, and autonomous systems.',
-                benchmarkBadge: 'Verified Metrics',
-                benchmarkTitle: 'AI Benchmark Leaderboard of the Week',
-                benchmarkSubtitle: 'Comparative performance evaluation covering reasoning precision, coding synthesis, and token efficiency.',
-                benchmarkUpdated: 'Updated',
-                benchmarkWeekDate: 'Current Week',
-                topModelBadge: '🏆 #1 AI Model of the Week (Overall Leader)',
-                topModelDeveloper: 'Developer',
-                accessAiBtn: 'Access Official AI',
-                useAiAction: 'Try Model',
-                metricReasoning: 'Logical Reasoning &amp; Planning',
-                metricCoding: 'Software Engineering &amp; Code',
-                metricMath: 'Mathematics &amp; STEM',
-                metricEfficiency: 'Token &amp; Cost Efficiency',
-                articlesSectionTitle: 'AI Intelligence Editorial Stream',
-                articlesSectionDesc: 'In-depth analysis of frontier releases with custom AI-generated covers (Imagen 3).',
-                loadingText: 'Synchronizing neural news feed...',
-                readMore: 'Read Full Analysis',
-                modalSource: 'View Original Source',
-                modalClose: 'Close Article',
-                newsletterTitle: 'CorticFlow Weekly in Your Inbox',
-                newsletterDesc: 'The technical executive briefing on breakthrough AI architectures delivered every Sunday.',
-                newsletterPlaceholder: 'your.email@tech.com',
-                newsletterBtn: 'Subscribe',
-                newsletterSuccess: 'Subscription confirmed for CorticFlow Weekly!',
-                footerDesc: 'Decoding the technical evolution of artificial intelligence and accelerated silicon. Autonomous AI-driven editorial pipeline.',
-                footerCompliance: 'Compliance &amp; Legal',
-                footerStatus: 'Pipeline Status',
-                pipelineActive: 'Autonomous Pipeline: ACTIVE',
-                rights: 'All rights reserved.'
+
+            'trending-1': {
+
+                tag: 'Design',
+
+                title: 'O Fim dos Skeuomorfismos Invisíveis nas UIs Modernas',
+
+                meta: 'Por Marcus Vance • 5 min de leitura',
+
+                image: 'https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?auto=format&fit=crop&w=1200&q=80',
+
+                summary: 'Como interfaces minimalistas inspiradas na Linear e The Verge estão substituindo padrões ultrapassados de design.',
+
+                content: '<p>O design de interfaces limpas prioriza a clareza da informação acima de qualquer ornamentação visual redundante. Ao remover rótulos repetitivos e fundos poluídos, as interfaces modernas colocam o conteúdo do usuário no centro do palco.</p>'
+
+            },
+
+            'trending-2': {
+
+                tag: 'Hardware',
+
+                title: 'Chips Fotônicos e o Futuro do Processamento de Baixa Latência',
+
+                meta: 'Por Ana Silva • 6 min de leitura',
+
+                image: 'https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1200&q=80',
+
+                summary: 'Como a substituição de elétrons por fótons está quebrando barreiras na velocidade de inferência neural.',
+
+                content: '<p>A fotônica em silício surge como resposta ao estrangulamento físico dos chips semicondutores tradicionais. Essa tecnologia promete reduzir exponencialmente o consumo de energia enquanto eleva as taxas de transferência de dados a níveis sem precedentes.</p>'
+
+            },
+
+            'trending-3': {
+
+                tag: 'IA',
+
+                title: 'Modelos Pequenos Especializados (SLMs) Superam LLMs Genéricos',
+
+                meta: 'Por Carlos Eduardo • 4 min de leitura',
+
+                image: 'https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?auto=format&fit=crop&w=1200&q=80',
+
+                summary: 'Modelos focados e otimizados demonstram eficiência superior para tarefas corporativas específicas.',
+
+                content: '<p>Em vez de depender de gigantescos modelos com centenas de bilhões de parâmetros, empresas estão alcançando maior precisão e menor latência ajustando modelos compactos dedicados estritamente a domínios de negócio delimitados.</p>'
+
+            },
+
+            'card-1': {
+
+                tag: 'Segurança',
+
+                title: 'Criptografia Pós-Quântica em Ambientes de Nuvem',
+
+                meta: 'Por Rodrigo Lima • 7 min de leitura',
+
+                image: 'https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&w=1200&q=80',
+
+                summary: 'Migração antecipada para esquemas criptográficos resistentes a computadores quânticos.',
+
+                content: '<p>A segurança da computação em nuvem está sendo atualizada com algoritmos baseados em redes reticulares para garantir que a criptografia de dados críticos continue inviolável na próxima década.</p>'
+
+            },
+
+            'card-2': {
+
+                tag: 'Desenvolvimento',
+
+                title: 'Compiladores Baseados em Aprendizado Profundo',
+
+                meta: 'Por Lucas Prado • 5 min de leitura',
+
+                image: 'https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?auto=format&fit=crop&w=1200&q=80',
+
+                summary: 'Automatização completa de otimizações de baixo nível em código-fonte moderno.',
+
+                content: '<p>Utilizando aprendizado por reforço, novos compiladores conseguem reorganizar rotinas e otimizar a alocação de registradores em tempo real para ganhos expressivos de performance sem intervenção humana.</p>'
+
+            },
+
+            'card-3': {
+
+                tag: 'UX / UI',
+
+                title: 'A Evolução dos Design Tokens na Era Micro-Frontends',
+
+                meta: 'Por Sofia Costa • 6 min de leitura',
+
+                image: 'https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?auto=format&fit=crop&w=1200&q=80',
+
+                summary: 'Padronização visual e sincronia contínua em grande escala arquitetural.',
+
+                content: '<p>Sistemas corporativos exigem uma arquitetura de tokens robusta e agnóstica de framework para que diferentes equipes desenvolvam partes independentes de um produto mantendo coesão visual impecável.</p>'
+
+            },
+
+            'card-4': {
+
+                tag: 'Infraestrutura',
+
+                title: 'Infraestrutura Sustentável e Computação Verde',
+
+                meta: 'Por Gabriel Torres • 9 min de leitura',
+
+                image: 'https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&w=1200&q=80',
+
+                summary: 'Redução estratégica do consumo energético em data centers modernos.',
+
+                content: '<p>Com métricas rigorosas de eficiência energética, grandes operadoras digitais estão implementando modelos de carga de trabalho dinâmicos que aproveitam horários com pico de geração de energia renovável.</p>'
+
+            },
+
+            'card-5': {
+
+                tag: 'Gestão',
+
+                title: 'Métricas de Produtividade em Times Assíncronos',
+
+                meta: 'Por Camila Rocha • 4 min de leitura',
+
+                image: 'https://images.unsplash.com/photo-1531403009284-440f080d1e12?auto=format&fit=crop&w=1200&q=80',
+
+                summary: 'Foco total na qualidade dos artefatos produzidos em vez de horas presenciais.',
+
+                content: '<p>Equipes globais altamente eficazes eliminam reuniões redundantes e utilizam documentação técnica rigorosa e autossuficiente como o indicador primário do progresso dos projetos.</p>'
+
+            },
+
+            'card-6': {
+
+                tag: 'Pesquisa',
+
+                title: 'Interpretabilidade Neural em Sistemas de Alta Incerteza',
+
+                meta: 'Por Mateus Mendes • 8 min de leitura',
+
+                image: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=1200&q=80',
+
+                summary: 'Desvendando o raciocínio interno de redes profundas aplicadas a decisões críticas.',
+
+                content: '<p>Técnicas avançadas de auditoria de pesos internos e mapas de ativação estão trazendo transparência necessária para a adoção de modelos neurais complexos em cenários regulados.</p>'
+
             }
-        },
-        setLanguage(lang) {
-            this.currentLang = lang;
-            document.documentElement.lang = lang === 'pt' ? 'pt-BR' : 'en';
-        },
-        getArticleTitle(item) {
-            if (!item) return '';
-            return this.currentLang === 'pt' ? (item.title_pt || item.title) : (item.title_en || item.title);
-        },
-        getArticleExcerpt(item) {
-            if (!item) return '';
-            return this.currentLang === 'pt' ? (item.excerpt_pt || item.excerpt) : (item.excerpt_en || item.excerpt);
-        },
-        getArticleContent(item) {
-            if (!item) return '';
-            return this.currentLang === 'pt' ? (item.content_pt || item.fullContent) : (item.content_en || item.fullContent);
-        },
-        async init() {
-            this.isLoading = true;
-            try {
-                const response = await fetch('posts.json');
-                if (response.ok) {
-                    const data = await response.json();
-                    this.articles = data.map((item, idx) => ({
-                        id: item.id || (idx + 1),
-                        source: item.source || 'AI News',
-                        image: item.image || 'covers/default-ai.jpg',
-                        title_pt: item.title_pt || item.title,
-                        title_en: item.title_en || item.title,
-                        excerpt_pt: item.excerpt_pt || '',
-                        excerpt_en: item.excerpt_en || '',
-                        content_pt: item.content_pt || '',
-                        content_en: item.content_en || '',
-                        link: item.link || '#''
-                    }));
-                } else {
-                    throw new Error('posts.json não encontrado');
-                }
-            } catch (e) {
-                this.articles = [
-                    {
-                        id: 1,
-                        source: "X | @OpenAI",
-                        image: "covers/openai-persistent-mode.jpg",
-                        title_pt: "OpenAI Implementa Modo Persistente para Agentes Always-On",
-                        title_en: "OpenAI Deploys Persistent Mode for Always-On Autonomous Agents",
-                        excerpt_pt: "A transição de modelos acionados por prompt para instâncias de execução contínua reconfigura a engenharia de software.",
-                        excerpt_en: "The architectural shift from single-turn prompts to continuous execution loops transforms software workflows.",
-                        content_pt: "O modo persistente marca a transição dos agentes de IA de utilitários de ciclo único para serviços autônomos que operam de forma contínua em servidores de produção.",
-                        content_en: "Persistent Mode represents the evolution of AI agents from single-shot prompts into continuously running background services.",
-                        link: "https://openai.com/news"
-                    },
-                    {
-                        id: 2,
-                        source: "X | @NVIDIAAI",
-                        image: "covers/nvidia-hbm4-blackwell.jpg",
-                        title_pt: "Nvidia Acelera Transição para Memória HBM4 em Clusters Blackwell",
-                        title_en: "Nvidia Accelerates Transition to HBM4 Memory in Blackwell Clusters",
-                        excerpt_pt: "A adoção de memórias HBM4 visa mitigar a 'Memory Wall', permitindo largura de banda superior a 8 TB/s.",
-                        excerpt_en: "HBM4 adoption overcomes the Memory Wall bottleneck, delivering extreme throughput above 8 TB/s per accelerator.",
-                        content_pt: "A nova arquitetura de memória resolve os gargalos de transferência que limitavam modelos de raciocínio de longa duração.",
-                        content_en: "Next-gen memory architecture addresses critical bandwidth limitations for massive multimodal reasoning workloads.",
-                        link: "https://nvidianews.nvidia.com"
-                    }
-                ];
-            } finally {
-                this.isLoading = false;
-            }
-        },
-        openModal(doc) {
-            this.activeDoc = doc;
-            this.isModalOpen = true;
+
+        };
+
+        function openModal(id) {
+
+            const data = articlesData[id];
+
+            if (!data) return;
+
+            document.getElementById('modalImage').src = data.image;
+
+            document.getElementById('modalTag').innerText = data.tag;
+
+            document.getElementById('modalTitle').innerText = data.title;
+
+            document.getElementById('modalMeta').innerText = data.meta;
+
+            document.getElementById('modalSummary').innerText = data.summary;
+
+            document.getElementById('modalContent').innerHTML = data.content;
+
+            const modal = document.getElementById('articleModal');
+
+            modal.classList.add('active');
+
             document.body.style.overflow = 'hidden';
-        },
-        closeModal() {
-            this.isModalOpen = false;
-            document.body.style.overflow = 'auto';
+
         }
-    }
-}
-</script>
+
+        function closeModal() {
+
+            const modal = document.getElementById('articleModal');
+
+            modal.classList.remove('active');
+
+            document.body.style.overflow = '';
+
+        }
+
+        function closeModalOnOverlay(event) {
+
+            if (event.target === document.getElementById('articleModal')) {
+
+                closeModal();
+
+            }
+
+        }
+
+    </script>
+
 </body>
+
 </html>
 
