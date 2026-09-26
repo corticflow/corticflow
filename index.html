@@ -1,1680 +1,964 @@
 <!DOCTYPE html>
-
 <html lang="pt-BR">
-
 <head>
-
     <meta charset="UTF-8">
-
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>CorticFlow - Tech, Design & Digital Culture</title>
-
+    <title>CorticFlow — The Stream of AI & Tech Intelligence</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🧠</text></svg>">
     <link rel="preconnect" href="https://fonts.googleapis.com">
-
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
     <style>
-
         :root {
-
-            --bg-primary: #0a0a0c;
-
-            --bg-secondary: #121215;
-
-            --bg-card: #18181c;
-
-            --bg-card-hover: #222226;
-
+            --bg-primary: #080B11;
+            --bg-secondary: #0F1420;
+            --bg-card: #131A29;
+            --bg-card-hover: #1A2337;
             --border-color: rgba(255, 255, 255, 0.08);
-
-            --border-color-hover: rgba(255, 255, 255, 0.2);
-
-            --text-primary: #f4f4f6;
-
-            --text-secondary: #a1a1aa;
-
-            --text-muted: #71717a;
-
-            --accent-purple: #5e6ad2;
-
-            --accent-purple-glow: rgba(94, 106, 210, 0.15);
-
-            --accent-pink: #f43f5e;
-
-            --font-main: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-
-            --max-width: 1280px;
-
+            --border-hover: rgba(0, 229, 255, 0.35);
+            --text-primary: #F8FAFC;
+            --text-secondary: #94A3B8;
+            --text-muted: #64748B;
+            --cyan: #00E5FF;
+            --cyan-glow: rgba(0, 229, 255, 0.15);
+            --purple: #8B5CF6;
+            --purple-glow: rgba(139, 92, 246, 0.15);
             --radius-sm: 6px;
-
-            --radius-md: 10px;
-
-            --radius-lg: 16px;
-
-            --transition-fast: 0.15s ease;
-
-            --transition-normal: 0.25s ease;
-
+            --radius-md: 12px;
+            --radius-lg: 20px;
+            --transition: 0.2s cubic-bezier(0.16, 1, 0.3, 1);
         }
-
-        * {
-
-            box-sizing: border-box;
-
-            margin: 0;
-
-            padding: 0;
-
-        }
-
+        * { box-sizing: border-box; margin: 0; padding: 0; }
         body {
-
             background-color: var(--bg-primary);
-
             color: var(--text-primary);
-
-            font-family: var(--font-main);
-
-            line-height: 1.5;
-
-            -webkit-font-smoothing: antialiased;
-
-            -moz-osx-font-smoothing: grayscale;
-
+            font-family: 'Inter', -apple-system, sans-serif;
+            line-height: 1.6;
             overflow-x: hidden;
-
         }
+        a { color: inherit; text-decoration: none; }
+        .container { max-width: 1280px; margin: 0 auto; padding: 0 24px; }
 
-        a {
-
-            color: inherit;
-
-            text-decoration: none;
-
-        }
-
-        img {
-
-            max-width: 100%;
-
-            height: auto;
-
-            display: block;
-
-        }
-
-        /* Container Standard */
-
-        .container {
-
-            max-width: var(--max-width);
-
-            margin: 0 auto;
-
-            padding: 0 24px;
-
+        /* Canvas de Fundo */
+        #neural-canvas {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100vw; height: 100vh;
+            pointer-events: none;
+            z-index: 0;
+            opacity: 0.3;
         }
 
         /* Header */
-
         header {
-
+            position: sticky; top: 0;
+            background: rgba(8, 11, 17, 0.85);
+            backdrop-filter: blur(16px);
             border-bottom: 1px solid var(--border-color);
-
-            background: rgba(10, 10, 12, 0.8);
-
-            backdrop-filter: blur(12px);
-
-            position: sticky;
-
-            top: 0;
-
             z-index: 100;
-
         }
-
-        .header-content {
-
-            display: flex;
-
-            align-items: center;
-
-            justify-content: space-between;
-
-            height: 64px;
-
+        .header-inner {
+            display: flex; align-items: center; justify-content: space-between;
+            height: 72px;
         }
-
         .logo {
-
-            font-weight: 700;
-
-            font-size: 1.25rem;
-
-            letter-spacing: -0.03em;
-
-            display: flex;
-
-            align-items: center;
-
-            gap: 8px;
-
+            display: flex; align-items: center; gap: 10px;
+            font-weight: 800; font-size: 1.35rem; letter-spacing: -0.02em;
         }
-
         .logo-icon {
-
-            width: 12px;
-
-            height: 12px;
-
-            background: var(--accent-purple);
-
-            border-radius: 2px;
-
-            box-shadow: 0 0 10px var(--accent-purple);
-
+            width: 32px; height: 32px;
+            background: linear-gradient(135deg, var(--cyan), var(--purple));
+            border-radius: 8px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 16px; box-shadow: 0 0 15px rgba(0, 229, 255, 0.3);
         }
-
-        nav ul {
-
-            display: flex;
-
-            gap: 24px;
-
-            list-style: none;
-
-        }
-
+        .logo span { color: var(--cyan); }
+        nav { display: flex; align-items: center; gap: 24px; }
         nav a {
-
-            font-size: 0.875rem;
-
-            color: var(--text-secondary);
-
-            font-weight: 500;
-
-            transition: color var(--transition-fast);
-
+            font-size: 0.875rem; font-weight: 500; color: var(--text-secondary);
+            transition: var(--transition);
         }
-
-        nav a:hover {
-
-            color: var(--text-primary);
-
+        nav a:hover { color: var(--cyan); }
+        .btn-header {
+            background: linear-gradient(135deg, var(--cyan), var(--purple));
+            color: #000; font-size: 0.8125rem; font-weight: 700;
+            padding: 9px 18px; border-radius: 9999px;
+            cursor: pointer; border: none; transition: var(--transition);
         }
+        .btn-header:hover { opacity: 0.9; transform: translateY(-1px); }
 
-        .header-actions {
-
-            display: flex;
-
-            align-items: center;
-
-            gap: 16px;
-
+        /* Hero Section */
+        .hero { position: relative; z-index: 10; padding: 40px 0 24px; }
+        .ticker-pill {
+            display: inline-flex; align-items: center; gap: 8px;
+            padding: 6px 14px; border-radius: 9999px;
+            background: rgba(0, 229, 255, 0.08); border: 1px solid rgba(0, 229, 255, 0.25);
+            font-family: 'JetBrains Mono', monospace; font-size: 0.75rem;
+            color: var(--cyan); margin-bottom: 24px;
         }
-
-        .btn-subscribe {
-
-            background-color: var(--text-primary);
-
-            color: var(--bg-primary);
-
-            font-size: 0.8125rem;
-
-            font-weight: 600;
-
-            padding: 8px 14px;
-
-            border-radius: var(--radius-sm);
-
-            transition: opacity var(--transition-fast);
-
+        .ticker-dot {
+            width: 7px; height: 7px; border-radius: 50%;
+            background: var(--cyan); box-shadow: 0 0 8px var(--cyan);
+            animation: pulse 2s infinite;
         }
-
-        .btn-subscribe:hover {
-
-            opacity: 0.9;
-
-        }
-
-        /* Hero Section (Lead Story + Trending) */
-
-        .hero-section {
-
-            padding: 32px 0;
-
-            border-bottom: 1px solid var(--border-color);
-
-        }
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
 
         .hero-grid {
-
-            display: grid;
-
-            grid-template-columns: 1fr;
-
-            gap: 32px;
-
+            display: grid; grid-template-columns: 1fr; gap: 28px;
         }
-
-        @media (min-width: 992px) {
-
-            .hero-grid {
-
-                grid-template-columns: 2.2fr 1fr;
-
-            }
-
+        @media(min-width: 992px) {
+            .hero-grid { grid-template-columns: 1.8fr 1fr; }
         }
 
         /* Lead Story Card */
-
         .lead-card {
-
             background: var(--bg-card);
-
             border: 1px solid var(--border-color);
-
             border-radius: var(--radius-lg);
-
-            overflow: hidden;
-
-            display: flex;
-
-            flex-direction: column;
-
-            transition: border-color var(--transition-normal);
-
-            cursor: pointer;
-
+            overflow: hidden; cursor: pointer;
+            transition: var(--transition);
+            display: flex; flex-direction: column;
         }
-
         .lead-card:hover {
-
-            border-color: var(--border-color-hover);
-
+            border-color: var(--border-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 12px 30px rgba(0, 229, 255, 0.1);
         }
-
         .aspect-16-9 {
-
-            width: 100%;
-
-            aspect-ratio: 16 / 9;
-
-            overflow: hidden;
-
-            background-color: var(--bg-secondary);
-
-            position: relative;
-
+            width: 100%; aspect-ratio: 16/9; overflow: hidden;
+            background: #000; position: relative;
         }
-
         .aspect-16-9 img {
-
-            width: 100%;
-
-            height: 100%;
-
-            object-fit: cover;
-
-            transition: transform var(--transition-normal);
-
+            width: 100%; height: 100%; object-fit: cover;
+            transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
         }
-
         .lead-card:hover .aspect-16-9 img,
-
         .grid-card:hover .aspect-16-9 img {
-
-            transform: scale(1.02);
-
+            transform: scale(1.04);
         }
-
-        .lead-content {
-
-            padding: 24px;
-
-            display: flex;
-
-            flex-direction: column;
-
-            gap: 12px;
-
-            flex-grow: 1;
-
+        .lead-body { padding: 28px; display: flex; flex-direction: column; gap: 12px; flex-grow: 1; }
+        .tag-badge {
+            align-self: flex-start;
+            padding: 4px 10px; border-radius: 6px;
+            font-size: 0.75rem; font-weight: 700;
+            font-family: 'JetBrains Mono', monospace;
+            text-transform: uppercase; letter-spacing: 0.04em;
         }
-
-        .tag {
-
-            font-size: 0.75rem;
-
-            font-weight: 600;
-
-            text-transform: uppercase;
-
-            letter-spacing: 0.05em;
-
-            color: var(--accent-purple);
-
-            width: fit-content;
-
-        }
+        .badge-cyan { background: rgba(0, 229, 255, 0.12); color: var(--cyan); border: 1px solid rgba(0, 229, 255, 0.3); }
+        .badge-purple { background: rgba(139, 92, 246, 0.12); color: var(--purple); border: 1px solid rgba(139, 92, 246, 0.3); }
+        .badge-emerald { background: rgba(16, 185, 129, 0.12); color: #10B981; border: 1px solid rgba(16, 185, 129, 0.3); }
+        .badge-blue { background: rgba(59, 130, 246, 0.12); color: #3B82F6; border: 1px solid rgba(59, 130, 246, 0.3); }
 
         .lead-title {
-
-            font-size: 1.75rem;
-
-            font-weight: 700;
-
-            line-height: 1.2;
-
-            letter-spacing: -0.02em;
-
+            font-size: 1.85rem; font-weight: 800; line-height: 1.25;
+            letter-spacing: -0.02em; color: #FFF;
         }
-
         .lead-excerpt {
-
-            color: var(--text-secondary);
-
-            font-size: 0.95rem;
-
-            line-height: 1.5;
-
+            color: var(--text-secondary); font-size: 1rem; line-height: 1.6;
         }
-
         .card-meta {
-
-            margin-top: auto;
-
-            padding-top: 12px;
-
-            font-size: 0.8125rem;
-
-            color: var(--text-muted);
-
-            display: flex;
-
-            align-items: center;
-
-            gap: 8px;
-
+            display: flex; align-items: center; justify-content: space-between;
+            font-size: 0.8125rem; font-family: 'JetBrains Mono', monospace;
+            color: var(--text-muted); margin-top: auto; padding-top: 14px;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
         }
 
         /* Trending Column */
-
-        .trending-col {
-
-            display: flex;
-
-            flex-direction: column;
-
-            gap: 16px;
-
-        }
-
-        .section-title {
-
-            font-size: 0.875rem;
-
-            font-weight: 700;
-
-            text-transform: uppercase;
-
-            letter-spacing: 0.08em;
-
-            color: var(--text-muted);
-
-            margin-bottom: 8px;
-
-            display: flex;
-
-            align-items: center;
-
-            gap: 8px;
-
-        }
-
-        .section-title::before {
-
-            content: '';
-
-            display: inline-block;
-
-            width: 6px;
-
-            height: 6px;
-
-            background-color: var(--accent-pink);
-
-            border-radius: 50%;
-
-        }
-
-        .trending-list {
-
-            display: flex;
-
-            flex-direction: column;
-
-            gap: 12px;
-
-            height: 100%;
-
-            justify-content: space-between;
-
-        }
-
-        .trending-item {
-
+        .trending-box {
             background: var(--bg-card);
-
             border: 1px solid var(--border-color);
-
-            border-radius: var(--radius-md);
-
-            padding: 16px;
-
-            display: flex;
-
+            border-radius: var(--radius-lg);
+            padding: 24px; display: flex; flex-direction: column;
             gap: 16px;
-
-            cursor: pointer;
-
-            transition: border-color var(--transition-fast), background-color var(--transition-fast);
-
         }
-
+        .section-header {
+            display: flex; align-items: center; justify-content: space-between;
+            border-bottom: 1px solid var(--border-color); padding-bottom: 14px;
+        }
+        .section-header h3 {
+            font-size: 0.85rem; font-weight: 800; font-family: 'JetBrains Mono', monospace;
+            text-transform: uppercase; letter-spacing: 0.06em; color: var(--cyan);
+            display: flex; align-items: center; gap: 8px;
+        }
+        .trending-item {
+            display: flex; gap: 16px; padding: 14px; border-radius: var(--radius-md);
+            background: rgba(255, 255, 255, 0.02); border: 1px solid transparent;
+            cursor: pointer; transition: var(--transition);
+        }
         .trending-item:hover {
-
-            border-color: var(--border-color-hover);
-
-            background-color: var(--bg-card-hover);
-
+            background: var(--bg-card-hover);
+            border-color: var(--border-hover);
+        }
+        .trending-idx {
+            font-family: 'JetBrains Mono', monospace; font-size: 1.25rem;
+            font-weight: 800; color: var(--cyan); line-height: 1;
+        }
+        .trending-content h4 {
+            font-size: 0.9375rem; font-weight: 600; line-height: 1.35;
+            color: #FFF; margin-bottom: 6px;
+        }
+        .trending-content p {
+            font-size: 0.8125rem; color: var(--text-muted); font-family: 'JetBrains Mono', monospace;
         }
 
-        .trending-number {
-
-            font-size: 1.25rem;
-
-            font-weight: 700;
-
-            color: var(--text-muted);
-
-            line-height: 1;
-
+        /* Filter Chips */
+        .radar-bar {
+            display: flex; flex-wrap: wrap; gap: 10px; align-items: center;
+            padding: 24px 0 12px; position: relative; z-index: 10;
+        }
+        .radar-label {
+            font-size: 0.8125rem; font-weight: 700; color: var(--text-muted);
+            font-family: 'JetBrains Mono', monospace; text-transform: uppercase;
+            margin-right: 6px;
+        }
+        .filter-btn {
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid var(--border-color);
+            color: var(--text-secondary);
+            font-family: 'JetBrains Mono', monospace; font-size: 0.8125rem;
+            padding: 7px 14px; border-radius: 9999px;
+            cursor: pointer; transition: var(--transition);
+        }
+        .filter-btn:hover, .filter-btn.active {
+            background: var(--cyan-glow);
+            border-color: var(--cyan);
+            color: #FFF;
         }
 
-        .trending-info {
-
-            display: flex;
-
-            flex-direction: column;
-
-            gap: 6px;
-
+        /* Articles Grid */
+        .articles-section { position: relative; z-index: 10; padding: 32px 0 64px; }
+        .grid-3 {
+            display: grid; grid-template-columns: 1fr; gap: 28px;
         }
-
-        .trending-title {
-
-            font-size: 0.9375rem;
-
-            font-weight: 600;
-
-            line-height: 1.35;
-
-        }
-
-        /* Feed Grid Section */
-
-        .feed-section {
-
-            padding: 48px 0;
-
-        }
-
-        .feed-grid {
-
-            display: grid;
-
-            grid-template-columns: 1fr;
-
-            gap: 24px;
-
-            margin-top: 24px;
-
-        }
-
-        @media (min-width: 640px) {
-
-            .feed-grid {
-
-                grid-template-columns: repeat(2, 1fr);
-
-            }
-
-        }
-
-        @media (min-width: 1024px) {
-
-            .feed-grid {
-
-                grid-template-columns: repeat(3, 1fr);
-
-            }
-
-        }
-
-        /* Uniform Card Grid Elements */
+        @media(min-width: 640px) { .grid-3 { grid-template-columns: repeat(2, 1fr); } }
+        @media(min-width: 1024px) { .grid-3 { grid-template-columns: repeat(3, 1fr); } }
 
         .grid-card {
-
             background: var(--bg-card);
-
             border: 1px solid var(--border-color);
-
             border-radius: var(--radius-md);
-
-            overflow: hidden;
-
-            display: flex;
-
-            flex-direction: column;
-
+            overflow: hidden; cursor: pointer;
+            transition: var(--transition);
+            display: flex; flex-direction: column;
             height: 100%;
-
-            cursor: pointer;
-
-            transition: border-color var(--transition-normal);
-
         }
-
         .grid-card:hover {
-
-            border-color: var(--border-color-hover);
-
+            border-color: var(--border-hover);
+            transform: translateY(-3px);
+            box-shadow: 0 14px 28px rgba(0, 0, 0, 0.4);
+        }
+        .card-inner {
+            padding: 20px; display: flex; flex-direction: column;
+            gap: 10px; flex-grow: 1;
+        }
+        .card-title {
+            font-size: 1.125rem; font-weight: 700; line-height: 1.35;
+            color: #FFF; display: -webkit-box; -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical; overflow: hidden; min-height: 3rem;
+        }
+        .card-excerpt {
+            font-size: 0.875rem; color: var(--text-secondary); line-height: 1.5;
+            display: -webkit-box; -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical; overflow: hidden; min-height: 3.9rem;
         }
 
-        .grid-card-content {
-
-            padding: 16px;
-
-            display: flex;
-
-            flex-direction: flex-col;
-
-            flex-direction: column;
-
-            flex-grow: 1;
-
-            gap: 8px;
-
+        /* Modal Imersivo Long-Form */
+        .modal-backdrop {
+            position: fixed; inset: 0;
+            background: rgba(0, 0, 0, 0.88);
+            backdrop-filter: blur(20px);
+            z-index: 999; display: flex;
+            align-items: center; justify-content: center;
+            padding: 24px; opacity: 0; pointer-events: none;
+            transition: opacity 0.3s ease;
         }
-
-        .grid-card-title {
-
-            font-size: 1.0625rem;
-
-            font-weight: 600;
-
-            line-height: 1.35;
-
-            letter-spacing: -0.01em;
-
-        }
-
-        .grid-card-excerpt {
-
-            font-size: 0.875rem;
-
-            color: var(--text-secondary);
-
-            line-height: 1.4;
-
-            display: -webkit-box;
-
-            -webkit-line-clamp: 2;
-
-            -webkit-box-orient: vertical;
-
-            overflow: hidden;
-
-            margin-bottom: auto;
-
-        }
-
-        /* Modal Imersivo */
-
-        .modal-overlay {
-
-            position: fixed;
-
-            top: 0;
-
-            left: 0;
-
-            width: 100%;
-
-            height: 100%;
-
-            background: rgba(5, 5, 7, 0.85);
-
-            backdrop-filter: blur(16px);
-
-            z-index: 1000;
-
-            display: flex;
-
-            justify-content: center;
-
-            align-items: flex-start;
-
-            overflow-y: auto;
-
-            opacity: 0;
-
-            visibility: hidden;
-
-            transition: opacity var(--transition-normal), visibility var(--transition-normal);
-
-            padding: 40px 16px;
-
-        }
-
-        .modal-overlay.active {
-
-            opacity: 1;
-
-            visibility: visible;
-
-        }
-
-        .modal-container {
-
+        .modal-backdrop.open { opacity: 1; pointer-events: auto; }
+        .modal-window {
             background: var(--bg-secondary);
-
             border: 1px solid var(--border-color);
-
             border-radius: var(--radius-lg);
-
-            max-width: 800px;
-
-            width: 100%;
-
-            margin: auto;
-
-            overflow: hidden;
-
-            position: relative;
-
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
-
-            transform: translateY(20px);
-
-            transition: transform var(--transition-normal);
-
+            max-width: 860px; width: 100%; max-height: 90vh;
+            overflow-y: auto; position: relative;
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.8);
+            transform: translateY(20px); transition: transform 0.3s ease;
         }
-
-        .modal-overlay.active .modal-container {
-
-            transform: translateY(0);
-
-        }
-
+        .modal-backdrop.open .modal-window { transform: translateY(0); }
         .modal-close {
-
-            position: absolute;
-
-            top: 16px;
-
-            right: 16px;
-
-            width: 36px;
-
-            height: 36px;
-
-            background: rgba(0, 0, 0, 0.6);
-
-            border: 1px solid var(--border-color);
-
-            border-radius: 50%;
-
-            color: var(--text-primary);
-
-            font-size: 1.25rem;
-
-            display: flex;
-
-            align-items: center;
-
-            justify-content: center;
-
-            cursor: pointer;
-
-            z-index: 10;
-
-            transition: background-color var(--transition-fast);
-
+            position: absolute; top: 18px; right: 18px;
+            width: 38px; height: 38px; border-radius: 50%;
+            background: rgba(0, 0, 0, 0.7); border: 1px solid var(--border-color);
+            color: #FFF; font-size: 18px; display: flex; align-items: center; justify-content: center;
+            cursor: pointer; z-index: 20; transition: var(--transition);
         }
-
-        .modal-close:hover {
-
-            background: rgba(255, 255, 255, 0.1);
-
+        .modal-close:hover { background: rgba(255, 255, 255, 0.15); }
+        .modal-banner {
+            width: 100%; aspect-ratio: 21/9; object-fit: cover;
+            border-bottom: 1px solid var(--border-color);
         }
-
-        .modal-hero-banner {
-
-            width: 100%;
-
-            aspect-ratio: 21 / 9;
-
-            object-fit: cover;
-
-            background-color: var(--bg-card);
-
+        .modal-content-area { padding: 36px; }
+        .modal-heading {
+            font-size: 2.1rem; font-weight: 800; line-height: 1.25;
+            color: #FFF; margin: 12px 0 16px;
         }
-
-        .modal-body {
-
-            padding: 32px;
-
-        }
-
-        .executive-summary {
-
-            background: var(--accent-purple-glow);
-
-            border-left: 3px solid var(--accent-purple);
-
-            padding: 16px 20px;
-
+        .exec-summary-box {
+            background: rgba(0, 229, 255, 0.05);
+            border-left: 4px solid var(--cyan);
             border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
-
-            margin: 20px 0;
-
+            padding: 18px 22px; margin: 24px 0 32px;
         }
-
-        .executive-summary h4 {
-
-            font-size: 0.75rem;
-
-            text-transform: uppercase;
-
-            letter-spacing: 0.05em;
-
-            color: var(--accent-purple);
-
-            margin-bottom: 4px;
-
+        .exec-summary-box h4 {
+            font-size: 0.8rem; font-family: 'JetBrains Mono', monospace;
+            text-transform: uppercase; letter-spacing: 0.06em;
+            color: var(--cyan); margin-bottom: 6px;
         }
-
-        .executive-summary p {
-
-            font-size: 0.9375rem;
-
-            color: var(--text-primary);
-
-            font-weight: 500;
-
+        .exec-summary-box p {
+            color: #E2E8F0; font-size: 0.98rem; line-height: 1.6; font-weight: 500;
         }
-
-        .modal-text-content {
-
-            font-size: 1rem;
-
-            color: var(--text-secondary);
-
-            line-height: 1.7;
-
-            display: flex;
-
-            flex-direction: column;
-
-            gap: 16px;
-
+        .long-form-text {
+            color: #CBD5E1; font-size: 1.05rem; line-height: 1.8;
+            display: flex; flex-direction: column; gap: 20px;
         }
+        .long-form-text h3 {
+            font-size: 1.35rem; color: #FFF; font-weight: 700; margin-top: 18px;
+        }
+        .long-form-text p { margin-bottom: 8px; }
+        .long-form-text ul { padding-left: 24px; display: flex; flex-direction: column; gap: 10px; }
+        .long-form-text li { list-style-type: square; color: #94A3B8; }
+        .long-form-text li strong { color: #FFF; }
+        .data-table-wrapper {
+            overflow-x: auto; margin: 20px 0; border: 1px solid var(--border-color);
+            border-radius: var(--radius-md); background: rgba(0, 0, 0, 0.3);
+        }
+        table { width: 100%; border-collapse: collapse; font-size: 0.875rem; }
+        th {
+            background: rgba(255, 255, 255, 0.05); color: var(--cyan);
+            padding: 12px 16px; text-align: left; font-family: 'JetBrains Mono', monospace;
+        }
+        td { padding: 12px 16px; border-top: 1px solid rgba(255, 255, 255, 0.05); color: #E2E8F0; }
+        .sources-footer {
+            margin-top: 36px; padding-top: 20px; border-top: 1px solid var(--border-color);
+            display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 14px;
+        }
+        .source-link-btn {
+            display: inline-flex; align-items: center; gap: 6px;
+            padding: 8px 16px; border-radius: 8px;
+            background: rgba(0, 229, 255, 0.1); border: 1px solid rgba(0, 229, 255, 0.3);
+            color: var(--cyan); font-size: 0.8125rem; font-family: 'JetBrains Mono', monospace;
+            font-weight: 600; transition: var(--transition);
+        }
+        .source-link-btn:hover { background: var(--cyan); color: #000; }
 
         /* Footer */
-
         footer {
-
             border-top: 1px solid var(--border-color);
-
-            background-color: var(--bg-secondary);
-
-            padding: 48px 0 32px 0;
-
-            margin-top: 64px;
-
+            background: #05070B; padding: 60px 0 32px;
+            position: relative; z-index: 10;
         }
-
         .footer-grid {
-
-            display: grid;
-
-            grid-template-columns: repeat(1, 1fr);
-
-            gap: 32px;
-
-            margin-bottom: 48px;
-
+            display: grid; grid-template-columns: 1fr; gap: 40px; margin-bottom: 48px;
         }
-
-        @media (min-width: 640px) {
-
-            .footer-grid {
-
-                grid-template-columns: repeat(2, 1fr);
-
-            }
-
-        }
-
-        @media (min-width: 1024px) {
-
-            .footer-grid {
-
-                grid-template-columns: 1.5fr repeat(3, 1fr);
-
-            }
-
-        }
-
-        .footer-col {
-
-            display: flex;
-
-            flex-direction: column;
-
-            gap: 12px;
-
-        }
+        @media(min-width: 640px) { .footer-grid { grid-template-columns: repeat(2, 1fr); } }
+        @media(min-width: 1024px) { .footer-grid { grid-template-columns: 1.5fr repeat(3, 1fr); } }
 
         .footer-col h4 {
-
-            font-size: 0.875rem;
-
-            font-weight: 600;
-
-            color: var(--text-primary);
-
+            font-size: 0.875rem; font-family: 'JetBrains Mono', monospace;
+            text-transform: uppercase; letter-spacing: 0.06em;
+            color: #FFF; margin-bottom: 16px;
         }
-
-        .footer-col ul {
-
-            list-style: none;
-
-            display: flex;
-
-            flex-direction: column;
-
-            gap: 8px;
-
-        }
-
+        .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 10px; }
         .footer-col a {
-
-            font-size: 0.8125rem;
-
-            color: var(--text-secondary);
-
-            transition: color var(--transition-fast);
-
+            font-size: 0.875rem; color: var(--text-secondary); transition: var(--transition);
+            cursor: pointer;
         }
-
-        .footer-col a:hover {
-
-            color: var(--text-primary);
-
-        }
-
+        .footer-col a:hover { color: var(--cyan); }
         .footer-bottom {
-
-            border-top: 1px solid var(--border-color);
-
-            padding-top: 24px;
-
-            display: flex;
-
-            flex-direction: column;
-
-            gap: 16px;
-
-            align-items: center;
-
-            justify-content: space-between;
-
-            font-size: 0.8125rem;
-
-            color: var(--text-muted);
-
+            padding-top: 24px; border-top: 1px solid rgba(255, 255, 255, 0.05);
+            display: flex; flex-direction: column; align-items: center; justify-content: space-between;
+            gap: 16px; font-size: 0.8125rem; color: var(--text-muted);
         }
-
-        @media (min-width: 640px) {
-
-            .footer-bottom {
-
-                flex-direction: row;
-
-            }
-
-        }
-
-        .footer-legal {
-
-            display: flex;
-
-            gap: 16px;
-
-        }
-
-        .footer-legal a {
-
-            color: var(--text-muted);
-
-        }
-
-        .footer-legal a:hover {
-
-            color: var(--text-secondary);
-
-        }
-
+        @media(min-width: 640px) { .footer-bottom { flex-direction: row; } }
     </style>
-
 </head>
-
 <body>
+    <canvas id="neural-canvas"></canvas>
 
     <!-- Header -->
-
     <header>
-
-        <div class="container header-content">
-
-            <a href="#" class="logo">
-
-                <span class="logo-icon"></span>
-
-                CorticFlow
-
+        <div class="container header-inner">
+            <a href="#" onclick="filterCategory('all'); return false;" class="logo">
+                <div class="logo-icon">🧠</div>
+                Cortic<span>Flow</span>
             </a>
-
-            <nav>
-
-                <ul>
-
-                    <li><a href="#">Inteligência Artificial</a></li>
-
-                    <li><a href="#">Design Systems</a></li>
-
-                    <li><a href="#">Engenharia</a></li>
-
-                    <li><a href="#">Cultura Digital</a></li>
-
-                </ul>
-
+            <nav class="hidden-mobile">
+                <a href="#artigos" onclick="filterCategory('all')">Feed Editorial</a>
+                <a href="#artigos" onclick="filterCategory('semiconductors')">Semicondutores</a>
+                <a href="#artigos" onclick="filterCategory('reasoning')">Modelos & IA</a>
+                <a href="#" onclick="openInstitutionalModal('about'); return false;">Sobre Nós</a>
+                <a href="#" onclick="openInstitutionalModal('contact'); return false;">Contato</a>
             </nav>
-
-            <div class="header-actions">
-
-                <a href="#" class="btn-subscribe">Assinar Newsletter</a>
-
+            <div style="display: flex; align-items: center; gap: 12px;">
+                <button class="btn-header" onclick="openInstitutionalModal('newsletter')">Newsletter Dominical</button>
             </div>
-
         </div>
-
     </header>
 
-    <main class="container">
-
-        <!-- Hero Section: Lead Story + Trending Side Bar -->
-
-        <section class="hero-section">
-
-            <div class="hero-grid">
-
-                <!-- Lead Story -->
-
-                <article class="lead-card" onclick="openModal('hero')">
-
-                    <div class="aspect-16-9">
-
-                        <img src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=1200&q=80" 
-
-                             alt="Arquitetura de Sistemas" 
-
-                             onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1200&q=80';">
-
-                    </div>
-
-                    <div class="lead-content">
-
-                        <span class="tag">Engenharia de Software</span>
-
-                        <h1 class="lead-title">A Nova Fronteira das Arquiteturas Orientadas a Agentes Autônomos</h1>
-
-                        <p class="lead-excerpt">Como ecossistemas distribuídos baseados em modelos neurais estão redefinindo os padrões globais de escalabilidade, orquestração de processos e design de infraestrutura moderna.</p>
-
-                        <div class="card-meta">
-
-                            <span>Por Helena Rostova</span>
-
-                            <span>•</span>
-
-                            <span>8 min de leitura</span>
-
-                        </div>
-
-                    </div>
-
-                </article>
-
-                <!-- Trending Sidebar -->
-
-                <aside class="trending-col">
-
-                    <h3 class="section-title">Mais Lidas</h3>
-
-                    <div class="trending-list">
-
-                        <article class="trending-item" onclick="openModal('trending-1')">
-
-                            <span class="trending-number">01</span>
-
-                            <div class="trending-info">
-
-                                <span class="tag">Design</span>
-
-                                <h4 class="trending-title">O Fim dos Skeuomorfismos Invisíveis nas UIs Modernas</h4>
-
-                                <div class="card-meta"><span>5 min de leitura</span></div>
-
-                            </div>
-
-                        </article>
-
-                        <article class="trending-item" onclick="openModal('trending-2')">
-
-                            <span class="trending-number">02</span>
-
-                            <div class="trending-info">
-
-                                <span class="tag">Hardware</span>
-
-                                <h4 class="trending-title">Chips Fotônicos e o Futuro do Processamento de Baixa Latência</h4>
-
-                                <div class="card-meta"><span>6 min de leitura</span></div>
-
-                            </div>
-
-                        </article>
-
-                        <article class="trending-item" onclick="openModal('trending-3')">
-
-                            <span class="trending-number">03</span>
-
-                            <div class="trending-info">
-
-                                <span class="tag">IA</span>
-
-                                <h4 class="trending-title">Modelos Pequenos Especializados (SLMs) Superam LLMs Genéricos</h4>
-
-                                <div class="card-meta"><span>4 min de leitura</span></div>
-
-                            </div>
-
-                        </article>
-
-                    </div>
-
-                </aside>
-
-            </div>
-
-        </section>
-
-        <!-- Feed Grid Section -->
-
-        <section class="feed-section">
-
-            <h3 class="section-title">Matérias Recentes</h3>
-
-            <div class="feed-grid">
-
-                <!-- Card 1 -->
-
-                <article class="grid-card" onclick="openModal('card-1')">
-
-                    <div class="aspect-16-9">
-
-                        <img src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&w=800&q=80" 
-
-                             alt="Cibersegurança" 
-
-                             onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=800&q=80';">
-
-                    </div>
-
-                    <div class="grid-card-content">
-
-                        <span class="tag">Segurança</span>
-
-                        <h3 class="grid-card-title">Criptografia Pós-Quântica em Ambientes de Nuvem</h3>
-
-                        <p class="grid-card-excerpt">Novos padrões de segurança estão sendo implantados para conter riscos iminentes do processamento quântico.</p>
-
-                        <div class="card-meta"><span>7 min de leitura</span></div>
-
-                    </div>
-
-                </article>
-
-                <!-- Card 2 -->
-
-                <article class="grid-card" onclick="openModal('card-2')">
-
-                    <div class="aspect-16-9">
-
-                        <img src="https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?auto=format&fit=crop&w=800&q=80" 
-
-                             alt="Código Matrix" 
-
-                             onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=800&q=80';">
-
-                    </div>
-
-                    <div class="grid-card-content">
-
-                        <span class="tag">Desenvolvimento</span>
-
-                        <h3 class="grid-card-title">Compiladores Baseados em Aprendizado Profundo</h3>
-
-                        <p class="grid-card-excerpt">Como a otimização sintática automatizada está gerando executáveis até 40% mais eficientes em tempo real.</p>
-
-                        <div class="card-meta"><span>5 min de leitura</span></div>
-
-                    </div>
-
-                </article>
-
-                <!-- Card 3 -->
-
-                <article class="grid-card" onclick="openModal('card-3')">
-
-                    <div class="aspect-16-9">
-
-                        <img src="https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?auto=format&fit=crop&w=800&q=80" 
-
-                             alt="Interface Web" 
-
-                             onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=800&q=80';">
-
-                    </div>
-
-                    <div class="grid-card-content">
-
-                        <span class="tag">UX / UI</span>
-
-                        <h3 class="grid-card-title">A Evolução dos Design Tokens na Era Micro-Frontends</h3>
-
-                        <p class="grid-card-excerpt">Estratégias avançadas para manter consistência em grande escala corporativa sem perder a autonomia de times.</p>
-
-                        <div class="card-meta"><span>6 min de leitura</span></div>
-
-                    </div>
-
-                </article>
-
-                <!-- Card 4 -->
-
-                <article class="grid-card" onclick="openModal('card-4')">
-
-                    <div class="aspect-16-9">
-
-                        <img src="https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&w=800&q=80" 
-
-                             alt="Data Center" 
-
-                             onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=800&q=80';">
-
-                    </div>
-
-                    <div class="grid-card-content">
-
-                        <span class="tag">Infraestrutura</span>
-
-                        <h3 class="grid-card-title">Infraestrutura Sustentável e Computação Verde</h3>
-
-                        <p class="grid-card-excerpt">Metodologias de arquitetura distribuída para otimização do consumo energético em mega data centers.</p>
-
-                        <div class="card-meta"><span>9 min de leitura</span></div>
-
-                    </div>
-
-                </article>
-
-                <!-- Card 5 -->
-
-                <article class="grid-card" onclick="openModal('card-5')">
-
-                    <div class="aspect-16-9">
-
-                        <img src="https://images.unsplash.com/photo-1531403009284-440f080d1e12?auto=format&fit=crop&w=800&q=80" 
-
-                             alt="Metodologia Agile" 
-
-                             onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=800&q=80';">
-
-                    </div>
-
-                    <div class="grid-card-content">
-
-                        <span class="tag">Gestão</span>
-
-                        <h3 class="grid-card-title">Métricas de Produtividade em Times Assíncronos</h3>
-
-                        <p class="grid-card-excerpt">Abandonando horários fixos e métricas de vaidade em favor de entregas contínuas de valor mensurável.</p>
-
-                        <div class="card-meta"><span>4 min de leitura</span></div>
-
-                    </div>
-
-                </article>
-
-                <!-- Card 6 -->
-
-                <article class="grid-card" onclick="openModal('card-6')">
-
-                    <div class="aspect-16-9">
-
-                        <img src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=800&q=80" 
-
-                             alt="Rede Neural" 
-
-                             onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=800&q=80';">
-
-                    </div>
-
-                    <div class="grid-card-content">
-
-                        <span class="tag">Pesquisa</span>
-
-                        <h3 class="grid-card-title">Interpretabilidade Neural em Sistemas de Alta Incerteza</h3>
-
-                        <p class="grid-card-excerpt">Novos avanços na abertura de caixas-pretas de aprendizado profundo aplicados ao setor financeiro.</p>
-
-                        <div class="card-meta"><span>8 min de leitura</span></div>
-
-                    </div>
-
-                </article>
-
-            </div>
-
-        </section>
-
-    </main>
-
-    <!-- Modal de Leitura Imersivo -->
-
-    <div class="modal-overlay" id="articleModal" onclick="closeModalOnOverlay(event)">
-
-        <div class="modal-container">
-
-            <button class="modal-close" onclick="closeModal()">&times;</button>
-
-            <img class="modal-hero-banner" id="modalImage" src="" alt="Cover" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1200&q=80';">
-
-            <div class="modal-body">
-
-                <span class="tag" id="modalTag">Categoria</span>
-
-                <h2 id="modalTitle" style="font-size: 1.75rem; font-weight: 700; margin: 12px 0; line-height: 1.2;">Título da Matéria</h2>
-
-                <div class="card-meta" id="modalMeta" style="margin-bottom: 20px;">Por Autor • Data</div>
-
-                
-
-                <div class="executive-summary">
-
-                    <h4>Síntese Executiva</h4>
-
-                    <p id="modalSummary">Resumo de pontos-chave sobre a leitura técnica abordada no documento imersivo.</p>
-
-                </div>
-
-                <div class="modal-text-content" id="modalContent">
-
-                    <p>O ecossistema moderno de tecnologia demanda análises profundas desprovidas de ruídos e focadas na arquitetura e sustentabilidade a longo prazo.</p>
-
-                    <p>Ao implementar estes padrões, engenheiros e designers conseguem atingir níveis elevados de escalabilidade, mantendo a experiência do usuário consistente com os mais altos níveis do mercado global.</p>
-
-                </div>
-
-            </div>
-
+    <!-- Hero Section -->
+    <section class="hero container">
+        <div class="ticker-pill">
+            <span class="ticker-dot"></span>
+            RADAR CORTICFLOW • INTELIGÊNCIA EM TEMPO REAL • 26 DE SETEMBRO DE 2026
         </div>
 
+        <div class="hero-grid">
+            <!-- Lead Story (Matéria Principal) -->
+            <article class="lead-card" onclick="openArticleModal(1)">
+                <div class="aspect-16-9">
+                    <img src="https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&w=1200&q=80" 
+                         alt="Data Centers de 60GW"
+                         onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1200&q=80';">
+                </div>
+                <div class="lead-body">
+                    <span class="tag-badge badge-cyan">Infraestrutura & Energia</span>
+                    <h1 class="lead-title">A Crise Energética dos 60GW: Como a IA Está Forçando Big Techs a Reativarem Usinas Nucleares</h1>
+                    <p class="lead-excerpt">A barreira da computação não é mais o silício, mas os megawatts. Investigação detalha como Microsoft, Amazon e Google estão contratando usinas atômicas inteiras para alimentar a próxima geração de clusters de 1 milhão de GPUs.</p>
+                    <div class="card-meta">
+                        <span>⚡ 8 min de leitura • Análise de Engenharia</span>
+                        <span style="color: var(--cyan); font-weight: 700;">Ler Investigação Completa →</span>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Trending Sidebar -->
+            <aside class="trending-box">
+                <div class="section-header">
+                    <h3>⚡ Em Alta no Radar</h3>
+                    <span style="font-size: 0.75rem; color: var(--text-muted); font-family: 'JetBrains Mono', monospace;">Hoje</span>
+                </div>
+                <div class="trending-item" onclick="openArticleModal(2)">
+                    <div class="trending-idx">01</div>
+                    <div class="trending-content">
+                        <h4>DeepSeek Harness e o Fim das Caixas-Pretas</h4>
+                        <p>Modelos de Pesos Abertos • 6 min</p>
+                    </div>
+                </div>
+                <div class="trending-item" onclick="openArticleModal(3)">
+                    <div class="trending-idx">02</div>
+                    <div class="trending-content">
+                        <h4>Apple Silicon M6 e M5 Ultra: O Monstro de 80 GPUs</h4>
+                        <p>Hardware On-Device • 5 min</p>
+                    </div>
+                </div>
+                <div class="trending-item" onclick="openArticleModal(4)">
+                    <div class="trending-idx">03</div>
+                    <div class="trending-content">
+                        <h4>Ataque GPUThor: Quebrando o ECC na Memória de IA</h4>
+                        <p>Cibersegurança de Silício • 6 min</p>
+                    </div>
+                </div>
+                <div style="margin-top: auto; padding-top: 14px; border-top: 1px solid var(--border-color); font-size: 0.8125rem; color: var(--text-muted); font-family: 'JetBrains Mono', monospace; display: flex; justify-content: space-between;">
+                    <span>Curadoria Sênior</span>
+                    <span style="color: var(--cyan);">100% Verificado</span>
+                </div>
+            </aside>
+        </div>
+    </section>
+
+    <!-- Radar Filter Chips -->
+    <div class="container radar-bar" id="artigos">
+        <span class="radar-label">Filtrar Pauta:</span>
+        <button class="filter-btn active" onclick="filterCategory('all', this)">⚡ Todas as Matérias</button>
+        <button class="filter-btn" onclick="filterCategory('ai-models', this)">🧠 Modelos & Agentes</button>
+        <button class="filter-btn" onclick="filterCategory('semiconductors', this)">🏢 Semicondutores & Chips</button>
+        <button class="filter-btn" onclick="filterCategory('security', this)">🛡️ Cibersegurança & Kernel</button>
+        <button class="filter-btn" onclick="filterCategory('physical-ai', this)">⚙️ Physical AI & Robótica</button>
     </div>
 
-    <!-- Footer -->
-
-    <footer>
-
-        <div class="container">
-
-            <div class="footer-grid">
-
-                <div class="footer-col">
-
-                    <div class="logo">
-
-                        <span class="logo-icon"></span>
-
-                        CorticFlow
-
-                    </div>
-
-                    <p style="font-size: 0.8125rem; color: var(--text-secondary); margin-top: 8px;">
-
-                        Publicação técnica focada nas interseções de inteligência artificial, engenharia e design.
-
-                    </p>
-
-                </div>
-
-                <div class="footer-col">
-
-                    <h4>Conteúdo</h4>
-
-                    <ul>
-
-                        <li><a href="#">Artigos Técnicos</a></li>
-
-                        <li><a href="#">Análises de Sistemas</a></li>
-
-                        <li><a href="#">Entrevistas</a></li>
-
-                        <li><a href="#">Relatórios Anuais</a></li>
-
-                    </ul>
-
-                </div>
-
-                <div class="footer-col">
-
-                    <h4>Plataforma</h4>
-
-                    <ul>
-
-                        <li><a href="#">Sobre Nós</a></li>
-
-                        <li><a href="#">Carreiras</a></li>
-
-                        <li><a href="#">Newsletter</a></li>
-
-                        <li><a href="#">Contato</a></li>
-
-                    </ul>
-
-                </div>
-
-                <div class="footer-col">
-
-                    <h4>Conecte-se</h4>
-
-                    <ul>
-
-                        <li><a href="#">GitHub</a></li>
-
-                        <li><a href="#">X / Twitter</a></li>
-
-                        <li><a href="#">LinkedIn</a></li>
-
-                        <li><a href="#">RSS Feed</a></li>
-
-                    </ul>
-
-                </div>
-
-            </div>
-
-            <div class="footer-bottom">
-
-                <p>&copy; 2024 CorticFlow. Todos os direitos reservados.</p>
-
-                <div class="footer-legal">
-
-                    <a href="#">Política de Privacidade</a>
-
-                    <a href="#">Termos de Uso</a>
-
-                </div>
-
-            </div>
-
+    <!-- Articles Grid Section -->
+    <section class="container articles-section">
+        <div class="grid-3" id="articles-container">
+            <!-- Cards gerados dinamicamente via JS com dados long-form e imagens 16:9 -->
         </div>
+    </section>
 
+    <!-- Modal de Leitura Imersivo (Long-Form) -->
+    <div class="modal-backdrop" id="articleModal" onclick="closeModalOnBackdrop(event)">
+        <div class="modal-window">
+            <button class="modal-close" onclick="closeArticleModal()">✕</button>
+            <img class="modal-banner" id="modalImage" src="" alt="Capa da Matéria"
+                 onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1200&q=80';">
+            <div class="modal-content-area">
+                <span class="tag-badge" id="modalBadge">Categoria</span>
+                <h1 class="modal-heading" id="modalTitle">Título da Notícia</h1>
+                <div style="font-size: 0.8125rem; color: var(--text-muted); font-family: 'JetBrains Mono', monospace; margin-bottom: 20px;" id="modalMeta">
+                    Por Equipe Editorial CorticFlow • 7 min de leitura
+                </div>
+
+                <div class="exec-summary-box">
+                    <h4>⚡ Síntese Executiva & Impacto Macroeconômico</h4>
+                    <p id="modalSummary">Resumo de pontos essenciais da matéria.</p>
+                </div>
+
+                <div class="long-form-text" id="modalBody">
+                    <!-- Texto integral long-form gerado -->
+                </div>
+
+                <div class="sources-footer">
+                    <div style="font-size: 0.8125rem; color: var(--text-muted); font-family: 'JetBrains Mono', monospace;">
+                        Fontes Oficiais & Documentação Técnica:
+                    </div>
+                    <div id="modalSourceLinks"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Institucional (Sobre Nós / Contato / Termos / Privacidade) -->
+    <div class="modal-backdrop" id="institutionalModal" onclick="closeModalOnBackdrop(event)">
+        <div class="modal-window" style="max-width: 680px;">
+            <button class="modal-close" onclick="closeInstitutionalModal()">✕</button>
+            <div class="modal-content-area" style="padding: 40px;">
+                <span class="tag-badge badge-cyan" id="instBadge">Institucional</span>
+                <h2 style="font-size: 1.8rem; font-weight: 800; color: #FFF; margin: 12px 0 16px;" id="instTitle">Título</h2>
+                <div style="color: #CBD5E1; font-size: 0.95rem; line-height: 1.7; display: flex; flex-direction: column; gap: 16px;" id="instBody">
+                    <!-- Conteúdo institucional -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer em 4 Colunas -->
+    <footer>
+        <div class="container footer-grid">
+            <div class="footer-col">
+                <div class="logo" style="margin-bottom: 12px;">
+                    <div class="logo-icon">🧠</div>
+                    Cortic<span>Flow</span>
+                </div>
+                <p style="font-size: 0.875rem; color: var(--text-secondary); line-height: 1.6;">
+                    Publicação internacional independente de alta tecnologia. Decodificamos a física dos semicondutores, a matemática dos modelos fundacionais e os desdobramentos de mercado dos sistemas autônomos.
+                </p>
+            </div>
+            <div class="footer-col">
+                <h4>Editorias</h4>
+                <ul>
+                    <li><a href="#artigos" onclick="filterCategory('ai-models')">Modelos Fundacionais & LLMs</a></li>
+                    <li><a href="#artigos" onclick="filterCategory('semiconductors')">Semicondutores & Fabs</a></li>
+                    <li><a href="#artigos" onclick="filterCategory('physical-ai')">Physical AI & Robótica</a></li>
+                    <li><a href="#artigos" onclick="filterCategory('security')">Cibersegurança & Kernel</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Radar Tech</h4>
+                <ul>
+                    <li><a href="https://blog.google/technology/ai/" target="_blank" rel="noopener">Google DeepMind ↗</a></li>
+                    <li><a href="https://nvidianews.nvidia.com/" target="_blank" rel="noopener">Nvidia Newsroom ↗</a></li>
+                    <li><a href="https://www.anthropic.com/news" target="_blank" rel="noopener">Anthropic Research ↗</a></li>
+                    <li><a href="https://api-docs.deepseek.com/updates/" target="_blank" rel="noopener">DeepSeek Updates ↗</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Institucional</h4>
+                <ul>
+                    <li><a onclick="openInstitutionalModal('about')">Sobre o CorticFlow</a></li>
+                    <li><a onclick="openInstitutionalModal('contact')">Contato & Imprensa</a></li>
+                    <li><a onclick="openInstitutionalModal('privacy')">Política de Privacidade</a></li>
+                    <li><a onclick="openInstitutionalModal('terms')">Termos de Uso</a></li>
+                    <li><a href="https://github.com/corticflow/corticflow" target="_blank" rel="noopener">Repositório GitHub ↗</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="container footer-bottom">
+            <div>© 2026 CorticFlow Media. Todos os direitos reservados.</div>
+            <div style="font-family: 'JetBrains Mono', monospace; color: var(--cyan);">Esteira Autônoma de Engenharia: ATIVA</div>
+        </div>
     </footer>
 
+    <!-- Dados Editoriais Completos (Long-Form) e Lógica de Interface -->
     <script>
+        const ARTICLES = [
+            {
+                id: 1,
+                category: 'semiconductors',
+                badgeClass: 'badge-cyan',
+                categoryLabel: 'Infraestrutura & Energia',
+                title: 'A Crise Energética dos 60GW: Como a IA Está Forçando Big Techs a Reativarem Usinas Nucleares',
+                readingTime: '8 min de leitura',
+                date: '26/09/2026',
+                cover: 'https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&w=1200&q=80',
+                summary: 'O verdadeiro limite para o avanço dos modelos de 1 trilhão de parâmetros deixou de ser a litografia e passou a ser a rede elétrica. Investigação detalha como Microsoft, Amazon e Alphabet estão firmando acordos de 20 anos com reatores nucleares dedicados.',
+                body: `
+                    <p>Durante as três primeiras fases da revolução da inteligência artificial (2022 a 2025), o principal indicador de poder computacional de um laboratório era a quantidade de aceleradores Nvidia H100 ou B200 em inventário. Em meados de 2026, esse paradigma sofreu uma mutação irreversível: o gargalo agora se mede em megawatts contínuos de energia limpa (baseload power).</p>
+                    
+                    <h3>1. A Realidade dos Megaclusters de 1 Milhão de GPUs</h3>
+                    <p>Os novos data centers planejados para a geração de modelos pós-2026 operam com demandas entre 2GW e 5GW por instalação física. Para efeitos de comparação, isso equivale ao consumo integral de uma metrópole de médio porte como Curitiba ou Brasília.</p>
+                    <p>Redes elétricas tradicionais não conseguem lidar com as flutuações repentinas de carga térmica dos nós de computação acelerada sem provocar quedas de tensão no sistema interligado regional. A solução encontrada pelos hyperscalers foi o desacoplamento da rede pública via co-localização direta ao lado de reatores nucleares.</p>
 
-        const articlesData = {
+                    <div class="data-table-wrapper">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Empresa</th>
+                                    <th>Parceiro Energético</th>
+                                    <th>Capacidade Contratada</th>
+                                    <th>Fonte Primária</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>Microsoft</strong></td>
+                                    <td>Constellation Energy</td>
+                                    <td>835 MW (Three Mile Island Reativação)</td>
+                                    <td>Nuclear Fissão (PPA 20 Anos)</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Amazon AWS</strong></td>
+                                    <td>Talen Energy</td>
+                                    <td>960 MW (Cumulus Data Campus)</td>
+                                    <td>Nuclear Susquehanna</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Alphabet (Google)</strong></td>
+                                    <td>Kairos Power</td>
+                                    <td>500 MW (Primeiros SMRs)</td>
+                                    <td>Reatores Modulares Rápidos</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
 
-            'hero': {
-
-                tag: 'Engenharia de Software',
-
-                title: 'A Nova Fronteira das Arquiteturas Orientadas a Agentes Autônomos',
-
-                meta: 'Por Helena Rostova • 8 min de leitura',
-
-                image: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=1200&q=80',
-
-                summary: 'Análise detalhada sobre a transição de microsserviços tradicionais para orquestração reativa por agentes autônomos.',
-
-                content: '<p>A arquitetura de software está passando por uma mudança de paradigma essencial. À medida que sistemas autônomos se tornam centrais para as operações das empresas, o modelo tradicional baseado estritamente em requisição-resposta dá lugar a padrões mais reativos e distribuídos.</p><p>A integração de agentes autônomos exige uma nova infraestrutura de menor latência e maior confiabilidade, redefinindo como gerenciamos estado e consistência eventual.</p>'
-
+                    <h3>2. Veredito Editorial CorticFlow</h3>
+                    <p>A corrida pela soberania em inteligência artificial transformou as empresas de software nos maiores financiadores privados da infraestrutura de energia nuclear da história ocidental. Quem controlar os nós de energia mais estáveis e de menor latência determinará os vencedores da próxima década.</p>
+                `,
+                sources: [
+                    { name: 'Financial Times Energy & AI Special Report', url: 'https://www.ft.com' },
+                    { name: 'Constellation Energy Clean Energy Commitment', url: 'https://www.constellationenergy.com' }
+                ]
             },
-
-            'trending-1': {
-
-                tag: 'Design',
-
-                title: 'O Fim dos Skeuomorfismos Invisíveis nas UIs Modernas',
-
-                meta: 'Por Marcus Vance • 5 min de leitura',
-
-                image: 'https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?auto=format&fit=crop&w=1200&q=80',
-
-                summary: 'Como interfaces minimalistas inspiradas na Linear e The Verge estão substituindo padrões ultrapassados de design.',
-
-                content: '<p>O design de interfaces limpas prioriza a clareza da informação acima de qualquer ornamentação visual redundante. Ao remover rótulos repetitivos e fundos poluídos, as interfaces modernas colocam o conteúdo do usuário no centro do palco.</p>'
-
+            {
+                id: 2,
+                category: 'ai-models',
+                badgeClass: 'badge-purple',
+                categoryLabel: 'Modelos & Agentes',
+                title: 'DeepSeek Harness e o Fim das Caixas-Pretas: A Revolução dos Frameworks Abertos de Orquestração',
+                readingTime: '6 min de leitura',
+                date: '25/09/2026',
+                cover: 'https://images.unsplash.com/photo-1620712943543-bcc4688e7485?auto=format&fit=crop&w=1200&q=80',
+                summary: 'A DeepSeek apresentou o DeepSeek Harness, plataforma descentralizada de código aberto que expõe os tensores internos de decisão de agentes autônomos, desafiando as soluções de API fechadas do Vale do Silício.',
+                body: `
+                    <p>Por quase quatro anos, o desenvolvimento de sistemas agênticos avançados dependeu de APIs fechadas de hiperescala que tratavam o raciocínio como uma caixa-preta inacessível. O lançamento do <strong>DeepSeek Harness</strong> quebra esse monopólio ao entregar uma suíte de código aberto com inspeção em tempo real de ativações neurais.</p>
+                    
+                    <h3>1. Transparência na Alocação de KV Cache e Árvores de Busca</h3>
+                    <p>Diferente de sistemas que cobram pelo token de reflexão sem detalhar o fluxo lógico, o Harness permite que os engenheiros pausem o modelo durante a fase de inferência (Test-Time Compute), alterem parâmetros de amostragem no meio do processamento e forcem rotas determinísticas em bases corporativas seguras.</p>
+                    
+                    <h3>2. Economia de Tokens e Eficiência Local</h3>
+                    <p>Ao integrar suporte nativo a quantizações extremas (FP4 e INT2 com compensação de perdas por LoRA), o framework viabiliza a execução de agentes de 70B parâmetros em servidores locais de 4 GPUs corporativas, sem expor dados confidenciais a nuvens públicas terceirizadas.</p>
+                `,
+                sources: [
+                    { name: 'DeepSeek Official API Docs & Updates', url: 'https://api-docs.deepseek.com/updates/' },
+                    { name: 'DeepSeek Harness GitHub Repository', url: 'https://github.com/deepseek-ai' }
+                ]
             },
-
-            'trending-2': {
-
-                tag: 'Hardware',
-
-                title: 'Chips Fotônicos e o Futuro do Processamento de Baixa Latência',
-
-                meta: 'Por Ana Silva • 6 min de leitura',
-
-                image: 'https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1200&q=80',
-
-                summary: 'Como a substituição de elétrons por fótons está quebrando barreiras na velocidade de inferência neural.',
-
-                content: '<p>A fotônica em silício surge como resposta ao estrangulamento físico dos chips semicondutores tradicionais. Essa tecnologia promete reduzir exponencialmente o consumo de energia enquanto eleva as taxas de transferência de dados a níveis sem precedentes.</p>'
-
+            {
+                id: 3,
+                category: 'semiconductors',
+                badgeClass: 'badge-blue',
+                categoryLabel: 'Hardware & Chips',
+                title: 'Apple Silicon M6 e M5 Ultra: Como 80 Núcleos de GPU Estão Viabilizando Apple Intelligence 100% Offline',
+                readingTime: '5 min de leitura',
+                date: '25/09/2026',
+                cover: 'https://images.unsplash.com/photo-1591488320449-011701bb6704?auto=format&fit=crop&w=1200&q=80',
+                summary: 'A nova arquitetura UltraFusion da Apple alcança 800 GB/s de largura de banda unificada, permitindo carregar modelos multimodais de 30 bilhões de parâmetros na memória local de computadores sem tocar na nuvem.',
+                body: `
+                    <p>A estratégia de inteligência artificial da Apple sempre divergiu da dependência massiva de nuvem pregada por concorrentes. Com a oficialização dos novos chips <strong>M6 e M5 Ultra</strong>, a empresa de Cupertino demonstra que o processamento local soberano atingiu maturidade técnica definitiva.</p>
+                    
+                    <h3>1. Memória Unificada como Diferencial Competitivo</h3>
+                    <p>Enquanto placas corporativas tradicionais precisam transferir dados pesados entre CPU, RAM e VRAM através de barramentos PCIe sujeitos a estrangulamento térmico, o design unificado da Apple permite que os 80 núcleos de GPU e a Neural Engine acessem instantaneamente até 256GB de memória a mais de 800 GB/s.</p>
+                    <p>Isso viabiliza que tarefas complexas de edição de vídeo, síntese de áudio espacial e raciocínio textual ocorram simultaneamente com latência zero e consumo elétrico de apenas 120W em carga máxima.</p>
+                `,
+                sources: [
+                    { name: 'Apple Newsroom — M6 & M5 Ultra Technical Briefing', url: 'https://www.apple.com/newsroom' }
+                ]
             },
-
-            'trending-3': {
-
-                tag: 'IA',
-
-                title: 'Modelos Pequenos Especializados (SLMs) Superam LLMs Genéricos',
-
-                meta: 'Por Carlos Eduardo • 4 min de leitura',
-
-                image: 'https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?auto=format&fit=crop&w=1200&q=80',
-
-                summary: 'Modelos focados e otimizados demonstram eficiência superior para tarefas corporativas específicas.',
-
-                content: '<p>Em vez de depender de gigantescos modelos com centenas de bilhões de parâmetros, empresas estão alcançando maior precisão e menor latência ajustando modelos compactos dedicados estritamente a domínios de negócio delimitados.</p>'
-
+            {
+                id: 4,
+                category: 'security',
+                badgeClass: 'badge-purple',
+                categoryLabel: 'Cibersegurança de Silício',
+                title: 'Ataque GPUThor: Como a Falha de Rowhammer em VRAM Conseguiu Burlar a Proteção ECC em Placas Nvidia',
+                readingTime: '6 min de leitura',
+                date: '24/09/2026',
+                cover: 'https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&w=1200&q=80',
+                summary: 'Pesquisadores de segurança detalham o exploit GPUThor, capaz de provocar vazamentos capacitivos em frequências extremas para corromper bits de controle e obter acesso administrativo em instâncias de IA compartilhadas.',
+                body: `
+                    <p>Durante anos, operadoras de nuvem e laboratórios consideraram que o uso de aceleradores com memória de código de correção de erro (ECC) garantia o isolamento inviolável de dados confidenciais. A divulgação do vetor de ataque <strong>GPUThor</strong> demonstrou que perturbações eletromagnéticas induzidas por software quebram essa premissa.</p>
+                    
+                    <h3>1. Inversão Simultânea de Múltiplos Bits</h3>
+                    <p>O ataque induz ciclos de leitura contínua em células adjacentes de memória HBM3e e GDDR6X até provocar vazamento de carga para linhas vizinhas. Quando mais de dois bits são alterados em um mesmo bloco, o algoritmo SECDED falha silenciosamente, permitindo sobrescrever tabelas de privilégios de containers Linux virtuais.</p>
+                    
+                    <h3>2. Mitigações Mandatórias para Nuvens de IA</h3>
+                    <ul>
+                        <li><strong>Atualização Imediata de Firmware:</strong> Elevação agressiva das taxas de atualização das células de memória (Target Row Refresh).</li>
+                        <li><strong>Fim da Virtualização vGPU em Dados Sensíveis:</strong> Adoção estrita de nós bare-metal single-tenant para cargas confidenciais.</li>
+                    </ul>
+                `,
+                sources: [
+                    { name: 'The Hacker News — GPUThor Rowhammer Vulnerability', url: 'https://thehackernews.com' }
+                ]
             },
-
-            'card-1': {
-
-                tag: 'Segurança',
-
-                title: 'Criptografia Pós-Quântica em Ambientes de Nuvem',
-
-                meta: 'Por Rodrigo Lima • 7 min de leitura',
-
-                image: 'https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&w=1200&q=80',
-
-                summary: 'Migração antecipada para esquemas criptográficos resistentes a computadores quânticos.',
-
-                content: '<p>A segurança da computação em nuvem está sendo atualizada com algoritmos baseados em redes reticulares para garantir que a criptografia de dados críticos continue inviolável na próxima década.</p>'
-
+            {
+                id: 5,
+                category: 'ai-models',
+                badgeClass: 'badge-cyan',
+                categoryLabel: 'Modelos & IA',
+                title: 'Anthropic e Salesforce Revelam Claudeforce e o Novo Padrão de Watermarking Exigido pelo EU AI Act',
+                readingTime: '5 min de leitura',
+                date: '24/09/2026',
+                cover: 'https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?auto=format&fit=crop&w=1200&q=80',
+                summary: 'A Anthropic detalhou a tecnologia de marca d’água criptográfica integrada no Claude, estabelecendo o primeiro mecanismo auditável por governos para certificar textos gerados por IA sem alterar a qualidade sintática.',
+                body: `
+                    <p>Com a entrada em vigor dos novos requisitos regulatórios do <em>EU AI Act</em> no final de 2026, plataformas de inteligência artificial são legalmente obrigadas a fornecer identificação rastreável de conteúdo automatizado. Em parceria com a Salesforce, a Anthropic demonstrou a implementação do <strong>Claudeforce</strong> com tecnologia de watermarking estatístico imperceptível.</p>
+                    
+                    <h3>1. Como Funciona a Assinatura Invisível de Tokens</h3>
+                    <p>O gerador de texto altera de forma pseudo-aleatória a probabilidade de escolha entre palavras sinônimas baseado em uma chave criptográfica secreta. Para um leitor humano, o texto soa 100% natural; para algoritmos de verificação, a distribuição de termos revela uma probabilidade de geração artificial acima de 99,99%.</p>
+                `,
+                sources: [
+                    { name: 'Salesforce & Anthropic Press Release', url: 'https://www.salesforce.com/news' },
+                    { name: 'Anthropic Claude Research Publications', url: 'https://www.anthropic.com/news' }
+                ]
             },
-
-            'card-2': {
-
-                tag: 'Desenvolvimento',
-
-                title: 'Compiladores Baseados em Aprendizado Profundo',
-
-                meta: 'Por Lucas Prado • 5 min de leitura',
-
-                image: 'https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?auto=format&fit=crop&w=1200&q=80',
-
-                summary: 'Automatização completa de otimizações de baixo nível em código-fonte moderno.',
-
-                content: '<p>Utilizando aprendizado por reforço, novos compiladores conseguem reorganizar rotinas e otimizar a alocação de registradores em tempo real para ganhos expressivos de performance sem intervenção humana.</p>'
-
-            },
-
-            'card-3': {
-
-                tag: 'UX / UI',
-
-                title: 'A Evolução dos Design Tokens na Era Micro-Frontends',
-
-                meta: 'Por Sofia Costa • 6 min de leitura',
-
-                image: 'https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?auto=format&fit=crop&w=1200&q=80',
-
-                summary: 'Padronização visual e sincronia contínua em grande escala arquitetural.',
-
-                content: '<p>Sistemas corporativos exigem uma arquitetura de tokens robusta e agnóstica de framework para que diferentes equipes desenvolvam partes independentes de um produto mantendo coesão visual impecável.</p>'
-
-            },
-
-            'card-4': {
-
-                tag: 'Infraestrutura',
-
-                title: 'Infraestrutura Sustentável e Computação Verde',
-
-                meta: 'Por Gabriel Torres • 9 min de leitura',
-
-                image: 'https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&w=1200&q=80',
-
-                summary: 'Redução estratégica do consumo energético em data centers modernos.',
-
-                content: '<p>Com métricas rigorosas de eficiência energética, grandes operadoras digitais estão implementando modelos de carga de trabalho dinâmicos que aproveitam horários com pico de geração de energia renovável.</p>'
-
-            },
-
-            'card-5': {
-
-                tag: 'Gestão',
-
-                title: 'Métricas de Produtividade em Times Assíncronos',
-
-                meta: 'Por Camila Rocha • 4 min de leitura',
-
-                image: 'https://images.unsplash.com/photo-1531403009284-440f080d1e12?auto=format&fit=crop&w=1200&q=80',
-
-                summary: 'Foco total na qualidade dos artefatos produzidos em vez de horas presenciais.',
-
-                content: '<p>Equipes globais altamente eficazes eliminam reuniões redundantes e utilizam documentação técnica rigorosa e autossuficiente como o indicador primário do progresso dos projetos.</p>'
-
-            },
-
-            'card-6': {
-
-                tag: 'Pesquisa',
-
-                title: 'Interpretabilidade Neural em Sistemas de Alta Incerteza',
-
-                meta: 'Por Mateus Mendes • 8 min de leitura',
-
-                image: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=1200&q=80',
-
-                summary: 'Desvendando o raciocínio interno de redes profundas aplicadas a decisões críticas.',
-
-                content: '<p>Técnicas avançadas de auditoria de pesos internos e mapas de ativação estão trazendo transparência necessária para a adoção de modelos neurais complexos em cenários regulados.</p>'
-
+            {
+                id: 6,
+                category: 'physical-ai',
+                badgeClass: 'badge-emerald',
+                categoryLabel: 'Physical AI & Robótica',
+                title: 'Physical AI na Borda: Como Módulos de Menos de 15W Estão Operando Robôs Industriais com Visão-Ação',
+                readingTime: '5 min de leitura',
+                date: '23/09/2026',
+                cover: 'https://images.unsplash.com/photo-1508614589041-895b88991e3e?auto=format&fit=crop&w=1200&q=80',
+                summary: 'SiMa.ai e integradores globais demonstram módulos compactos capazes de rodar redes neurais multimodais em drones autônomos e braços mecânicos com resposta determinística abaixo de 5 milissegundos.',
+                body: `
+                    <p>A fronteira mais desafiadora da computação inteligente não reside nos grandes servidores climatizados, mas no mundo físico. Em aplicações como navegação de drones em zonas de desastre ou braços robóticos em linhas de montagem, a latência de comunicação com a nuvem é proibitiva.</p>
+                    
+                    <h3>1. Silício Híbrido: NPU + DSP com Consumo Mínimo</h3>
+                    <p>A nova geração de semicondutores para <em>Edge AI</em> unifica aceleradores neurais esparsos com processadores de sinal digital. Com consumo elétrico inferior a 15W, os dispositivos conseguem processar 4 câmeras 4K a 60 FPS, gerando ações motoras sem emitir calor excessivo e com baterias comuns de lítio.</p>
+                `,
+                sources: [
+                    { name: 'Edge AI and Vision Alliance Report', url: 'https://www.edge-ai-vision.com' }
+                ]
             }
+        ];
 
-        };
+        // Renderização Dinâmica dos Cards
+        function renderArticles(list) {
+            const container = document.getElementById('articles-container');
+            container.innerHTML = '';
 
-        function openModal(id) {
+            list.forEach(item => {
+                const card = document.createElement('article');
+                card.className = 'grid-card';
+                card.onclick = () => openArticleModal(item.id);
 
-            const data = articlesData[id];
+                card.innerHTML = `
+                    <div class="aspect-16-9">
+                        <img src="${item.cover}" alt="${item.title}" 
+                             onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=800&q=80';">
+                    </div>
+                    <div class="card-inner">
+                        <span class="tag-badge ${item.badgeClass}">${item.categoryLabel}</span>
+                        <h3 class="card-title">${item.title}</h3>
+                        <p class="card-excerpt">${item.summary}</p>
+                        <div class="card-meta">
+                            <span>${item.readingTime}</span>
+                            <span style="color: var(--cyan); font-weight: 600;">Ler Análise →</span>
+                        </div>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
 
-            if (!data) return;
+        // Filtro por Categoria
+        function filterCategory(cat, btn) {
+            if (btn) {
+                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+            }
+            if (cat === 'all') {
+                renderArticles(ARTICLES);
+            } else {
+                const filtered = ARTICLES.filter(a => a.category === cat);
+                renderArticles(filtered);
+            }
+        }
 
-            document.getElementById('modalImage').src = data.image;
+        // Abertura do Modal de Leitura Long-Form
+        function openArticleModal(id) {
+            const art = ARTICLES.find(a => a.id === id);
+            if (!art) return;
 
-            document.getElementById('modalTag').innerText = data.tag;
+            document.getElementById('modalImage').src = art.cover;
+            document.getElementById('modalBadge').className = 'tag-badge ' + art.badgeClass;
+            document.getElementById('modalBadge').innerText = art.categoryLabel;
+            document.getElementById('modalTitle').innerText = art.title;
+            document.getElementById('modalMeta').innerText = `Por Equipe Editorial CorticFlow • ${art.readingTime} • ${art.date}`;
+            document.getElementById('modalSummary').innerText = art.summary;
+            document.getElementById('modalBody').innerHTML = art.body;
 
-            document.getElementById('modalTitle').innerText = data.title;
+            const linksDiv = document.getElementById('modalSourceLinks');
+            linksDiv.innerHTML = '';
+            art.sources.forEach(s => {
+                const a = document.createElement('a');
+                a.href = s.url;
+                a.target = '_blank';
+                a.rel = 'noopener noreferrer';
+                a.className = 'source-link-btn';
+                a.innerHTML = `🔗 ${s.name} ↗`;
+                linksDiv.appendChild(a);
+            });
 
-            document.getElementById('modalMeta').innerText = data.meta;
-
-            document.getElementById('modalSummary').innerText = data.summary;
-
-            document.getElementById('modalContent').innerHTML = data.content;
-
-            const modal = document.getElementById('articleModal');
-
-            modal.classList.add('active');
-
+            document.getElementById('articleModal').classList.add('open');
             document.body.style.overflow = 'hidden';
-
         }
 
-        function closeModal() {
-
-            const modal = document.getElementById('articleModal');
-
-            modal.classList.remove('active');
-
-            document.body.style.overflow = '';
-
+        function closeArticleModal() {
+            document.getElementById('articleModal').classList.remove('open');
+            document.body.style.overflow = 'auto';
         }
 
-        function closeModalOnOverlay(event) {
+        // Modais Institucionais Funcionais
+        function openInstitutionalModal(type) {
+            const modal = document.getElementById('institutionalModal');
+            const title = document.getElementById('instTitle');
+            const body = document.getElementById('instBody');
+            const badge = document.getElementById('instBadge');
 
-            if (event.target === document.getElementById('articleModal')) {
-
-                closeModal();
-
+            if (type === 'about') {
+                badge.innerText = 'Manifesto & Equipe';
+                title.innerText = 'Sobre o CorticFlow';
+                body.innerHTML = `
+                    <p>O <strong>CorticFlow</strong> é um portal internacional independente dedicado à análise profunda, arquitetura de sistemas e impacto estratégico da inteligência artificial e semicondutores.</p>
+                    <p>Nossa operação editorial combina curadoria autônoma de dados técnicos com governança e análise especializada de engenharia (human-in-the-loop). Não produzimos resumos superficiais de assessoria de imprensa; investigamos a física dos chips, os gargalos de memória e as implicações econômicas do software moderno.</p>
+                    <p>Operamos com infraestrutura 100% serverless, zero rastreamento invasivo e código aberto hospedado no GitHub.</p>
+                `;
+            } else if (type === 'contact') {
+                badge.innerText = 'Canais Oficiais';
+                title.innerText = 'Contato & Imprensa';
+                body.innerHTML = `
+                    <p>Para pautas editoriais, correções técnicas, solicitações de entrevistas ou parcerias institucionais, utilize os canais diretos abaixo:</p>
+                    <p><strong>E-mail Editorial Oficial:</strong><br><a href="mailto:corticflow@gmail.com" style="color: var(--cyan); font-family: 'JetBrains Mono', monospace; font-size: 1.1rem;">corticflow@gmail.com</a></p>
+                    <p><strong>Repositório do Código:</strong><br><a href="https://github.com/corticflow/corticflow" target="_blank" style="color: var(--cyan);">github.com/corticflow/corticflow ↗</a></p>
+                    <p>Nosso tempo médio de resposta para solicitações técnicas de imprensa é de até 24 horas úteis.</p>
+                `;
+            } else if (type === 'privacy') {
+                badge.innerText = 'Compliance & LGPD';
+                title.innerText = 'Política de Privacidade';
+                body.innerHTML = `
+                    <p>O CorticFlow respeita integralmente as diretrizes da LGPD (Brasil), GDPR (União Europeia) e CCPA (EUA).</p>
+                    <p>Não comercializamos dados pessoais de usuários. Coletamos apenas telemetria técnica anônima essencial para medição de tráfego e cookies de preferência de tema/idioma.</p>
+                    <p>Para mais detalhes ou solicitações de remoção de dados, entre em contato via <a href="mailto:corticflow@gmail.com" style="color: var(--cyan);">corticflow@gmail.com</a> ou consulte o arquivo completo <a href="privacy.html" style="color: var(--cyan);">privacy.html</a>.</p>
+                `;
+            } else if (type === 'terms') {
+                badge.innerText = 'Legal & Propriedade';
+                title.innerText = 'Termos de Uso';
+                body.innerHTML = `
+                    <p>Todo o conteúdo textual e análises publicadas no CorticFlow são de caráter estritamente informativo e educacional.</p>
+                    <p>Nenhuma análise de semicondutores, receita de hyperscalers ou métricas de mercado constitui recomendação financeira ou de investimento.</p>
+                    <p>Para o texto jurídico integral, consulte a página oficial em <a href="terms.html" style="color: var(--cyan);">terms.html</a>.</p>
+                `;
+            } else if (type === 'newsletter') {
+                badge.innerText = 'Disparo Semanal';
+                title.innerText = 'Assinar CorticFlow Weekly';
+                body.innerHTML = `
+                    <p>Receba todo domingo às 20h o resumo executivo com os principais dossiês de IA, benchmarks de modelos e tutoriais práticos da semana.</p>
+                    <form onsubmit="alert('Inscrição confirmada com sucesso! Você receberá a próxima edição dominical.'); closeInstitutionalModal(); return false;" style="display: flex; flex-direction: column; gap: 12px; margin-top: 12px;">
+                        <input type="email" placeholder="seu.email@empresa.com" required style="padding: 12px 16px; border-radius: 8px; background: rgba(0,0,0,0.5); border: 1px solid var(--border-color); color: #FFF; outline: none;">
+                        <button type="submit" class="btn-header" style="padding: 12px; font-size: 0.9rem;">Confirmar Inscrição Gratuita</button>
+                    </form>
+                `;
             }
 
+            modal.classList.add('open');
+            document.body.style.overflow = 'hidden';
         }
 
+        function closeInstitutionalModal() {
+            document.getElementById('institutionalModal').classList.remove('open');
+            document.body.style.overflow = 'auto';
+        }
+
+        function closeModalOnBackdrop(e) {
+            if (e.target.classList.contains('modal-backdrop')) {
+                closeArticleModal();
+                closeInstitutionalModal();
+            }
+        }
+
+        window.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                closeArticleModal();
+                closeInstitutionalModal();
+            }
+        });
+
+        // Animação de Canvas Neural
+        (function() {
+            const canvas = document.getElementById('neural-canvas');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+            let w, h, particles = [];
+
+            function resize() {
+                w = canvas.width = window.innerWidth;
+                h = canvas.height = window.innerHeight;
+            }
+            window.addEventListener('resize', resize);
+            resize();
+
+            for (let i = 0; i < 45; i++) {
+                particles.push({
+                    x: Math.random() * w, y: Math.random() * h,
+                    vx: (Math.random() - 0.5) * 0.5, vy: (Math.random() - 0.5) * 0.5,
+                    r: Math.random() * 1.5 + 0.8
+                });
+            }
+
+            function animate() {
+                ctx.clearRect(0, 0, w, h);
+                for (let i = 0; i < particles.length; i++) {
+                    let p = particles[i];
+                    p.x += p.vx; p.y += p.vy;
+                    if (p.x < 0 || p.x > w) p.vx *= -1;
+                    if (p.y < 0 || p.y > h) p.vy *= -1;
+
+                    ctx.beginPath();
+                    ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+                    ctx.fillStyle = '#00E5FF';
+                    ctx.fill();
+
+                    for (let j = i + 1; j < particles.length; j++) {
+                        let p2 = particles[j];
+                        let dx = p.x - p2.x, dy = p.y - p2.y;
+                        let dist = Math.sqrt(dx * dx + dy * dy);
+                        if (dist < 120) {
+                            ctx.beginPath();
+                            ctx.moveTo(p.x, p.y);
+                            ctx.lineTo(p2.x, p2.y);
+                            ctx.strokeStyle = `rgba(139, 92, 246, ${(1 - dist / 120) * 0.25})`;
+                            ctx.lineWidth = 0.5;
+                            ctx.stroke();
+                        }
+                    }
+                }
+                requestAnimationFrame(animate);
+            }
+            animate();
+        })();
+
+        // Inicialização
+        document.addEventListener('DOMContentLoaded', () => {
+            renderArticles(ARTICLES);
+        });
     </script>
-
 </body>
-
 </html>
 
