@@ -13,11 +13,11 @@
 
     <style>
         :root {
-            --bg-void: #04060A;
-            --bg-surface: #0A0E17;
-            --bg-card: rgba(13, 19, 32, 0.7);
-            --bg-card-hover: rgba(19, 27, 45, 0.85);
-            --border-subtle: rgba(255, 255, 255, 0.07);
+            --bg-void: #030508;
+            --bg-surface: #090D15;
+            --bg-card: rgba(11, 16, 28, 0.72);
+            --bg-card-hover: rgba(16, 23, 40, 0.88);
+            --border-subtle: rgba(255, 255, 255, 0.08);
             --border-glow: rgba(0, 240, 255, 0.4);
             
             --cyan: #00F0FF;
@@ -47,31 +47,31 @@
             line-height: 1.6;
             overflow-x: hidden;
             background-image: 
-                radial-gradient(circle at 15% 15%, rgba(0, 240, 255, 0.04) 0%, transparent 40%),
-                radial-gradient(circle at 85% 85%, rgba(138, 79, 255, 0.05) 0%, transparent 40%);
+                radial-gradient(circle at 12% 18%, rgba(0, 240, 255, 0.05) 0%, transparent 45%),
+                radial-gradient(circle at 88% 82%, rgba(138, 79, 255, 0.06) 0%, transparent 45%);
             background-attachment: fixed;
         }
 
         a { color: inherit; text-decoration: none; cursor: pointer; }
         .container { max-width: 1360px; margin: 0 auto; padding: 0 24px; position: relative; z-index: 10; }
 
-        /* Background Canvas */
+        /* Canvas Particle Background */
         #neural-canvas {
             position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
             pointer-events: none; z-index: 1; opacity: 0.22;
         }
 
-        /* Ambient Noise Texture */
+        /* Subtle Noise Film */
         .noise-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.03'/%3E%3C/svg%3E");
+            background: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.025'/%3E%3C/svg%3E");
             pointer-events: none; z-index: 2;
         }
 
         /* Top HUD Bar */
         .top-hud {
             border-bottom: 1px solid var(--border-subtle);
-            background: rgba(4, 6, 10, 0.7);
+            background: rgba(3, 5, 8, 0.75);
             backdrop-filter: blur(12px);
             font-family: var(--font-mono);
             font-size: 0.75rem;
@@ -97,10 +97,20 @@
         }
         @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
 
+        .sfx-btn {
+            background: transparent; border: 1px solid var(--border-subtle);
+            color: var(--text-muted); padding: 2px 8px; border-radius: 4px;
+            cursor: pointer; font-family: var(--font-mono); font-size: 0.7rem;
+            transition: all 0.2s;
+        }
+        .sfx-btn:hover, .sfx-btn.active {
+            border-color: var(--cyan); color: var(--cyan);
+        }
+
         /* Main Header */
         header {
             position: sticky; top: 0;
-            background: rgba(4, 6, 10, 0.85);
+            background: rgba(3, 5, 8, 0.88);
             backdrop-filter: blur(20px);
             border-bottom: 1px solid var(--border-subtle);
             z-index: 100;
@@ -209,7 +219,7 @@
             position: absolute; inset: 0;
             border-radius: 20px;
             padding: 1px;
-            background: radial-gradient(400px circle at var(--mouse-x, -500px) var(--mouse-y, -500px), rgba(0, 240, 255, 0.35), transparent 40%);
+            background: radial-gradient(420px circle at var(--mouse-x, -500px) var(--mouse-y, -500px), rgba(0, 240, 255, 0.35), transparent 45%);
             -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
             -webkit-mask-composite: xor;
             mask-composite: exclude;
@@ -232,13 +242,13 @@
         @media(max-width: 1024px) { .card-lead { grid-column: span 12; } }
 
         .lead-hero-img {
-            width: 100%; height: 280px; object-fit: cover;
+            width: 100%; height: 260px; object-fit: cover;
             transition: transform 0.8s var(--ease-out);
         }
         .bento-card:hover .lead-hero-img { transform: scale(1.03); }
 
         .lead-content {
-            padding: 32px; display: flex; flex-direction: column; gap: 14px; flex-grow: 1;
+            padding: 30px; display: flex; flex-direction: column; gap: 14px; flex-grow: 1;
         }
         .card-tag {
             align-self: flex-start;
@@ -252,12 +262,40 @@
 
         .lead-title {
             font-family: var(--font-display);
-            font-size: 2.1rem; font-weight: 800; line-height: 1.2; letter-spacing: -0.03em;
+            font-size: 1.95rem; font-weight: 800; line-height: 1.25; letter-spacing: -0.03em;
             color: #FFF;
         }
         .lead-desc {
-            color: var(--text-secondary); font-size: 1.05rem; line-height: 1.6;
+            color: var(--text-secondary); font-size: 0.98rem; line-height: 1.6;
         }
+
+        /* Interactive SVG Chart Box inside Card */
+        .sparkline-box {
+            background: rgba(0, 0, 0, 0.35);
+            border: 1px solid var(--border-subtle);
+            border-radius: 12px;
+            padding: 14px 18px;
+            margin: 10px 0 6px;
+            position: relative;
+        }
+        .sparkline-header {
+            display: flex; justify-content: space-between; align-items: center;
+            font-family: var(--font-mono); font-size: 0.72rem; color: var(--text-muted);
+            margin-bottom: 8px;
+        }
+        .sparkline-header strong { color: var(--cyan); font-weight: 700; }
+        .sparkline-svg { width: 100%; height: 54px; overflow: visible; }
+        .sparkline-line {
+            fill: none; stroke: url(#cyanPurpleGrad); stroke-width: 2.5; stroke-linecap: round;
+        }
+        .sparkline-area {
+            fill: url(#cyanAreaGrad);
+        }
+        .sparkline-point {
+            fill: var(--cyan); r: 4; stroke: #000; stroke-width: 2;
+            transition: all 0.2s; cursor: pointer;
+        }
+        .sparkline-point:hover { r: 6; fill: #FFF; filter: drop-shadow(0 0 6px var(--cyan)); }
 
         /* Terminal Wire: 4 cols */
         .card-wire {
@@ -297,7 +335,7 @@
             font-family: var(--font-display); font-size: 0.95rem; font-weight: 700; color: #FFF; line-height: 1.35;
         }
 
-        /* Standard 4-col Bento Items (Row 2 & 3) */
+        /* Standard 4-col & 6-col Bento Items */
         .col-4 { grid-column: span 4; }
         .col-6 { grid-column: span 6; }
         @media(max-width: 1024px) { .col-4, .col-6 { grid-column: span 6; } }
@@ -348,7 +386,7 @@
         /* Modal Dialog Reader */
         .modal-overlay {
             position: fixed; inset: 0;
-            background: rgba(4, 6, 10, 0.92);
+            background: rgba(3, 5, 8, 0.93);
             backdrop-filter: blur(24px);
             z-index: 1000;
             display: flex; align-items: center; justify-content: center;
@@ -369,12 +407,24 @@
         }
         .modal-overlay.active .modal-shell { transform: translateY(0) scale(1); }
 
+        /* Reading Progress Bar on Modal */
+        .reading-progress-track {
+            position: sticky; top: 0; left: 0; width: 100%; height: 4px;
+            background: rgba(255, 255, 255, 0.05); z-index: 50;
+        }
+        .reading-progress-bar {
+            height: 100%; width: 0%;
+            background: linear-gradient(90deg, var(--cyan), var(--purple));
+            box-shadow: 0 0 10px var(--cyan);
+            transition: width 0.1s linear;
+        }
+
         .modal-close-btn {
             position: absolute; top: 20px; right: 20px;
             width: 40px; height: 40px; border-radius: 50%;
             background: rgba(0, 0, 0, 0.7); border: 1px solid var(--border-subtle);
             color: #FFF; font-size: 18px; display: flex; align-items: center; justify-content: center;
-            cursor: pointer; z-index: 20; transition: all 0.2s;
+            cursor: pointer; z-index: 60; transition: all 0.2s;
         }
         .modal-close-btn:hover { background: rgba(255, 255, 255, 0.15); transform: rotate(90deg); }
 
@@ -384,9 +434,70 @@
         }
         .modal-inner { padding: 40px; }
         .modal-title {
-            font-family: var(--font-display); font-size: 2.3rem; font-weight: 800; line-height: 1.2;
+            font-family: var(--font-display); font-size: 2.2rem; font-weight: 800; line-height: 1.25;
             color: #FFF; margin: 16px 0 14px; letter-spacing: -0.02em;
         }
+
+        /* Native Audio Briefing Player Widget */
+        .audio-brief-widget {
+            background: rgba(0, 240, 255, 0.04);
+            border: 1px solid rgba(0, 240, 255, 0.2);
+            border-radius: 14px;
+            padding: 16px 20px;
+            display: flex; align-items: center; justify-content: space-between;
+            margin: 20px 0 24px; gap: 16px;
+        }
+        .audio-brief-left {
+            display: flex; align-items: center; gap: 14px;
+        }
+        .audio-play-btn {
+            width: 42px; height: 42px; border-radius: 50%;
+            background: linear-gradient(135deg, var(--cyan), var(--purple));
+            border: none; color: #000; font-size: 16px; font-weight: 800;
+            display: flex; align-items: center; justify-content: center;
+            cursor: pointer; transition: transform 0.2s, box-shadow 0.2s;
+            box-shadow: 0 0 15px rgba(0, 240, 255, 0.35);
+        }
+        .audio-play-btn:hover { transform: scale(1.06); }
+        .audio-info h5 {
+            font-family: var(--font-display); font-size: 0.95rem; font-weight: 700; color: #FFF;
+        }
+        .audio-info p {
+            font-family: var(--font-mono); font-size: 0.75rem; color: var(--text-muted);
+        }
+        .audio-wave {
+            display: flex; align-items: center; gap: 3px; height: 24px;
+        }
+        .audio-bar {
+            width: 3px; height: 6px; background: var(--cyan); border-radius: 2px;
+            transition: height 0.2s;
+        }
+        .audio-wave.playing .audio-bar {
+            animation: soundWave 1.2s infinite ease-in-out;
+        }
+        .audio-wave.playing .audio-bar:nth-child(2) { animation-delay: 0.15s; }
+        .audio-wave.playing .audio-bar:nth-child(3) { animation-delay: 0.3s; }
+        .audio-wave.playing .audio-bar:nth-child(4) { animation-delay: 0.45s; }
+        .audio-wave.playing .audio-bar:nth-child(5) { animation-delay: 0.6s; }
+        @keyframes soundWave {
+            0%, 100% { height: 6px; }
+            50% { height: 22px; }
+        }
+
+        /* Sticky Table of Contents in Modal */
+        .modal-toc {
+            display: flex; flex-wrap: wrap; gap: 8px; margin: 18px 0 24px;
+            padding-bottom: 16px; border-bottom: 1px solid var(--border-subtle);
+        }
+        .toc-pill {
+            font-family: var(--font-mono); font-size: 0.75rem; color: var(--text-muted);
+            background: rgba(255, 255, 255, 0.03); border: 1px solid var(--border-subtle);
+            padding: 5px 12px; border-radius: 6px; cursor: pointer; transition: all 0.2s;
+        }
+        .toc-pill:hover {
+            color: var(--cyan); border-color: var(--cyan); background: rgba(0, 240, 255, 0.08);
+        }
+
         .modal-callout {
             background: rgba(0, 240, 255, 0.05);
             border-left: 4px solid var(--cyan);
@@ -405,7 +516,7 @@
             display: flex; flex-direction: column; gap: 20px;
         }
         .modal-article-body h3 {
-            font-family: var(--font-display); font-size: 1.45rem; color: #FFF; margin-top: 20px;
+            font-family: var(--font-display); font-size: 1.45rem; color: #FFF; margin-top: 24px;
         }
         .modal-article-body ul { padding-left: 24px; display: flex; flex-direction: column; gap: 8px; }
         .modal-article-body li strong { color: #FFF; }
@@ -413,7 +524,7 @@
         /* Command Palette Modal (Cmd+K) */
         .cmd-modal {
             position: fixed; inset: 0;
-            background: rgba(4, 6, 10, 0.85); backdrop-filter: blur(16px);
+            background: rgba(3, 5, 8, 0.85); backdrop-filter: blur(16px);
             z-index: 1100; display: flex; align-items: flex-start; justify-content: center;
             padding-top: 15vh; opacity: 0; pointer-events: none; transition: opacity 0.2s;
         }
@@ -476,17 +587,32 @@
     <canvas id="neural-canvas"></canvas>
     <div class="noise-overlay"></div>
 
+    <!-- SVG Gradients for Charts -->
+    <svg width="0" height="0" style="position: absolute;">
+        <defs>
+            <linearGradient id="cyanPurpleGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%" stop-color="#00F0FF" />
+                <stop offset="100%" stop-color="#8A4FFF" />
+            </linearGradient>
+            <linearGradient id="cyanAreaGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                <stop offset="0%" stop-color="rgba(0, 240, 255, 0.25)" />
+                <stop offset="100%" stop-color="rgba(0, 240, 255, 0.0)" />
+            </linearGradient>
+        </defs>
+    </svg>
+
     <!-- Top Telemetry HUD -->
     <div class="top-hud">
         <div class="container top-hud-inner">
             <div class="hud-status">
                 <span class="status-badge"><span class="pulse-dot"></span> <span id="hud-cluster">GLOBAL COMPUTE: 98.4% NOMINAL</span></span>
-                <span style="opacity: 0.5;">|</span>
-                <span id="hud-ticker">BLACKWELL B200 CLUSTERS ACCELERATING IN PRODUCTION</span>
+                <span style="opacity: 0.4;">|</span>
+                <span id="hud-ticker">BLACKWELL B200 ACCELERATING PRODUCTION</span>
             </div>
             <div style="display: flex; align-items: center; gap: 14px;">
-                <span id="hud-time">UTC 18:15:00</span>
-                <span style="color: var(--cyan); font-weight: 700;">v3.4-PROD</span>
+                <button class="sfx-btn" id="sfx-toggle" onclick="toggleAudioSFX()">🔊 SFX: ON</button>
+                <span id="hud-time">UTC 18:30:00</span>
+                <span style="color: var(--cyan); font-weight: 700;">v3.5-PROD</span>
             </div>
         </div>
     </div>
@@ -523,7 +649,7 @@
         </div>
     </header>
 
-    <!-- Bento Grid Section (Awwwards Experience) -->
+    <!-- Bento Grid Section -->
     <main class="container bento-section" id="feed">
         <!-- Filter Ribbon -->
         <div class="filter-ribbon">
@@ -543,6 +669,24 @@
                     <span class="card-tag tag-cyan" id="lead-tag">Infraestrutura & Energia</span>
                     <h1 class="lead-title" id="lead-title">A Crise Energética dos 60GW: Big Techs Reativam Usinas Nucleares para Alimentar Clusters de IA</h1>
                     <p class="lead-desc" id="lead-desc">O verdadeiro limite físico para o avanço dos modelos de 1 trilhão de parâmetros deixou de ser o silício e passou a ser a rede elétrica. Investigação revela contratos de 20 anos de Microsoft, Amazon e Alphabet com reatores dedicados.</p>
+                    
+                    <!-- Interactive SVG Telemetry Sparkline -->
+                    <div class="sparkline-box">
+                        <div class="sparkline-header">
+                            <span id="chart-lead-title">PROJEÇÃO DE DEMANDA DE POTÊNCIA (GW) PARA IA</span>
+                            <strong>+340% (2023–2027)</strong>
+                        </div>
+                        <svg class="sparkline-svg" viewBox="0 0 400 50">
+                            <polygon class="sparkline-area" points="0,45 60,38 150,28 260,18 380,4 380,50 0,50" />
+                            <polyline class="sparkline-line" points="0,45 60,38 150,28 260,18 380,4" />
+                            <circle class="sparkline-point" cx="0" cy="45"><title>2023: 14 GW</title></circle>
+                            <circle class="sparkline-point" cx="60" cy="38"><title>2024: 22 GW</title></circle>
+                            <circle class="sparkline-point" cx="150" cy="28"><title>2025: 38 GW</title></circle>
+                            <circle class="sparkline-point" cx="260" cy="18"><title>2026: 52 GW</title></circle>
+                            <circle class="sparkline-point" cx="380" cy="4"><title>2027 Proj: 68 GW</title></circle>
+                        </svg>
+                    </div>
+
                     <div class="card-meta" style="margin-top: auto; display: flex; justify-content: space-between; font-family: var(--font-mono); font-size: 0.8125rem; color: var(--text-muted); padding-top: 14px; border-top: 1px solid var(--border-subtle);">
                         <span id="lead-time">⚡ 8 min • Engenharia & Infra</span>
                         <span style="color: var(--cyan); font-weight: 700;" id="lead-cta">Explorar Análise Completa →</span>
@@ -648,26 +792,62 @@
         </div>
     </main>
 
-    <!-- Deep Reader Modal (Awwwards Immersive View) -->
+    <!-- Deep Reader Modal (Awwwards Immersive View with Audio Brief & Progress) -->
     <div class="modal-overlay" id="articleModal" onclick="closeOnOverlay(event)">
-        <div class="modal-shell">
+        <div class="modal-shell" id="modalShell" onscroll="updateReadingProgress()">
+            <!-- Top Sticky Progress Line -->
+            <div class="reading-progress-track">
+                <div class="reading-progress-bar" id="readingProgressBar"></div>
+            </div>
+
             <button class="modal-close-btn" onclick="closeArticleModal()">✕</button>
             <img class="modal-hero-img" id="modalHeroImg" src="" alt="Banner">
+            
             <div class="modal-inner">
                 <span class="card-tag tag-cyan" id="modalTag">Infraestrutura</span>
                 <h1 class="modal-title" id="modalTitle">Título da Notícia</h1>
-                <div style="font-family: var(--font-mono); font-size: 0.8125rem; color: var(--text-muted); margin-bottom: 24px;" id="modalMeta">
+                
+                <div style="font-family: var(--font-mono); font-size: 0.8125rem; color: var(--text-muted); margin-bottom: 18px;" id="modalMeta">
                     Por Equipe Editorial CorticFlow • 8 min de leitura
                 </div>
 
-                <div class="modal-callout">
+                <!-- Native Audio Briefing Player Widget -->
+                <div class="audio-brief-widget">
+                    <div class="audio-brief-left">
+                        <button class="audio-play-btn" id="audioBriefBtn" onclick="toggleAudioBriefing()">▶</button>
+                        <div class="audio-info">
+                            <h5 id="audioBriefTitle">Ouvir Síntese Executiva em Áudio</h5>
+                            <p id="audioBriefDuration">Briefing de voz neural nativo • 1:40 min</p>
+                        </div>
+                    </div>
+                    <div class="audio-wave" id="audioWave">
+                        <div class="audio-bar"></div>
+                        <div class="audio-bar"></div>
+                        <div class="audio-bar"></div>
+                        <div class="audio-bar"></div>
+                        <div class="audio-bar"></div>
+                    </div>
+                </div>
+
+                <!-- Interactive Anchor TOC -->
+                <div class="modal-toc">
+                    <span style="font-family: var(--font-mono); font-size: 0.72rem; color: var(--text-muted); align-self: center;" id="toc-label">PULAR PARA:</span>
+                    <button class="toc-pill" onclick="scrollToAnchor('anchor-summary')">⚡ <span id="toc-sum-lbl">Resumo</span></button>
+                    <button class="toc-pill" onclick="scrollToAnchor('anchor-body')">🔬 <span id="toc-body-lbl">Análise Técnica</span></button>
+                    <button class="toc-pill" onclick="scrollToAnchor('anchor-sources')">🌐 <span id="toc-src-lbl">Fontes</span></button>
+                </div>
+
+                <!-- Executive Summary Box -->
+                <div class="modal-callout" id="anchor-summary">
                     <h4 id="modalCalloutH">⚡ Síntese Executiva & Impacto no Setor</h4>
                     <p id="modalCalloutP">Resumo analítico dos desdobramentos de mercado.</p>
                 </div>
 
+                <!-- Long-form Body -->
                 <div class="modal-article-body" id="modalBody"></div>
 
-                <div style="margin-top: 40px; padding-top: 24px; border-top: 1px solid var(--border-subtle); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 14px;">
+                <!-- Official Sources & Links -->
+                <div id="anchor-sources" style="margin-top: 40px; padding-top: 24px; border-top: 1px solid var(--border-subtle); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 14px;">
                     <span style="font-family: var(--font-mono); font-size: 0.8125rem; color: var(--text-muted);" id="modalSourceLabel">
                         Fontes Oficiais & Documentação Técnica:
                     </span>
@@ -776,6 +956,121 @@
     <!-- Interactive Engine & International Database -->
     <script>
         let currentLang = localStorage.getItem('corticflow_lang') || 'pt';
+        let sfxEnabled = localStorage.getItem('corticflow_sfx') !== 'false';
+        let currentArticlePlaying = null;
+        let isSpeaking = false;
+
+        /* Synthesized Web Audio API (Zero External Files, Ultra Crisp) */
+        const audioCtx = (window.AudioContext || window.webkitAudioContext) ? new (window.AudioContext || window.webkitAudioContext)() : null;
+        
+        function playSfx(type = 'click') {
+            if (!sfxEnabled || !audioCtx) return;
+            if (audioCtx.state === 'suspended') { audioCtx.resume(); }
+
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+
+            const now = audioCtx.currentTime;
+
+            if (type === 'click') {
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(600, now);
+                osc.frequency.exponentialRampToValueAtTime(1200, now + 0.04);
+                gain.gain.setValueAtTime(0.04, now);
+                gain.gain.exponentialRampToValueAtTime(0.001, now + 0.04);
+                osc.start(now);
+                osc.stop(now + 0.04);
+            } else if (type === 'modal') {
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(320, now);
+                osc.frequency.exponentialRampToValueAtTime(640, now + 0.08);
+                gain.gain.setValueAtTime(0.05, now);
+                gain.gain.exponentialRampToValueAtTime(0.001, now + 0.08);
+                osc.start(now);
+                osc.stop(now + 0.08);
+            }
+        }
+
+        function toggleAudioSFX() {
+            sfxEnabled = !sfxEnabled;
+            localStorage.setItem('corticflow_sfx', sfxEnabled);
+            const btn = document.getElementById('sfx-toggle');
+            if (sfxEnabled) {
+                btn.innerText = '🔊 SFX: ON';
+                btn.classList.add('active');
+                playSfx('click');
+            } else {
+                btn.innerText = '🔇 SFX: OFF';
+                btn.classList.remove('active');
+            }
+        }
+
+        /* Reading Progress Updater */
+        function updateReadingProgress() {
+            const shell = document.getElementById('modalShell');
+            const scrollTop = shell.scrollTop;
+            const scrollHeight = shell.scrollHeight - shell.clientHeight;
+            const progress = scrollHeight > 0 ? (scrollTop / scrollHeight) * 100 : 0;
+            document.getElementById('readingProgressBar').style.width = `${progress}%`;
+        }
+
+        function scrollToAnchor(id) {
+            playSfx('click');
+            const el = document.getElementById(id);
+            if (el) {
+                el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        }
+
+        /* Native SpeechSynthesis Audio Briefing */
+        function toggleAudioBriefing() {
+            if (!('speechSynthesis' in window)) {
+                alert('Síntese de voz não suportada pelo navegador.');
+                return;
+            }
+
+            const btn = document.getElementById('audioBriefBtn');
+            const wave = document.getElementById('audioWave');
+
+            if (isSpeaking) {
+                window.speechSynthesis.cancel();
+                isSpeaking = false;
+                btn.innerText = '▶';
+                wave.classList.remove('playing');
+                return;
+            }
+
+            playSfx('click');
+            const calloutText = document.getElementById('modalCalloutP').innerText;
+            const titleText = document.getElementById('modalTitle').innerText;
+            const textToSpeak = `${titleText}. ${calloutText}`;
+
+            const utterance = new SpeechSynthesisUtterance(textToSpeak);
+            utterance.lang = currentLang === 'pt' ? 'pt-BR' : 'en-US';
+            utterance.rate = 1.05;
+
+            utterance.onstart = () => {
+                isSpeaking = true;
+                btn.innerText = '⏸';
+                wave.classList.add('playing');
+            };
+
+            utterance.onend = () => {
+                isSpeaking = false;
+                btn.innerText = '▶';
+                wave.classList.remove('playing');
+            };
+
+            utterance.onerror = () => {
+                isSpeaking = false;
+                btn.innerText = '▶';
+                wave.classList.remove('playing');
+            };
+
+            window.speechSynthesis.speak(utterance);
+        }
 
         /* Spotlight Border Effect Following Mouse */
         document.querySelectorAll('.bento-card').forEach(card => {
@@ -855,6 +1150,7 @@
         });
 
         function toggleCmd() {
+            playSfx('click');
             const m = document.getElementById('cmdModal');
             m.classList.toggle('active');
             if (m.classList.contains('active')) {
@@ -877,6 +1173,7 @@
                     time: '⚡ 8 min de leitura • Engenharia & Energia',
                     callout: 'A demanda por eletricidade limpa contínua (fator de capacidade >95%) levou Amazon, Microsoft e Google a assinarem PPAs de 20 anos com usinas nucleares reativadas, consolidando os pequenos reatores modulares (SMRs) como o novo backbone da IA.',
                     body: `
+                        <div id="anchor-body"></div>
                         <p>Nos últimos doze meses, o gargalo da corrida da inteligência artificial sofreu uma translação radical. A escassez de wafers de 3 nanômetros e a disputa por capacidade de encapsulamento CoWoS da TSMC deram lugar a um obstáculo muito mais inflexível: <strong>a capacidade de geração contínua da rede elétrica global</strong>.</p>
                         <h3>O Limite Físico dos Megawatts</h3>
                         <p>Um cluster moderno de treinamento com 100.000 aceleradores de última geração consome em regime contínuo mais de 150 megawatts (MW) de potência — equivalente ao consumo de uma cidade industrial de médio porte. Projetos de datacenters de 1 gigawatt (GW) já estão em fase de licenciamento nos Estados Unidos e no Oriente Médio.</p>
@@ -900,6 +1197,7 @@
                     time: '⚡ 8 min read • Engineering & Energy',
                     callout: 'The requirement for continuous baseload power (>95% capacity factor) forced Amazon, Microsoft, and Google into 20-year PPAs with reopened nuclear reactors, positioning SMRs as the definitive AI backbone.',
                     body: `
+                        <div id="anchor-body"></div>
                         <p>Over the past twelve months, the bottleneck in artificial intelligence shifted dramatically. The shortage of 3nm wafer allocations and TSMC CoWoS packaging capacity gave way to an unyielding real-world constraint: <strong>the continuous power generation capacity of regional electric grids</strong>.</p>
                         <h3>The Gigawatt-Scale Frontier</h3>
                         <p>A premier training cluster scaling 100,000 next-generation accelerators consumes over 150 megawatts (MW) continuous baseload power — comparable to an entire industrial city. Projects exceeding 1 gigawatt (GW) are already undergoing environmental clearance across North America and the Middle East.</p>
@@ -927,6 +1225,7 @@
                     time: '6 min de leitura • Modelos & Pesos',
                     callout: 'A convergência entre quantização FP8 e arquiteturas Mixture-of-Experts permite executar modelos de alta capacidade com uma fração do custo de inferência tradicional.',
                     body: `
+                        <div id="anchor-body"></div>
                         <p>O ecossistema open-weights atingiu paridade arquitetural com modelos proprietários em tarefas de raciocínio matemático, síntese de código e engenharia de software complexa.</p>
                         <h3>Inovações de Eficiência</h3>
                         <p>Através da implementação de Multi-Head Latent Attention (MLA) e ativação esparsa de especialistas, os custos de computação de inferência caíram em mais de 70%, permitindo implementações corporativas autônomas em infraestruturas locais.</p>
@@ -940,6 +1239,7 @@
                     time: '6 min read • Models & Weights',
                     callout: 'The alignment between FP8 precision and Mixture-of-Experts designs enables elite reasoning at a fraction of traditional token pricing.',
                     body: `
+                        <div id="anchor-body"></div>
                         <p>The open-weights ecosystem achieved architectural parity with proprietary frontier models across mathematical reasoning, algorithmic generation, and deep systems engineering.</p>
                         <h3>Efficiency Breakthroughs</h3>
                         <p>Through Multi-Head Latent Attention (MLA) and sparse expert activation, inference compute costs plummeted by over 70%, unlocking sovereign enterprise deployments on self-hosted silicon.</p>
@@ -957,6 +1257,7 @@
                     time: '5 min de leitura • Semicondutores',
                     callout: 'A integração de barramentos de altíssima largura de banda diretamente na pastilha consolida as estações de trabalho de silício Apple como centros neurais sem necessidade de servidores remotos.',
                     body: `
+                        <div id="anchor-body"></div>
                         <p>A arquitetura de silício proprietária da Apple consolidou uma vantagem decisiva para desenvolvedores de IA: a capacidade de carregar modelos de até 70 bilhões de parâmetros inteiramente na memória unificada do computador pessoal sem estrangulamento de PCI Express.</p>
                     `,
                     links: [{ name: 'Apple Platform Architecture ↗', url: 'https://developer.apple.com' }]
@@ -968,6 +1269,7 @@
                     time: '5 min read • Semiconductors',
                     callout: 'On-die unified memory architectures position personal workstations as private neural servers without remote cloud latency.',
                     body: `
+                        <div id="anchor-body"></div>
                         <p>Apple proprietary silicon engineering established a durable edge: hosting 70B parameter neural models directly within unified memory without PCIe interface bottlenecks.</p>
                     `,
                     links: [{ name: 'Apple Platform Architecture ↗', url: 'https://developer.apple.com' }]
@@ -983,6 +1285,7 @@
                     time: '6 min de leitura • Cibersegurança',
                     callout: 'Falhas físicas microscópicas podem alterar os limiares de segurança de LLMs sem disparar alertas tradicionais de intrusão de software.',
                     body: `
+                        <div id="anchor-body"></div>
                         <p>Uma nova classe de vulnerabilidades de hardware atinge a integridade da memória HBM em clusters de nuvem compartilhados. O ataque GPUThor explora ressonâncias acústicas para alterar bits de peso neural durante cálculos matriciais intensivos.</p>
                     `,
                     links: [{ name: 'Security Advisory Paper ↗', url: 'https://arxiv.org' }]
@@ -994,6 +1297,7 @@
                     time: '6 min read • Cybersecurity',
                     callout: 'Physical hardware vulnerabilities can silently alter LLM safety alignment without triggering software audit logs.',
                     body: `
+                        <div id="anchor-body"></div>
                         <p>A novel vulnerability class targets HBM integrity across multi-tenant GPU clouds. The GPUThor exploit leverages acoustic resonance to flip weight bits during matrix multiplication.</p>
                     `,
                     links: [{ name: 'Security Advisory Paper ↗', url: 'https://arxiv.org' }]
@@ -1009,6 +1313,7 @@
                     time: '7 min de leitura • Robótica',
                     callout: 'A convergência de visão computacional de baixa latência e atuadores com controle de torque viabiliza automação em nanômetros.',
                     body: `
+                        <div id="anchor-body"></div>
                         <p>A substituição gradual de pontes rolantes rígidas por robôs humanoides com visão espacial está acelerando a logística interna de produção de wafers em fabs na Ásia e nos Estados Unidos.</p>
                     `,
                     links: [{ name: 'IEEE Robotics Review ↗', url: 'https://www.ieee.org' }]
@@ -1020,6 +1325,7 @@
                     time: '7 min read • Robotics',
                     callout: 'Low-latency spatial vision coupled with torque-controlled actuators unlocks flexible nano-scale material handling.',
                     body: `
+                        <div id="anchor-body"></div>
                         <p>Deploying flexible humanoid systems inside cleanroom environments provides modular wafer routing across multi-step fab lithography cycles.</p>
                     `,
                     links: [{ name: 'IEEE Robotics Review ↗', url: 'https://www.ieee.org' }]
@@ -1035,6 +1341,7 @@
                     time: '6 min de leitura • Fotônica',
                     callout: 'A transmissão fotônica de dados reduz drasticamente a latência de comunicação inter-cluster em redes InfiniBand e Ethernet.',
                     body: `
+                        <div id="anchor-body"></div>
                         <p>Com o aumento da largura de banda exigida por nós de computação para 3.2 Tbps por acelerador, os cabos de cobre convencionais atingiram seus limites térmicos e de distância. A tecnologia de Co-Packaged Optics traz os transceptores a laser para dentro do mesmo substrato do chip principal.</p>
                     `,
                     links: [{ name: 'Optical Internetworking Forum ↗', url: 'https://www.oiforum.com' }]
@@ -1046,6 +1353,7 @@
                     time: '6 min read • Photonics',
                     callout: 'Photonic data links significantly slash inter-node communication latency across hyperscale AI fabrics.',
                     body: `
+                        <div id="anchor-body"></div>
                         <p>As per-accelerator bandwidth escalates toward 3.2 Tbps, passive copper channels encounter unavoidable thermal and distance constraints. Co-Packaged Optics mounts laser engines directly alongside the primary compute die.</p>
                     `,
                     links: [{ name: 'Optical Internetworking Forum ↗', url: 'https://www.oiforum.com' }]
@@ -1157,6 +1465,7 @@
 
         /* Modal Trigger Functions */
         function readArticle(id) {
+            playSfx('modal');
             const art = ARTICLES[id];
             if (!art) return;
             const data = art[currentLang];
@@ -1167,6 +1476,15 @@
             document.getElementById('modalCalloutP').innerText = data.callout;
             document.getElementById('modalBody').innerHTML = data.body;
             
+            // Reset Progress Bar & Audio Player
+            document.getElementById('readingProgressBar').style.width = '0%';
+            if (isSpeaking) {
+                window.speechSynthesis.cancel();
+                isSpeaking = false;
+                document.getElementById('audioBriefBtn').innerText = '▶';
+                document.getElementById('audioWave').classList.remove('playing');
+            }
+
             const linksContainer = document.getElementById('modalLinks');
             linksContainer.innerHTML = '';
             data.links.forEach(l => {
@@ -1182,11 +1500,19 @@
         }
 
         function closeArticleModal() {
+            playSfx('click');
+            if (isSpeaking) {
+                window.speechSynthesis.cancel();
+                isSpeaking = false;
+                document.getElementById('audioBriefBtn').innerText = '▶';
+                document.getElementById('audioWave').classList.remove('playing');
+            }
             document.getElementById('articleModal').classList.remove('active');
             document.body.style.overflow = '';
         }
 
         function openInst(key) {
+            playSfx('modal');
             const data = INST_TEXT[key][currentLang];
             document.getElementById('instTag').innerText = data.tag;
             document.getElementById('instTitle').innerText = data.title;
@@ -1196,6 +1522,7 @@
         }
 
         function closeInst() {
+            playSfx('click');
             document.getElementById('instModal').classList.remove('active');
             document.body.style.overflow = '';
         }
@@ -1209,6 +1536,7 @@
 
         /* Filter Logic */
         function filterBy(cat, btn) {
+            playSfx('click');
             if (btn) {
                 document.querySelectorAll('.filter-pill').forEach(p => p.classList.remove('active'));
                 btn.classList.add('active');
@@ -1225,6 +1553,7 @@
 
         /* Language Switcher */
         function switchLang(lang) {
+            playSfx('click');
             currentLang = lang;
             localStorage.setItem('corticflow_lang', lang);
             document.documentElement.lang = lang === 'pt' ? 'pt-BR' : 'en-US';
@@ -1234,7 +1563,7 @@
 
             if (lang === 'pt') {
                 document.getElementById('hud-cluster').innerText = 'GLOBAL COMPUTE: 98.4% NOMINAL';
-                document.getElementById('hud-ticker').innerText = 'BLACKWELL B200 CLUSTERS ACELERANDO PRODUÇÃO';
+                document.getElementById('hud-ticker').innerText = 'BLACKWELL B200 ACELERANDO PRODUÇÃO';
                 document.getElementById('nav-all').innerText = 'Radar Global';
                 document.getElementById('nav-semi').innerText = 'Semicondutores';
                 document.getElementById('nav-models').innerText = 'Modelos Fundacionais';
@@ -1248,10 +1577,18 @@
                 document.getElementById('pill-sec').innerText = '🛡️ Cibersegurança & Silício';
                 document.getElementById('pill-phys').innerText = '⚙️ Physical AI & Robótica';
 
+                document.getElementById('chart-lead-title').innerText = 'PROJEÇÃO DE DEMANDA DE POTÊNCIA (GW) PARA IA';
                 document.getElementById('wire-heading').innerText = '⚡ Despachos em Tempo Real';
                 document.getElementById('wire-live').innerText = 'AO VIVO';
                 document.getElementById('wire-curation').innerText = 'Curadoria Editorial Sênior';
                 document.getElementById('wire-verified').innerText = 'Verificado 100%';
+
+                document.getElementById('audioBriefTitle').innerText = 'Ouvir Síntese Executiva em Áudio';
+                document.getElementById('audioBriefDuration').innerText = 'Briefing de voz neural nativo • 1:40 min';
+                document.getElementById('toc-label').innerText = 'PULAR PARA:';
+                document.getElementById('toc-sum-lbl').innerText = 'Resumo';
+                document.getElementById('toc-body-lbl').innerText = 'Análise Técnica';
+                document.getElementById('toc-src-lbl').innerText = 'Fontes';
 
                 document.getElementById('foot-h-editorials').innerText = 'Editorias';
                 document.getElementById('foot-h-radar').innerText = 'Radar Global';
@@ -1260,7 +1597,7 @@
                 document.getElementById('foot-sub').innerText = 'Plataforma Internacional de Inteligência & Silício';
             } else {
                 document.getElementById('hud-cluster').innerText = 'GLOBAL COMPUTE: 98.4% NOMINAL';
-                document.getElementById('hud-ticker').innerText = 'BLACKWELL B200 CLUSTERS ACCELERATING PRODUCTION';
+                document.getElementById('hud-ticker').innerText = 'BLACKWELL B200 ACCELERATING PRODUCTION';
                 document.getElementById('nav-all').innerText = 'Global Radar';
                 document.getElementById('nav-semi').innerText = 'Semiconductors';
                 document.getElementById('nav-models').innerText = 'Foundational Models';
@@ -1274,10 +1611,18 @@
                 document.getElementById('pill-sec').innerText = '🛡️ Silicon Cybersecurity';
                 document.getElementById('pill-phys').innerText = '⚙️ Physical AI & Robotics';
 
+                document.getElementById('chart-lead-title').innerText = 'AI POWER DEMAND PROJECTION (GW)';
                 document.getElementById('wire-heading').innerText = '⚡ Real-Time Wire';
                 document.getElementById('wire-live').innerText = 'LIVE';
                 document.getElementById('wire-curation').innerText = 'Senior Curation';
                 document.getElementById('wire-verified').innerText = '100% Verified';
+
+                document.getElementById('audioBriefTitle').innerText = 'Listen to Executive Briefing';
+                document.getElementById('audioBriefDuration').innerText = 'Native neural voice briefing • 1:40 min';
+                document.getElementById('toc-label').innerText = 'JUMP TO:';
+                document.getElementById('toc-sum-lbl').innerText = 'Summary';
+                document.getElementById('toc-body-lbl').innerText = 'Technical Analysis';
+                document.getElementById('toc-src-lbl').innerText = 'Sources';
 
                 document.getElementById('foot-h-editorials').innerText = 'Topics';
                 document.getElementById('foot-h-radar').innerText = 'Global Radar';
@@ -1325,6 +1670,10 @@
 
         /* Initial Setup */
         switchLang(currentLang);
+        if (!sfxEnabled) {
+            document.getElementById('sfx-toggle').innerText = '🔇 SFX: OFF';
+            document.getElementById('sfx-toggle').classList.remove('active');
+        }
 
         /* Real-Time UTC Clock in HUD */
         setInterval(() => {
