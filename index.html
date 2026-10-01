@@ -1137,15 +1137,66 @@
             }
         }
 
-        /* Native SpeechSynthesis Audio Briefing */
+        /* Neural Voice Engine - Auto Selection of Google & Natural Voices */
+        let availableVoices = [];
+
+        function initVoices() {
+            if ('speechSynthesis' in window) {
+                availableVoices = window.speechSynthesis.getVoices();
+            }
+        }
+        initVoices();
+        if ('speechSynthesis' in window && window.speechSynthesis.onvoiceschanged !== undefined) {
+            window.speechSynthesis.onvoiceschanged = initVoices;
+        }
+
+        function getBestNeuralVoice(targetLang) {
+            if (!availableVoices.length && 'speechSynthesis' in window) {
+                availableVoices = window.speechSynthesis.getVoices();
+            }
+            if (!availableVoices.length) return null;
+
+            const isPt = targetLang.startsWith('pt');
+            const prefix = isPt ? 'pt' : 'en';
+
+            const langVoices = availableVoices.filter(v => v.lang.toLowerCase().replace('_', '-').startsWith(prefix));
+            if (!langVoices.length) return null;
+
+            // 1. Google Neural Voice (Chrome / Android / Google TTS)
+            const googleVoice = langVoices.find(v => v.name.toLowerCase().includes('google'));
+            if (googleVoice) return googleVoice;
+
+            // 2. Microsoft Natural / Neural Voice (Edge)
+            const naturalVoice = langVoices.find(v => 
+                v.name.toLowerCase().includes('natural') || 
+                v.name.toLowerCase().includes('online') ||
+                v.name.toLowerCase().includes('neural')
+            );
+            if (naturalVoice) return naturalVoice;
+
+            // 3. Apple Enhanced / Premium / Siri Voice (Safari / iOS / Mac)
+            const appleVoice = langVoices.find(v => 
+                v.name.toLowerCase().includes('enhanced') || 
+                v.name.toLowerCase().includes('premium') ||
+                v.name.toLowerCase().includes('siri')
+            );
+            if (appleVoice) return appleVoice;
+
+            // 4. Default language voice
+            const def = langVoices.find(v => v.default);
+            return def || langVoices[0];
+        }
+
+        /* Native Audio Briefing Player with Automatic Neural Voice Selection */
         function toggleAudioBriefing() {
             if (!('speechSynthesis' in window)) {
-                alert('Síntese de voz não suportada pelo navegador.');
+                alert(currentLang === 'pt' ? 'Síntese de voz não suportada pelo navegador.' : 'Speech synthesis not supported by this browser.');
                 return;
             }
 
             const btn = document.getElementById('audioBriefBtn');
             const wave = document.getElementById('audioWave');
+            const durationEl = document.getElementById('audioBriefDuration');
 
             if (isSpeaking) {
                 window.speechSynthesis.cancel();
@@ -1156,13 +1207,33 @@
             }
 
             playSfx('click');
+            window.speechSynthesis.cancel(); // Clear any previous queue
+
             const calloutText = document.getElementById('modalCalloutP').innerText;
             const titleText = document.getElementById('modalTitle').innerText;
-            const textToSpeak = `${titleText}. ${calloutText}`;
+            
+            // Clean text for natural speech (remove markdown symbols, technical brackets)
+            let cleanText = `${titleText}. ${calloutText}`;
+            cleanText = cleanText.replace(/[\*\_#`~>]/g, ' ').replace(/\s+/g, ' ').trim();
 
-            const utterance = new SpeechSynthesisUtterance(textToSpeak);
-            utterance.lang = currentLang === 'pt' ? 'pt-BR' : 'en-US';
-            utterance.rate = 1.05;
+            const utterance = new SpeechSynthesisUtterance(cleanText);
+            const targetLang = currentLang === 'pt' ? 'pt-BR' : 'en-US';
+            utterance.lang = targetLang;
+
+            // Select Best Google / Natural Neural Voice
+            const bestVoice = getBestNeuralVoice(targetLang);
+            if (bestVoice) {
+                utterance.voice = bestVoice;
+                if (durationEl) {
+                    const voiceLabel = bestVoice.name.includes('Google') ? 'Google Neural' : 
+                                      (bestVoice.name.includes('Natural') ? 'Edge Natural' : 
+                                      (bestVoice.name.includes('Enhanced') ? 'Apple Enhanced' : 'Voz Neural'));
+                    durationEl.innerText = `${voiceLabel} • ${currentLang === 'pt' ? '1:40 min' : '1:40 min'}`;
+                }
+            }
+
+            utterance.rate = 1.0;
+            utterance.pitch = 1.0;
 
             utterance.onstart = () => {
                 isSpeaking = true;
@@ -1176,7 +1247,8 @@
                 wave.classList.remove('playing');
             };
 
-            utterance.onerror = () => {
+            utterance.onerror = (e) => {
+                console.warn('Speech synthesis event:', e);
                 isSpeaking = false;
                 btn.innerText = '▶';
                 wave.classList.remove('playing');
