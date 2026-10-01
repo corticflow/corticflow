@@ -2,7 +2,7 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
     <title>CorticFlow — The Stream of AI & Tech Intelligence</title>
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🧠</text></svg>">
     
@@ -31,8 +31,8 @@
             --text-secondary: #94A3B8;
             --text-muted: #64748B;
             
-            --font-display: 'Space Grotesk', -apple-system, sans-serif;
-            --font-body: 'Inter', -apple-system, sans-serif;
+            --font-display: 'Space Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
+            --font-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
             --font-mono: 'JetBrains Mono', monospace;
             
             --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
@@ -40,20 +40,40 @@
 
         * { box-sizing: border-box; margin: 0; padding: 0; }
         
+        html {
+            font-size: 16px;
+            -webkit-text-size-adjust: 100%;
+            scroll-behavior: smooth;
+        }
+
+        html, body {
+            max-width: 100vw;
+            overflow-x: hidden;
+            position: relative;
+        }
+
         body {
             background-color: var(--bg-void);
             color: var(--text-main);
             font-family: var(--font-body);
             line-height: 1.6;
-            overflow-x: hidden;
             background-image: 
                 radial-gradient(circle at 12% 18%, rgba(0, 240, 255, 0.05) 0%, transparent 45%),
                 radial-gradient(circle at 88% 82%, rgba(138, 79, 255, 0.06) 0%, transparent 45%);
             background-attachment: fixed;
         }
 
+        img, svg { max-width: 100%; }
         a { color: inherit; text-decoration: none; cursor: pointer; }
-        .container { max-width: 1360px; margin: 0 auto; padding: 0 24px; position: relative; z-index: 10; }
+        
+        .container {
+            width: 100%;
+            max-width: 1360px;
+            margin: 0 auto;
+            padding: 0 clamp(16px, 3.5vw, 24px);
+            position: relative;
+            z-index: 10;
+        }
 
         /* Canvas Particle Background */
         #neural-canvas {
@@ -68,26 +88,27 @@
             pointer-events: none; z-index: 2;
         }
 
-        /* Top HUD Bar */
+        /* Top HUD Bar - Responsive */
         .top-hud {
             border-bottom: 1px solid var(--border-subtle);
-            background: rgba(3, 5, 8, 0.75);
+            background: rgba(3, 5, 8, 0.85);
             backdrop-filter: blur(12px);
             font-family: var(--font-mono);
             font-size: 0.75rem;
             color: var(--text-muted);
-            padding: 8px 0;
+            padding: 7px 0;
             position: relative; z-index: 101;
         }
         .top-hud-inner {
-            display: flex; align-items: center; justify-content: space-between;
+            display: flex; align-items: center; justify-content: space-between; gap: 10px;
         }
         .hud-status {
-            display: flex; align-items: center; gap: 16px;
+            display: flex; align-items: center; gap: 10px;
+            min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
         }
         .status-badge {
             display: inline-flex; align-items: center; gap: 6px;
-            color: var(--emerald); font-weight: 600;
+            color: var(--emerald); font-weight: 600; flex-shrink: 0;
         }
         .pulse-dot {
             width: 6px; height: 6px; border-radius: 50%;
@@ -97,42 +118,58 @@
         }
         @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
 
+        .hud-ticker-text {
+            overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+        }
+
+        .hud-right {
+            display: flex; align-items: center; gap: 10px; flex-shrink: 0;
+        }
+
         .sfx-btn {
             background: transparent; border: 1px solid var(--border-subtle);
-            color: var(--text-muted); padding: 2px 8px; border-radius: 4px;
-            cursor: pointer; font-family: var(--font-mono); font-size: 0.7rem;
-            transition: all 0.2s;
+            color: var(--text-muted); padding: 2px 7px; border-radius: 4px;
+            cursor: pointer; font-family: var(--font-mono); font-size: 0.68rem;
+            transition: all 0.2s; white-space: nowrap;
         }
         .sfx-btn:hover, .sfx-btn.active {
             border-color: var(--cyan); color: var(--cyan);
         }
 
-        /* Main Header */
+        @media (max-width: 768px) {
+            .top-hud { font-size: 0.7rem; padding: 5px 0; }
+            .hud-sep, .hud-ticker-text, #hud-time, .hud-ver { display: none; }
+        }
+
+        /* Main Header - Responsive */
         header {
             position: sticky; top: 0;
-            background: rgba(3, 5, 8, 0.88);
+            background: rgba(3, 5, 8, 0.92);
             backdrop-filter: blur(20px);
             border-bottom: 1px solid var(--border-subtle);
             z-index: 100;
         }
         .header-inner {
             display: flex; align-items: center; justify-content: space-between;
-            height: 76px;
+            height: 72px; gap: 12px;
         }
         .brand {
-            display: flex; align-items: center; gap: 12px;
+            display: flex; align-items: center; gap: 10px;
             font-family: var(--font-display);
-            font-weight: 800; font-size: 1.45rem; letter-spacing: -0.03em;
+            font-weight: 800; font-size: clamp(1.15rem, 3.5vw, 1.45rem);
+            letter-spacing: -0.03em; flex-shrink: 0;
         }
         .brand-gem {
-            width: 34px; height: 34px; border-radius: 9px;
+            width: clamp(28px, 4vw, 34px); height: clamp(28px, 4vw, 34px);
+            border-radius: 8px;
             background: linear-gradient(135deg, var(--cyan), var(--purple));
             display: flex; align-items: center; justify-content: center;
-            font-size: 17px; box-shadow: 0 0 20px rgba(0, 240, 255, 0.35);
+            font-size: clamp(14px, 2.5vw, 17px);
+            box-shadow: 0 0 16px rgba(0, 240, 255, 0.35);
         }
         .brand span { color: var(--cyan); }
 
-        nav { display: flex; align-items: center; gap: 28px; }
+        nav { display: flex; align-items: center; gap: 24px; }
         nav a {
             font-size: 0.875rem; font-weight: 500; color: var(--text-secondary);
             transition: color 0.2s; position: relative;
@@ -143,13 +180,15 @@
             background: var(--cyan); border-radius: 2px;
         }
 
-        .header-actions { display: flex; align-items: center; gap: 14px; }
+        .header-actions {
+            display: flex; align-items: center; gap: 8px; flex-shrink: 0;
+        }
         
         .cmd-trigger {
             display: inline-flex; align-items: center; gap: 8px;
             background: rgba(255, 255, 255, 0.05);
             border: 1px solid var(--border-subtle);
-            padding: 6px 14px; border-radius: 8px;
+            padding: 6px 12px; border-radius: 8px;
             font-family: var(--font-mono); font-size: 0.75rem; color: var(--text-muted);
             cursor: pointer; transition: all 0.2s;
         }
@@ -166,40 +205,83 @@
             display: inline-flex; align-items: center;
             background: rgba(255, 255, 255, 0.04);
             border: 1px solid var(--border-subtle);
-            border-radius: 9999px; padding: 3px;
-            font-family: var(--font-mono); font-size: 0.75rem;
+            border-radius: 9999px; padding: 2px;
+            font-family: var(--font-mono); font-size: 0.72rem;
         }
         .lang-btn {
             border: none; background: transparent; color: var(--text-muted);
-            padding: 4px 12px; border-radius: 9999px; font-weight: 700;
+            padding: 4px 8px; border-radius: 9999px; font-weight: 700;
             cursor: pointer; transition: all 0.2s;
         }
         .lang-btn.active {
             background: var(--cyan); color: #000;
-            box-shadow: 0 0 12px rgba(0, 240, 255, 0.5);
+            box-shadow: 0 0 10px rgba(0, 240, 255, 0.5);
         }
 
         .btn-glow {
             background: linear-gradient(135deg, var(--cyan), var(--purple));
             color: #000; font-family: var(--font-display);
-            font-size: 0.8125rem; font-weight: 700;
-            padding: 9px 20px; border-radius: 8px;
+            font-size: clamp(0.72rem, 1.8vw, 0.8125rem); font-weight: 700;
+            padding: 8px 14px; border-radius: 8px;
             border: none; cursor: pointer; transition: transform 0.2s, box-shadow 0.2s;
+            white-space: nowrap;
         }
         .btn-glow:hover {
             transform: translateY(-2px);
             box-shadow: 0 8px 24px rgba(0, 240, 255, 0.35);
         }
 
-        @media(max-width: 900px) { nav, .cmd-trigger { display: none; } }
+        @media (max-width: 900px) { nav, .cmd-trigger { display: none; } }
+        @media (max-width: 600px) {
+            .header-inner { height: 60px; }
+            .btn-glow { padding: 6px 10px; }
+            .btn-text-full { display: none; }
+            .btn-text-short { display: inline; }
+        }
+        @media (min-width: 601px) {
+            .btn-text-full { display: inline; }
+            .btn-text-short { display: none; }
+        }
 
-        /* Bento Grid Architecture (Awwwards Style) */
-        .bento-section { padding: 40px 0 60px; }
+        /* Filter Ribbon - Smooth Horizontal Scroll on Mobile */
+        .filter-ribbon {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin: clamp(20px, 3vw, 28px) 0 clamp(16px, 2.5vw, 22px);
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none;
+            padding-bottom: 6px;
+        }
+        .filter-ribbon::-webkit-scrollbar { display: none; }
+        
+        .filter-pill {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border-subtle);
+            color: var(--text-secondary);
+            font-family: var(--font-mono);
+            font-size: clamp(0.72rem, 2vw, 0.8125rem);
+            padding: 7px 14px;
+            border-radius: 9999px;
+            cursor: pointer;
+            transition: all 0.2s;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+        .filter-pill:hover, .filter-pill.active {
+            background: var(--cyan-glow);
+            border-color: var(--cyan);
+            color: #FFF;
+        }
+
+        /* Bento Grid Architecture */
+        .bento-section { padding: 12px 0 48px; }
         
         .bento-layout {
             display: grid;
             grid-template-columns: repeat(12, 1fr);
-            gap: 24px;
+            gap: clamp(14px, 2vw, 24px);
         }
 
         /* Interactive Spotlight Card */
@@ -207,17 +289,18 @@
             background: var(--bg-card);
             backdrop-filter: blur(16px);
             border: 1px solid var(--border-subtle);
-            border-radius: 20px;
+            border-radius: clamp(14px, 2.5vw, 20px);
             overflow: hidden;
             position: relative;
             cursor: pointer;
             transition: transform 0.35s var(--ease-out), border-color 0.35s, box-shadow 0.35s;
             display: flex; flex-direction: column;
+            min-width: 0; /* Prevents overflow */
         }
         .bento-card::before {
             content: '';
             position: absolute; inset: 0;
-            border-radius: 20px;
+            border-radius: inherit;
             padding: 1px;
             background: radial-gradient(420px circle at var(--mouse-x, -500px) var(--mouse-y, -500px), rgba(0, 240, 255, 0.35), transparent 45%);
             -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
@@ -227,33 +310,38 @@
             opacity: 0;
             transition: opacity 0.3s;
         }
-        .bento-card:hover::before { opacity: 1; }
-        .bento-card:hover {
-            transform: translateY(-4px);
-            border-color: rgba(0, 240, 255, 0.3);
-            box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.6), 0 0 30px rgba(0, 240, 255, 0.08);
+        @media (hover: hover) {
+            .bento-card:hover::before { opacity: 1; }
+            .bento-card:hover {
+                transform: translateY(-4px);
+                border-color: rgba(0, 240, 255, 0.3);
+                box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.6), 0 0 30px rgba(0, 240, 255, 0.08);
+            }
         }
 
-        /* Lead Story: 8 cols */
+        /* Lead Story: 8 cols desktop, 12 cols mobile */
         .card-lead {
             grid-column: span 8;
-            min-height: 480px;
+            min-height: auto;
         }
-        @media(max-width: 1024px) { .card-lead { grid-column: span 12; } }
 
         .lead-hero-img {
-            width: 100%; height: 260px; object-fit: cover;
+            width: 100%;
+            height: clamp(180px, 26vw, 280px);
+            object-fit: cover;
             transition: transform 0.8s var(--ease-out);
         }
         .bento-card:hover .lead-hero-img { transform: scale(1.03); }
 
         .lead-content {
-            padding: 30px; display: flex; flex-direction: column; gap: 14px; flex-grow: 1;
+            padding: clamp(16px, 3vw, 30px);
+            display: flex; flex-direction: column;
+            gap: 12px; flex-grow: 1;
         }
         .card-tag {
             align-self: flex-start;
-            padding: 4px 10px; border-radius: 6px;
-            font-family: var(--font-mono); font-size: 0.75rem; font-weight: 700;
+            padding: 3px 8px; border-radius: 6px;
+            font-family: var(--font-mono); font-size: 0.72rem; font-weight: 700;
             text-transform: uppercase; letter-spacing: 0.05em;
         }
         .tag-cyan { background: rgba(0, 240, 255, 0.1); color: var(--cyan); border: 1px solid rgba(0, 240, 255, 0.25); }
@@ -262,63 +350,69 @@
 
         .lead-title {
             font-family: var(--font-display);
-            font-size: 1.95rem; font-weight: 800; line-height: 1.25; letter-spacing: -0.03em;
-            color: #FFF;
+            font-size: clamp(1.2rem, 3.5vw, 1.95rem);
+            font-weight: 800; line-height: 1.25; letter-spacing: -0.03em;
+            color: #FFF; word-break: break-word;
         }
         .lead-desc {
-            color: var(--text-secondary); font-size: 0.98rem; line-height: 1.6;
+            color: var(--text-secondary);
+            font-size: clamp(0.85rem, 1.8vw, 0.98rem);
+            line-height: 1.6;
         }
 
-        /* Interactive SVG Chart Box inside Card */
+        /* Interactive SVG Chart Box */
         .sparkline-box {
-            background: rgba(0, 0, 0, 0.35);
+            background: rgba(0, 0, 0, 0.4);
             border: 1px solid var(--border-subtle);
-            border-radius: 12px;
-            padding: 14px 18px;
-            margin: 10px 0 6px;
+            border-radius: 10px;
+            padding: clamp(10px, 2vw, 14px) clamp(12px, 2vw, 18px);
+            margin: 8px 0 4px;
             position: relative;
         }
         .sparkline-header {
             display: flex; justify-content: space-between; align-items: center;
-            font-family: var(--font-mono); font-size: 0.72rem; color: var(--text-muted);
-            margin-bottom: 8px;
+            font-family: var(--font-mono);
+            font-size: clamp(0.65rem, 1.6vw, 0.72rem);
+            color: var(--text-muted);
+            margin-bottom: 6px; gap: 8px;
         }
-        .sparkline-header strong { color: var(--cyan); font-weight: 700; }
-        .sparkline-svg { width: 100%; height: 54px; overflow: visible; }
+        .sparkline-header strong { color: var(--cyan); font-weight: 700; white-space: nowrap; }
+        .sparkline-svg {
+            width: 100%;
+            height: clamp(38px, 6vw, 54px);
+            overflow: visible;
+        }
         .sparkline-line {
             fill: none; stroke: url(#cyanPurpleGrad); stroke-width: 2.5; stroke-linecap: round;
         }
-        .sparkline-area {
-            fill: url(#cyanAreaGrad);
-        }
+        .sparkline-area { fill: url(#cyanAreaGrad); }
         .sparkline-point {
             fill: var(--cyan); r: 4; stroke: #000; stroke-width: 2;
             transition: all 0.2s; cursor: pointer;
         }
         .sparkline-point:hover { r: 6; fill: #FFF; filter: drop-shadow(0 0 6px var(--cyan)); }
 
-        /* Terminal Wire: 4 cols */
+        /* Terminal Wire: 4 cols desktop, 12 cols mobile */
         .card-wire {
             grid-column: span 4;
-            padding: 28px;
-            display: flex; flex-direction: column; gap: 20px;
+            padding: clamp(18px, 3vw, 26px);
+            display: flex; flex-direction: column; gap: 16px;
         }
-        @media(max-width: 1024px) { .card-wire { grid-column: span 12; } }
 
         .wire-header {
             display: flex; align-items: center; justify-content: space-between;
-            border-bottom: 1px solid var(--border-subtle); padding-bottom: 14px;
+            border-bottom: 1px solid var(--border-subtle); padding-bottom: 12px;
         }
         .wire-header h3 {
-            font-family: var(--font-mono); font-size: 0.8125rem; font-weight: 800;
+            font-family: var(--font-mono); font-size: clamp(0.75rem, 1.8vw, 0.8125rem); font-weight: 800;
             letter-spacing: 0.08em; text-transform: uppercase; color: var(--cyan);
             display: flex; align-items: center; gap: 8px;
         }
         .wire-list {
-            display: flex; flex-direction: column; gap: 14px;
+            display: flex; flex-direction: column; gap: 10px;
         }
         .wire-item {
-            padding: 14px; border-radius: 12px;
+            padding: clamp(10px, 2vw, 14px); border-radius: 10px;
             background: rgba(255, 255, 255, 0.02);
             border: 1px solid transparent;
             transition: all 0.2s;
@@ -329,17 +423,24 @@
             transform: translateX(4px);
         }
         .wire-meta {
-            font-family: var(--font-mono); font-size: 0.72rem; color: var(--cyan); margin-bottom: 4px;
+            font-family: var(--font-mono); font-size: 0.68rem; color: var(--cyan); margin-bottom: 3px;
         }
         .wire-item-title {
-            font-family: var(--font-display); font-size: 0.95rem; font-weight: 700; color: #FFF; line-height: 1.35;
+            font-family: var(--font-display); font-size: clamp(0.85rem, 2vw, 0.95rem);
+            font-weight: 700; color: #FFF; line-height: 1.35;
         }
 
         /* Standard 4-col & 6-col Bento Items */
         .col-4 { grid-column: span 4; }
         .col-6 { grid-column: span 6; }
-        @media(max-width: 1024px) { .col-4, .col-6 { grid-column: span 6; } }
-        @media(max-width: 680px) { .col-4, .col-6 { grid-column: span 12; } }
+
+        @media (max-width: 1024px) {
+            .card-lead, .card-wire { grid-column: span 12; }
+            .col-4, .col-6 { grid-column: span 6; }
+        }
+        @media (max-width: 640px) {
+            .col-4, .col-6 { grid-column: span 12; }
+        }
 
         .card-thumb {
             width: 100%; aspect-ratio: 16/9; object-fit: cover;
@@ -348,49 +449,35 @@
         .bento-card:hover .card-thumb { transform: scale(1.04); }
 
         .card-body {
-            padding: 24px; display: flex; flex-direction: column; gap: 12px; flex-grow: 1;
+            padding: clamp(16px, 2.5vw, 24px);
+            display: flex; flex-direction: column; gap: 10px; flex-grow: 1;
         }
         .card-heading {
-            font-family: var(--font-display); font-size: 1.25rem; font-weight: 700;
-            line-height: 1.3; color: #FFF;
+            font-family: var(--font-display);
+            font-size: clamp(1.05rem, 2.2vw, 1.25rem); font-weight: 700;
+            line-height: 1.3; color: #FFF; word-break: break-word;
         }
         .card-snip {
-            font-size: 0.9rem; color: var(--text-secondary); line-height: 1.55;
+            font-size: clamp(0.82rem, 1.8vw, 0.9rem);
+            color: var(--text-secondary); line-height: 1.55;
             display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;
         }
         .card-foot {
-            margin-top: auto; padding-top: 16px; border-top: 1px solid var(--border-subtle);
+            margin-top: auto; padding-top: 14px; border-top: 1px solid var(--border-subtle);
             display: flex; align-items: center; justify-content: space-between;
-            font-family: var(--font-mono); font-size: 0.75rem; color: var(--text-muted);
+            font-family: var(--font-mono); font-size: clamp(0.7rem, 1.6vw, 0.75rem);
+            color: var(--text-muted);
         }
 
-        /* Filter Controls */
-        .filter-ribbon {
-            display: flex; flex-wrap: wrap; gap: 10px; align-items: center;
-            margin: 32px 0 24px;
-        }
-        .filter-pill {
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid var(--border-subtle);
-            color: var(--text-secondary);
-            font-family: var(--font-mono); font-size: 0.8125rem;
-            padding: 8px 16px; border-radius: 9999px; cursor: pointer;
-            transition: all 0.2s;
-        }
-        .filter-pill:hover, .filter-pill.active {
-            background: var(--cyan-glow);
-            border-color: var(--cyan);
-            color: #FFF;
-        }
-
-        /* Modal Dialog Reader */
+        /* Modal Dialog Reader - Auto Adjusting Mobile Bottom Sheet */
         .modal-overlay {
             position: fixed; inset: 0;
-            background: rgba(3, 5, 8, 0.93);
+            background: rgba(3, 5, 8, 0.94);
             backdrop-filter: blur(24px);
             z-index: 1000;
             display: flex; align-items: center; justify-content: center;
-            padding: 24px; opacity: 0; pointer-events: none;
+            padding: clamp(0px, 2.5vw, 24px);
+            opacity: 0; pointer-events: none;
             transition: opacity 0.3s;
         }
         .modal-overlay.active { opacity: 1; pointer-events: auto; }
@@ -398,8 +485,8 @@
         .modal-shell {
             background: var(--bg-surface);
             border: 1px solid var(--border-subtle);
-            border-radius: 24px;
-            max-width: 900px; width: 100%; max-height: 90vh;
+            border-radius: clamp(16px, 2.5vw, 24px);
+            max-width: 900px; width: 100%; max-height: 92vh;
             overflow-y: auto; position: relative;
             box-shadow: 0 30px 80px rgba(0, 0, 0, 0.8), 0 0 50px rgba(0, 240, 255, 0.1);
             transform: translateY(24px) scale(0.98);
@@ -407,9 +494,18 @@
         }
         .modal-overlay.active .modal-shell { transform: translateY(0) scale(1); }
 
+        @media (max-width: 640px) {
+            .modal-overlay { padding: 0; align-items: flex-end; }
+            .modal-shell {
+                border-radius: 20px 20px 0 0;
+                max-height: 92vh; height: 92vh;
+                border-bottom: none;
+            }
+        }
+
         /* Reading Progress Bar on Modal */
         .reading-progress-track {
-            position: sticky; top: 0; left: 0; width: 100%; height: 4px;
+            position: sticky; top: 0; left: 0; width: 100%; height: 3px;
             background: rgba(255, 255, 255, 0.05); z-index: 50;
         }
         .reading-progress-bar {
@@ -420,56 +516,64 @@
         }
 
         .modal-close-btn {
-            position: absolute; top: 20px; right: 20px;
-            width: 40px; height: 40px; border-radius: 50%;
-            background: rgba(0, 0, 0, 0.7); border: 1px solid var(--border-subtle);
-            color: #FFF; font-size: 18px; display: flex; align-items: center; justify-content: center;
+            position: absolute; top: clamp(12px, 2vw, 20px); right: clamp(12px, 2vw, 20px);
+            width: clamp(34px, 4vw, 40px); height: clamp(34px, 4vw, 40px);
+            border-radius: 50%;
+            background: rgba(0, 0, 0, 0.75); border: 1px solid var(--border-subtle);
+            color: #FFF; font-size: 16px; display: flex; align-items: center; justify-content: center;
             cursor: pointer; z-index: 60; transition: all 0.2s;
         }
         .modal-close-btn:hover { background: rgba(255, 255, 255, 0.15); transform: rotate(90deg); }
 
         .modal-hero-img {
-            width: 100%; aspect-ratio: 21/9; object-fit: cover;
+            width: 100%; height: clamp(160px, 25vw, 300px); object-fit: cover;
             border-bottom: 1px solid var(--border-subtle);
         }
-        .modal-inner { padding: 40px; }
+        .modal-inner { padding: clamp(18px, 4vw, 40px); }
         .modal-title {
-            font-family: var(--font-display); font-size: 2.2rem; font-weight: 800; line-height: 1.25;
-            color: #FFF; margin: 16px 0 14px; letter-spacing: -0.02em;
+            font-family: var(--font-display);
+            font-size: clamp(1.3rem, 4vw, 2.2rem);
+            font-weight: 800; line-height: 1.25;
+            color: #FFF; margin: 14px 0 10px; letter-spacing: -0.02em;
+            word-break: break-word;
         }
 
-        /* Native Audio Briefing Player Widget */
+        /* Audio Briefing Player Widget */
         .audio-brief-widget {
             background: rgba(0, 240, 255, 0.04);
             border: 1px solid rgba(0, 240, 255, 0.2);
-            border-radius: 14px;
-            padding: 16px 20px;
+            border-radius: 12px;
+            padding: clamp(10px, 2vw, 16px) clamp(12px, 2vw, 20px);
             display: flex; align-items: center; justify-content: space-between;
-            margin: 20px 0 24px; gap: 16px;
+            margin: 16px 0 20px; gap: 12px; flex-wrap: wrap;
         }
         .audio-brief-left {
-            display: flex; align-items: center; gap: 14px;
+            display: flex; align-items: center; gap: 12px; min-width: 0;
         }
         .audio-play-btn {
-            width: 42px; height: 42px; border-radius: 50%;
+            width: 38px; height: 38px; border-radius: 50%; flex-shrink: 0;
             background: linear-gradient(135deg, var(--cyan), var(--purple));
-            border: none; color: #000; font-size: 16px; font-weight: 800;
+            border: none; color: #000; font-size: 15px; font-weight: 800;
             display: flex; align-items: center; justify-content: center;
             cursor: pointer; transition: transform 0.2s, box-shadow 0.2s;
-            box-shadow: 0 0 15px rgba(0, 240, 255, 0.35);
+            box-shadow: 0 0 12px rgba(0, 240, 255, 0.35);
         }
         .audio-play-btn:hover { transform: scale(1.06); }
         .audio-info h5 {
-            font-family: var(--font-display); font-size: 0.95rem; font-weight: 700; color: #FFF;
+            font-family: var(--font-display);
+            font-size: clamp(0.85rem, 2vw, 0.95rem);
+            font-weight: 700; color: #FFF;
         }
         .audio-info p {
-            font-family: var(--font-mono); font-size: 0.75rem; color: var(--text-muted);
+            font-family: var(--font-mono);
+            font-size: clamp(0.7rem, 1.6vw, 0.75rem);
+            color: var(--text-muted);
         }
         .audio-wave {
-            display: flex; align-items: center; gap: 3px; height: 24px;
+            display: flex; align-items: center; gap: 3px; height: 20px;
         }
         .audio-bar {
-            width: 3px; height: 6px; background: var(--cyan); border-radius: 2px;
+            width: 3px; height: 5px; background: var(--cyan); border-radius: 2px;
             transition: height 0.2s;
         }
         .audio-wave.playing .audio-bar {
@@ -480,19 +584,23 @@
         .audio-wave.playing .audio-bar:nth-child(4) { animation-delay: 0.45s; }
         .audio-wave.playing .audio-bar:nth-child(5) { animation-delay: 0.6s; }
         @keyframes soundWave {
-            0%, 100% { height: 6px; }
-            50% { height: 22px; }
+            0%, 100% { height: 5px; }
+            50% { height: 18px; }
         }
 
         /* Sticky Table of Contents in Modal */
         .modal-toc {
-            display: flex; flex-wrap: wrap; gap: 8px; margin: 18px 0 24px;
-            padding-bottom: 16px; border-bottom: 1px solid var(--border-subtle);
+            display: flex; align-items: center; gap: 8px;
+            margin: 14px 0 20px; padding-bottom: 10px;
+            border-bottom: 1px solid var(--border-subtle);
+            overflow-x: auto; -webkit-overflow-scrolling: touch; scrollbar-width: none;
         }
+        .modal-toc::-webkit-scrollbar { display: none; }
         .toc-pill {
-            font-family: var(--font-mono); font-size: 0.75rem; color: var(--text-muted);
+            font-family: var(--font-mono); font-size: 0.72rem; color: var(--text-muted);
             background: rgba(255, 255, 255, 0.03); border: 1px solid var(--border-subtle);
-            padding: 5px 12px; border-radius: 6px; cursor: pointer; transition: all 0.2s;
+            padding: 5px 10px; border-radius: 6px; cursor: pointer; transition: all 0.2s;
+            white-space: nowrap; flex-shrink: 0;
         }
         .toc-pill:hover {
             color: var(--cyan); border-color: var(--cyan); background: rgba(0, 240, 255, 0.08);
@@ -500,25 +608,27 @@
 
         .modal-callout {
             background: rgba(0, 240, 255, 0.05);
-            border-left: 4px solid var(--cyan);
+            border-left: 3px solid var(--cyan);
             border-radius: 0 10px 10px 0;
-            padding: 20px 24px; margin: 24px 0 32px;
+            padding: clamp(14px, 2.5vw, 20px) clamp(16px, 3vw, 24px);
+            margin: 18px 0 24px;
         }
         .modal-callout h4 {
-            font-family: var(--font-mono); font-size: 0.8rem; text-transform: uppercase;
+            font-family: var(--font-mono); font-size: 0.75rem; text-transform: uppercase;
             color: var(--cyan); margin-bottom: 6px; letter-spacing: 0.06em;
         }
         .modal-callout p {
-            font-size: 1rem; color: #E2E8F0; line-height: 1.6;
+            font-size: clamp(0.88rem, 2vw, 1rem); color: #E2E8F0; line-height: 1.6;
         }
         .modal-article-body {
-            color: #CBD5E1; font-size: 1.05rem; line-height: 1.85;
-            display: flex; flex-direction: column; gap: 20px;
+            color: #CBD5E1; font-size: clamp(0.92rem, 2vw, 1.05rem); line-height: 1.8;
+            display: flex; flex-direction: column; gap: 16px; word-break: break-word;
         }
         .modal-article-body h3 {
-            font-family: var(--font-display); font-size: 1.45rem; color: #FFF; margin-top: 24px;
+            font-family: var(--font-display); font-size: clamp(1.15rem, 2.8vw, 1.45rem);
+            color: #FFF; margin-top: 18px;
         }
-        .modal-article-body ul { padding-left: 24px; display: flex; flex-direction: column; gap: 8px; }
+        .modal-article-body ul { padding-left: 20px; display: flex; flex-direction: column; gap: 8px; }
         .modal-article-body li strong { color: #FFF; }
 
         /* Command Palette Modal (Cmd+K) */
@@ -526,7 +636,8 @@
             position: fixed; inset: 0;
             background: rgba(3, 5, 8, 0.85); backdrop-filter: blur(16px);
             z-index: 1100; display: flex; align-items: flex-start; justify-content: center;
-            padding-top: 15vh; opacity: 0; pointer-events: none; transition: opacity 0.2s;
+            padding-top: clamp(10px, 12vh, 15vh); padding-left: 16px; padding-right: 16px;
+            opacity: 0; pointer-events: none; transition: opacity 0.2s;
         }
         .cmd-modal.active { opacity: 1; pointer-events: auto; }
         .cmd-box {
@@ -538,17 +649,17 @@
         }
         .cmd-input-wrap {
             display: flex; align-items: center; gap: 12px;
-            padding: 16px 20px; border-bottom: 1px solid var(--border-subtle);
+            padding: 14px 18px; border-bottom: 1px solid var(--border-subtle);
         }
         .cmd-input {
             width: 100%; background: transparent; border: none; outline: none;
-            color: #FFF; font-family: var(--font-mono); font-size: 1rem;
+            color: #FFF; font-family: var(--font-mono); font-size: 0.95rem;
         }
-        .cmd-results { max-height: 340px; overflow-y: auto; padding: 12px; }
+        .cmd-results { max-height: 320px; overflow-y: auto; padding: 10px; }
         .cmd-result-item {
-            padding: 12px 16px; border-radius: 8px; cursor: pointer;
+            padding: 10px 14px; border-radius: 8px; cursor: pointer;
             display: flex; align-items: center; justify-content: space-between;
-            font-size: 0.9rem; color: var(--text-secondary); transition: all 0.15s;
+            font-size: 0.88rem; color: var(--text-secondary); transition: all 0.15s;
         }
         .cmd-result-item:hover { background: rgba(0, 240, 255, 0.1); color: #FFF; }
 
@@ -556,30 +667,30 @@
         footer {
             border-top: 1px solid var(--border-subtle);
             background: #020306;
-            padding: 64px 0 36px;
+            padding: clamp(36px, 6vw, 64px) 0 28px;
             position: relative; z-index: 10;
         }
         .footer-cols {
             display: grid; grid-template-columns: 2fr repeat(3, 1fr);
-            gap: 40px; margin-bottom: 56px;
+            gap: clamp(24px, 4vw, 40px); margin-bottom: 40px;
         }
         @media(max-width: 900px) { .footer-cols { grid-template-columns: 1fr 1fr; } }
-        @media(max-width: 600px) { .footer-cols { grid-template-columns: 1fr; } }
+        @media(max-width: 600px) { .footer-cols { grid-template-columns: 1fr; gap: 28px; } }
 
         .footer-col h4 {
             font-family: var(--font-mono); font-size: 0.8125rem; text-transform: uppercase;
-            letter-spacing: 0.08em; color: #FFF; margin-bottom: 18px;
+            letter-spacing: 0.08em; color: #FFF; margin-bottom: 14px;
         }
-        .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 12px; }
+        .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 10px; }
         .footer-col a {
             font-size: 0.875rem; color: var(--text-secondary); transition: color 0.2s;
         }
         .footer-col a:hover { color: var(--cyan); }
         .footer-baseline {
             display: flex; align-items: center; justify-content: space-between;
-            padding-top: 28px; border-top: 1px solid var(--border-subtle);
-            font-size: 0.8125rem; color: var(--text-muted);
-            font-family: var(--font-mono);
+            padding-top: 24px; border-top: 1px solid var(--border-subtle);
+            font-size: 0.78rem; color: var(--text-muted);
+            font-family: var(--font-mono); gap: 12px; flex-wrap: wrap;
         }
     </style>
 </head>
@@ -606,13 +717,13 @@
         <div class="container top-hud-inner">
             <div class="hud-status">
                 <span class="status-badge"><span class="pulse-dot"></span> <span id="hud-cluster">GLOBAL COMPUTE: 98.4% NOMINAL</span></span>
-                <span style="opacity: 0.4;">|</span>
-                <span id="hud-ticker">BLACKWELL B200 ACCELERATING PRODUCTION</span>
+                <span class="hud-sep" style="opacity: 0.4;">|</span>
+                <span class="hud-ticker-text" id="hud-ticker">BLACKWELL B200 ACCELERATING PRODUCTION</span>
             </div>
-            <div style="display: flex; align-items: center; gap: 14px;">
+            <div class="hud-right">
                 <button class="sfx-btn" id="sfx-toggle" onclick="toggleAudioSFX()">🔊 SFX: ON</button>
                 <span id="hud-time">UTC 18:30:00</span>
-                <span style="color: var(--cyan); font-weight: 700;">v3.5-PROD</span>
+                <span class="hud-ver" style="color: var(--cyan); font-weight: 700;">v3.6-PROD</span>
             </div>
         </div>
     </div>
@@ -635,7 +746,7 @@
 
             <div class="header-actions">
                 <div class="cmd-trigger" onclick="toggleCmd()">
-                    <span>Buscar Pautas</span>
+                    <span>Buscar</span>
                     <span class="cmd-key">⌘K</span>
                 </div>
                 
@@ -644,7 +755,10 @@
                     <button class="lang-btn" id="btn-en" onclick="switchLang('en')">EN</button>
                 </div>
 
-                <button class="btn-glow" onclick="openInst('newsletter')" id="btn-dispatch">Despacho Semanal</button>
+                <button class="btn-glow" onclick="openInst('newsletter')" id="btn-dispatch">
+                    <span class="btn-text-full">Despacho Semanal</span>
+                    <span class="btn-text-short">Despacho</span>
+                </button>
             </div>
         </div>
     </header>
@@ -687,7 +801,7 @@
                         </svg>
                     </div>
 
-                    <div class="card-meta" style="margin-top: auto; display: flex; justify-content: space-between; font-family: var(--font-mono); font-size: 0.8125rem; color: var(--text-muted); padding-top: 14px; border-top: 1px solid var(--border-subtle);">
+                    <div class="card-meta" style="margin-top: auto; display: flex; justify-content: space-between; align-items: center; font-family: var(--font-mono); font-size: clamp(0.72rem, 1.8vw, 0.8125rem); color: var(--text-muted); padding-top: 12px; border-top: 1px solid var(--border-subtle); gap: 10px; flex-wrap: wrap;">
                         <span id="lead-time">⚡ 8 min • Engenharia & Infra</span>
                         <span style="color: var(--cyan); font-weight: 700;" id="lead-cta">Explorar Análise Completa →</span>
                     </div>
@@ -714,7 +828,7 @@
                         <div class="wire-item-title" id="wire-t3">Ataque GPUThor: Quebrando o ECC na Memória HBM3e</div>
                     </div>
                 </div>
-                <div style="margin-top: auto; padding-top: 12px; border-top: 1px solid var(--border-subtle); display: flex; justify-content: space-between; font-family: var(--font-mono); font-size: 0.75rem; color: var(--text-muted);">
+                <div style="margin-top: auto; padding-top: 12px; border-top: 1px solid var(--border-subtle); display: flex; justify-content: space-between; font-family: var(--font-mono); font-size: 0.72rem; color: var(--text-muted); gap: 8px;">
                     <span id="wire-curation">Curadoria Editorial Sênior</span>
                     <span style="color: var(--cyan);" id="wire-verified">Verificado 100%</span>
                 </div>
@@ -792,7 +906,7 @@
         </div>
     </main>
 
-    <!-- Deep Reader Modal (Awwwards Immersive View with Audio Brief & Progress) -->
+    <!-- Deep Reader Modal (Mobile Responsive Fullscreen / Bottom Sheet) -->
     <div class="modal-overlay" id="articleModal" onclick="closeOnOverlay(event)">
         <div class="modal-shell" id="modalShell" onscroll="updateReadingProgress()">
             <!-- Top Sticky Progress Line -->
@@ -807,7 +921,7 @@
                 <span class="card-tag tag-cyan" id="modalTag">Infraestrutura</span>
                 <h1 class="modal-title" id="modalTitle">Título da Notícia</h1>
                 
-                <div style="font-family: var(--font-mono); font-size: 0.8125rem; color: var(--text-muted); margin-bottom: 18px;" id="modalMeta">
+                <div style="font-family: var(--font-mono); font-size: clamp(0.72rem, 1.8vw, 0.8125rem); color: var(--text-muted); margin-bottom: 14px;" id="modalMeta">
                     Por Equipe Editorial CorticFlow • 8 min de leitura
                 </div>
 
@@ -831,7 +945,7 @@
 
                 <!-- Interactive Anchor TOC -->
                 <div class="modal-toc">
-                    <span style="font-family: var(--font-mono); font-size: 0.72rem; color: var(--text-muted); align-self: center;" id="toc-label">PULAR PARA:</span>
+                    <span style="font-family: var(--font-mono); font-size: 0.7rem; color: var(--text-muted); align-self: center;" id="toc-label">PULAR PARA:</span>
                     <button class="toc-pill" onclick="scrollToAnchor('anchor-summary')">⚡ <span id="toc-sum-lbl">Resumo</span></button>
                     <button class="toc-pill" onclick="scrollToAnchor('anchor-body')">🔬 <span id="toc-body-lbl">Análise Técnica</span></button>
                     <button class="toc-pill" onclick="scrollToAnchor('anchor-sources')">🌐 <span id="toc-src-lbl">Fontes</span></button>
@@ -847,11 +961,11 @@
                 <div class="modal-article-body" id="modalBody"></div>
 
                 <!-- Official Sources & Links -->
-                <div id="anchor-sources" style="margin-top: 40px; padding-top: 24px; border-top: 1px solid var(--border-subtle); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 14px;">
-                    <span style="font-family: var(--font-mono); font-size: 0.8125rem; color: var(--text-muted);" id="modalSourceLabel">
+                <div id="anchor-sources" style="margin-top: 32px; padding-top: 20px; border-top: 1px solid var(--border-subtle); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;">
+                    <span style="font-family: var(--font-mono); font-size: 0.78rem; color: var(--text-muted);" id="modalSourceLabel">
                         Fontes Oficiais & Documentação Técnica:
                     </span>
-                    <div id="modalLinks"></div>
+                    <div id="modalLinks" style="display: flex; flex-wrap: wrap; gap: 8px;"></div>
                 </div>
             </div>
         </div>
@@ -861,10 +975,10 @@
     <div class="modal-overlay" id="instModal" onclick="closeOnOverlay(event)">
         <div class="modal-shell" style="max-width: 680px;">
             <button class="modal-close-btn" onclick="closeInst()">✕</button>
-            <div class="modal-inner" style="padding: 44px;">
+            <div class="modal-inner" style="padding: clamp(24px, 4vw, 44px);">
                 <span class="card-tag tag-cyan" id="instTag">Institucional</span>
-                <h2 style="font-family: var(--font-display); font-size: 2rem; font-weight: 800; color: #FFF; margin: 16px 0 18px;" id="instTitle">Sobre Nós</h2>
-                <div style="color: #CBD5E1; font-size: 1rem; line-height: 1.7; display: flex; flex-direction: column; gap: 16px;" id="instBody"></div>
+                <h2 style="font-family: var(--font-display); font-size: clamp(1.4rem, 4vw, 2rem); font-weight: 800; color: #FFF; margin: 14px 0 16px;" id="instTitle">Sobre Nós</h2>
+                <div style="color: #CBD5E1; font-size: clamp(0.9rem, 2vw, 1rem); line-height: 1.7; display: flex; flex-direction: column; gap: 14px;" id="instBody"></div>
             </div>
         </div>
     </div>
@@ -880,23 +994,23 @@
             <div class="cmd-results" id="cmdResults">
                 <div class="cmd-result-item" onclick="readArticle(1); toggleCmd();">
                     <span>⚡ A Crise Energética dos 60GW (Nuclear + IA)</span>
-                    <span style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--cyan);">INFRA</span>
+                    <span style="font-family: var(--font-mono); font-size: 0.72rem; color: var(--cyan);">INFRA</span>
                 </div>
                 <div class="cmd-result-item" onclick="readArticle(2); toggleCmd();">
                     <span>🧠 DeepSeek Harness e Pesos Abertos</span>
-                    <span style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--cyan);">LLMs</span>
+                    <span style="font-family: var(--font-mono); font-size: 0.72rem; color: var(--cyan);">LLMs</span>
                 </div>
                 <div class="cmd-result-item" onclick="readArticle(3); toggleCmd();">
                     <span>🏢 Apple Silicon M6 & M5 Ultra (80 GPUs)</span>
-                    <span style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--cyan);">HARDWARE</span>
+                    <span style="font-family: var(--font-mono); font-size: 0.72rem; color: var(--cyan);">HARDWARE</span>
                 </div>
                 <div class="cmd-result-item" onclick="readArticle(4); toggleCmd();">
                     <span>🛡️ Ataque GPUThor na Memória HBM3e</span>
-                    <span style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--cyan);">SECURITY</span>
+                    <span style="font-family: var(--font-mono); font-size: 0.72rem; color: var(--cyan);">SECURITY</span>
                 </div>
                 <div class="cmd-result-item" onclick="switchLang(currentLang === 'pt' ? 'en' : 'pt'); toggleCmd();">
                     <span>🌐 Alternar Idioma / Toggle Language (PT/EN)</span>
-                    <span style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--emerald);">ACTION</span>
+                    <span style="font-family: var(--font-mono); font-size: 0.72rem; color: var(--emerald);">ACTION</span>
                 </div>
             </div>
         </div>
@@ -906,11 +1020,11 @@
     <footer>
         <div class="container footer-cols">
             <div class="footer-col">
-                <div class="brand" style="margin-bottom: 16px;">
+                <div class="brand" style="margin-bottom: 14px;">
                     <div class="brand-gem">🧠</div>
                     Cortic<span>Flow</span>
                 </div>
-                <p style="font-size: 0.9rem; color: var(--text-secondary); line-height: 1.6; max-width: 380px;" id="foot-desc">
+                <p style="font-size: clamp(0.85rem, 1.8vw, 0.9rem); color: var(--text-secondary); line-height: 1.6; max-width: 380px;" id="foot-desc">
                     Publicação internacional independente de alta tecnologia. Decodificamos a física dos semicondutores, a matemática dos modelos fundacionais e os desdobramentos de mercado dos sistemas autônomos.
                 </p>
             </div>
@@ -957,10 +1071,9 @@
     <script>
         let currentLang = localStorage.getItem('corticflow_lang') || 'pt';
         let sfxEnabled = localStorage.getItem('corticflow_sfx') !== 'false';
-        let currentArticlePlaying = null;
         let isSpeaking = false;
 
-        /* Synthesized Web Audio API (Zero External Files, Ultra Crisp) */
+        /* Synthesized Web Audio API */
         const audioCtx = (window.AudioContext || window.webkitAudioContext) ? new (window.AudioContext || window.webkitAudioContext)() : null;
         
         function playSfx(type = 'click') {
@@ -1073,15 +1186,17 @@
         }
 
         /* Spotlight Border Effect Following Mouse */
-        document.querySelectorAll('.bento-card').forEach(card => {
-            card.addEventListener('mousemove', e => {
-                const rect = card.getBoundingClientRect();
-                const x = e.clientX - rect.left;
-                const y = e.clientY - rect.top;
-                card.style.setProperty('--mouse-x', `${x}px`);
-                card.style.setProperty('--mouse-y', `${y}px`);
+        if (window.matchMedia('(hover: hover)').matches) {
+            document.querySelectorAll('.bento-card').forEach(card => {
+                card.addEventListener('mousemove', e => {
+                    const rect = card.getBoundingClientRect();
+                    const x = e.clientX - rect.left;
+                    const y = e.clientY - rect.top;
+                    card.style.setProperty('--mouse-x', `${x}px`);
+                    card.style.setProperty('--mouse-y', `${y}px`);
+                });
             });
-        });
+        }
 
         /* Particle Neural Canvas */
         (function() {
@@ -1096,10 +1211,11 @@
             window.addEventListener('resize', resize);
             resize();
 
-            for (let i = 0; i < 48; i++) {
+            const count = window.innerWidth < 600 ? 20 : 48;
+            for (let i = 0; i < count; i++) {
                 particles.push({
                     x: Math.random() * w, y: Math.random() * h,
-                    vx: (Math.random() - 0.5) * 0.4, vy: (Math.random() - 0.5) * 0.4,
+                    vx: (Math.random() - 0.5) * 0.35, vy: (Math.random() - 0.5) * 0.35,
                     r: Math.random() * 1.5 + 0.8
                 });
             }
@@ -1123,7 +1239,7 @@
                         let p2 = particles[j];
                         let dx = p.x - p2.x, dy = p.y - p2.y;
                         let dist = Math.sqrt(dx * dx + dy * dy);
-                        if (dist < 140) {
+                        if (dist < 120) {
                             ctx.beginPath();
                             ctx.moveTo(p.x, p.y);
                             ctx.lineTo(p2.x, p2.y);
@@ -1389,7 +1505,7 @@
                     title: 'Fale Conosco',
                     body: `
                         <p>Para pautas exclusivas, relatórios técnicos, propostas institucionais ou parcerias editoriais:</p>
-                        <p style="font-family: var(--font-mono); font-size: 1.05rem; color: var(--cyan); background: rgba(0,240,255,0.06); padding: 14px; border-radius: 8px;">editorial@corticflow.org</p>
+                        <p style="font-family: var(--font-mono); font-size: clamp(0.85rem, 2vw, 1.05rem); color: var(--cyan); background: rgba(0,240,255,0.06); padding: 12px; border-radius: 8px; word-break: break-all;">editorial@corticflow.org</p>
                         <p>Atendimento editorial de segunda a sexta-feira, das 09h às 18h (Horário de Brasília / UTC-3).</p>
                     `
                 },
@@ -1398,7 +1514,7 @@
                     title: 'Editorial Inquiries',
                     body: `
                         <p>For exclusive tips, technical papers, institutional partnerships, or press inquiries:</p>
-                        <p style="font-family: var(--font-mono); font-size: 1.05rem; color: var(--cyan); background: rgba(0,240,255,0.06); padding: 14px; border-radius: 8px;">editorial@corticflow.org</p>
+                        <p style="font-family: var(--font-mono); font-size: clamp(0.85rem, 2vw, 1.05rem); color: var(--cyan); background: rgba(0,240,255,0.06); padding: 12px; border-radius: 8px; word-break: break-all;">editorial@corticflow.org</p>
                         <p>Editorial desk operational Monday through Friday, 09:00 - 18:00 (UTC-3 / EST).</p>
                     `
                 }
@@ -1443,8 +1559,8 @@
                     title: 'Newsletter CorticFlow',
                     body: `
                         <p>Receba todos os domingos a síntese definitiva dos principais avanços em semicondutores, modelos de linguagem e infraestrutura de IA no seu e-mail.</p>
-                        <div style="display: flex; gap: 10px; margin-top: 14px;">
-                            <input type="email" placeholder="seu.email@empresa.com" style="flex-grow: 1; padding: 12px 16px; border-radius: 8px; border: 1px solid var(--border-subtle); background: rgba(255,255,255,0.05); color: #FFF; outline: none; font-family: var(--font-mono);">
+                        <div style="display: flex; gap: 8px; margin-top: 14px; flex-wrap: wrap;">
+                            <input type="email" placeholder="seu.email@empresa.com" style="flex: 1 1 200px; padding: 10px 14px; border-radius: 8px; border: 1px solid var(--border-subtle); background: rgba(255,255,255,0.05); color: #FFF; outline: none; font-family: var(--font-mono); font-size: 0.85rem;">
                             <button class="btn-glow" onclick="alert('Inscrição confirmada com sucesso!')">Assinar</button>
                         </div>
                     `
@@ -1454,8 +1570,8 @@
                     title: 'CorticFlow Intelligence',
                     body: `
                         <p>Receive every Sunday our executive synthesis of breakthroughs in semiconductors, frontier models, and computing infrastructure.</p>
-                        <div style="display: flex; gap: 10px; margin-top: 14px;">
-                            <input type="email" placeholder="your.email@company.com" style="flex-grow: 1; padding: 12px 16px; border-radius: 8px; border: 1px solid var(--border-subtle); background: rgba(255,255,255,0.05); color: #FFF; outline: none; font-family: var(--font-mono);">
+                        <div style="display: flex; gap: 8px; margin-top: 14px; flex-wrap: wrap;">
+                            <input type="email" placeholder="your.email@company.com" style="flex: 1 1 200px; padding: 10px 14px; border-radius: 8px; border: 1px solid var(--border-subtle); background: rgba(255,255,255,0.05); color: #FFF; outline: none; font-family: var(--font-mono); font-size: 0.85rem;">
                             <button class="btn-glow" onclick="alert('Subscription successfully confirmed!')">Subscribe</button>
                         </div>
                     `
@@ -1490,7 +1606,7 @@
             data.links.forEach(l => {
                 const a = document.createElement('a');
                 a.href = l.url; a.target = '_blank'; a.rel = 'noopener';
-                a.style.cssText = 'display: inline-block; padding: 6px 14px; border-radius: 6px; background: rgba(0,240,255,0.1); border: 1px solid rgba(0,240,255,0.3); color: var(--cyan); font-family: var(--font-mono); font-size: 0.8125rem; font-weight: 600; margin-left: 8px;';
+                a.style.cssText = 'display: inline-block; padding: 5px 12px; border-radius: 6px; background: rgba(0,240,255,0.1); border: 1px solid rgba(0,240,255,0.3); color: var(--cyan); font-family: var(--font-mono); font-size: 0.75rem; font-weight: 600;';
                 a.innerText = l.name;
                 linksContainer.appendChild(a);
             });
@@ -1569,7 +1685,9 @@
                 document.getElementById('nav-models').innerText = 'Modelos Fundacionais';
                 document.getElementById('nav-about').innerText = 'Sobre';
                 document.getElementById('nav-contact').innerText = 'Contato';
-                document.getElementById('btn-dispatch').innerText = 'Despacho Semanal';
+                
+                document.querySelector('.btn-text-full').innerText = 'Despacho Semanal';
+                document.querySelector('.btn-text-short').innerText = 'Despacho';
 
                 document.getElementById('pill-all').innerText = '⚡ Todas as Investigações';
                 document.getElementById('pill-models').innerText = '🧠 Modelos & Agentes';
@@ -1603,7 +1721,9 @@
                 document.getElementById('nav-models').innerText = 'Foundational Models';
                 document.getElementById('nav-about').innerText = 'About';
                 document.getElementById('nav-contact').innerText = 'Contact';
-                document.getElementById('btn-dispatch').innerText = 'Weekly Dispatch';
+                
+                document.querySelector('.btn-text-full').innerText = 'Weekly Dispatch';
+                document.querySelector('.btn-text-short').innerText = 'Dispatch';
 
                 document.getElementById('pill-all').innerText = '⚡ All Investigations';
                 document.getElementById('pill-models').innerText = '🧠 Models & Agents';
@@ -1679,7 +1799,8 @@
         setInterval(() => {
             const now = new Date();
             const utc = now.toUTCString().split(' ')[4];
-            document.getElementById('hud-time').innerText = `UTC ${utc}`;
+            const el = document.getElementById('hud-time');
+            if (el) el.innerText = `UTC ${utc}`;
         }, 1000);
     </script>
 </body>
