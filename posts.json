@@ -1,33 +1,9 @@
 [
     {
         "id": 1,
-        "source": "Nvidia News",
-        "link": "https://blogs.nvidia.com/blog/gpus-openai-gpt-6-astra-ultrafast/",
-        "image": "covers/how-nvidia-gpus-help-accelerate-openais-gpt-6.jpg",
-        "title_pt": "Análise: How NVIDIA GPUs Help Accelerate OpenAI’s GPT-6 Astra Ultrafast",
-        "title_en": "How NVIDIA GPUs Help Accelerate OpenAI’s GPT-6 Astra Ultrafast",
-        "excerpt_pt": "Análise técnica sobre How NVIDIA GPUs Help Accelerate OpenAI’s GPT-6 Astra Ultrafast em processamento pelo núcleo da CorticFlow....",
-        "excerpt_en": "GPT-6 Astra Ultrafast, running on NVIDIA Blackwell GPUs, is available now in the OpenAI API and to eligible ChatGPT Work and Codex users.  Accelerated by infere...",
-        "content_pt": "Análise técnica sobre How NVIDIA GPUs Help Accelerate OpenAI’s GPT-6 Astra Ultrafast em processamento pelo núcleo da CorticFlow.",
-        "content_en": "GPT-6 Astra Ultrafast, running on NVIDIA Blackwell GPUs, is available now in the OpenAI API and to eligible ChatGPT Work and Codex users.  Accelerated by inference optimizations through OpenAI’s models that tap into the capabilities of the NVIDIA Blackwell architecture, Ultrafast offers up to 8x faster token generation than the Astra Standard mode. For developers, […]"
-    },
-    {
-        "id": 2,
-        "source": "Apple Newsroom",
-        "link": "https://www.apple.com/newsroom/2026/09/apple-releases-new-guide-to-help-families-build-healthy-digital-habits/",
-        "image": "covers/default-ai.jpg",
-        "title_pt": "Análise: Apple releases new guide to help families build healthy digital habits",
-        "title_en": "Apple releases new guide to help families build healthy digital habits",
-        "excerpt_pt": "Análise técnica sobre Apple releases new guide to help families build healthy digital habits em processamento pelo núcleo da CorticFlow....",
-        "excerpt_en": "Today, in partnership with the American Academy of Pediatrics, Apple released a new guide to help families create healthy digital habits....",
-        "content_pt": "Análise técnica sobre Apple releases new guide to help families build healthy digital habits em processamento pelo núcleo da CorticFlow.",
-        "content_en": "Today, in partnership with the American Academy of Pediatrics, Apple released a new guide to help families create healthy digital habits."
-    },
-    {
-        "id": 3,
         "source": "MIT Tech Review",
         "link": "https://www.technologyreview.com/2026/10/02/1143774/redefining-enterprise-intelligence-with-autonomous-ai/",
-        "image": "covers/default-ai.jpg",
+        "image": "covers/redefining-enterprise-intelligence-with-auton.jpg",
         "title_pt": "Análise: Redefining enterprise intelligence with autonomous AI",
         "title_en": "Redefining enterprise intelligence with autonomous AI",
         "excerpt_pt": "Análise técnica sobre Redefining enterprise intelligence with autonomous AI em processamento pelo núcleo da CorticFlow....",
@@ -36,40 +12,64 @@
         "content_en": "Enterprise AI is no longer a future ambition. It is in full operational flight. Model capabilities are advancing faster than most organizations can absorb, while the cost of performance continues to fall. Globally, AI investment is set to reach $2.5 trillion in 2026, up 44% from the previous year. For many enterprises, this investment has&#8230;"
     },
     {
-        "id": 4,
-        "source": "MIT Tech Review",
-        "link": "https://www.technologyreview.com/2026/10/02/1145610/younger-contest-race-to-biological-youth/",
+        "id": 2,
+        "source": "Nvidia News",
+        "link": "https://blogs.nvidia.com/blog/productive-durable-fungible-ai-factories/",
         "image": "covers/default-ai.jpg",
-        "title_pt": "Análise: A new contest pits competitors against each other in a race to biological youth",
-        "title_en": "A new contest pits competitors against each other in a race to biological youth",
-        "excerpt_pt": "Análise técnica sobre A new contest pits competitors against each other in a race to biological youth em processamento pelo núcleo da CorticFlow....",
-        "excerpt_en": "This week, I officially signed up for an unusual competition. One that rewards competitors for getting younger. I recently turned 40, and I don’t need reminding...",
-        "content_pt": "Análise técnica sobre A new contest pits competitors against each other in a race to biological youth em processamento pelo núcleo da CorticFlow.",
-        "content_en": "This week, I officially signed up for an unusual competition. One that rewards competitors for getting younger. I recently turned 40, and I don’t need reminding that both time and my chronological age only tick forward. But this game is focused on competitors’ biological ages—figures that are meant to provide a better way to measure&#8230;"
+        "title_pt": "Análise: Productive, Durable, Fungible: How NVIDIA AI Factories Maximize Return on Investment",
+        "title_en": "Productive, Durable, Fungible: How NVIDIA AI Factories Maximize Return on Investment",
+        "excerpt_pt": "Análise técnica sobre Productive, Durable, Fungible: How NVIDIA AI Factories Maximize Return on Investment em processamento pelo núcleo da CorticFlow....",
+        "excerpt_en": "AI factories are built by the megawatt, even by the gigawatt. Each megawatt factory costs roughly $60 million, and AI factory operators will only commit capital...",
+        "content_pt": "Análise técnica sobre Productive, Durable, Fungible: How NVIDIA AI Factories Maximize Return on Investment em processamento pelo núcleo da CorticFlow.",
+        "content_en": "AI factories are built by the megawatt, even by the gigawatt. Each megawatt factory costs roughly $60 million, and AI factory operators will only commit capital on that scale with a clear view of the return on investment. Three key things shape AI factory returns:  Earning capacity: What the factory could earn in a year […]"
+    },
+    {
+        "id": 3,
+        "source": "Apple Newsroom",
+        "link": "https://www.apple.com/newsroom/2026/09/final-cut-camera-now-supports-variable-aperture-on-iphone-18-pro/",
+        "image": "covers/default-ai.jpg",
+        "title_pt": "Análise: Final Cut Camera now supports variable aperture on iPhone 18 Pro",
+        "title_en": "Final Cut Camera now supports variable aperture on iPhone 18 Pro",
+        "excerpt_pt": "Análise técnica sobre Final Cut Camera now supports variable aperture on iPhone 18 Pro em processamento pelo núcleo da CorticFlow....",
+        "excerpt_en": "Final Cut Camera gets a major update with a new design, support for variable aperture on iPhone 18 Pro, and more pro options with iOS 27....",
+        "content_pt": "Análise técnica sobre Final Cut Camera now supports variable aperture on iPhone 18 Pro em processamento pelo núcleo da CorticFlow.",
+        "content_en": "Final Cut Camera gets a major update with a new design, support for variable aperture on iPhone 18 Pro, and more pro options with iOS 27."
+    },
+    {
+        "id": 4,
+        "source": "Ars Technica",
+        "link": "https://arstechnica.com/security/2026/10/apple-changes-full-disk-access-permissions-to-curb-abuse-from-ai-agents/",
+        "image": "covers/default-ai.jpg",
+        "title_pt": "Análise: Apple changes full-disk access permissions to curb abuse from AI agents",
+        "title_en": "Apple changes full-disk access permissions to curb abuse from AI agents",
+        "excerpt_pt": "Análise técnica sobre Apple changes full-disk access permissions to curb abuse from AI agents em processamento pelo núcleo da CorticFlow....",
+        "excerpt_en": "Meta says FDA isn't sufficient to Muse reading messages. Apple begs to differ....",
+        "content_pt": "Análise técnica sobre Apple changes full-disk access permissions to curb abuse from AI agents em processamento pelo núcleo da CorticFlow.",
+        "content_en": "Meta says FDA isn't sufficient to Muse reading messages. Apple begs to differ."
     },
     {
         "id": 5,
-        "source": "OpenAI Blog",
-        "link": "https://openai.com/index/the-eternal-complement",
+        "source": "Google Blog",
+        "link": "https://blog.google/innovation-and-ai/products/gemini-app/guided-vision-gemini-live/",
         "image": "covers/default-ai.jpg",
-        "title_pt": "Análise: The eternal complement",
-        "title_en": "The eternal complement",
-        "excerpt_pt": "Análise técnica sobre The eternal complement em processamento pelo núcleo da CorticFlow....",
-        "excerpt_en": "Advanced AI may matter most for the routine work behind breakthrough ideas. Explore why execution could shape the next economy and the pace of progress....",
-        "content_pt": "Análise técnica sobre The eternal complement em processamento pelo núcleo da CorticFlow.",
-        "content_en": "Advanced AI may matter most for the routine work behind breakthrough ideas. Explore why execution could shape the next economy and the pace of progress."
+        "title_pt": "Análise: Guided Vision in Gemini Live: built for accessibility",
+        "title_en": "Guided Vision in Gemini Live: built for accessibility",
+        "excerpt_pt": "Análise técnica sobre Guided Vision in Gemini Live: built for accessibility em processamento pelo núcleo da CorticFlow....",
+        "excerpt_en": "stylized hero image reading \"Guided Vision\"...",
+        "content_pt": "Análise técnica sobre Guided Vision in Gemini Live: built for accessibility em processamento pelo núcleo da CorticFlow.",
+        "content_en": "stylized hero image reading \"Guided Vision\""
     },
     {
         "id": 6,
-        "source": "TechCrunch",
-        "link": "https://techcrunch.com/2026/10/02/disrupt-2026-layoff-expo-plus-passes-available-for-75-dollars/",
+        "source": "Google Blog",
+        "link": "https://blog.google/innovation-and-ai/models-and-research/google-research/project-suncatcher-prototype/",
         "image": "covers/default-ai.jpg",
-        "title_pt": "Análise: Affected by layoffs? Don’t miss this $75 deal for your TechCrunch Disrupt 2026 Expo+ Pass",
-        "title_en": "Affected by layoffs? Don’t miss this $75 deal for your TechCrunch Disrupt 2026 Expo+ Pass",
-        "excerpt_pt": "Análise técnica sobre Affected by layoffs? Don’t miss this $75 deal for your TechCrunch Disrupt 2026 Expo+ Pass em processamento pelo núcleo da CorticFlow....",
-        "excerpt_en": "Your next opportunity could be one conversation away. Get your Expo+ Pass for just $75. Limited to the first 100 qualifying people....",
-        "content_pt": "Análise técnica sobre Affected by layoffs? Don’t miss this $75 deal for your TechCrunch Disrupt 2026 Expo+ Pass em processamento pelo núcleo da CorticFlow.",
-        "content_en": "Your next opportunity could be one conversation away. Get your Expo+ Pass for just $75. Limited to the first 100 qualifying people."
+        "title_pt": "Análise: Our Project Suncatcher prototype satellite is in orbit.",
+        "title_en": "Our Project Suncatcher prototype satellite is in orbit.",
+        "excerpt_pt": "Análise técnica sobre Our Project Suncatcher prototype satellite is in orbit. em processamento pelo núcleo da CorticFlow....",
+        "excerpt_en": "Video showing a rocket launch...",
+        "content_pt": "Análise técnica sobre Our Project Suncatcher prototype satellite is in orbit. em processamento pelo núcleo da CorticFlow.",
+        "content_en": "Video showing a rocket launch"
     },
     {
         "id": 7,
@@ -85,14 +85,14 @@
     },
     {
         "id": 8,
-        "source": "Google Blog",
-        "link": "https://blog.google/innovation-and-ai/products/gemini-app/guided-vision-gemini-live/",
+        "source": "TechCrunch",
+        "link": "https://techcrunch.com/2026/10/03/federal-judge-calls-flock-indiscriminate-mass-surveillance/",
         "image": "covers/default-ai.jpg",
-        "title_pt": "Análise: Guided Vision in Gemini Live: built for accessibility",
-        "title_en": "Guided Vision in Gemini Live: built for accessibility",
-        "excerpt_pt": "Análise técnica sobre Guided Vision in Gemini Live: built for accessibility em processamento pelo núcleo da CorticFlow....",
-        "excerpt_en": "stylized hero image reading \"Guided Vision\"...",
-        "content_pt": "Análise técnica sobre Guided Vision in Gemini Live: built for accessibility em processamento pelo núcleo da CorticFlow.",
-        "content_en": "stylized hero image reading \"Guided Vision\""
+        "title_pt": "Análise: Federal judge calls Flock ‘indiscriminate mass surveillance’",
+        "title_en": "Federal judge calls Flock ‘indiscriminate mass surveillance’",
+        "excerpt_pt": "Análise técnica sobre Federal judge calls Flock ‘indiscriminate mass surveillance’ em processamento pelo núcleo da CorticFlow....",
+        "excerpt_en": "A federal judge ruled that a sheriff’s deputy violated a woman’s Fourth Amendment rights when using Flock to search for her license plate without a warrant....",
+        "content_pt": "Análise técnica sobre Federal judge calls Flock ‘indiscriminate mass surveillance’ em processamento pelo núcleo da CorticFlow.",
+        "content_en": "A federal judge ruled that a sheriff’s deputy violated a woman’s Fourth Amendment rights when using Flock to search for her license plate without a warrant."
     }
 ]
