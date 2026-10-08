@@ -904,7 +904,147 @@
                 </div>
             </article>
         </div>
-    </main>
+    
+        <!-- Archive & Historical Library Section -->
+        <section class="archive-section" id="archive-section" style="margin-top: 56px; border-top: 1px solid var(--border-subtle); padding-top: 40px;">
+            <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 24px; flex-wrap: wrap; gap: 14px;">
+                <div>
+                    <span class="card-tag tag-cyan" id="arch-tag">Arquivo Histórico & Dossiês</span>
+                    <h2 style="font-family: var(--font-display); font-size: clamp(1.4rem, 3.5vw, 2rem); font-weight: 800; color: #FFF; margin-top: 8px;" id="arch-title">
+                        Acervo de Investigações & Despachos Anteriores
+                    </h2>
+                    <p style="color: var(--text-secondary); font-size: clamp(0.85rem, 1.8vw, 0.95rem); margin-top: 4px;" id="arch-sub">
+                        Nenhuma matéria se perde. Acesse relatórios anteriores, boletins diários e análises aprofundadas.
+                    </p>
+                </div>
+                
+                <!-- Quick Search Input inside Archive -->
+                <div style="display: flex; align-items: center; gap: 8px; width: 100%; max-width: 340px;">
+                    <input type="text" id="archiveFilterInput" placeholder="Buscar no acervo completo..." oninput="filterArchive(this.value)" style="width: 100%; padding: 9px 14px; border-radius: 8px; border: 1px solid var(--border-subtle); background: rgba(255,255,255,0.04); color: #FFF; font-family: var(--font-mono); font-size: 0.8125rem; outline: none;">
+                </div>
+            </div>
+
+            <!-- Archive Dynamic Grid (Articles 7 to 12+) -->
+            <div class="archive-grid" id="archiveGrid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(clamp(280px, 30vw, 380px), 1fr)); gap: clamp(14px, 2vw, 24px);">
+                <!-- Card 7: OpenAI Persistent Mode -->
+                <article class="bento-card item-ai-models arch-card" onclick="readArticle(7)" data-title="OpenAI Persistent Mode Always-On Agents">
+                    <img class="card-thumb" src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=800&q=80" alt="Persistent Mode">
+                    <div class="card-body">
+                        <span class="card-tag tag-cyan" id="t-card7-tag">Agentes & Infraestrutura</span>
+                        <h2 class="card-heading" id="t-card7-title">OpenAI Persistent Mode: A Transição para Agentes Always-On</h2>
+                        <p class="card-snip" id="t-card7-snip">O fim do ciclo transacional prompt-resposta: modelos autônomos operando como serviços em segundo plano com monitoramento contínuo de código.</p>
+                        <div class="card-foot">
+                            <span id="t-card7-meta">4 min • 28 Ago 2026</span>
+                            <span style="color: var(--cyan); font-weight: 700;">Ler Dossiê →</span>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Card 8: Nvidia US$ 96B & Vera Rubin -->
+                <article class="bento-card item-semiconductors arch-card" onclick="readArticle(8)" data-title="Nvidia Recorde 96 Bilhões Vera Rubin">
+                    <img class="card-thumb" src="https://images.unsplash.com/photo-1591488320449-011701bb6704?auto=format&fit=crop&w=800&q=80" alt="Nvidia Record">
+                    <div class="card-body">
+                        <span class="card-tag tag-purple" id="t-card8-tag">Hardware & Mercado</span>
+                        <h2 class="card-heading" id="t-card8-title">O Balanço Histórico de US$ 96,2 Bilhões da Nvidia e o Ciclo Rubin</h2>
+                        <p class="card-snip" id="t-card8-snip">A transição para racks NVL72 e a arquitetura Rubin com memórias HBM4 de 8 TB/s para quebrar a Memory Wall nos datacenters globais.</p>
+                        <div class="card-foot">
+                            <span id="t-card8-meta">5 min • 27 Ago 2026</span>
+                            <span style="color: var(--cyan); font-weight: 700;">Ler Dossiê →</span>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Card 9: HBM4 & Advanced Packaging -->
+                <article class="bento-card item-semiconductors arch-card" onclick="readArticle(9)" data-title="SK hynix HBM4 Advanced Packaging Indiana">
+                    <img class="card-thumb" src="https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=800&q=80" alt="HBM4 Fab">
+                    <div class="card-body">
+                        <span class="card-tag tag-cyan" id="t-card9-tag">Semicondutores & Fabs</span>
+                        <h2 class="card-heading" id="t-card9-title">SK hynix Inicia Fábrica de US$ 4 Bilhões para Memórias HBM4</h2>
+                        <p class="card-snip" id="t-card9-snip">Megaunidade em Indiana acelera a fabricação de encapsulamento avançado CoWoS e Hybrid Bonding para aliviar o gargalo global de superchips.</p>
+                        <div class="card-foot">
+                            <span id="t-card9-meta">4 min • 28 Ago 2026</span>
+                            <span style="color: var(--cyan); font-weight: 700;">Ler Dossiê →</span>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Card 10: Claude Mythos vs Qwen3.8 Max -->
+                <article class="bento-card item-ai-models arch-card" onclick="readArticle(10)" data-title="Claude Mythos Qwen3.8 Max Reasoning Benchmarks">
+                    <img class="card-thumb" src="https://images.unsplash.com/photo-1620712943543-bcc4688e7485?auto=format&fit=crop&w=800&q=80" alt="Reasoning Benchmarks">
+                    <div class="card-body">
+                        <span class="card-tag tag-emerald" id="t-card10-tag">Raciocínio & Benchmarks</span>
+                        <h2 class="card-heading" id="t-card10-title">Claude Mythos 5 e Qwen3.8 Max: A Fronteira do Test-Time Compute</h2>
+                        <p class="card-snip" id="t-card10-snip">Como a computação em tempo de inferência está superando o pré-treinamento maciço em desafios de lógica matemática e arquitetura de software.</p>
+                        <div class="card-foot">
+                            <span id="t-card10-meta">5 min • 27 Ago 2026</span>
+                            <span style="color: var(--cyan); font-weight: 700;">Ler Dossiê →</span>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Card 11: Refrigeração Neural em Datacenters -->
+                <article class="bento-card item-semiconductors arch-card" onclick="readArticle(11)" data-title="Refrigeração Neural Datacenters Digital Realty Phaidra">
+                    <img class="card-thumb" src="https://images.unsplash.com/photo-1544197150-b99a580bb7a8?auto=format&fit=crop&w=800&q=80" alt="Datacenter Cooling">
+                    <div class="card-body">
+                        <span class="card-tag tag-purple" id="t-card11-tag">Datacenters & Energia</span>
+                        <h2 class="card-heading" id="t-card11-title">Refrigeração Neural Autônoma: -20% de Energia em Datacenters</h2>
+                        <p class="card-snip" id="t-card11-snip">A adoção de agentes de controle térmico preditivo em racks de alta densidade pela Digital Realty para evitar estrangulamento térmico de clusters.</p>
+                        <div class="card-foot">
+                            <span id="t-card11-meta">4 min • 27 Ago 2026</span>
+                            <span style="color: var(--cyan); font-weight: 700;">Ler Dossiê →</span>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Card 12: Síntese de Supercondutores pelo MIT -->
+                <article class="bento-card item-physical-ai arch-card" onclick="readArticle(12)" data-title="MIT Supercondutores Materiais Generativos">
+                    <img class="card-thumb" src="https://images.unsplash.com/photo-1507413245164-6160d8298b31?auto=format&fit=crop&w=800&q=80" alt="MIT Superconductors">
+                    <div class="card-body">
+                        <span class="card-tag tag-emerald" id="t-card12-tag">Ciência dos Materiais</span>
+                        <h2 class="card-heading" id="t-card12-title">MIT Valida Síntese Generativa de Supercondutores e Baterias</h2>
+                        <p class="card-snip" id="t-card12-snip">Modelos de difusão atômica saem das simulações teóricas e produzem materiais funcionais em laboratório para a próxima geração de eletrônicos.</p>
+                        <div class="card-foot">
+                            <span id="t-card12-meta">5 min • 27 Ago 2026</span>
+                            <span style="color: var(--cyan); font-weight: 700;">Ler Dossiê →</span>
+                        </div>
+                    </div>
+                </article>
+            </div>
+
+            <!-- Weekly Special Editions & Bulletins Shelf -->
+            <div style="margin-top: 48px; background: rgba(255,255,255,0.02); border: 1px solid var(--border-subtle); border-radius: 16px; padding: clamp(18px, 3vw, 28px);">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; flex-wrap: wrap; gap: 10px;">
+                    <div>
+                        <span class="card-tag tag-purple" id="tag-editions">Edições Especiais</span>
+                        <h3 style="font-family: var(--font-display); font-size: clamp(1.15rem, 2.5vw, 1.4rem); font-weight: 800; color: #FFF; margin-top: 6px;" id="title-editions">
+                            Boletins CorticFlow Weekly & Daily
+                        </h3>
+                    </div>
+                    <span style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--text-muted);" id="sub-editions">ARQUIVAMENTO OFICIAL COMPLETO</span>
+                </div>
+
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 14px;">
+                    <div class="wire-item" onclick="readArticle(13)" style="background: rgba(0,240,255,0.03); border: 1px solid rgba(0,240,255,0.2);">
+                        <div class="wire-meta">EDIÇÃO SEMANAL #01 • 30 AGO 2026</div>
+                        <div class="wire-item-title" id="ed-w1">CorticFlow Weekly #01: A Batalha dos Agentes e a Transição HBM4</div>
+                        <p style="font-size: 0.78rem; color: var(--text-secondary); margin-top: 6px;" id="ed-w1-sub">Inclui Carta do Editor e Checklist de Governança para Agentes Always-On.</p>
+                    </div>
+
+                    <div class="wire-item" onclick="readArticle(14)" style="background: rgba(138,79,255,0.03); border: 1px solid rgba(138,79,255,0.2);">
+                        <div class="wire-meta">BOLETIM DIÁRIO #04 • 28 AGO 2026</div>
+                        <div class="wire-item-title" id="ed-d4">CorticFlow Daily #04: Persistent Mode e Nova Fábrica HBM4 nos EUA</div>
+                        <p style="font-size: 0.78rem; color: var(--text-secondary); margin-top: 6px;" id="ed-d4-sub">Despacho analítico diário com pílulas de arquitetura e mitigação de custos.</p>
+                    </div>
+
+                    <div class="wire-item" onclick="readArticle(15)" style="background: rgba(0,245,160,0.03); border: 1px solid rgba(0,245,160,0.2);">
+                        <div class="wire-meta">BOLETIM DIÁRIO #03 • 27 AGO 2026</div>
+                        <div class="wire-item-title" id="ed-d3">CorticFlow Daily #03: O Balanço da Nvidia e Alerta de Bill Gates</div>
+                        <p style="font-size: 0.78rem; color: var(--text-secondary); margin-top: 6px;" id="ed-d3-sub">Cobertura dos US$ 96B da Nvidia e análise da vulnerabilidade Rowhammer.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+</main>
 
     <!-- Deep Reader Modal (Mobile Responsive Fullscreen / Bottom Sheet) -->
     <div class="modal-overlay" id="articleModal" onclick="closeOnOverlay(event)">
@@ -1024,9 +1164,7 @@
                     <div class="brand-gem">🧠</div>
                     Cortic<span>Flow</span>
                 </div>
-                <p style="font-size: clamp(0.85rem, 1.8vw, 0.9rem); color: var(--text-secondary); line-height: 1.6; max-width: 380px;" id="foot-desc">
-                    Publicação internacional independente de alta tecnologia. Decodificamos a física dos semicondutores, a matemática dos modelos fundacionais e os desdobramentos de mercado dos sistemas autônomos.
-                </p>
+
             </div>
             
             <div class="footer-col">
@@ -1547,6 +1685,337 @@
                     links: [{ name: 'Optical Internetworking Forum ↗', url: 'https://www.oiforum.com' }]
                 }
             }
+,
+            7: {
+                category: 'ai-models',
+                img: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=800&q=80',
+                pt: {
+                    tag: 'Agentes & Infraestrutura',
+                    title: 'OpenAI Persistent Mode: A Transição para Agentes Always-On',
+                    snip: 'O fim do ciclo transacional prompt-resposta: modelos autônomos operando como serviços em segundo plano.',
+                    time: '⚡ 4 min de leitura • Agentes Autônomos',
+                    callout: 'A chegada do Persistent Mode transforma agentes de código em serviços em segundo plano que monitoram repositórios 24/7, corrigem pipelines de CI/CD e antecipam refatorações.',
+                    body: `
+                        <div id="anchor-body"></div>
+                        <p>Até o início de 2026, a interação com modelos de linguagem seguia um ritmo estritamente transacional: envio de prompt, raciocínio, execução e encerramento. Com o <strong>Persistent Mode</strong>, agentes autônomos passam a rodar continuamente como daemons de infraestrutura.</p>
+                        <h3>Desafios de Engenharia em Longa Execução</h3>
+                        <ul>
+                            <li><strong>Drift Cognitivo:</strong> Técnicas de compactação semântica evitam saturação e alucinações em sessões que duram semanas.</li>
+                            <li><strong>Concorrência Atômica:</strong> Mecanismos de locks atômicos de código para múltiplos subagentes colaborando no mesmo monorepo.</li>
+                            <li><strong>Heartbeat de Segurança:</strong> Travas financeiras e limites de chamadas por hora para impedir loops de custos descontrolados.</li>
+                        </ul>
+                    `,
+                    links: [
+                        { name: 'Análise Técnica / Wired ↗', url: 'https://www.wired.com' },
+                        { name: 'OpenAI Developer Docs ↗', url: 'https://platform.openai.com' }
+                    ]
+                },
+                en: {
+                    tag: 'Agents & Infrastructure',
+                    title: 'OpenAI Persistent Mode: The Transition to Always-On Agents',
+                    snip: 'Ending the transactional prompt-response cycle: autonomous models operating as persistent background infrastructure.',
+                    time: '⚡ 4 min read • Autonomous Agents',
+                    callout: 'Persistent Mode turns coding models into persistent daemons monitoring repositories 24/7, fixing CI/CD failures, and refactoring proactively.',
+                    body: `
+                        <div id="anchor-body"></div>
+                        <p>Until early 2026, LLM interaction followed a rigid transactional cadence. With <strong>Persistent Mode</strong>, agents operate continuously as background daemons with persistent memory and environmental feedback loops.</p>
+                        <h3>Key Engineering Challenges</h3>
+                        <ul>
+                            <li><strong>Cognitive Drift:</strong> Episodic memory pruning prevents attention degradation across month-long sessions.</li>
+                            <li><strong>Atomic Concurrency:</strong> Strict file-locking mechanisms for coordinated multi-agent orchestration.</li>
+                            <li><strong>Heartbeat Governance:</strong> Enforcing dynamic spend ceilings to avert infinite inference execution loops.</li>
+                        </ul>
+                    `,
+                    links: [
+                        { name: 'Wired Tech Analysis ↗', url: 'https://www.wired.com' },
+                        { name: 'OpenAI Platform Docs ↗', url: 'https://platform.openai.com' }
+                    ]
+                }
+            },
+            8: {
+                category: 'semiconductors',
+                img: 'https://images.unsplash.com/photo-1591488320449-011701bb6704?auto=format&fit=crop&w=800&q=80',
+                pt: {
+                    tag: 'Hardware & Mercado',
+                    title: 'O Balanço Histórico de US$ 96,2 Bilhões da Nvidia e o Ciclo Rubin',
+                    snip: 'A transição para racks NVL72 e a arquitetura Rubin com memórias HBM4 de 8 TB/s para quebrar a Memory Wall.',
+                    time: '⚡ 5 min de leitura • Semicondutores & Finanças',
+                    callout: 'A receita trimestral recorde de US$ 96,2 bilhões consolida que o ciclo de Capex em infraestrutura de IA não é uma bolha efêmera, mas uma reestruturação fundamental dos datacenters mundiais.',
+                    body: `
+                        <div id="anchor-body"></div>
+                        <p>A divulgação dos resultados fiscais da Nvidia estabeleceu novos patamares para a indústria de semicondutores. Com mais de US$ 96 bilhões em faturamento em um único trimestre e projeção de 70% de crescimento anual, a transição para clusters Blackwell e Vera Rubin continua operando acima da capacidade das fundições da TSMC.</p>
+                        <h3>A Chegada da Plataforma Vera Rubin</h3>
+                        <p>Analistas destacam que a plataforma Rubin introduz uma quebra decisiva da <em>Memory Wall</em>: a integração direta de memórias HBM4 com 8 TB/s de largura de banda, eliminando a latência de transferência de tensores em tarefas de raciocínio estendido.</p>
+                    `,
+                    links: [
+                        { name: 'Morningstar Financial Analysis ↗', url: 'https://global.morningstar.com' },
+                        { name: 'SEC Filings NVDA ↗', url: 'https://www.sec.gov' }
+                    ]
+                },
+                en: {
+                    tag: 'Hardware & Markets',
+                    title: 'Nvidia Historical $96.2B Quarter and the Vera Rubin Silicon Cycle',
+                    snip: 'Shifting to NVL72 rack-scale systems and 8 TB/s HBM4 memory architectures to eliminate the memory wall.',
+                    time: '⚡ 5 min read • Semiconductors & Capital',
+                    callout: 'A record quarterly revenue of $96.2B proves hyperscale compute CapEx represents a multi-year global infrastructure re-architecture.',
+                    body: `
+                        <div id="anchor-body"></div>
+                        <p>Nvidia latest quarterly results confirmed unrelenting hyperscale infrastructure demand. Generating over $96B in a single quarter with a +70% forward guidance, allocation constraints at TSMC CoWoS packaging remain the primary output ceiling.</p>
+                        <h3>The Vera Rubin Architecture</h3>
+                        <p>Industry analysts emphasize that Rubin attacks the <em>Memory Wall</em> natively: integrating HBM4 stacks delivering 8 TB/s bandwidth, eradicating tensor communication bottlenecks during long-horizon reasoning workloads.</p>
+                    `,
+                    links: [
+                        { name: 'Morningstar Analysis ↗', url: 'https://global.morningstar.com' },
+                        { name: 'Nvidia Investor Relations ↗', url: 'https://nvidianews.nvidia.com' }
+                    ]
+                }
+            },
+            9: {
+                category: 'semiconductors',
+                img: 'https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=800&q=80',
+                pt: {
+                    tag: 'Semicondutores & Fabs',
+                    title: 'SK hynix Inicia Fábrica de US$ 4 Bilhões para Memórias HBM4',
+                    snip: 'Megaunidade em Indiana acelera fabricação de encapsulamento avançado CoWoS e Hybrid Bonding para aceleradores.',
+                    time: '⚡ 4 min de leitura • Fabs & Packaging',
+                    callout: 'A descentralização das linhas de encapsulamento avançado para os Estados Unidos reduz a vulnerabilidade da cadeia de suprimentos de chips neurais perante tensões geopolíticas no Estreito de Taiwan.',
+                    body: `
+                        <div id="anchor-body"></div>
+                        <p>A sul-coreana SK hynix iniciou oficialmente a construção de sua fábrica de encapsulamento avançado de US$ 4 bilhões em Indiana. O objetivo primário é fornecer módulos HBM4 e HBM3e diretamente para fabricantes norte-americanas de silício.</p>
+                        <h3>A Corrida do Hybrid Bonding</h3>
+                        <p>A nova unidade conta com maquinário para empilhamento tridimensional via <em>Direct Copper-to-Copper Bonding</em>, dispensando microbumps de solda e permitindo taxas de transferência térmicas 40% mais eficientes.</p>
+                    `,
+                    links: [
+                        { name: 'SK hynix Newsroom Announcement ↗', url: 'https://news.skhynix.com' }
+                    ]
+                },
+                en: {
+                    tag: 'Semiconductors & Fabs',
+                    title: 'SK hynix Breaks Ground on $4B Indiana HBM4 Advanced Packaging Fab',
+                    snip: 'Accelerating CoWoS and 3D Hybrid Bonding lines to relieve hyperscale accelerator supply shortages.',
+                    time: '⚡ 4 min read • Fabs & Packaging',
+                    callout: 'Onshoring advanced packaging lines inside the US mitigates critical supply chain vulnerabilities across Taiwan Strait geopolitics.',
+                    body: `
+                        <div id="anchor-body"></div>
+                        <p>South Korea SK hynix formally commenced construction of its $4B advanced packaging hub in Indiana, engineered specifically to supply HBM4 memory stacks directly to North American accelerator designers.</p>
+                        <h3>The 3D Hybrid Bonding Frontier</h3>
+                        <p>The facility integrates bumpless copper-to-copper 3D stacking, eliminating legacy solder microbumps and improving thermal dissipation by up to 40%.</p>
+                    `,
+                    links: [
+                        { name: 'SK hynix Newsroom ↗', url: 'https://news.skhynix.com' }
+                    ]
+                }
+            },
+            10: {
+                category: 'ai-models',
+                img: 'https://images.unsplash.com/photo-1620712943543-bcc4688e7485?auto=format&fit=crop&w=800&q=80',
+                pt: {
+                    tag: 'Raciocínio & Benchmarks',
+                    title: 'Claude Mythos 5 e Qwen3.8 Max: A Fronteira do Test-Time Compute',
+                    snip: 'Como a computação em tempo de inferência está superando o pré-treinamento maciço em desafios de lógica.',
+                    time: '⚡ 5 min de leitura • Benchmarks de Raciocínio',
+                    callout: 'A alocação de poder computacional durante a geração de resposta (Search Trees, MCTS e verificação autoregressiva) atinge resultados superiores a dobrar o tamanho dos parâmetros do modelo.',
+                    body: `
+                        <div id="anchor-body"></div>
+                        <p>Os novos benchmarks de raciocínio do ecossistema de IA consolidaram uma mudança de paradigma: a transição das Leis de Escala de Pré-treinamento para as <strong>Leis de Escala de Inferência (Test-Time Compute)</strong>.</p>
+                        <p>Tanto o Claude Mythos 5 quanto o modelo aberto Qwen3.8 Max utilizam estratégias de verificação por passos (Step-Level Value Models) que corrigem falhas de dedução em tempo real antes de entregar o token final ao usuário.</p>
+                    `,
+                    links: [
+                        { name: 'BenchLM Leaderboards ↗', url: 'https://benchlm.ai' }
+                    ]
+                },
+                en: {
+                    tag: 'Reasoning & Benchmarks',
+                    title: 'Claude Mythos 5 & Qwen3.8 Max: The Test-Time Compute Paradigm',
+                    snip: 'How compute allocated during inference is outperforming massive pre-training on logical reasoning.',
+                    time: '⚡ 5 min read • Reasoning Frontiers',
+                    callout: 'Allocating compute at inference time via search trees and step-level reward verifiers delivers greater accuracy gains than brute-force pre-training parameter expansion.',
+                    body: `
+                        <div id="anchor-body"></div>
+                        <p>Frontier evaluation benchmarks solidified a fundamental transition: from pre-training scaling laws to <strong>Test-Time Compute Scaling</strong>.</p>
+                        <p>Both Claude Mythos 5 and the open-weight Qwen3.8 Max leverage step-level reward verifiers that autonomously identify and rectify intermediate deductive errors prior to emitting final solutions.</p>
+                    `,
+                    links: [
+                        { name: 'BenchLM Leaderboard ↗', url: 'https://benchlm.ai' }
+                    ]
+                }
+            },
+            11: {
+                category: 'semiconductors',
+                img: 'https://images.unsplash.com/photo-1544197150-b99a580bb7a8?auto=format&fit=crop&w=800&q=80',
+                pt: {
+                    tag: 'Datacenters & Energia',
+                    title: 'Refrigeração Neural Autônoma: -20% de Energia em Datacenters',
+                    snip: 'Adoção de agentes preditivos em racks de alta densidade pela Digital Realty e Phaidra.',
+                    time: '⚡ 4 min de leitura • Eficiência Energética',
+                    callout: 'O PUE (Power Usage Effectiveness) de instalações de IA está caindo abaixo de 1.08 graças ao controle em tempo real de fluxo de líquidos dielétricos e ventilação por modelos de reforço.',
+                    body: `
+                        <div id="anchor-body"></div>
+                        <p>Operadoras de datacenters como Digital Realty e Phaidra implementaram agentes neurais que predizem com segundos de antecedência a dissipação térmica de cada nó acelerador, ajustando bombas e ventiladores antes que o calor se acumule.</p>
+                    `,
+                    links: [
+                        { name: 'Data Center Knowledge Report ↗', url: 'https://www.datacenterknowledge.com' }
+                    ]
+                },
+                en: {
+                    tag: 'Datacenters & Energy',
+                    title: 'Autonomous Neural Cooling: Slashes 20% Datacenter HVAC Energy',
+                    snip: 'Digital Realty and Phaidra deploy predictive thermal reinforcement agents across hyperscale clusters.',
+                    time: '⚡ 4 min read • Energy Efficiency',
+                    callout: 'Facility PUE is dropping below 1.08 through predictive liquid cooling orchestration driven by closed-loop neural agents.',
+                    body: `
+                        <div id="anchor-body"></div>
+                        <p>Global datacenter operators implemented closed-loop reinforcement agents forecasting thermal spikes seconds before job execution, pre-allocating coolant flow and avoiding thermal throttling.</p>
+                    `,
+                    links: [
+                        { name: 'Data Center Knowledge ↗', url: 'https://www.datacenterknowledge.com' }
+                    ]
+                }
+            },
+            12: {
+                category: 'physical-ai',
+                img: 'https://images.unsplash.com/photo-1507413245164-6160d8298b31?auto=format&fit=crop&w=800&q=80',
+                pt: {
+                    tag: 'Ciência dos Materiais',
+                    title: 'MIT Valida Síntese Generativa de Supercondutores e Baterias',
+                    snip: 'Modelos de difusão atômica geram materiais funcionais em laboratório para baterias e semicondutores.',
+                    time: '⚡ 5 min de leitura • Ciência & Silício',
+                    callout: 'A passagem da triagem in silico para a fabricação física automatizada por robôs químicos marca o nascimento da engenharia de materiais gerada por IA.',
+                    body: `
+                        <div id="anchor-body"></div>
+                        <p>Pesquisadores do MIT demonstraram que modelos generativos treinados em mecânica quântica são capazes de conceber estruturas cristalinas inéditas e sintetizá-las fisicamente com sucesso comprovado em ensaios de laboratório.</p>
+                    `,
+                    links: [
+                        { name: 'MIT News Official Publication ↗', url: 'https://news.mit.edu' }
+                    ]
+                },
+                en: {
+                    tag: 'Materials Science',
+                    title: 'MIT Validates Generative Synthesis of Superconductors & Battery Cells',
+                    snip: 'Atomic diffusion models design experimentally proven physical materials for next-generation electronics.',
+                    time: '⚡ 5 min read • Physics & AI',
+                    callout: 'Transitioning from in-silico screening to automated robotic chemical synthesis represents the dawn of generative material physics.',
+                    body: `
+                        <div id="anchor-body"></div>
+                        <p>MIT researchers proved that generative diffusion architectures trained on quantum mechanics can successfully discover and synthesize entirely novel crystal structures with verified electronic properties.</p>
+                    `,
+                    links: [
+                        { name: 'MIT News Report ↗', url: 'https://news.mit.edu' }
+                    ]
+                }
+            },
+            13: {
+                category: 'semiconductors',
+                img: 'https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?auto=format&fit=crop&w=800&q=80',
+                pt: {
+                    tag: 'Edição Semanal #01',
+                    title: 'CorticFlow Weekly #01: A Batalha dos Agentes e a Transição HBM4',
+                    snip: 'Dossiês técnicos da semana, checklist de governança para agentes em produção e análise do balanço da Nvidia.',
+                    time: '⚡ 10 min de leitura • Dossiê Semanal',
+                    callout: 'Nesta edição inaugural, analisamos o OpenAI Persistent Mode, o lançamento do DeepSeek Harness, a vulnerabilidade GPUThor e o checklist de governança para agentes Always-On.',
+                    body: `
+                        <div id="anchor-body"></div>
+                        <p>Nesta edição inaugural da <strong>CorticFlow Weekly</strong>, analisamos uma semana de movimentações tectônicas no cenário da inteligência artificial e infraestrutura computacional.</p>
+                        <h3>Dossiês Técnicos da Semana</h3>
+                        <ul>
+                            <li><strong>Dossiê 1: Agentes Abertos vs Fechados:</strong> O embate entre DeepSeek Harness e OpenAI Persistent Mode.</li>
+                            <li><strong>Dossiê 2: O Desafio da Memory Wall:</strong> A transição acelerada da indústria para a tecnologia HBM4.</li>
+                            <li><strong>Dossiê 3: Cibersegurança de Hardware:</strong> Quebra do ECC por Rowhammer no exploit GPUThor.</li>
+                        </ul>
+                        <h3>Checklist de Governança para Agentes Always-On</h3>
+                        <p>1. Monitoramento de Drift Cognitivo em tempo real.<br>2. Travas dinâmicas de tokens e consumo elétrico.<br>3. Trilha de auditoria completa de tool calls.<br>4. Políticas de privilégio mínimo e isolamento de sessões.</p>
+                    `,
+                    links: [
+                        { name: 'Arquivo no Google Docs ↗', url: 'https://docs.google.com/document/d/13nhtO0dU1R6__Rug2msK5_tVEDt-DVbrGD58i5bfkjg/edit' }
+                    ]
+                },
+                en: {
+                    tag: 'Weekly Edition #01',
+                    title: 'CorticFlow Weekly #01: The Agent Wars and the HBM4 Transition',
+                    snip: 'Weekly technical dossiers, Always-On agent governance checklist, and semiconductor capital analysis.',
+                    time: '⚡ 10 min read • Weekly Dossier',
+                    callout: 'Our inaugural edition breaks down OpenAI Persistent Mode, DeepSeek Harness, GPUThor vulnerability, and production agent governance.',
+                    body: `
+                        <div id="anchor-body"></div>
+                        <p>In this inaugural edition of <strong>CorticFlow Weekly</strong>, we review tectonic structural shifts across artificial intelligence infrastructure and systems architecture.</p>
+                        <h3>Technical Dossiers of the Week</h3>
+                        <ul>
+                            <li><strong>Dossier 1: Open vs Proprietary Frameworks:</strong> The battle between DeepSeek Harness and OpenAI Persistent Mode.</li>
+                            <li><strong>Dossier 2: Overcoming the Memory Wall:</strong> The industry-wide acceleration toward HBM4 memory stacks.</li>
+                            <li><strong>Dossier 3: Hardware Security:</strong> Bypassing ECC parity via the GPUThor Rowhammer exploit.</li>
+                        </ul>
+                        <h3>Governance Checklist for Always-On Agents</h3>
+                        <p>1. Real-time cognitive drift monitoring.<br>2. Dynamic token spend caps and circuit breakers.<br>3. Full audit trails on every tool invocation.<br>4. Least-privilege credential sandboxing.</p>
+                    `,
+                    links: [
+                        { name: 'Google Docs Official Archive ↗', url: 'https://docs.google.com/document/d/13nhtO0dU1R6__Rug2msK5_tVEDt-DVbrGD58i5bfkjg/edit' }
+                    ]
+                }
+            },
+            14: {
+                category: 'ai-models',
+                img: 'https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=800&q=80',
+                pt: {
+                    tag: 'Boletim Diário #04',
+                    title: 'CorticFlow Daily #04: Persistent Mode e Nova Fábrica HBM4 nos EUA',
+                    snip: 'Análise diária cobrindo a fábrica da SK hynix em Indiana e o novo framework da Anthropic para robótica.',
+                    time: '⚡ 6 min de leitura • Boletim Executivo',
+                    callout: 'Cobertura executiva diária: OpenAI Persistent Mode, fábrica de US$ 4B da SK hynix, framework físico da Anthropic e vendas diretas da Nvidia.',
+                    body: `
+                        <div id="anchor-body"></div>
+                        <p>Destaques do boletim diário cobrindo a transição para serviços autônomos contínuos e os investimentos em embalagem avançada no meio-oeste norte-americano.</p>
+                    `,
+                    links: [
+                        { name: 'Arquivo no Google Docs ↗', url: 'https://docs.google.com/document/d/1hGhxULOuch1qWQNmFqgtG0TvwCK_9xJ0LT28NzQ06zc/edit' }
+                    ]
+                },
+                en: {
+                    tag: 'Daily Bulletin #04',
+                    title: 'CorticFlow Daily #04: Persistent Mode & $4B US HBM4 Fab',
+                    snip: 'Daily executive briefing tracking SK hynix Indiana packaging hub and Anthropic physical device control.',
+                    time: '⚡ 6 min read • Executive Bulletin',
+                    callout: 'Daily intelligence dispatch: OpenAI Persistent Mode, SK hynix $4B investment, Anthropic physical tool control, and Nvidia cloud restructuring.',
+                    body: `
+                        <div id="anchor-body"></div>
+                        <p>Executive analysis covering the transition to always-on background services and semiconductor packaging onshoring.</p>
+                    `,
+                    links: [
+                        { name: 'Google Docs Archive ↗', url: 'https://docs.google.com/document/d/1hGhxULOuch1qWQNmFqgtG0TvwCK_9xJ0LT28NzQ06zc/edit' }
+                    ]
+                }
+            },
+            15: {
+                category: 'semiconductors',
+                img: 'https://images.unsplash.com/photo-1591488320449-011701bb6704?auto=format&fit=crop&w=800&q=80',
+                pt: {
+                    tag: 'Boletim Diário #03',
+                    title: 'CorticFlow Daily #03: O Balanço da Nvidia e Alerta de Bill Gates',
+                    snip: 'Receita trimestral de US$ 96,2 bilhões, declarações de Bill Gates e o exploit GPUThor.',
+                    time: '⚡ 6 min de leitura • Boletim Executivo',
+                    callout: 'A análise dos resultados financeiros da Nvidia, o alerta sobre desemprego tecnológico e a quebra de ECC por Rowhammer.',
+                    body: `
+                        <div id="anchor-body"></div>
+                        <p>Análise detalhada dos números da Nvidia, os pronunciamentos de Bill Gates sobre adaptação econômica à IA e as salvaguardas necessárias em clusters de GPU compartilhados.</p>
+                    `,
+                    links: [
+                        { name: 'Arquivo no Google Docs ↗', url: 'https://docs.google.com/document/d/16aTzz5JhHF1Pt8hnLlLq0ADas1jVV3b_vmDUFEasmJk/edit' }
+                    ]
+                },
+                en: {
+                    tag: 'Daily Bulletin #03',
+                    title: 'CorticFlow Daily #03: Nvidia $96.2B Earnings & Bill Gates Warning',
+                    snip: 'Record quarterly revenue, Bill Gates on AI workforce disruption, and the GPUThor Rowhammer exploit.',
+                    time: '⚡ 6 min read • Executive Bulletin',
+                    callout: 'Analysis of Nvidia earnings metrics, macroeconomic employment warnings, and multi-tenant GPU memory protection.',
+                    body: `
+                        <div id="anchor-body"></div>
+                        <p>Detailed analysis of Nvidia earnings guidance, Bill Gates statements on economic adaptation, and multi-tenant cloud GPU mitigations.</p>
+                    `,
+                    links: [
+                        { name: 'Google Docs Archive ↗', url: 'https://docs.google.com/document/d/16aTzz5JhHF1Pt8hnLlLq0ADas1jVV3b_vmDUFEasmJk/edit' }
+                    ]
+                }
+            }
         };
 
         /* Institutional Modals Content */
@@ -1722,6 +2191,50 @@
             }
         }
 
+
+
+        /* Dynamic Command Palette Search across All 15 Articles & Dossiers */
+        function handleCmdSearch(query) {
+            const q = query.toLowerCase().trim();
+            const container = document.getElementById('cmdResults');
+            if (!container) return;
+            
+            container.innerHTML = '';
+
+            const langItem = document.createElement('div');
+            langItem.className = 'cmd-result-item';
+            langItem.onclick = () => { switchLang(currentLang === 'pt' ? 'en' : 'pt'); toggleCmd(); };
+            langItem.innerHTML = `<span>🌐 Alternar Idioma / Toggle Language (${currentLang.toUpperCase()} ➔ ${currentLang === 'pt' ? 'EN' : 'PT'})</span><span style="font-family: var(--font-mono); font-size: 0.72rem; color: var(--emerald);">ACTION</span>`;
+            container.appendChild(langItem);
+
+            for (let id in ARTICLES) {
+                const art = ARTICLES[id];
+                const data = art[currentLang];
+                if (!q || data.title.toLowerCase().includes(q) || data.tag.toLowerCase().includes(q) || data.snip.toLowerCase().includes(q)) {
+                    const item = document.createElement('div');
+                    item.className = 'cmd-result-item';
+                    item.onclick = () => { readArticle(id); toggleCmd(); };
+                    item.innerHTML = `<span>⚡ ${data.title}</span><span style="font-family: var(--font-mono); font-size: 0.72rem; color: var(--cyan); text-transform: uppercase;">${data.tag}</span>`;
+                    container.appendChild(item);
+                }
+            }
+        }
+
+        /* Real-Time Filter for Historical Archive */
+        function filterArchive(query) {
+            const q = query.toLowerCase().trim();
+            const cards = document.querySelectorAll('.arch-card');
+            cards.forEach(card => {
+                const title = card.getAttribute('data-title') ? card.getAttribute('data-title').toLowerCase() : '';
+                const text = card.innerText.toLowerCase();
+                if (!q || title.includes(q) || text.includes(q)) {
+                    card.style.display = 'flex';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+
         /* Filter Logic */
         function filterBy(cat, btn) {
             playSfx('click');
@@ -1785,6 +2298,13 @@
                 document.getElementById('foot-h-inst').innerText = 'Institucional';
                 document.getElementById('foot-copy').innerText = '© 2026 CorticFlow Media. Todos os direitos reservados.';
                 document.getElementById('foot-sub').innerText = 'Plataforma Internacional de Inteligência & Silício';
+                if(document.getElementById('arch-tag')) document.getElementById('arch-tag').innerText = 'Arquivo Histórico & Dossiês';
+                if(document.getElementById('arch-title')) document.getElementById('arch-title').innerText = 'Acervo de Investigações & Despachos Anteriores';
+                if(document.getElementById('arch-sub')) document.getElementById('arch-sub').innerText = 'Nenhuma matéria se perde. Acesse relatórios anteriores, boletins diários e análises aprofundadas.';
+                if(document.getElementById('archiveFilterInput')) document.getElementById('archiveFilterInput').placeholder = 'Buscar no acervo completo...';
+                if(document.getElementById('tag-editions')) document.getElementById('tag-editions').innerText = 'Edições Especiais';
+                if(document.getElementById('title-editions')) document.getElementById('title-editions').innerText = 'Boletins CorticFlow Weekly & Daily';
+                if(document.getElementById('sub-editions')) document.getElementById('sub-editions').innerText = 'ARQUIVAMENTO OFICIAL COMPLETO';
             } else {
                 document.getElementById('hud-cluster').innerText = 'GLOBAL COMPUTE: 98.4% NOMINAL';
                 document.getElementById('hud-ticker').innerText = 'BLACKWELL B200 ACCELERATING PRODUCTION';
@@ -1821,6 +2341,13 @@
                 document.getElementById('foot-h-inst').innerText = 'Institutional';
                 document.getElementById('foot-copy').innerText = '© 2026 CorticFlow Media. All rights reserved.';
                 document.getElementById('foot-sub').innerText = 'International Intelligence & Silicon Platform';
+                if(document.getElementById('arch-tag')) document.getElementById('arch-tag').innerText = 'Historical Archive & Dossiers';
+                if(document.getElementById('arch-title')) document.getElementById('arch-title').innerText = 'Archive of Past Investigations & Dispatches';
+                if(document.getElementById('arch-sub')) document.getElementById('arch-sub').innerText = 'Never miss an insight. Browse past reports, daily bulletins, and deep-dive technical briefs.';
+                if(document.getElementById('archiveFilterInput')) document.getElementById('archiveFilterInput').placeholder = 'Search entire archive...';
+                if(document.getElementById('tag-editions')) document.getElementById('tag-editions').innerText = 'Special Editions';
+                if(document.getElementById('title-editions')) document.getElementById('title-editions').innerText = 'CorticFlow Weekly & Daily Bulletins';
+                if(document.getElementById('sub-editions')) document.getElementById('sub-editions').innerText = 'OFFICIAL HISTORICAL REPOSITORY';
             }
 
             // Update Cards
@@ -1858,6 +2385,17 @@
             document.getElementById('t-card6-tag').innerText = a6.tag;
             document.getElementById('t-card6-title').innerText = a6.title;
             document.getElementById('t-card6-snip').innerText = a6.snip;
+
+            // Update Archive Cards 7 to 12
+            for (let i = 7; i <= 12; i++) {
+                if (ARTICLES[i] && document.getElementById(`t-card${i}-title`)) {
+                    const ai = ARTICLES[i][lang];
+                    document.getElementById(`t-card${i}-tag`).innerText = ai.tag;
+                    document.getElementById(`t-card${i}-title`).innerText = ai.title;
+                    document.getElementById(`t-card${i}-snip`).innerText = ai.snip;
+                }
+            }
+
         }
 
         /* Initial Setup */
