@@ -993,9 +993,9 @@
             </div>
         </div>
 
-        <div class="container footer-baseline">
+        <div class="container footer-baseline" style="justify-content: center; text-align: center;">
             <div id="foot-copy">© 2026 CorticFlow Media. Todos os direitos reservados.</div>
-            <div style="color: var(--text-muted);" id="foot-sub">Plataforma Internacional de Inteligência & Silício</div>
+            
         </div>
     </footer>
 
@@ -1542,7 +1542,7 @@
                 document.getElementById('foot-h-radar').innerText = 'Fontes & Radar';
                 document.getElementById('foot-h-inst').innerText = 'Institucional';
                 document.getElementById('foot-copy').innerText = '© 2026 CorticFlow Media. Todos os direitos reservados.';
-                document.getElementById('foot-sub').innerText = 'Plataforma Internacional de Inteligência & Silício';
+                // foot-sub removed for clean design
             } else {
                 document.getElementById('hud-cluster').innerText = 'GLOBAL COMPUTE: 98.4% NOMINAL';
                 document.getElementById('hud-ticker').innerText = 'BLACKWELL B200 ACCELERATING PRODUCTION';
@@ -1580,7 +1580,7 @@
                 document.getElementById('foot-h-radar').innerText = 'Sources & Radar';
                 document.getElementById('foot-h-inst').innerText = 'Institutional';
                 document.getElementById('foot-copy').innerText = '© 2026 CorticFlow Media. All rights reserved.';
-                document.getElementById('foot-sub').innerText = 'International Intelligence & Silicon Platform';
+                // foot-sub removed for clean design
             }
 
             // Update Featured Lead
@@ -1592,6 +1592,50 @@
             // Re-render Stream
             renderStories();
         }
+
+
+        /* Dynamic Hydration: Automatically load AI generated stories from posts.json */
+        async function loadDynamicPosts() {
+            try {
+                const res = await fetch('posts.json?t=' + Date.now());
+                if (res.ok) {
+                    const posts = await res.json();
+                    if (Array.isArray(posts) && posts.length > 0) {
+                        posts.forEach((p, idx) => {
+                            const id = 100 + idx;
+                            ARTICLES[id] = {
+                                category: p.category || 'ai-models',
+                                date_pt: p.date_pt || 'Hoje • Atualização Automática',
+                                date_en: p.date_en || 'Today • Automated Dispatch',
+                                read_time_pt: '5 min de leitura',
+                                read_time_en: '5 min read',
+                                img: p.image || p.cover || 'covers/default-ai.jpg',
+                                pt: {
+                                    tag: p.tag_pt || 'Última Hora',
+                                    title: p.title_pt,
+                                    snip: p.excerpt_pt,
+                                    callout: p.excerpt_pt,
+                                    body: p.content_pt ? `<p>${p.content_pt.replace(/\n\n/g, '</p><p>')}</p>` : p.excerpt_pt,
+                                    links: [{ name: 'Fonte Original ↗', url: p.link || '#' }]
+                                },
+                                en: {
+                                    tag: p.tag_en || 'Breaking News',
+                                    title: p.title_en,
+                                    snip: p.excerpt_en,
+                                    callout: p.excerpt_en,
+                                    body: p.content_en ? `<p>${p.content_en.replace(/\n\n/g, '</p><p>')}</p>` : p.excerpt_en,
+                                    links: [{ name: 'Original Source ↗', url: p.link || '#' }]
+                                }
+                            };
+                        });
+                        renderStories();
+                    }
+                }
+            } catch (err) {
+                console.log('Using static curated catalog:', err);
+            }
+        }
+        loadDynamicPosts();
 
         /* Initial Setup */
         switchLang(currentLang);
